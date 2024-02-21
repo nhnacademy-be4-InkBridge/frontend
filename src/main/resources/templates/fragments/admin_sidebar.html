@@ -1,0 +1,100 @@
+<html lang="en">
+<div th:fragment="sidebarFragment" id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+      <div class="sb-sidenav-menu">
+        <div class="nav">
+          <a class="nav-link" href="/admin">
+            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+            수익 통계
+          </a>
+          <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+             data-bs-target="#collapseLayouts" aria-expanded="false"
+             aria-controls="collapseLayouts">
+            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+            회원
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+          </a>
+          <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+               data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav">
+              <a class="nav-link" href="/admin/users">회원 관리</a>
+              <a class="nav-link" href="/admin/grades">회원 등급</a>
+              <a class="nav-link" href="/admin/orders">회원 주문 관리</a>
+            </nav>
+          </div>
+          <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+             data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+            도서
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+          </a>
+          <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+               data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                 data-bs-target="#pagesCollapseAuth" aria-expanded="false"
+                 aria-controls="pagesCollapseAuth">
+                도서 관리
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
+                   data-bs-parent="#sidenavAccordionPages">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="/admin/books">도서 목록</a>
+                  <a class="nav-link" href="/admin/book/create">도서 등록</a>
+                </nav>
+              </div>
+              <a class="nav-link collapsed" href="/admin/wrappings">
+                포장지 관리
+              </a>
+            </nav>
+          </div>
+          <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+             data-bs-target="#tagLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+            태그 및 카테고리
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+          </a>
+          <div class="collapse" id="tagLayouts" aria-labelledby="headingOne"
+               data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav">
+              <a class="nav-link" href="/admin/tags">태그 관리</a>
+              <a class="nav-link" href="/admin/categories">카테고리 관리</a>
+            </nav>
+          </div>
+          <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+             data-bs-target="#authorLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+            작가 및 출판사
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+          </a>
+          <div class="collapse" id="authorLayouts" aria-labelledby="headingOne"
+               data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav">
+              <a class="nav-link" href="/admin/authors">작가 관리</a>
+              <a class="nav-link" href="/admin/publishers">출판사 관리</a>
+            </nav>
+          </div>
+          <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+             data-bs-target="#policyLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+            정책 관리
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+          </a>
+          <div class="collapse" id="policyLayouts" aria-labelledby="headingOne"
+               data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav">
+              <a class="nav-link" href="/admin/point-policy">포인트 정책</a>
+              <a class="nav-link" href="/admin/delivery-policy">배송비 정책</a>
+              <a class="nav-link" href="/admin/accumulation-policy">적립률 정책</a>
+            </nav>
+          </div>
+          <a class="nav-link" href="/admin/coupons">
+            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+            쿠폰
+          </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</html>
