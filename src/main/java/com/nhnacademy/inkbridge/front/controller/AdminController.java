@@ -23,4 +23,9 @@ public class AdminController {
     public String getBooks() {
         return "admin/books";
     }
+
+    @GetMapping("/book/create")
+    public String createBookForm() {
+        return "admin/book_form";
+    }
 }
