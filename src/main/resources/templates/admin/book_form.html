@@ -4,23 +4,12 @@
       layout:decorate="~{layouts/admin_layout}">
 <body>
 <th:block layout:fragment="css">
-  <link href="/css/styles.css" rel="stylesheet">
-  <link href="/css/index.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-        crossorigin="anonymous">
   <link rel="stylesheet" href="/css/book_form.css">
   <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
 </th:block>
 <th:block layout:fragment="script">
-  <script src="/js/load_editor.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-          crossorigin="anonymous"></script>
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
           crossorigin="anonymous"></script>
-  <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 </th:block>
 
 <div layout:fragment="content" id="layoutSidenav_content">
@@ -39,9 +28,30 @@
     </div>
     <div class="wrap-input100 input100-select bg1">
       <span class="label-input100">카테고리</span>
+      <div>
+        <label for="parent_category"></label>
+        <select id="parent_category">
+          <option value="0">카테고리를 선택하세요</option>
+          <option value="1">Option 2</option>
+          <option value="2">Option 3</option>
+          <option value="3">Option 4</option>
+        </select>
+        <label for="category"></label>
+        <select id="category">
+          <option value="1">Option 2</option>
+          <option value="2">Option 3</option>
+          <option value="3">Option 4</option>
+        </select>
+      </div>
     </div>
     <div class="wrap-input100 input100-select bg1">
       <span class="label-input100">태그</span>
+      <div class="input100" id="tag-container">
+        <select>
+          <option value="1">tag1</option>
+        </select>
+      </div>
+      <input id="create-tag-btn" type="button" value="태그 추가">
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="정가를 입력하세요">
       <label>
@@ -85,25 +95,6 @@
       <div class="input100" id="editor">
       </div>
     </div>
-
-    <div class="wrap-input100 input100-select bg1">
-      <span class="label-input100">카테고리</span>
-      <div>
-        <label for="parent_category"></label>
-        <select id="parent_category">
-          <option value="0">카테고리를 선택하세요</option>
-          <option value="1">Option 2</option>
-          <option value="2">Option 3</option>
-          <option value="3">Option 4</option>
-        </select>
-        <label for="category"></label>
-        <select id="category">
-          <option value="1">Option 2</option>
-          <option value="2">Option 3</option>
-          <option value="3">Option 4</option>
-        </select>
-      </div>
-    </div>
     <div>
       <div class="container-contact100-form-btn">
         <button class="contact100-form-btn">
@@ -117,5 +108,7 @@
       </div>
     </div>
   </form>
+  <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+  <script src="/js/load_editor.js"></script>
 </div>
 </body>
