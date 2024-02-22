@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/books_layout}">
+      layout:decorate="~{layouts/admin_layout}">
 <body>
 <th:block layout:fragment="css">
   <link href="/css/styles.css" rel="stylesheet">
@@ -30,7 +30,7 @@
           src="https://www.googletagmanager.com/gtag/js?id=G-PZXV45BPZN"></script>
 </th:block>
 
-<div layout:fragment="books" id="layoutSidenav_content">
+<div layout:fragment="content" id="layoutSidenav_content">
   <main>
     <div class="container-fluid px-4">
       <h2 class="mt-4">도서 목록</h2>
@@ -70,9 +70,6 @@
                   </th>
                   <th data-sortable="true" style="width: 14.311270125223613%;">
                     <a href="#" class="datatable-sorter">판매 상태</a>
-                  </th>
-                  <th data-sortable="true" style="width: 12.611806797853308%;">
-                    <button>상세정보 조회</button>
                   </th>
                 </tr>
                 </thead>

@@ -5,17 +5,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * class: AdminController.
+ * class: AdminBookController.
  *
  * @author minm063
- * @version 2024/02/19
+ * @version 2024/02/22
  */
 @Controller
 @RequestMapping("/admin")
-public class AdminIndexController {
+public class AdminBookController {
 
-    @GetMapping
-    public String admin() {
-        return "admin/charts";
+    @GetMapping("/books")
+    public String getBooks() {
+        return "admin/books";
     }
 }
