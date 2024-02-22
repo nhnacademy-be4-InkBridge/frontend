@@ -16,4 +16,9 @@ public class AdminController {
     public String admin() {
         return "admin/charts";
     }
+
+    @GetMapping("/admin/categories")
+    public String category(){
+        return "admin/categories";
+    }
 }
