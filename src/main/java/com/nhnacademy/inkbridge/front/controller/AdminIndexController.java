@@ -12,20 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/admin")
-public class AdminController {
+public class AdminIndexController {
 
     @GetMapping
     public String admin() {
         return "admin/charts";
     }
 
-    @GetMapping("/books")
-    public String getBooks() {
-        return "admin/books";
-    }
-
-    @GetMapping("/book/create")
-    public String createBookForm() {
-        return "admin/book_form";
-    }
 }

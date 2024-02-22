@@ -7575,7 +7575,7 @@ textarea.form-control-lg {
     --bs-aspect-ratio: 42.8571428571%;
 }
 
-.fixed-top, .sb-nav-fixed #layoutSidenav #layoutSidenav_nav, .sb-nav-fixed .sb-topnav {
+.fixed-top, .sb-nav-fixed, .sb-nav-fixed .sb-topnav {
     position: relative;
     top: 0;
     right: 0;
@@ -12453,7 +12453,6 @@ body {
 }
 
 #layoutSidenav #layoutSidenav_content {
-    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

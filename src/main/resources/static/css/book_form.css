@@ -182,7 +182,8 @@ iframe {
 }
 
 .contact100-form {
-    width: 100%;
+    width: 90%;
+    padding-left: 10em;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -260,7 +261,6 @@ textarea.input100 {
     flex-wrap: wrap;
     justify-content: center;
     padding-top: 20px;
-    width: 100%
 }
 
 .contact100-form-btn {
@@ -675,4 +675,41 @@ textarea.input100 {
     .wrap-contact100-form-radio {
         padding: 15px 0 0
     }
+}
+.select2-hidden-accessible {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important
+}
+.select2-container {
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0;
+    position: relative;
+    vertical-align: middle;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    width: 20px;
+}
+.select2-container .select2-selection--single .select2-selection__rendered {
+    display: block;
+    padding-left: 8px;
+    padding-right: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.select2-container--default .select2-selection--single {
+    background-color: #fff;
+    border: 1px solid #aaa;
+    border-radius: 4px;
 }
