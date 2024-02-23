@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
+import com.nhnacademy.inkbridge.front.dto.BookAdminReadResponse;
 import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponse;
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
@@ -32,11 +33,25 @@ public class BookAdaptor {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         ResponseEntity<List<BooksAdminReadResponse>> exchange = restTemplate.exchange(
-            "http://localhost:8080/api/admin/books",
+            "http://localhost:8060/api/admin/books",
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
             });
+        return exchange.getBody();
+    }
+
+    public BookAdminReadResponse getBookAdmin(Long bookId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        ResponseEntity<BookAdminReadResponse> exchange = restTemplate.exchange(
+            "http://localhost:8060/api/admin/books/{bookId}",
+            HttpMethod.GET,
+            new HttpEntity<>(httpHeaders),
+            new ParameterizedTypeReference<>() {
+            }, bookId);
         return exchange.getBody();
     }
 }

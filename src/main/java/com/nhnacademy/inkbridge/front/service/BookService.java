@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.service;
 
 import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
+import com.nhnacademy.inkbridge.front.dto.BookAdminReadResponse;
 import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponse;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,9 @@ public class BookService {
 
     public List<BooksAdminReadResponse> getBooks() {
         return bookAdaptor.getBooksAdmin();
+    }
+
+    public BookAdminReadResponse getBook(Long bookId) {
+        return bookAdaptor.getBookAdmin(bookId);
     }
 }

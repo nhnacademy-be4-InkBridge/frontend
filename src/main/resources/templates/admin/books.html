@@ -74,8 +74,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="book, index: ${books}" role="button">
-                  <td th:text="${index.index+1}"></td>
+                <tr th:each="book: ${books}" role="button">
+                  <td th:text="${book.bookId}"></td>
                   <td th:text="${book.bookTitle}"></td>
                   <td th:text="${book.authorName}"></td>
                   <td th:text="${book.publisherName}"></td>

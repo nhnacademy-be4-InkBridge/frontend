@@ -13,17 +13,19 @@
 </th:block>
 
 <div layout:fragment="content" id="layoutSidenav_content">
-  <form class="contact100-form validate-form">
+
+  <form class="contact100-form validate-form" method="post">
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="도서 이름을 입력하세요">
       <label>
         <span class="label-input100">도서명</span>
-        <input class="input100" type="text" name="name">
+        <input class="input100" type="text" th:name="bookTitle" th:value="${book?.bookTitle}">
       </label>
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="isbn을 입력하세요">
       <label>
         <span class="label-input100">isbn</span>
-        <input class="input100" type="text" name="isbn" placeholder="숫자 13자리">
+        <input class="input100" type="text" th:name="isbn" th:value="${book?.isbn}"
+               placeholder="숫자 13자리">
       </label>
     </div>
     <div class="wrap-input100 input100-select bg1">
@@ -56,38 +58,41 @@
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="정가를 입력하세요">
       <label>
         <span class="label-input100">정가</span>
-        <input class="input100" type="text" name="regular_price">
+        <input class="input100" type="text" th:name="regularPrice" th:value="${book?.regularPrice}">
       </label>
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="판매가를 입력하세요">
       <label>
         <span class="label-input100">판매가</span>
-        <input class="input100" type="text" name="price">
+        <input class="input100" type="text" th:name="price" th:value="${book?.price}">
       </label>
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="할인율을 입력하세요">
       <label>
         <span class="label-input100">할인율</span>
-        <input class="input100" type="text" name="discount_ratio" value="0">
+        <input class="input100" type="text" th:name="discountRatio"
+               th:value="${book?.discountRatio}">
       </label>
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="재고를 입력하세요">
       <span class="label-input100">재고</span>
-      <input class="input100" type="text" name="stock" value="0">
+      <input class="input100" type="text" th:name="stock" th:value="${book?.stock}">
     </div>
     <div class="wrap-input100 bg1 rs1-wrap-input100">
       <span class="label-input100">포장 가능 여부</span>
       <div class="input100">
-        <input type="radio" value="가능" name="wrapping" id="packageable">
+        <input type="radio" value="가능" th:name="wrapping" id="packageable"
+               th:checked="${book?.isPackagable}">
         <label for="packageable">포장 가능</label>
-        <input type="radio" value="불가" name="wrapping" id="non_packageable" checked>
+        <input type="radio" value="불가" th:name="wrapping" id="non_packageable"
+               th:checked="${book?.isPackagable}?: true">
         <label for="non_packageable">포장 불가</label>
       </div>
     </div>
     <div class="wrap-input100 bg0 rs1-alert-validate">
       <label>
         <span class="label-input100">목차</span>
-        <textarea class="input100" name="book_index"></textarea>
+        <textarea class="input100" th:name="bookIndex" th:text="${book?.bookIndex}"></textarea>
       </label>
     </div>
     <div class="wrap-input100 bg0 rs1-alert-validate">
@@ -98,12 +103,12 @@
     <div>
       <div class="container-contact100-form-btn">
         <button class="contact100-form-btn">
-          <span>등록<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i></span>
+          <span th:text="${mode eq book} ? '등록' : '수정'"></span>
         </button>
       </div>
       <div class="container-contact100-form-btn">
         <button class="contact100-form-btn">
-          <span>취소<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i></span>
+          <span>취소</span>
         </button>
       </div>
     </div>
