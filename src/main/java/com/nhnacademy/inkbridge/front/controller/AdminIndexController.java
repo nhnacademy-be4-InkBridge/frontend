@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @version 2024/02/19
  */
 @Controller
-public class AdminController {
+public class AdminIndexController {
 
     @GetMapping("/admin")
     public String admin() {
