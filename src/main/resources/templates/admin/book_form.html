@@ -50,9 +50,9 @@
     <div class="demo-multiple-select wrap-input100 bg1">
       <span class="label-input100">태그</span>
       <label for="tag-multiple-select-input">
-      <input mbsc-input id="tag-multiple-select-input" data-dropdown="true"
-             data-input-style="outline" data-label-style="stacked"
-             data-tags="true" placeholder="0개 이상의 태그를 선택하세요..."/></label>
+        <input mbsc-input id="tag-multiple-select-input" data-dropdown="true"
+               data-input-style="outline" data-label-style="stacked"
+               data-tags="true" placeholder="0개 이상의 태그를 선택하세요..."/></label>
       <select id="tag-multiple-select" name="tags" multiple>
         <option th:each="tag: ${tags}" th:value="${tag.tagId}" th:text="${tag.tagName}"></option>
       </select>
@@ -72,9 +72,10 @@
     <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1">
       <span class="label-input100">출판사</span>
       <label for="publisher-multiple-select-input">
-      <input mbsc-input id="publisher-multiple-select-input" data-dropdown="true"
-             data-input-style="outline" data-label-style="stacked"
-             data-tags="true" placeholder="출판사를 선택하세요..."/></label>
+        <input mbsc-input id="publisher-multiple-select-input" data-dropdown="true"
+               data-input-style="outline" data-label-style="stacked"
+               data-tags="true" placeholder="출판사를 선택하세요..."/>
+      </label>
       <select id="publisher-multiple-select" th:name="publisherId">
         <option value="1">Books</option>
         <option value="2">Movies, Music & Games</option>
@@ -90,7 +91,7 @@
       <input id="price" class="input100" type="text" th:name="price" th:value="${book?.price}">
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="할인율을 입력하세요">
-      <label for="discountRatio" class="label-input100">할인율</label>
+      <label for="discountRatio" class="label-input100">할인율(%)</label>
       <input class="input100" type="text" th:name="discountRatio"
              th:value="${book?.discountRatio}" id="discountRatio">
     </div>
@@ -109,8 +110,8 @@
         <label for="non_packageable">포장 불가</label>
       </div>
     </div>
-    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="출판일을 입력하세요">
-      <label for="publicatedAt" class="label-input100"></label>
+    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="출판일을 선택하세요">
+      <label for="publicatedAt" class="label-input100">출판일</label>
       <input id="publicatedAt" class="input100" type="date" th:name="publicatedAt"
              th:value="${book?.publicatedAt}"
              th:max="${now}">
