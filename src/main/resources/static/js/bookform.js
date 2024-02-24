@@ -1,9 +1,44 @@
-const editor = new toastui.Editor({
-  el: document.querySelector('#editor'), // 에디터를 적용할 요소 (컨테이너)
-  height: '500px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
-  initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
-  initialValue: '',                       // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
-  previewStyle: 'vertical',               // 마크다운 프리뷰 스타일 (tab || vertical)
+// const editor = new toastui.Editor({
+//   el: document.querySelector('#content'), // 에디터를 적용할 요소 (컨테이너)
+//   height: '500px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+//   initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
+//   initialValue: '',                       // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
+//   previewStyle: 'vertical',               // 마크다운 프리뷰 스타일 (tab || vertical)
+//   placeholder: '내용을 입력해 주세요.',
+//   /* start of hooks */
+//   hooks: {
+//     addImageBlobHook(blob, callback) {  // 이미지 업로드 로직 커스텀
+//       console.log(blob);
+//       console.log(callback);
+//     }
+//   }
+//   /* end of hooks */
+// });
+//
+// var existingContent = document.getElementById('existing-content').innerHTML;
+// var editor = new toastui.Editor({
+//   el: document.querySelector('#content'),
+//   initialValue: existingContent
+// });
+document.addEventListener('DOMContentLoaded', function () {
+  // DOMContentLoaded 이벤트가 발생할 때 실행될 JavaScript 코드
+  const existingContent = document.getElementById(
+      'existing-content').innerHTML;
+
+  const editor = new toastui.Editor({
+    el: document.querySelector('#editor'),
+    height: '500px',
+    initialEditType: 'markdown',
+    initialValue: existingContent || '', // 기존 콘텐츠가 없을 경우 빈 문자열을 사용합니다.
+    previewStyle: 'vertical',
+    placeholder: '내용을 입력해 주세요.',
+    hooks: {
+      addImageBlobHook(blob, callback) {
+        console.log(blob);
+        console.log(callback);
+      }
+    }
+  });
 });
 
 mobiscroll.setOptions({
@@ -107,11 +142,11 @@ mobiscroll.select('#tag-multiple-select', {
   }
 })();
 
-document.getElementById("price").addEventListener("input", function() {
+document.getElementById("price").addEventListener("input", function () {
   calculateDiscount();
 });
 
-document.getElementById("discountRatio").addEventListener("input", function() {
+document.getElementById("discountRatio").addEventListener("input", function () {
   calculateSalePrice();
 });
 
@@ -126,7 +161,8 @@ function calculateDiscount() {
 
 function calculateSalePrice() {
   var regularPrice = parseFloat(document.getElementById("regularPrice").value);
-  var discountRatio = parseFloat(document.getElementById("discountRatio").value);
+  var discountRatio = parseFloat(
+      document.getElementById("discountRatio").value);
   if (!isNaN(regularPrice) && !isNaN(discountRatio)) {
     var price = regularPrice - (regularPrice * (discountRatio / 100));
     document.getElementById("price").value = price.toFixed(0);
