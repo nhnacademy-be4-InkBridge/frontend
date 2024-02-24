@@ -1,6 +1,8 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
 import com.nhnacademy.inkbridge.front.dto.category.CategoryCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.category.CategoryReadResponseDto;
+import java.util.List;
 
 /**
  * class: CategoryAdaptor.
@@ -11,4 +13,6 @@ import com.nhnacademy.inkbridge.front.dto.category.CategoryCreateRequestDto;
 public interface CategoryAdaptor {
 
     void createCategory(CategoryCreateRequestDto requestDto);
+
+    List<CategoryReadResponseDto> readCategories();
 }
