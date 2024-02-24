@@ -5,115 +5,140 @@
 <body>
 <th:block layout:fragment="css">
   <link rel="stylesheet" href="/css/book_form.css">
+  <link rel="stylesheet" href="/css/mobiscroll.javascript.min.css">
   <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
 </th:block>
 <th:block layout:fragment="script">
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
           crossorigin="anonymous"></script>
+  <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+  <script src="/js/mobiscroll.javascript.min.js"></script>
 </th:block>
 
 <div layout:fragment="content" id="layoutSidenav_content">
-
-  <form class="contact100-form validate-form" method="post">
+  <form class="contact100-form validate-form" method="post"
+        th:action="${mode eq book} ? '/admin/book/create':'/admin/book/update'"
+        enctype="multipart/form-data">
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="도서 이름을 입력하세요">
-      <label>
-        <span class="label-input100">도서명</span>
-        <input class="input100" type="text" th:name="bookTitle" th:value="${book?.bookTitle}">
-      </label>
+      <label for="bookTitle" class="label-input100">도서명</label>
+      <input id="bookTitle" class="input100" type="text" th:name="bookTitle"
+             th:value="${book?.bookTitle}">
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="isbn을 입력하세요">
-      <label>
-        <span class="label-input100">isbn</span>
-        <input class="input100" type="text" th:name="isbn" th:value="${book?.isbn}"
-               placeholder="숫자 13자리">
-      </label>
+      <label for="isbn" class="label-input100">isbn</label>
+      <input id="isbn" class="input100" type="text" th:name="isbn" th:value="${book?.isbn}"
+             placeholder="숫자 13자리">
     </div>
     <div class="wrap-input100 input100-select bg1">
       <span class="label-input100">카테고리</span>
       <div>
         <label for="parent_category"></label>
-        <select id="parent_category">
+        <select id="parent_category" name="categories">
           <option value="0">카테고리를 선택하세요</option>
           <option value="1">Option 2</option>
           <option value="2">Option 3</option>
           <option value="3">Option 4</option>
         </select>
         <label for="category"></label>
-        <select id="category">
+        <select id="category" name="categories">
           <option value="1">Option 2</option>
           <option value="2">Option 3</option>
           <option value="3">Option 4</option>
         </select>
       </div>
     </div>
-    <div class="wrap-input100 input100-select bg1">
+    <div class="demo-multiple-select wrap-input100 bg1">
       <span class="label-input100">태그</span>
-      <div class="input100" id="tag-container">
-        <select>
-          <option value="1">tag1</option>
-        </select>
-      </div>
-      <input id="create-tag-btn" type="button" value="태그 추가">
+      <label for="tag-multiple-select-input">
+      <input mbsc-input id="tag-multiple-select-input" data-dropdown="true"
+             data-input-style="outline" data-label-style="stacked"
+             data-tags="true" placeholder="0개 이상의 태그를 선택하세요..."/></label>
+      <select id="tag-multiple-select" name="tags" multiple>
+        <option th:each="tag: ${tags}" th:value="${tag.tagId}" th:text="${tag.tagName}"></option>
+      </select>
+    </div>
+    <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1">
+      <span class="label-input100">저자</span>
+      <label for="author-multiple-select-input">
+        <input mbsc-input id="author-multiple-select-input" data-dropdown="true"
+               data-input-style="outline" data-label-style="stacked"
+               data-tags="true" placeholder="저자를 선택하세요..."/>
+      </label>
+      <select id="author-multiple-select" name="authors" multiple>
+        <!--        <option th:each="${book.authors}" value="1">Books</option>-->
+        <option value="2">Movies, Music & Games</option>
+      </select>
+    </div>
+    <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1">
+      <span class="label-input100">출판사</span>
+      <label for="publisher-multiple-select-input">
+      <input mbsc-input id="publisher-multiple-select-input" data-dropdown="true"
+             data-input-style="outline" data-label-style="stacked"
+             data-tags="true" placeholder="출판사를 선택하세요..."/></label>
+      <select id="publisher-multiple-select" th:name="publisherId">
+        <option value="1">Books</option>
+        <option value="2">Movies, Music & Games</option>
+      </select>
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="정가를 입력하세요">
-      <label>
-        <span class="label-input100">정가</span>
-        <input class="input100" type="text" th:name="regularPrice" th:value="${book?.regularPrice}">
-      </label>
+      <label for="regularPrice" class="label-input100">정가</label>
+      <input id="regularPrice" class="input100" type="text" th:name="regularPrice"
+             th:value="${book?.regularPrice}">
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="판매가를 입력하세요">
-      <label>
-        <span class="label-input100">판매가</span>
-        <input class="input100" type="text" th:name="price" th:value="${book?.price}">
-      </label>
+      <label for="price" class="label-input100">판매가</label>
+      <input id="price" class="input100" type="text" th:name="price" th:value="${book?.price}">
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="할인율을 입력하세요">
-      <label>
-        <span class="label-input100">할인율</span>
-        <input class="input100" type="text" th:name="discountRatio"
-               th:value="${book?.discountRatio}">
-      </label>
+      <label for="discountRatio" class="label-input100">할인율</label>
+      <input class="input100" type="text" th:name="discountRatio"
+             th:value="${book?.discountRatio}" id="discountRatio">
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="재고를 입력하세요">
-      <span class="label-input100">재고</span>
-      <input class="input100" type="text" th:name="stock" th:value="${book?.stock}">
+      <label for="stock" class="label-input100">재고</label>
+      <input id="stock" class="input100" type="text" th:name="stock" th:value="${book?.stock}">
     </div>
     <div class="wrap-input100 bg1 rs1-wrap-input100">
       <span class="label-input100">포장 가능 여부</span>
       <div class="input100">
-        <input type="radio" value="가능" th:name="wrapping" id="packageable"
+        <input type="radio" th:value="true" th:name="isPackagable" id="packageable"
                th:checked="${book?.isPackagable}">
         <label for="packageable">포장 가능</label>
-        <input type="radio" value="불가" th:name="wrapping" id="non_packageable"
+        <input type="radio" th:value="false" th:name="isPackagable" id="non_packageable"
                th:checked="${book?.isPackagable}?: true">
         <label for="non_packageable">포장 불가</label>
       </div>
     </div>
+    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="출판일을 입력하세요">
+      <label for="publicatedAt" class="label-input100"></label>
+      <input id="publicatedAt" class="input100" type="date" th:name="publicatedAt"
+             th:value="${book?.publicatedAt}"
+             th:max="${now}">
+    </div>
     <div class="wrap-input100 bg0 rs1-alert-validate">
-      <label>
-        <span class="label-input100">목차</span>
-        <textarea class="input100" th:name="bookIndex" th:text="${book?.bookIndex}"></textarea>
-      </label>
+      <label for="bookIndex" class="label-input100">목차</label>
+      <textarea id="bookIndex" class="input100" th:name="bookIndex"
+                th:text="${book?.bookIndex}"></textarea>
     </div>
     <div class="wrap-input100 bg0 rs1-alert-validate">
       <span class="label-input100">도서 설명</span>
       <div class="input100" id="editor">
       </div>
     </div>
-    <div>
-      <div class="container-contact100-form-btn">
-        <button class="contact100-form-btn">
-          <span th:text="${mode eq book} ? '등록' : '수정'"></span>
-        </button>
-      </div>
-      <div class="container-contact100-form-btn">
-        <button class="contact100-form-btn">
-          <span>취소</span>
-        </button>
-      </div>
+    <div class="wrap-input100 validate-input bg1" data-validate="썸네일을 삽입하세요">
+      <label for="thumbnail" class="label-input100"></label>
+      <input id="thumbnail" type="file" name="thumbnail">
+    </div>
+    <div class="container-contact100-form-btn">
+      <button class="contact100-form-btn" type="submit">
+        <span th:text="${mode eq book} ? '등록' : '수정'"></span>
+      </button>
+      <button class="contact100-form-btn" onclick="location.href='/admin/books'" type="button">
+        <span>취소</span>
+      </button>
     </div>
   </form>
   <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-  <script src="/js/load_editor.js"></script>
+  <script src="/js/bookform.js"></script>
 </div>
 </body>
