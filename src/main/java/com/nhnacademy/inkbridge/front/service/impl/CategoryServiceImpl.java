@@ -2,7 +2,7 @@ package com.nhnacademy.inkbridge.front.service.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.CategoryAdaptor;
 import com.nhnacademy.inkbridge.front.dto.category.CategoryCreateRequestDto;
-import com.nhnacademy.inkbridge.front.dto.category.CategoryReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.category.CategoryUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.CategoryService;
 import java.util.List;
@@ -32,8 +32,26 @@ public class CategoryServiceImpl implements CategoryService {
         categoryAdaptor.createCategory(requestDto);
     }
 
+
+    /**
+     * 카테고리 목록을 보여주는 메소드입니다.
+     *
+     * @return List<ParentCategoryReadResponseDto>
+     */
     @Override
     public List<ParentCategoryReadResponseDto> readCategory() {
         return categoryAdaptor.readCategories();
+    }
+
+
+    /**
+     * 카테고리 수정하는 메소드입니다.
+     *
+     * @param categoryId Long
+     * @param requestDto CategoryUpdateRequestDto
+     */
+    @Override
+    public void updateCategory(Long categoryId, CategoryUpdateRequestDto requestDto) {
+        categoryAdaptor.updateCategory(categoryId, requestDto);
     }
 }

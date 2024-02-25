@@ -1,7 +1,7 @@
 package com.nhnacademy.inkbridge.front.service;
 
 import com.nhnacademy.inkbridge.front.dto.category.CategoryCreateRequestDto;
-import com.nhnacademy.inkbridge.front.dto.category.CategoryReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.category.CategoryUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import java.util.List;
 
@@ -16,4 +16,6 @@ public interface CategoryService {
     void createCategory(CategoryCreateRequestDto requestDto);
 
     List<ParentCategoryReadResponseDto> readCategory();
+
+    void updateCategory(Long categoryId, CategoryUpdateRequestDto requestDto);
 }

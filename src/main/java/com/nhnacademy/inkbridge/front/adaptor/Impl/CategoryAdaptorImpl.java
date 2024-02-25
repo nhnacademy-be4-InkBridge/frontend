@@ -2,7 +2,7 @@ package com.nhnacademy.inkbridge.front.adaptor.Impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.CategoryAdaptor;
 import com.nhnacademy.inkbridge.front.dto.category.CategoryCreateRequestDto;
-import com.nhnacademy.inkbridge.front.dto.category.CategoryReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.category.CategoryUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.net.URI;
@@ -72,9 +72,39 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
             .build()
             .toUri();
 
-        ResponseEntity<List<ParentCategoryReadResponseDto>> responseEntity = restTemplate.exchange(uri,
+        ResponseEntity<List<ParentCategoryReadResponseDto>> responseEntity = restTemplate.exchange(
+            uri,
             HttpMethod.GET, null, new ParameterizedTypeReference<>() {
             });
         return responseEntity.getBody();
+    }
+
+
+    /**
+     * 카테고리 수정하는 메소드입니다.
+     *
+     * @param categoryId Long
+     * @param requestDto CategoryUpdateRequestDto
+     */
+    @Override
+    public void updateCategory(Long categoryId, CategoryUpdateRequestDto requestDto) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path("api/category/{categoryId}")
+            .encode()
+            .build()
+            .expand(categoryId)
+            .toUri();
+
+        RequestEntity<CategoryUpdateRequestDto> requestEntity = RequestEntity
+            .put(uri)
+            .headers(httpHeaders)
+            .body(requestDto);
+
+        restTemplate.exchange(requestEntity, CategoryUpdateRequestDto.class);
     }
 }

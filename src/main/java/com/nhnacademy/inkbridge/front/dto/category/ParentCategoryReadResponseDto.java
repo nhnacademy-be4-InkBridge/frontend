@@ -22,12 +22,4 @@ public class ParentCategoryReadResponseDto {
     private Long categoryId;
     private String categoryName;
     private List<ParentCategoryReadResponseDto> parentCategories;
-
-//    public ParentCategoryReadResponseDto(Category category) {
-//        this.categoryId = category.getCategoryId();
-//        this.categoryName = category.getCategoryName();
-//        this.parentCategories = category.getCategoryChildren().stream()
-//            .map(ParentCategoryReadResponseDto::new)
-//            .collect(Collectors.toList());
-//    }
 }

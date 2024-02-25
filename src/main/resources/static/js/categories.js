@@ -31,3 +31,27 @@ allClose.addEventListener("click", () => {
     arrowButton.isOpen = false;
   })
 })
+
+const addButtons = document.querySelectorAll(".add-btn");
+
+addButtons.forEach((addButton) => {
+  addButton.addEventListener("click", (e) => {
+    let parentId= e.target.parentElement.parentElement.firstElementChild.innerText;
+    if(parentId===0){
+      parentId = null;
+    }
+    document.querySelector(".parent-id").value=parentId;
+  })
+});
+
+const updateButtons = document.querySelectorAll(".update-btn");
+
+updateButtons.forEach(updateButton=>{
+  updateButton.addEventListener("click",e=>{
+    let parentId = e.target.parentElement.parentElement.firstElementChild.innerText;
+    if(parentId===0){
+      parentId = null;
+    }
+    document.querySelector(".update-form").action+="/"+parentId;
+  })
+})

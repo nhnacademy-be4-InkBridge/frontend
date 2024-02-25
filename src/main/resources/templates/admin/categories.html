@@ -5,18 +5,9 @@
 >
 <body>
 <th:block layout:fragment="css">
-  <link href="/css/styles.css" rel="stylesheet">
-  <link href="/css/index.css" rel="stylesheet">
   <link href="/css/categories.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-        crossorigin="anonymous">
 </th:block>
 <th:block layout:fragment="script">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-          crossorigin="anonymous"></script>
   <script src="/js/scripts.js"></script>
   <script src="/js/datatables-simple-demo.js"></script>
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
@@ -28,6 +19,54 @@
 </th:block>
 <div layout:fragment="content" id="layoutSidenav_content">
   <main>
+    <!-- add Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">카테고리 명</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+          </div>
+          <form method="post" action="/admin/categories">
+            <div class="modal-body">
+              <input type="text" name="parentId" class="d-none parent-id"/>
+              <input type="text" name="categoryName"/>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="submit" class="btn btn-primary">카테고리 등록</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!--    update Modal-->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">카테고리 명</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+          </div>
+          <form method="post" class="update-form" action="/admin/categories">
+            <input type="hidden" name="_method" value="put"/>
+            <div class="modal-body">
+              <input type="text" name="categoryName"/>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="submit" class="btn btn-primary">카테고리 수정</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div class="container-fluid px-4">
       <h1 class="mt-4">Categories</h1>
       <ol class="breadcrumb mb-4">
@@ -36,19 +75,19 @@
       </ol>
       <div class="category_container">
         <div class="d-flex justify-content-end gap-2 mb-2">
-          <!-- <div>39 / 500</div> -->
           <button type="button" class="all_open btn btn-light">전체 펼치기</button>
           <button type="button" class="all_close btn btn-light">전체 접기</button>
         </div>
         <!--        카테고리-->
         <div class="category bg-secondary bg-opacity-25">
           <div class="item_order d-flex justify-content-between">
-            <div class="d-flex align-items-center">
-              <span class="category-name">카테고리</span>
-            </div>
+            <span class="d-none ">0</span>
+            <span class="d-flex align-items-center">카테고리</span>
             <div class="info_btn d-flex gap-3 align-items-center">
-              <button type="button" class="btn btn-secondary add-btn">추가</button>
-              <button type="button" class="btn btn-secondary update-btn">수정</button>
+              <button type="button" class="btn btn-secondary add-btn" data-bs-toggle="modal"
+                      data-bs-target="#addModal">
+                추가
+              </button>
             </div>
           </div>
         </div>
@@ -63,12 +102,18 @@
               </svg>
             </div>
             <div class="item_order d-flex justify-content-between flex-grow-1">
+              <div class="d-none " th:text="${parentCategory.getCategoryId()}"></div>
               <span class="d-flex align-items-center"
                     th:text="${parentCategory.getCategoryName()}"></span>
               <div class="info_btn d-flex gap-3 align-items-center">
-                <button type="button" class="btn btn-secondary add-btn">추가</button>
-                <button type="button" class="btn btn-secondary update-btn">수정</button>
-                <button type="button" class="btn btn-secondary delete-btn">삭제</button>
+                <button type="button" class="btn btn-secondary add-btn" data-bs-toggle="modal"
+                        data-bs-target="#addModal">
+                  추가
+                </button>
+                <button type="button" class="btn btn-secondary update-btn" data-bs-toggle="modal"
+                        data-bs-target="#updateModal">
+                  수정
+                </button>
               </div>
             </div>
           </div>
@@ -77,11 +122,16 @@
             <div class=" bg-secondary bg-opacity-25 d-flex ms-5"
                  th:each="childCategory:${parentCategory.getParentCategories()}">
               <div class="item_order d-flex justify-content-between flex-grow-1 ">
-                  <span class="d-flex align-items-center"
-                        th:text="${childCategory.getCategoryName()}"></span>
+                <div class="d-none " th:text="${childCategory.getCategoryId()}"></div>
+                <span class="d-flex align-items-center"
+                        th:text="${childCategory.getCategoryName()}">
+
+                  </span>
                 <div class="info_btn d-flex gap-3 align-items-center">
-                  <button type="button" class="btn btn-secondary">수정</button>
-                  <button type="button" class="btn btn-secondary">삭제</button>
+                  <button type="button" class="btn btn-secondary update-btn" data-bs-toggle="modal"
+                          data-bs-target="#updateModal">
+                    수정
+                  </button>
                 </div>
               </div>
             </div>
@@ -91,7 +141,6 @@
     </div>
   </main>
   <script src="/js/categories.js"></script>
-  <!--  <script src="/js/categoryUpdate.js"></script>-->
 </div>
 </body>
 </html>
