@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}" lang="ko">
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+
+</th:block>
+
+<th:block layout:fragment="script">
+
+</th:block>
+
+
+<div layout:fragment="content" class="container">
+  <div class="container-fluid py-5 mt-5">
+    <div class="container py-5">
+      <div class="row g-4 mb-5">
+        <div class="col-lg-8 col-xl-9">
+          <div class="row g-4">
+            <div class="col-lg-6">
+              <div class="border rounded">
+                <a href="#">
+                  <img src="img/single-item.jpg" class="img-fluid rounded" alt="Image">
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <h5 class="fw-bold mb-4" th:text="${book.publisherName}"></h5>
+              <h4 class="fw-bold mb-3" th:text="${book.bookTitle}"></h4>
+              <p class="mb-3">Category: Vegetables</p>
+              <h5 class="fw-bold mb-4" th:text="${book.regularPrice}"></h5>
+              <h5 class="fw-bold mb-3" th:text="${book.price}"></h5>
+              <div class="d-flex mb-4">
+              </div>
+              <div class="input-group quantity mb-5" style="width: 100px;">
+                <div class="input-group-btn">
+                  <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                    <i class="fa fa-minus"></i>
+                  </button>
+                </div>
+                <input type="text" class="form-control form-control-sm text-center border-0"
+                       value="1">
+                <div class="input-group-btn">
+                  <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+              <a href="#"
+                 class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
+                  class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니에 담기</a>
+              <a href="#"
+                 class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
+                  class="fa fa-shopping-bag me-2 text-primary"></i> 상품 바로 구매하기</a>
+            </div>
+            <div class="col-lg-12">
+              <nav>
+                <div class="nav nav-tabs mb-3">
+                </div>
+              </nav>
+              <div class="tab-content mb-5">
+                <div class="tab-pane">
+                  <h4 class="fw-bold mb-3">목차</h4>
+                  <p class="mb-4" th:text="${book.bookIndex}"></p>
+
+                </div>
+              </div>
+            </div>
+            <form action="#">
+              <h4 class="mb-5 fw-bold">Leave a Reply</h4>
+              <div class="row g-4">
+                <div class="col-lg-6">
+                  <div class="border-bottom rounded">
+                    <input type="text" class="form-control border-0 me-4" placeholder="Yur Name *">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="border-bottom rounded">
+                    <input type="email" class="form-control border-0" placeholder="Your Email *">
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="border-bottom rounded my-4">
+                    <textarea name="" id="" class="form-control border-0" cols="30" rows="8"
+                              placeholder="Your Review *" spellcheck="false"></textarea>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="d-flex justify-content-between py-3 mb-5">
+                    <div class="d-flex align-items-center">
+                      <p class="mb-0 me-3">Please rate:</p>
+                      <div class="d-flex align-items-center" style="font-size: 12px;">
+                        <i class="fa fa-star text-muted"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                      </div>
+                    </div>
+                    <a href="#"
+                       class="btn border border-secondary text-primary rounded-pill px-4 py-3"> Post
+                      Comment</a>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
