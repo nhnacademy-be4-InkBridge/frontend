@@ -9,21 +9,35 @@ const editor = new toastui.Editor({
   previewStyle: 'vertical',
   placeholder: '',
   hooks: {
-    // async addImageBlobHook(blob, callback) {
-    //   try {
-    //     // const filename = blob.name;
-    //     // console.log('서버에 저장된 파일명 : ', blob.name);
-    //     //
-    //     // const url = URL.createObjectURL(blob);
-    //     // // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
-    //     // // const imageUrl = `/tui-editor/image-print?filename=${filename}`;
-    //     // //   const imageUrl = `usr/upload?filename=${filename}`;
-    //     // callback(url, 'image alt attribute');
-    //
-    //   } catch (error) {
-    //     console.error('업로드 실패 : ', error);
-    //   }
-    // }
+    async addImageBlobHook(blob, callback) { // 이미지 업로드 로직 커스텀
+      try {
+        /*
+         * 1. 에디터에 업로드한 이미지를 FormData 객체에 저장
+         *    (이때, 컨트롤러 uploadEditorImage 메서드의 파라미터인 'image'와 formData에 append 하는 key('image')값은 동일해야 함)
+         */
+        const formData = new FormData();
+        formData.append('image', blob);
+
+        // 2. FileApiController - uploadEditorImage 메서드 호출
+        const response = await fetch('/image-upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        // 3. 컨트롤러에서 전달받은 디스크에 저장된 파일명
+        console.log('서버에 저장된 파일명 : ', response.text());
+        console.log('서버에 저장된 파일명 : ', response.formData());
+        console.log('서버에 저장된 파일명 : ', response.url);
+        const filename = await response.text();
+
+        // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
+        const imageUrl = `/tui-editor/image-print?filename=${filename}`;
+        callback(imageUrl, 'image alt attribute');
+
+      } catch (error) {
+        console.error('업로드 실패 : ', error);
+      }
+    }
   }
 });
 // 저장할 때 데이터를 컨트롤러로
