@@ -33,15 +33,14 @@ public class CouponAdaptorImpl implements CouponAdaptor {
     }
 
     @Override
-    public PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponTypeId,
-        Integer pageNumber, Integer size) {
+    public PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId,
+        Integer page, Integer size) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        System.out.println(couponTypeId);
 
-        String url = String.format("%s?coupon-type-id=%d&pageNumber=%d&size=%d",
-            gatewayProperties.getUrl() + "/api/admin/coupons", couponTypeId, pageNumber, size);
+        String url = String.format("%s?coupon-status-id=%d&page=%d&size=%d",
+            gatewayProperties.getUrl() + "/api/admin/coupons", couponStatusId, page, size);
         System.out.println(url);
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
 

@@ -18,7 +18,7 @@ public class CouponService {
     public CouponService(CouponAdaptor couponAdaptor) {
         this.couponAdaptor = couponAdaptor;
     }
-    public PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponTypeId,Integer pageNumber,Integer size){
-        return couponAdaptor.getAdminCoupons(couponTypeId,pageNumber,size);
+    public PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId,Integer page,Integer size){
+        return couponAdaptor.getAdminCoupons(couponStatusId,page,size);
     }
 }

@@ -11,6 +11,7 @@ import com.nhnacademy.inkbridge.front.dto.coupon.CouponType;
  * @version 2024/02/22
  */
 public interface CouponAdaptor {
-    PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer pageNumber, Integer size, Integer couponTypeId);
+    PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId,
+        Integer page, Integer size);
 
 }

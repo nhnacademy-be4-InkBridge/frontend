@@ -28,11 +28,11 @@ public class CouponController {
 
     @GetMapping
     public String view(
-        @RequestParam(name = "coupon-type-id", defaultValue = "1") Integer couponTypeId,
-        @RequestParam(name = "page-number", defaultValue = "0") Integer pageNumber,
+        @RequestParam(name = "coupon-status-id", defaultValue = "1") Integer couponStatusId,
+        @RequestParam(name = "page", defaultValue = "0") Integer page,
         @RequestParam(name = "size", defaultValue = "10") Integer size, Model model) {
-        System.out.println(couponService.getAdminCoupons(couponTypeId,pageNumber,size).toString());
-        model.addAttribute("page", couponService.getAdminCoupons(couponTypeId,pageNumber, size));
+        model.addAttribute("couponStatusId", couponStatusId);
+        model.addAttribute("page", couponService.getAdminCoupons(couponStatusId,page, size));
         return "admin/coupons";
     }
 }
