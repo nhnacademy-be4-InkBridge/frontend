@@ -1,45 +1,37 @@
-// const editor = new toastui.Editor({
-//   el: document.querySelector('#content'), // 에디터를 적용할 요소 (컨테이너)
-//   height: '500px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
-//   initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
-//   initialValue: '',                       // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
-//   previewStyle: 'vertical',               // 마크다운 프리뷰 스타일 (tab || vertical)
-//   placeholder: '내용을 입력해 주세요.',
-//   /* start of hooks */
-//   hooks: {
-//     addImageBlobHook(blob, callback) {  // 이미지 업로드 로직 커스텀
-//       console.log(blob);
-//       console.log(callback);
-//     }
-//   }
-//   /* end of hooks */
-// });
-//
-// var existingContent = document.getElementById('existing-content').innerHTML;
-// var editor = new toastui.Editor({
-//   el: document.querySelector('#content'),
-//   initialValue: existingContent
-// });
-document.addEventListener('DOMContentLoaded', function () {
-  // DOMContentLoaded 이벤트가 발생할 때 실행될 JavaScript 코드
-  const existingContent = document.getElementById(
-      'existing-content').innerHTML;
+const existingContent = document.getElementById(
+    'existing-content').innerHTML;
 
-  const editor = new toastui.Editor({
-    el: document.querySelector('#editor'),
-    height: '500px',
-    initialEditType: 'markdown',
-    initialValue: existingContent || '', // 기존 콘텐츠가 없을 경우 빈 문자열을 사용합니다.
-    previewStyle: 'vertical',
-    placeholder: '내용을 입력해 주세요.',
-    hooks: {
-      addImageBlobHook(blob, callback) {
-        console.log(blob);
-        console.log(callback);
-      }
-    }
-  });
+const editor = new toastui.Editor({
+  el: document.querySelector('#editor'),
+  height: '500px',
+  initialEditType: 'markdown',
+  initialValue: existingContent || '',
+  previewStyle: 'vertical',
+  placeholder: '',
+  hooks: {
+    // async addImageBlobHook(blob, callback) {
+    //   try {
+    //     // const filename = blob.name;
+    //     // console.log('서버에 저장된 파일명 : ', blob.name);
+    //     //
+    //     // const url = URL.createObjectURL(blob);
+    //     // // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
+    //     // // const imageUrl = `/tui-editor/image-print?filename=${filename}`;
+    //     // //   const imageUrl = `usr/upload?filename=${filename}`;
+    //     // callback(url, 'image alt attribute');
+    //
+    //   } catch (error) {
+    //     console.error('업로드 실패 : ', error);
+    //   }
+    // }
+  }
 });
+// 저장할 때 데이터를 컨트롤러로
+document.getElementById('bookForm').addEventListener('submit',
+    function (event) {
+      let description = editor.getMarkdown();
+      document.getElementById('descriptionHidden').value = description; // 숨겨진 입력 필드에 설정
+    });
 
 mobiscroll.setOptions({
   locale: mobiscroll.localeEn,                                         // Specify language like: locale: mobiscroll.localePl or omit setting to use default
@@ -47,36 +39,48 @@ mobiscroll.setOptions({
   themeVariant: 'light'                                                // More info about themeVariant: https://mobiscroll.com/docs/javascript/select/api#opt-themeVariant
 });
 
+mobiscroll.select('#category-multiple-select', {
+  inputElement: document.getElementById('category-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
+  // onCancel: handleSelectedCategories,
+});
+document.getElementById('category-multiple-select').addEventListener('change',
+    function () {
+      var selectedOptions = this.selectedOptions;
+      for (var i = 0; i < selectedOptions.length; i++) {
+        var selectedOption = selectedOptions[i];
+        var optgroup = selectedOption.parentElement;
+        var hiddenOption = optgroup.querySelector('.parent');
+        if (hiddenOption && !hiddenOption.selected) { // Check if hiddenOption is not already selected
+          hiddenOption.selected = true;
+        }
+      }
+    });
 mobiscroll.select('#author-multiple-select', {
-  inputElement: document.getElementById('author-multiple-select-input')  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
+  inputElement: document.getElementById('author-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
 });
 mobiscroll.select('#publisher-multiple-select', {
-  inputElement: document.getElementById('publisher-multiple-select-input')  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
+  inputElement: document.getElementById('publisher-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
 });
 mobiscroll.select('#tag-multiple-select', {
-  inputElement: document.getElementById('tag-multiple-select-input')  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
+  inputElement: document.getElementById('tag-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
 });
 
-// // 개수 제한
-// const select = document.getElementById("parentCategory");
-// const maxSelect = 10;
-//
-// select.addEventListener('change', function () {
-//   const selectedOptions = Array.from(this.selectedOptions);
-//   if (selectedOptions.length > maxSelect) {
-//     // 최대 선택 개수를 초과한 경우 선택을 취소함
-//     selectedOptions.forEach(option => {
-//       if (!option.selected) {
-//         option.disabled = true;
-//       }
-//     });
-//   } else {
-//     // 선택 가능한 상태로 되돌림
-//     Array.from(this.options).forEach(option => {
-//       option.disabled = false;
-//     });
-//   }
-// });
+document.getElementById('category-multiple-select').addEventListener('change',
+function handleSelectedCategories() {
+  var selectedOptions = this.selectedOptions;
+  var selectedCount = 0;
+  for (var i = 0; i < selectedOptions.length; i++) {
+    if (selectedOptions[i].parentElement.tagName === 'OPTGROUP') {
+      selectedCount++;
+      console.log('selected: ' + selectedCount);
+    }
+  }
+  if (selectedCount > 10) {
+    alert('You can only select up to 10 options.');
+    this.options[this.selectedIndex].selected = false;
+    console.log('selected2: ' + selectedCount);
+  }
+});
 
 (function () {
   "use strict";

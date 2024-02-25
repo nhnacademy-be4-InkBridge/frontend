@@ -1,12 +1,10 @@
 package com.nhnacademy.inkbridge.front.service;
 
-import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
-import com.nhnacademy.inkbridge.front.dto.BookAdminReadResponse;
-import com.nhnacademy.inkbridge.front.dto.BookAdminRequest;
-import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponse;
+import com.nhnacademy.inkbridge.front.dto.BookAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.BookAdminRequestDto;
+import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponseDto;
 import java.io.IOException;
 import java.util.List;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -15,31 +13,40 @@ import org.springframework.web.multipart.MultipartFile;
  * @author minm063
  * @version 2024/02/22
  */
-@Service
-public class BookService {
+public interface BookService {
 
-    private final BookAdaptor bookAdaptor;
+    /**
+     * 도서 전체 목록을 조회하는 메서드입니다.
+     *
+     * @return List - BooksAdminReadResponseDto
+     */
+    List<BooksAdminReadResponseDto> getBooks();
 
-    public BookService(BookAdaptor bookAdaptor) {
-        this.bookAdaptor = bookAdaptor;
-    }
+    /**
+     * 도서 상세 정보를 조회하는 메서드입니다.
+     *
+     * @param bookId Long
+     * @return BookAdminReadResponseDto
+     */
+    BookAdminReadResponseDto getBook(Long bookId);
 
-    public List<BooksAdminReadResponse> getBooks() {
-        return bookAdaptor.getBooksAdmin();
-    }
+    /**
+     * 도서를 생성하는 메서드입니다.
+     *
+     * @param thumbnail MultipartFile
+     * @param bookImages MultipartFile[]
+     * @param bookAdminRequestDto BookAdminRequestDto
+     */
+    void createBook(MultipartFile thumbnail, MultipartFile[] bookImages,
+        BookAdminRequestDto bookAdminRequestDto) throws IOException;
 
-    public BookAdminReadResponse getBook(Long bookId) {
-        return bookAdaptor.getBookAdmin(bookId);
-    }
-
-
-    public void createBook(MultipartFile thumbnail, MultipartFile[] bookImages,
-        BookAdminRequest bookAdminRequest) throws IOException {
-        bookAdaptor.createBookAdmin(thumbnail, bookImages, bookAdminRequest);
-    }
-
-    public void updateBook(MultipartFile thumbnail, MultipartFile[] bookImages,
-        BookAdminRequest bookAdminRequest) {
-        bookAdaptor.updateBookAdmin(thumbnail, bookImages, bookAdminRequest);
-    }
+    /**
+     * 도서 정보를 수정하는 메서드입니다.
+     *
+     * @param thumbnail MultipartFile
+     * @param bookImages MultipartFile[]
+     * @param bookAdminRequestDto BookAdminRequestDto
+     */
+    void updateBook(MultipartFile thumbnail, MultipartFile[] bookImages,
+        BookAdminRequestDto bookAdminRequestDto);
 }

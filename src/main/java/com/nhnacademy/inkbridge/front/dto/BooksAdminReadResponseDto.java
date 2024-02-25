@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BooksAdminReadResponse {
+public class BooksAdminReadResponseDto {
     private Long bookId;
     private String bookTitle;
     private String authorName;

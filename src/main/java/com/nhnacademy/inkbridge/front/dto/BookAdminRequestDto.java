@@ -3,7 +3,9 @@ package com.nhnacademy.inkbridge.front.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BookAdminRequest {
+public class BookAdminRequestDto {
 
     private String bookTitle;
     private String bookIndex;
@@ -32,15 +34,15 @@ public class BookAdminRequest {
     private Integer stock;
     private Boolean isPackagable;
     private Long publisherId;
-    private List<Long> categories = new ArrayList<>();
+    private Long authors;
+    private Set<Long> categories = new HashSet<>();
     private List<Long> tags = new ArrayList<>();
-    private List<Long> authors = new ArrayList<>();
 
     @Builder
-    public BookAdminRequest(String bookTitle, String bookIndex, String description,
+    public BookAdminRequestDto(String bookTitle, String bookIndex, String description,
         LocalDate publicatedAt, String isbn, Long regularPrice, Long price,
         BigDecimal discountRatio, Integer stock, Boolean isPackagable, Long publisherId,
-        List<Long> tags, List<Long> authors, List<Long> categories) {
+        Long authors, List<Long> tags, Set<Long> categories) {
         this.bookTitle = bookTitle;
         this.bookIndex = bookIndex;
         this.description = description;
@@ -53,7 +55,7 @@ public class BookAdminRequest {
         this.isPackagable = isPackagable;
         this.publisherId = publisherId;
         this.tags.addAll(tags == null ? new ArrayList<>() : tags);
-        this.authors.addAll(authors);
+        this.authors = authors;
         this.categories.addAll(categories);
     }
 }

@@ -1,8 +1,8 @@
 package com.nhnacademy.inkbridge.front.controller;
 
-import com.nhnacademy.inkbridge.front.dto.BookAdminReadResponse;
-import com.nhnacademy.inkbridge.front.dto.BookAdminRequest;
-import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponse;
+import com.nhnacademy.inkbridge.front.dto.BookAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.BookAdminRequestDto;
+import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.TagResponse;
 import com.nhnacademy.inkbridge.front.service.BookService;
 import java.io.IOException;
@@ -38,19 +38,23 @@ public class AdminBookController {
 
     @GetMapping("/books")
     public String getBooks(Model model) {
-        List<BooksAdminReadResponse> books = bookService.getBooks();
+        List<BooksAdminReadResponseDto> books = bookService.getBooks();
         model.addAttribute("books", books);
         return "admin/books";
     }
 
+    // 상세, 수정까지
     @GetMapping("/book/{bookId}")
     public String getBook(Model model, @PathVariable Long bookId) {
-        BookAdminReadResponse book = bookService.getBook(bookId);
+        BookAdminReadResponseDto book = bookService.getBook(bookId);
         model.addAttribute("book", book);
         model.addAttribute("tags",
             List.of(TagResponse.builder().tagId(1L).tagName("이달의 도서").build(),
-                TagResponse.builder().tagId(2L).tagName("test2").build()));
-        return "admin/book_form";
+                TagResponse.builder().tagId(2L).tagName("test2").build(),
+                TagResponse.builder().tagId(3L).tagName("test3").build()));
+        model.addAttribute("savedTags", List.of(TagResponse.builder().tagId(2L).build(), TagResponse.builder().tagId(3L).build()));
+        model.addAttribute("now", LocalDate.now());
+        return "admin/book_form_value";
     }
 
     @GetMapping("/book/create")
@@ -58,18 +62,16 @@ public class AdminBookController {
         model.addAttribute("tags",
             List.of(TagResponse.builder().tagId(1L).tagName("이달의 도서").build(),
                 TagResponse.builder().tagId(2L).tagName("test2").build()));
-
         model.addAttribute("now", LocalDate.now());
         return "admin/book_form";
     }
 
-
     @PostMapping("/book/create")
     public String createBook(@RequestParam("thumbnail") MultipartFile thumbnail,
         @RequestParam(value = "bookImages", required = false) MultipartFile[] bookImages,
-        @ModelAttribute BookAdminRequest bookAdminRequest) {
+        @ModelAttribute BookAdminRequestDto bookAdminRequestDto) {
         try {
-            bookService.createBook(thumbnail, bookImages, bookAdminRequest);
+            bookService.createBook(thumbnail, bookImages, bookAdminRequestDto);
         } catch (IOException e) {
             log.debug("book create error: {}", e.getMessage());
             return "error";
@@ -80,8 +82,8 @@ public class AdminBookController {
     @PostMapping("/book/update")
     public String updateBook(@RequestParam("thumbnail") MultipartFile thumbnail,
         @RequestParam(value = "bookImages", required = false) MultipartFile[] bookImages,
-        @ModelAttribute BookAdminRequest bookAdminRequest) {
-        bookService.updateBook(thumbnail, bookImages, bookAdminRequest);
+        @ModelAttribute BookAdminRequestDto bookAdminRequestDto) {
+        bookService.updateBook(thumbnail, bookImages, bookAdminRequestDto);
         return "redirect:/admin/books";
     }
 
