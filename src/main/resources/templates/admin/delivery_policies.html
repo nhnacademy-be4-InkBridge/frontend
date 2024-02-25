@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}">
+<th:block layout:fragment="css">
+</th:block>
+<th:block layout:fragment="script">
+</th:block>
+
+<div layout:fragment="content" id="layoutSidenav_content">
+  <main>
+    <h4 class="fst-normal ms-2">배송비 정책</h4>
+    <form method="post" action="/admin/delivery-policy">
+      <br/>
+      <div class="d-flex align-items-center">
+        <div class="form-floating ms-2" style="width: 30%;">
+          <input type="number" class="form-control" id="deliveryPrice" placeholder="배송비" name="deliveryPrice">
+          <label for="deliveryPrice">배송비</label>
+        </div>
+        <button type="submit" class="btn btn-outline-secondary ms-2">변경</button>
+      </div>
+    </form>
+    <table class="table">
+      <tr>
+        <th>#</th>
+        <th>배송비</th>
+        <th>변경일자</th>
+      </tr>
+      <tr>
+        <td th:text="${currentPolicy.deliveryPolicyId}"></td>
+        <td th:text="${currentPolicy.deliveryPrice}"></td>
+        <td th:text="${currentPolicy.createdAt}"></td>
+      </tr>
+    </table>
+    <h4 class="fst-normal float-start ms-2 me-4 my-2">정책 변경 내역</h4>
+    <table class="table">
+      <tr>
+        <th>#</th>
+        <th>배송비</th>
+        <th>변경일자</th>
+      </tr>
+      <tr th:each="deliveryPolicy : ${deliveryPolicies}">
+        <td th:text="${deliveryPolicy.deliveryPolicyId}"></td>
+        <td th:text="${deliveryPolicy.deliveryPrice}"></td>
+        <td th:text="${deliveryPolicy.createdAt}"></td>
+      </tr>
+    </table>
+  </main>
+</div>
+
+</html>
