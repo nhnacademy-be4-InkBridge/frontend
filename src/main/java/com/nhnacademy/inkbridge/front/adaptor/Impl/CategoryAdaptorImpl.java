@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.adaptor.Impl;
 import com.nhnacademy.inkbridge.front.adaptor.CategoryAdaptor;
 import com.nhnacademy.inkbridge.front.dto.category.CategoryCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.category.CategoryReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.net.URI;
 import java.util.List;
@@ -58,13 +59,12 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
     }
 
     /**
-     *
      * 전체 카테고리 목록을 호출하는 메소드입니다.
      *
      * @return List - CategoryReadResponseDto
      */
     @Override
-    public List<CategoryReadResponseDto> readCategories() {
+    public List<ParentCategoryReadResponseDto> readCategories() {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path("api/category")
@@ -72,7 +72,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
             .build()
             .toUri();
 
-        ResponseEntity<List<CategoryReadResponseDto>> responseEntity = restTemplate.exchange(uri,
+        ResponseEntity<List<ParentCategoryReadResponseDto>> responseEntity = restTemplate.exchange(uri,
             HttpMethod.GET, null, new ParameterizedTypeReference<>() {
             });
         return responseEntity.getBody();

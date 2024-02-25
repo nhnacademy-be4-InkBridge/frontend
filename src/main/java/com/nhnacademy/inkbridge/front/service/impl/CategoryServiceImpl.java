@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.service.impl;
 import com.nhnacademy.inkbridge.front.adaptor.CategoryAdaptor;
 import com.nhnacademy.inkbridge.front.dto.category.CategoryCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.category.CategoryReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.CategoryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryReadResponseDto> readCategory() {
+    public List<ParentCategoryReadResponseDto> readCategory() {
         return categoryAdaptor.readCategories();
     }
 }

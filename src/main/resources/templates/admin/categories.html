@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout-static}">
+      layout:decorate="~{layouts/admin_layout}"
+>
 <body>
 <th:block layout:fragment="css">
   <link href="/css/styles.css" rel="stylesheet">
@@ -19,11 +20,11 @@
   <script src="/js/scripts.js"></script>
   <script src="/js/datatables-simple-demo.js"></script>
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
-  crossorigin="anonymous"></script>
+          crossorigin="anonymous"></script>
   <script type="text/javascript" async=""
-  src="https://www.googletagmanager.com/gtag/js?id=UA-38417733-17&amp;l=dataLayer&amp;cx=c"></script>
+          src="https://www.googletagmanager.com/gtag/js?id=UA-38417733-17&amp;l=dataLayer&amp;cx=c"></script>
   <script id="ga-gtag" async=""
-  src="https://www.googletagmanager.com/gtag/js?id=G-PZXV45BPZN"></script>
+          src="https://www.googletagmanager.com/gtag/js?id=G-PZXV45BPZN"></script>
 </th:block>
 <div layout:fragment="content" id="layoutSidenav_content">
   <main>
@@ -39,120 +40,20 @@
           <button type="button" class="all_open btn btn-light">전체 펼치기</button>
           <button type="button" class="all_close btn btn-light">전체 접기</button>
         </div>
-<!--        카테고리-->
+        <!--        카테고리-->
         <div class="category bg-secondary bg-opacity-25">
           <div class="item_order d-flex justify-content-between">
-            <div class="item_left d-flex gap-3 align-items-center">
-              <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-list"
-                  viewBox="0 0 16 16"
-              >
-                <path
-                    fill-rule="evenodd"
-                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                />
-              </svg>
-              <span>카테고리</span>
+            <div class="d-flex align-items-center">
+              <span class="category-name">카테고리</span>
             </div>
             <div class="info_btn d-flex gap-3 align-items-center">
-              <button type="button" class="btn btn-secondary">추가</button>
-              <button type="button" class="btn btn-secondary">수정</button>
+              <button type="button" class="btn btn-secondary add-btn">추가</button>
+              <button type="button" class="btn btn-secondary update-btn">수정</button>
             </div>
           </div>
         </div>
-        <div class="bundle-item">
-<!--          부모카테고리 ex. 국내도서, 외국도서-->
-          <div class="category parent_category bg-secondary bg-opacity-25 d-flex">
-            <div class="arrow px-1 d-flex flex-column align-items-center justify-content-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                     class="bi bi-chevron-right" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd"
-                        d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
-                </svg>
-            </div>
-            <div class="item_order d-flex justify-content-between flex-grow-1">
-              <div class="item_left d-flex gap-3 align-items-center h-auto">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-list"
-                    viewBox="0 0 16 16"
-                >
-                  <path
-                      fill-rule="evenodd"
-                      d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                  />
-                </svg>
-                <span>국내도서</span>
-              </div>
-
-              <div class="info_btn d-flex gap-3 align-items-center">
-                <button type="button" class="btn btn-secondary">추가</button>
-                <button type="button" class="btn btn-secondary">수정</button>
-                <button type="button" class="btn btn-secondary">삭제</button>
-              </div>
-            </div>
-          </div>
-<!--          자식카테고리 ex. IT, 어린이 도서-->
-          <div class="children_category hidden">
-            <div class=" bg-secondary bg-opacity-25 d-flex ms-5">
-              <div class="item_order d-flex justify-content-between flex-grow-1 ">
-                <div class="item_left d-flex gap-3 align-items-center h-auto">
-                  <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-list"
-                      viewBox="0 0 16 16"
-                  >
-                    <path
-                        fill-rule="evenodd"
-                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                    />
-                  </svg>
-                  <span>IT</span>
-                </div>
-                <div class="info_btn d-flex gap-3 align-items-center">
-                  <button type="button" class="btn btn-secondary">수정</button>
-                  <button type="button" class="btn btn-secondary">삭제</button>
-                </div>
-              </div>
-            </div>
-            <div class=" bg-secondary bg-opacity-25 d-flex ms-5">
-              <div class="item_order d-flex justify-content-between flex-grow-1 ">
-                <div class="item_left d-flex gap-3 align-items-center h-auto">
-                  <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-list"
-                      viewBox="0 0 16 16"
-                  >
-                    <path
-                        fill-rule="evenodd"
-                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                    />
-                  </svg>
-                  <span>장편 도서</span>
-                </div>
-                <div class="info_btn d-flex gap-3 align-items-center">
-                  <button type="button" class="btn btn-secondary">수정</button>
-                  <button type="button" class="btn btn-secondary">삭제</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="bundle-item">
-<!--          부모카테고리 ex. 국내도서, 외국도서-->
+        <div class="bundle-item" th:each="parentCategory : ${parentCategories}">
+          <!--          부모카테고리 ex. 국내도서, 외국도서-->
           <div class="category parent_category bg-secondary bg-opacity-25 d-flex">
             <div class="arrow px-1 d-flex flex-column align-items-center justify-content-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -162,74 +63,22 @@
               </svg>
             </div>
             <div class="item_order d-flex justify-content-between flex-grow-1">
-              <div class="item_left d-flex gap-3 align-items-center h-auto">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-list"
-                    viewBox="0 0 16 16"
-                >
-                  <path
-                      fill-rule="evenodd"
-                      d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                  />
-                </svg>
-                <span>외국 도서</span>
-              </div>
-
+              <span class="d-flex align-items-center"
+                    th:text="${parentCategory.getCategoryName()}"></span>
               <div class="info_btn d-flex gap-3 align-items-center">
-                <button type="button" class="btn btn-secondary">추가</button>
-                <button type="button" class="btn btn-secondary">수정</button>
-                <button type="button" class="btn btn-secondary">삭제</button>
+                <button type="button" class="btn btn-secondary add-btn">추가</button>
+                <button type="button" class="btn btn-secondary update-btn">수정</button>
+                <button type="button" class="btn btn-secondary delete-btn">삭제</button>
               </div>
             </div>
           </div>
-<!--          자식카테고리 ex. IT, 어린이 도서-->
+          <!--          자식카테고리 ex. IT, 어린이 도서-->
           <div class="children_category hidden">
-            <div class="bg-secondary bg-opacity-25 d-flex ms-5">
+            <div class=" bg-secondary bg-opacity-25 d-flex ms-5"
+                 th:each="childCategory:${parentCategory.getParentCategories()}">
               <div class="item_order d-flex justify-content-between flex-grow-1 ">
-                <div class="item_left d-flex gap-3 align-items-center h-auto">
-                  <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-list"
-                      viewBox="0 0 16 16"
-                  >
-                    <path
-                        fill-rule="evenodd"
-                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                    />
-                  </svg>
-                  <span>장편 소설</span>
-                </div>
-                <div class="info_btn d-flex gap-3 align-items-center">
-                  <button type="button" class="btn btn-secondary">수정</button>
-                  <button type="button" class="btn btn-secondary">삭제</button>
-                </div>
-              </div>
-            </div>
-            <div class="bg-secondary bg-opacity-25 d-flex ms-5">
-              <div class="item_order d-flex justify-content-between flex-grow-1 ">
-                <div class="item_left d-flex gap-3 align-items-center h-auto">
-                  <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-list"
-                      viewBox="0 0 16 16"
-                  >
-                    <path
-                        fill-rule="evenodd"
-                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                    />
-                  </svg>
-                  <span>장편 도서</span>
-                </div>
+                  <span class="d-flex align-items-center"
+                        th:text="${childCategory.getCategoryName()}"></span>
                 <div class="info_btn d-flex gap-3 align-items-center">
                   <button type="button" class="btn btn-secondary">수정</button>
                   <button type="button" class="btn btn-secondary">삭제</button>
@@ -242,6 +91,7 @@
     </div>
   </main>
   <script src="/js/categories.js"></script>
+  <!--  <script src="/js/categoryUpdate.js"></script>-->
 </div>
 </body>
 </html>
