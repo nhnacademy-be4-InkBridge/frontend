@@ -1,7 +1,6 @@
 package com.nhnacademy.inkbridge.front.controller;
 
 import com.nhnacademy.inkbridge.front.service.CouponService;
-import javax.management.Attribute;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +32,6 @@ public class CouponController {
         @RequestParam(name = "size", defaultValue = "10") Integer size, Model model) {
         model.addAttribute("couponStatusId", couponStatusId);
         model.addAttribute("page", couponService.getAdminCoupons(couponStatusId,page, size));
-        return "admin/coupons";
+        return "admin/coupon/coupon_list";
     }
 }

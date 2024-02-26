@@ -43,21 +43,4 @@ public class CouponReadResponseDto {
         this.isBirth = isBirth;
         this.couponStatus = couponStatus;
     }
-
-    @Override
-    public String toString() {
-        return "CouponReadResponseDto{" +
-            "couponId='" + couponId + '\'' +
-            ", couponName='" + couponName + '\'' +
-            ", minPrice=" + minPrice +
-            ", discountPrice=" + discountPrice +
-            ", maxDiscountPrice=" + maxDiscountPrice +
-            ", basicIssuedDate='" + basicIssuedDate + '\'' +
-            ", basicExpiredDate='" + basicExpiredDate + '\'' +
-            ", validity=" + validity +
-            ", couponType=" + couponType +
-            ", isBirth=" + isBirth +
-            ", couponStatus=" + couponStatus +
-            '}';
-    }
 }
