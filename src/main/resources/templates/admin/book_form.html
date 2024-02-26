@@ -75,8 +75,9 @@
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="저자를 선택하세요..."/>
       </label>
-      <select id="author-multiple-select" name="authors" multiple>
+      <select id="author-multiple-select" th:name="authorId">
         <!--        <option th:each="${book.authors}" value="1">Books</option>-->
+        <option value="1">Movies, Music & Games</option>
         <option value="2">Movies, Music & Games</option>
       </select>
     </div>

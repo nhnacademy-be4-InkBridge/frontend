@@ -3,10 +3,12 @@ package com.nhnacademy.inkbridge.front.service.impl;
 import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
 import com.nhnacademy.inkbridge.front.dto.BookAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.BookAdminRequestDto;
+import com.nhnacademy.inkbridge.front.dto.BookFileReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.service.BookService;
 import java.io.IOException;
-import java.util.List;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service
 public class BookServiceImpl implements BookService {
+
     private final BookAdaptor bookAdaptor;
 
     public BookServiceImpl(BookAdaptor bookAdaptor) {
@@ -27,8 +30,8 @@ public class BookServiceImpl implements BookService {
     /**
      * {@inheritDoc}
      */
-    public List<BooksAdminReadResponseDto> getBooks() {
-        return bookAdaptor.getBooksAdmin();
+    public PageRequestDto<BooksAdminReadResponseDto> getBooksAdmin(Integer page, Integer size) {
+        return bookAdaptor.getBooksAdmin(page, size);
     }
 
     /**
@@ -41,9 +44,9 @@ public class BookServiceImpl implements BookService {
     /**
      * {@inheritDoc}
      */
-    public void createBook(MultipartFile thumbnail, MultipartFile[] bookImages,
-        BookAdminRequestDto bookAdminRequestDto) throws IOException {
-        bookAdaptor.createBookAdmin(thumbnail, bookImages, bookAdminRequestDto);
+    public void createBook(MultipartFile thumbnail, BookAdminRequestDto bookAdminRequestDto)
+        throws IOException {
+        bookAdaptor.createBookAdmin(thumbnail, bookAdminRequestDto);
     }
 
     /**
@@ -52,5 +55,18 @@ public class BookServiceImpl implements BookService {
     public void updateBook(MultipartFile thumbnail, MultipartFile[] bookImages,
         BookAdminRequestDto bookAdminRequestDto) {
         bookAdaptor.updateBookAdmin(thumbnail, bookImages, bookAdminRequestDto);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BookFileReadResponseDto uploadFile(MultipartFile image) throws IOException {
+        return bookAdaptor.uploadFile(image);
+    }
+
+    @Override
+    public Resource loadFile(String fileName) {
+        return bookAdaptor.loadFile(fileName);
     }
 }

@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.controller;
 import com.nhnacademy.inkbridge.front.dto.BookAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.BookAdminRequestDto;
 import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.TagResponse;
 import com.nhnacademy.inkbridge.front.service.BookService;
 import java.io.IOException;
@@ -37,8 +38,10 @@ public class AdminBookController {
     }
 
     @GetMapping("/books")
-    public String getBooks(Model model) {
-        List<BooksAdminReadResponseDto> books = bookService.getBooks();
+    public String getBooks(Model model,
+        @RequestParam(name = "page", defaultValue = "0") Integer page,
+        @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        PageRequestDto<BooksAdminReadResponseDto> books = bookService.getBooksAdmin(page, size);
         model.addAttribute("books", books);
         return "admin/books";
     }
@@ -52,7 +55,8 @@ public class AdminBookController {
             List.of(TagResponse.builder().tagId(1L).tagName("이달의 도서").build(),
                 TagResponse.builder().tagId(2L).tagName("test2").build(),
                 TagResponse.builder().tagId(3L).tagName("test3").build()));
-        model.addAttribute("savedTags", List.of(TagResponse.builder().tagId(2L).build(), TagResponse.builder().tagId(3L).build()));
+        model.addAttribute("savedTags", List.of(TagResponse.builder().tagId(2L).build(),
+            TagResponse.builder().tagId(3L).build()));
         model.addAttribute("now", LocalDate.now());
         return "admin/book_form_value";
     }
@@ -68,10 +72,9 @@ public class AdminBookController {
 
     @PostMapping("/book/create")
     public String createBook(@RequestParam("thumbnail") MultipartFile thumbnail,
-        @RequestParam(value = "bookImages", required = false) MultipartFile[] bookImages,
         @ModelAttribute BookAdminRequestDto bookAdminRequestDto) {
         try {
-            bookService.createBook(thumbnail, bookImages, bookAdminRequestDto);
+            bookService.createBook(thumbnail, bookAdminRequestDto);
         } catch (IOException e) {
             log.debug("book create error: {}", e.getMessage());
             return "error";
@@ -86,5 +89,4 @@ public class AdminBookController {
         bookService.updateBook(thumbnail, bookImages, bookAdminRequestDto);
         return "redirect:/admin/books";
     }
-
 }

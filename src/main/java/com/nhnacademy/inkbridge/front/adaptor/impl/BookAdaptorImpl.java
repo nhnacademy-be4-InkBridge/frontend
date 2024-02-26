@@ -3,13 +3,16 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
 import com.nhnacademy.inkbridge.front.dto.BookAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.BookAdminRequestDto;
+import com.nhnacademy.inkbridge.front.dto.BookFileReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -42,14 +45,14 @@ public class BookAdaptorImpl implements BookAdaptor {
     /**
      * {@inheritDoc}
      */
-    public List<BooksAdminReadResponseDto> getBooksAdmin() {
+    public PageRequestDto<BooksAdminReadResponseDto> getBooksAdmin(Integer page, Integer size) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-        ResponseEntity<List<BooksAdminReadResponseDto>> exchange = restTemplate.exchange(
+        ResponseEntity<PageRequestDto<BooksAdminReadResponseDto>> exchange = restTemplate.exchange(
 //            gatewayProperties.getUrl() + "/api/admin/books",
-            "http://localhost:8060/api/admin/books",
+            "http://localhost:8060/api/admin/books?page=" + page + "&size=" + size,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
@@ -77,15 +80,14 @@ public class BookAdaptorImpl implements BookAdaptor {
     /**
      * {@inheritDoc}
      */
-    public void createBookAdmin(MultipartFile thumbnail, MultipartFile[] bookImages,
-        BookAdminRequestDto bookAdminRequestDto) throws IOException {
+    public void createBookAdmin(MultipartFile thumbnail, BookAdminRequestDto bookAdminRequestDto)
+        throws IOException {
         MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
 
         HttpHeaders multipartHeader = new HttpHeaders();
         multipartHeader.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        thumbnailToByteArrayResource(thumbnail, multiValueMap, multipartHeader);
-        bookImageToByteArrayResource(bookImages, multiValueMap);
+        fileToByteArrayResource(thumbnail, multiValueMap, multipartHeader);
 
         HttpHeaders jsonHeader = new HttpHeaders();
         jsonHeader.setContentType(MediaType.APPLICATION_JSON);
@@ -123,7 +125,7 @@ public class BookAdaptorImpl implements BookAdaptor {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
         ResponseEntity<BookAdminRequestDto> exchange = restTemplate.exchange(
-            "localhost:8060/api/admin/books ",
+            "http://localhost:8060/api/admin/books ",
             HttpMethod.PUT,
             requestEntity,
             new ParameterizedTypeReference<>() {
@@ -135,40 +137,65 @@ public class BookAdaptorImpl implements BookAdaptor {
     }
 
     /**
-     * {@inheritDoc}
+     * 에디터에 업로드되는 파일을 저장합니다.
+     *
+     * @param image MultipartFile
+     * @return BookFileReadResponseDto
+     * @throws IOException MultipartFile to ByteArrayResource 변환 실패
      */
-    private void thumbnailToByteArrayResource(MultipartFile thumbnail,
-        MultiValueMap<String, Object> multiValueMap, HttpHeaders multipartHeader)
-        throws IOException {
-        if (thumbnail != null) {
-            ByteArrayResource thumbnailAsResource = new ByteArrayResource(thumbnail.getBytes()) {
-                @Override
-                public String getFilename() {
-                    return thumbnail.getOriginalFilename();
-                }
-            };
-            multiValueMap.add("thumbnail", new HttpEntity<>(thumbnailAsResource, multipartHeader));
+    @Override
+    public BookFileReadResponseDto uploadFile(MultipartFile image) throws IOException {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
+
+        fileToByteArrayResource(image, multiValueMap, httpHeaders);
+
+        ResponseEntity<BookFileReadResponseDto> exchange = restTemplate.exchange(
+            "http://localhost:8060/api/image-upload",
+            HttpMethod.POST,
+            new HttpEntity<>(multiValueMap, httpHeaders),
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
+        return exchange.getBody();
+    }
+
+    @Override
+    public Resource loadFile(String fileName) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
+
+        ResponseEntity<Resource> exchange = restTemplate.exchange(
+            "http://localhost:8060/api/image-load?fileName={fileName}",
+            HttpMethod.GET,
+            requestEntity,
+            new ParameterizedTypeReference<Resource>() {
+            }, fileName);
+        if (!exchange.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException();
         }
+
+        return exchange.getBody();
     }
 
     /**
      * {@inheritDoc}
      */
-    private void bookImageToByteArrayResource(MultipartFile[] bookImages,
-        MultiValueMap<String, Object> multiValueMap) throws IOException {
-        if (bookImages != null) {
-            for (MultipartFile file : bookImages) {
-                ByteArrayResource bookImageAsResource = new ByteArrayResource(file.getBytes()) {
-                    @Override
-                    public String getFilename() {
-                        return file.getOriginalFilename();
-                    }
-                };
-                HttpHeaders imageHeaders = new HttpHeaders();
-                imageHeaders.setContentType(MediaType.IMAGE_PNG);
-                multiValueMap.add("bookImages",
-                    new HttpEntity<>(bookImageAsResource, imageHeaders));
-            }
+    private void fileToByteArrayResource(MultipartFile image,
+        MultiValueMap<String, Object> multiValueMap, HttpHeaders multipartHeader)
+        throws IOException {
+        if (image != null) {
+            ByteArrayResource thumbnailAsResource = new ByteArrayResource(image.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return image.getOriginalFilename();
+                }
+            };
+            multiValueMap.add("image", new HttpEntity<>(thumbnailAsResource, multipartHeader));
         }
     }
 }

@@ -3,7 +3,6 @@ package com.nhnacademy.inkbridge.front.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.AccessLevel;
@@ -34,15 +33,15 @@ public class BookAdminRequestDto {
     private Integer stock;
     private Boolean isPackagable;
     private Long publisherId;
-    private Long authors;
-    private Set<Long> categories = new HashSet<>();
+    private Long authorId;
+    private Set<Long> categories;
     private List<Long> tags = new ArrayList<>();
 
     @Builder
     public BookAdminRequestDto(String bookTitle, String bookIndex, String description,
         LocalDate publicatedAt, String isbn, Long regularPrice, Long price,
         BigDecimal discountRatio, Integer stock, Boolean isPackagable, Long publisherId,
-        Long authors, List<Long> tags, Set<Long> categories) {
+        Long authorId, List<Long> tags, Set<Long> categories) {
         this.bookTitle = bookTitle;
         this.bookIndex = bookIndex;
         this.description = description;
@@ -54,8 +53,8 @@ public class BookAdminRequestDto {
         this.stock = stock;
         this.isPackagable = isPackagable;
         this.publisherId = publisherId;
-        this.tags.addAll(tags == null ? new ArrayList<>() : tags);
-        this.authors = authors;
-        this.categories.addAll(categories);
+        this.tags = (tags == null ? new ArrayList<>() : tags);
+        this.authorId = authorId;
+        this.categories = categories;
     }
 }
