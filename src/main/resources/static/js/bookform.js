@@ -1,6 +1,8 @@
 const existingContent = document.getElementById(
     'existing-content').innerHTML;
 
+let fileIdList = [];
+
 const editor = new toastui.Editor({
   el: document.querySelector('#editor'),
   height: '500px',
@@ -25,10 +27,12 @@ const editor = new toastui.Editor({
         });
 
         // 3. 컨트롤러에서 전달받은 디스크에 저장된 파일명
-        const file = await response.json();
+        const {fileId, fileName} = await response.json();
+
+        fileIdList.push(fileId);
 
         // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
-        const resource = `/image-load?filename=${file.fileName}`;
+        const resource = `/image-load?filename=${fileName}`;
         console.log('resource: ' + resource);
         callback(resource, 'image alt attribute');
       } catch (error) {
@@ -41,6 +45,8 @@ const editor = new toastui.Editor({
 document.getElementById('bookForm').addEventListener('submit',
     function () {
       document.getElementById('descriptionHidden').value = editor.getMarkdown(); // 숨겨진 입력 필드에 설정
+      console.log('file ids: ' + fileIdList);
+      document.getElementById('fileIdListHidden').value = fileIdList;
     });
 
 mobiscroll.setOptions({

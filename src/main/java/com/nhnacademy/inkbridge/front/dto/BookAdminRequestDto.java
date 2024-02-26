@@ -36,12 +36,13 @@ public class BookAdminRequestDto {
     private Long authorId;
     private Set<Long> categories;
     private List<Long> tags = new ArrayList<>();
+    private List<Long> fileIdList;
 
     @Builder
     public BookAdminRequestDto(String bookTitle, String bookIndex, String description,
         LocalDate publicatedAt, String isbn, Long regularPrice, Long price,
         BigDecimal discountRatio, Integer stock, Boolean isPackagable, Long publisherId,
-        Long authorId, List<Long> tags, Set<Long> categories) {
+        Long authorId, List<Long> tags, Set<Long> categories, List<Long> fileIdList) {
         this.bookTitle = bookTitle;
         this.bookIndex = bookIndex;
         this.description = description;
@@ -56,5 +57,6 @@ public class BookAdminRequestDto {
         this.tags = (tags == null ? new ArrayList<>() : tags);
         this.authorId = authorId;
         this.categories = categories;
+        this.fileIdList = fileIdList;
     }
 }
