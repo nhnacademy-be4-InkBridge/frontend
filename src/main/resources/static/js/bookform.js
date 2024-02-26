@@ -19,21 +19,18 @@ const editor = new toastui.Editor({
         formData.append('image', blob);
 
         // 2. FileApiController - uploadEditorImage 메서드 호출
-        const response = await fetch('/image-upload', {
+        const response = await fetch('http://localhost:8050/image-upload', {
           method: 'POST',
           body: formData,
         });
 
         // 3. 컨트롤러에서 전달받은 디스크에 저장된 파일명
-        console.log('서버에 저장된 파일명 : ', response.text());
-        console.log('서버에 저장된 파일명 : ', response.formData());
-        console.log('서버에 저장된 파일명 : ', response.url);
-        const filename = await response.text();
+        const file = await response.json();
 
         // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
-        const imageUrl = `/tui-editor/image-print?filename=${filename}`;
-        callback(imageUrl, 'image alt attribute');
-
+        const resource = `/image-load?filename=${file.fileName}`;
+        console.log('resource: ' + resource);
+        callback(resource, 'image alt attribute');
       } catch (error) {
         console.error('업로드 실패 : ', error);
       }
@@ -42,9 +39,8 @@ const editor = new toastui.Editor({
 });
 // 저장할 때 데이터를 컨트롤러로
 document.getElementById('bookForm').addEventListener('submit',
-    function (event) {
-      let description = editor.getMarkdown();
-      document.getElementById('descriptionHidden').value = description; // 숨겨진 입력 필드에 설정
+    function () {
+      document.getElementById('descriptionHidden').value = editor.getMarkdown(); // 숨겨진 입력 필드에 설정
     });
 
 mobiscroll.setOptions({
@@ -80,21 +76,21 @@ mobiscroll.select('#tag-multiple-select', {
 });
 
 document.getElementById('category-multiple-select').addEventListener('change',
-function handleSelectedCategories() {
-  var selectedOptions = this.selectedOptions;
-  var selectedCount = 0;
-  for (var i = 0; i < selectedOptions.length; i++) {
-    if (selectedOptions[i].parentElement.tagName === 'OPTGROUP') {
-      selectedCount++;
-      console.log('selected: ' + selectedCount);
-    }
-  }
-  if (selectedCount > 10) {
-    alert('You can only select up to 10 options.');
-    this.options[this.selectedIndex].selected = false;
-    console.log('selected2: ' + selectedCount);
-  }
-});
+    function handleSelectedCategories() {
+      var selectedOptions = this.selectedOptions;
+      var selectedCount = 0;
+      for (var i = 0; i < selectedOptions.length; i++) {
+        if (selectedOptions[i].parentElement.tagName === 'OPTGROUP') {
+          selectedCount++;
+          console.log('selected: ' + selectedCount);
+        }
+      }
+      if (selectedCount > 10) {
+        alert('You can only select up to 10 options.');
+        this.options[this.selectedIndex].selected = false;
+        console.log('selected2: ' + selectedCount);
+      }
+    });
 
 (function () {
   "use strict";

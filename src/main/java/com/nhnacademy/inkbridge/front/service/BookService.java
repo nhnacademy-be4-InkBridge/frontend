@@ -6,7 +6,6 @@ import com.nhnacademy.inkbridge.front.dto.BookFileReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import java.io.IOException;
-import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -58,5 +57,11 @@ public interface BookService {
      */
     BookFileReadResponseDto uploadFile(MultipartFile image) throws IOException;
 
-    Resource loadFile(String fileName);
+    /**
+     * fileName으로 해당 파일을 조회하는 메서드입니다.
+     *
+     * @param fileName String
+     * @return byte[]
+     */
+    byte[] loadFile(String fileName);
 }

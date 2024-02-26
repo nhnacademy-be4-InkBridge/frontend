@@ -8,7 +8,6 @@ import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.service.BookService;
 import java.io.IOException;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,8 +64,11 @@ public class BookServiceImpl implements BookService {
         return bookAdaptor.uploadFile(image);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Resource loadFile(String fileName) {
+    public byte[] loadFile(String fileName) {
         return bookAdaptor.loadFile(fileName);
     }
 }

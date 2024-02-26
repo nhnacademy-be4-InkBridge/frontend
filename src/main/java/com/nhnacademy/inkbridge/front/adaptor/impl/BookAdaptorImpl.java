@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -137,11 +136,7 @@ public class BookAdaptorImpl implements BookAdaptor {
     }
 
     /**
-     * 에디터에 업로드되는 파일을 저장합니다.
-     *
-     * @param image MultipartFile
-     * @return BookFileReadResponseDto
-     * @throws IOException MultipartFile to ByteArrayResource 변환 실패
+     * {@inheritDoc}
      */
     @Override
     public BookFileReadResponseDto uploadFile(MultipartFile image) throws IOException {
@@ -163,17 +158,20 @@ public class BookAdaptorImpl implements BookAdaptor {
         return exchange.getBody();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Resource loadFile(String fileName) {
+    public byte[] loadFile(String fileName) {
         HttpHeaders httpHeaders = new HttpHeaders();
 
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<Resource> exchange = restTemplate.exchange(
+        ResponseEntity<byte[]> exchange = restTemplate.exchange(
             "http://localhost:8060/api/image-load?fileName={fileName}",
             HttpMethod.GET,
             requestEntity,
-            new ParameterizedTypeReference<Resource>() {
+            new ParameterizedTypeReference<>() {
             }, fileName);
         if (!exchange.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException();
