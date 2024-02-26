@@ -5,7 +5,9 @@ import com.nhnacademy.inkbridge.front.dto.BookAdminRequestDto;
 import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.TagResponse;
+import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.BookService;
+import com.nhnacademy.inkbridge.front.service.CategoryService;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -32,9 +34,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminBookController {
 
     private final BookService bookService;
+    private final CategoryService categoryService;
 
-    public AdminBookController(BookService bookService) {
+    public AdminBookController(BookService bookService, CategoryService categoryService) {
         this.bookService = bookService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/books")
@@ -50,23 +54,16 @@ public class AdminBookController {
     @GetMapping("/book/{bookId}")
     public String getBook(Model model, @PathVariable Long bookId) {
         BookAdminReadResponseDto book = bookService.getBook(bookId);
+        setForm(model);
         model.addAttribute("book", book);
-        model.addAttribute("tags",
-            List.of(TagResponse.builder().tagId(1L).tagName("이달의 도서").build(),
-                TagResponse.builder().tagId(2L).tagName("test2").build(),
-                TagResponse.builder().tagId(3L).tagName("test3").build()));
-        model.addAttribute("savedTags", List.of(TagResponse.builder().tagId(2L).build(),
-            TagResponse.builder().tagId(3L).build()));
-        model.addAttribute("now", LocalDate.now());
+        model.addAttribute("savedTags",
+            List.of(TagResponse.builder().tagId(1L).tagName("이달의 도서").build()));
         return "admin/book_form_value";
     }
 
     @GetMapping("/book/create")
     public String createBook(Model model) {
-        model.addAttribute("tags",
-            List.of(TagResponse.builder().tagId(1L).tagName("이달의 도서").build(),
-                TagResponse.builder().tagId(2L).tagName("test2").build()));
-        model.addAttribute("now", LocalDate.now());
+        setForm(model);
         return "admin/book_form";
     }
 
@@ -88,5 +85,15 @@ public class AdminBookController {
         @ModelAttribute BookAdminRequestDto bookAdminRequestDto) {
         bookService.updateBook(thumbnail, bookImages, bookAdminRequestDto);
         return "redirect:/admin/books";
+    }
+
+    private void setForm(Model model) {
+        List<ParentCategoryReadResponseDto> categories = categoryService.readCategory();
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("tags",
+            List.of(TagResponse.builder().tagId(1L).tagName("이달의 도서").build(),
+                TagResponse.builder().tagId(2L).tagName("test2").build()));
+        model.addAttribute("now", LocalDate.now());
     }
 }

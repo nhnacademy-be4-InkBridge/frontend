@@ -33,7 +33,6 @@ const editor = new toastui.Editor({
 
         // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
         const resource = `/image-load?filename=${fileName}`;
-        console.log('resource: ' + resource);
         callback(resource, 'image alt attribute');
       } catch (error) {
         console.error('업로드 실패 : ', error);
@@ -45,7 +44,6 @@ const editor = new toastui.Editor({
 document.getElementById('bookForm').addEventListener('submit',
     function () {
       document.getElementById('descriptionHidden').value = editor.getMarkdown(); // 숨겨진 입력 필드에 설정
-      console.log('file ids: ' + fileIdList);
       document.getElementById('fileIdListHidden').value = fileIdList;
 // val count > 10 -> alert
     });
@@ -59,14 +57,11 @@ mobiscroll.setOptions({
 // Initialize Mobiscroll Select
 var categorySelect = mobiscroll.select('#category-multiple-select', {
   inputElement: document.getElementById('category-multiple-select-input'),
-  selectMultiple: true,
   onChange: function (event, inst) {
     try {
       // Get the selected values directly from the Mobiscroll instance
       var selectedValues = inst.getVal();
       var selectedCount = selectedValues.length;
-
-      console.log('selected: ' + selectedCount);
 
       if (selectedCount > 10) {
         // Display toast message
@@ -80,40 +75,84 @@ var categorySelect = mobiscroll.select('#category-multiple-select', {
         inst.setVal(selectedValues.slice(0, -1), true); // Remove the last selected option
       }
 
-      // Automatically select hidden option in optgroup (if needed)
-      // Implement this logic if necessary
+      var selectElement = document.getElementById('category-multiple-select');
+      var options = selectElement.querySelectorAll('option');
+      selectedValues.forEach(function (value) {
+        options.forEach(function (option) {
+          if (option.value == value) {
+            var optgroup = option.parentElement;
+            var hiddenOption = optgroup.querySelector('.parent-category');
+            if (!hiddenOption.selected) {
+              selectedValues.push(hiddenOption.value);
+            }
+          }
+        });
+      });
     } catch (error) {
       console.error('An error occurred:', error);
     }
   }
 });
 
+mobiscroll.select('#tag-multiple-select', {
+  inputElement: document.getElementById('tag-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
+  onInit: function (event, inst) {
+    try {
+      // Get the selected values directly from the Mobiscroll instance
+      var selectedValues = inst.getVal();
 
-// mobiscroll.select('#category-multiple-select', {
-//   inputElement: document.getElementById('category-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
-// });
-// document.getElementById('category-multiple-select').addEventListener('change',
-//     function () {
-//       var selectedOptions = this.selectedOptions;
-//       for (var i = 0; i < selectedOptions.length; i++) {
-//         var selectedOption = selectedOptions[i];
-//         var optgroup = selectedOption.parentElement;
-//         var hiddenOption = optgroup.querySelector('.parent');
-//         if (hiddenOption && !hiddenOption.selected) { // Check if hiddenOption is not already selected
-//           mobiscroll.select('#category-multiple-select-input').setVal([hiddenOption.value]);
-//           console.log(document.getElementById('category-multiple-select-input').selectedOptions.length);
-//         }
-//       }
-//     });
+      var options = document.getElementById('tag-multiple-select').querySelectorAll('option');
+      options.forEach(function (option) {
+        if (option.selected) {
+          selectedValues.push(option.value);
+        }
+      });
+
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+});
+
 mobiscroll.select('#author-multiple-select', {
   inputElement: document.getElementById('author-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
+  onInit: function (event, inst) {
+    try {
+      // Get the selected values directly from the Mobiscroll instance
+      var selectedValues = inst.getVal();
+
+      var options = document.getElementById('author-multiple-select').querySelectorAll('option');
+      options.forEach(function (option) {
+        if (option.selected) {
+          selectedValues.push(option.value);
+        }
+      });
+
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
 });
 mobiscroll.select('#publisher-multiple-select', {
   inputElement: document.getElementById('publisher-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
+  onInit: function (event, inst) {
+    try {
+      // Get the selected values directly from the Mobiscroll instance
+      var selectedValues = inst.getVal();
+
+      var options = document.getElementById('publisher-multiple-select').querySelectorAll('option');
+      options.forEach(function (option) {
+        if (option.selected) {
+          selectedValues.push(option.value);
+        }
+      });
+
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
 });
-mobiscroll.select('#tag-multiple-select', {
-  inputElement: document.getElementById('tag-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
-});
+
 
 (function () {
   "use strict";
@@ -152,8 +191,10 @@ mobiscroll.select('#tag-multiple-select', {
 
   function validate(input) {
     // isbn check
+    if (input.getAttribute('name') === 'isbn') {
+      return input.value.trim.length === 13 && input.value.match(/\d+/g);
+    }
     return input.value.trim() !== '';
-
   }
 
   function showValidate(input) {
