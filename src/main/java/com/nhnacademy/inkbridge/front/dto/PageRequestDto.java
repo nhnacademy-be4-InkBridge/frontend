@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class PageRequestDto<T> {
-    private List<T> Content;
+    private List<T> content;
     private int totalPages;
     private int totalElements;
     private int size;
@@ -24,7 +24,7 @@ public class PageRequestDto<T> {
     @Builder
     public PageRequestDto(List<T> content, int totalPages, int totalElements, int size, int number,
         int numberOfElements) {
-        Content = content;
+        this.content = content;
         this.totalPages = totalPages;
         this.totalElements = totalElements;
         this.size = size;
