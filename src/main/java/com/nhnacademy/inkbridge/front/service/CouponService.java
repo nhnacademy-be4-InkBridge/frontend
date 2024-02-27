@@ -1,24 +1,26 @@
 package com.nhnacademy.inkbridge.front.service;
 
-import com.nhnacademy.inkbridge.front.adaptor.CouponAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
-import org.springframework.stereotype.Service;
 
 /**
  * class: CouponService.
  *
  * @author JBum
- * @version 2024/02/22
+ * @version 2024/02/26
  */
-@Service
-public class CouponService {
-    private final CouponAdaptor couponAdaptor;
+public interface CouponService {
 
-    public CouponService(CouponAdaptor couponAdaptor) {
-        this.couponAdaptor = couponAdaptor;
-    }
-    public PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId,Integer page,Integer size){
-        return couponAdaptor.getAdminCoupons(couponStatusId,page,size);
-    }
+    /**
+     * 관리자가 관리할 쿠폰리스트 호출 메소드.
+     *
+     * @param couponStatusId 쿠폰의 상태
+     * @param page           페이지
+     * @param size           사이즈
+     * @return 페이징 처리된 쿠폰리스트
+     */
+
+    PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId, Integer page,
+        Integer size);
+
 }

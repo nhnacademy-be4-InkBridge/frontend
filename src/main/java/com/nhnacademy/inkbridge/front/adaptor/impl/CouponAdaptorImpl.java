@@ -3,7 +3,6 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 import com.nhnacademy.inkbridge.front.adaptor.CouponAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.coupon.CouponType;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,11 +26,20 @@ public class CouponAdaptorImpl implements CouponAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
 
+    /**
+     * 쿠폰 어댑터에 필요한 컴포넌트들 호출.
+     *
+     * @param restTemplate      WAS를 호출할 restTemplate
+     * @param gatewayProperties 게이트웨이설정
+     */
     public CouponAdaptorImpl(RestTemplate restTemplate, GatewayProperties gatewayProperties) {
         this.restTemplate = restTemplate;
         this.gatewayProperties = gatewayProperties;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId,
         Integer page, Integer size) {
@@ -41,7 +49,6 @@ public class CouponAdaptorImpl implements CouponAdaptor {
 
         String url = String.format("%s?coupon-status-id=%d&page=%d&size=%d",
             gatewayProperties.getUrl() + "/api/admin/coupons", couponStatusId, page, size);
-        System.out.println(url);
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
 
         ResponseEntity<PageRequestDto<CouponReadResponseDto>> exchange =
