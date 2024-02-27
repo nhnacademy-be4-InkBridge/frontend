@@ -33,7 +33,13 @@ const editor = new toastui.Editor({
 
         // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
         const resource = `/image-load?filename=${fileName}`;
-        callback(resource, 'image alt attribute');
+
+        // 5. Resource를 img tag로 가공
+        var img = document.createElement('img');
+        img.src = resource;
+        img.alt = 'no img';
+
+        callback(img, 'image alt attribute');
       } catch (error) {
         console.error('업로드 실패 : ', error);
       }
@@ -77,13 +83,26 @@ var categorySelect = mobiscroll.select('#category-multiple-select', {
 
       var selectElement = document.getElementById('category-multiple-select');
       var options = selectElement.querySelectorAll('option');
+
       selectedValues.forEach(function (value) {
         options.forEach(function (option) {
-          if (option.value == value) {
+          if (option.value === value) {
             var optgroup = option.parentElement;
             var hiddenOption = optgroup.querySelector('.parent-category');
-            if (!hiddenOption.selected) {
+            if (!hiddenOption.selected && !selectedValues.includes(
+                hiddenOption.value)) {
               selectedValues.push(hiddenOption.value);
+            }
+            if (!selectedValues.includes(hiddenOption.value)) {
+              var optgroupOptions = Array.from(
+                  optgroup.querySelectorAll('option'));
+              optgroupOptions.forEach(function (optgroupOption) {
+                var elementToRemove = selectedValues.indexOf(
+                    optgroupOption.value);
+                if (elementToRemove !== -1) {
+                  inst.setVal(selectedValues.slice(elementToRemove, 0));
+                }
+              });
             }
           }
         });
@@ -96,12 +115,13 @@ var categorySelect = mobiscroll.select('#category-multiple-select', {
 
 mobiscroll.select('#tag-multiple-select', {
   inputElement: document.getElementById('tag-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
-  onInit: function (event, inst) {
+  onOpen: function (event, inst) {
     try {
       // Get the selected values directly from the Mobiscroll instance
       var selectedValues = inst.getVal();
 
-      var options = document.getElementById('tag-multiple-select').querySelectorAll('option');
+      var options = document.getElementById(
+          'tag-multiple-select').querySelectorAll('option');
       options.forEach(function (option) {
         if (option.selected) {
           selectedValues.push(option.value);
@@ -121,7 +141,8 @@ mobiscroll.select('#author-multiple-select', {
       // Get the selected values directly from the Mobiscroll instance
       var selectedValues = inst.getVal();
 
-      var options = document.getElementById('author-multiple-select').querySelectorAll('option');
+      var options = document.getElementById(
+          'author-multiple-select').querySelectorAll('option');
       options.forEach(function (option) {
         if (option.selected) {
           selectedValues.push(option.value);
@@ -140,7 +161,8 @@ mobiscroll.select('#publisher-multiple-select', {
       // Get the selected values directly from the Mobiscroll instance
       var selectedValues = inst.getVal();
 
-      var options = document.getElementById('publisher-multiple-select').querySelectorAll('option');
+      var options = document.getElementById(
+          'publisher-multiple-select').querySelectorAll('option');
       options.forEach(function (option) {
         if (option.selected) {
           selectedValues.push(option.value);
@@ -152,7 +174,6 @@ mobiscroll.select('#publisher-multiple-select', {
     }
   }
 });
-
 
 (function () {
   "use strict";
