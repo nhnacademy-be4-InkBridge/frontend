@@ -17,4 +17,5 @@ public class DeliveryPolicyReadResponseDto {
     private final Long deliveryPolicyId;
     private final Long deliveryPrice;
     private final LocalDate createdAt;
+    private final Long freeDeliveryPrice;
 }
