@@ -16,27 +16,6 @@
 <div layout:fragment="content" id="layoutSidenav_content">
   <form class="contact100-form validate-form" method="post" action="/admin/book/create"
         enctype="multipart/form-data" id="bookForm">
-    <div th:if="${error}">
-      <div class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Save changes</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="도서 이름을 입력하세요">
       <label for="bookTitle" class="label-input100">도서명</label>
       <input id="bookTitle" class="input100" type="text" th:name="bookTitle">
@@ -46,20 +25,20 @@
       <label for="isbn" class="label-input100">isbn</label>
       <input id="isbn" class="input100" type="text" th:name="isbn" placeholder="숫자 13자리">
     </div>
-    <div class="wrap-input100 input100-select bg1">
+    <div class="wrap-input100 input100-select bg1 validate-input" data-validate="10개 이하의 카테고리를 선택하세요">
       <span class="label-input100">카테고리</span>
       <label for="category-multiple-select-input">
         <input mbsc-input id="category-multiple-select-input" data-dropdown="true"
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="10개 이하의 카테고리를 선택하세요..."/></label>
-      <select id="category-multiple-select" name="categories" multiple>
+      <select id="category-multiple-select" name="categories" multiple class="input100">
         <optgroup th:each="category: ${categories}" th:label="${category.categoryName}">
           <option th:value="${category.categoryId}"
-                  th:text="${category.categoryId} + ${category.categoryName}"
+                  th:text="${category.categoryName}"
                   class="parent-category"></option>
           <option th:each="subCategory: ${category.parentCategories}"
                   th:value="${subCategory.categoryId}"
-                  th:text="${subCategory.categoryId} + ${subCategory.categoryName}"></option>
+                  th:text="${subCategory.categoryName}"></option>
         </optgroup>
       </select>
     </div>
@@ -73,26 +52,26 @@
         <option th:each="tag: ${tags}" th:value="${tag.tagId}" th:text="${tag.tagName}"></option>
       </select>
     </div>
-    <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1">
+    <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1 validate-input" data-validate="저자를 선택하세요">
       <span class="label-input100">저자</span>
       <label for="author-multiple-select-input">
         <input mbsc-input id="author-multiple-select-input" data-dropdown="true"
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="저자를 선택하세요..."/>
       </label>
-      <select id="author-multiple-select" th:name="authorId">
+      <select id="author-multiple-select" th:name="authorId" class="input100">
         <option th:each="author: ${authors}" th:value="${author.authorId}"
-                th:text="${author.authorName}"></option>
+                th:text="${author.authorId} + ') ' + ${author.authorName}"></option>
       </select>
     </div>
-    <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1">
+    <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1 validate-input" data-validate="출판사를 선택하세요">
       <span class="label-input100">출판사</span>
       <label for="publisher-multiple-select-input">
         <input mbsc-input id="publisher-multiple-select-input" data-dropdown="true"
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="출판사를 선택하세요..."/>
       </label>
-      <select id="publisher-multiple-select" th:name="publisherId">
+      <select id="publisher-multiple-select" th:name="publisherId" class="input100">
         <option th:each="publisher: ${publishers}" th:value="${publisher.publisherId}"
                 th:text="${publisher.publisherName}"></option>
       </select>
@@ -105,11 +84,13 @@
       <label for="price" class="label-input100">판매가</label>
       <input id="price" class="input100" type="text" th:name="price">
     </div>
-    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="할인율을 입력하세요">
+    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100"
+         data-validate="할인율은 0% 이상이어야 합니다">
       <label for="discountRatio" class="label-input100">할인율(%)</label>
       <input class="input100" type="text" th:name="discountRatio" id="discountRatio">
     </div>
-    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="재고를 입력하세요">
+    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100"
+         data-validate="재고는 0개 이상이어야 합니다">
       <label for="stock" class="label-input100">재고</label>
       <input id="stock" class="input100" type="text" th:name="stock">
     </div>
@@ -126,7 +107,7 @@
       <label for="publicatedAt" class="label-input100">출판일</label>
       <input id="publicatedAt" class="input100" type="date" th:name="publicatedAt" th:max="${now}">
     </div>
-    <div class="wrap-input100 bg0 rs1-alert-validate">
+    <div class="wrap-input100 bg0 rs1-alert-validate validate-input" data-validate="목차를 입력하세요">
       <label for="bookIndex" class="label-input100">목차</label>
       <textarea id="bookIndex" class="input100" th:name="bookIndex"></textarea>
     </div>

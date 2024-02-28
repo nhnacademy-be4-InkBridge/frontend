@@ -34,12 +34,7 @@ const editor = new toastui.Editor({
         // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
         const resource = `/image-load?filename=${fileName}`;
 
-        // 5. Resource를 img tag로 가공
-        var img = document.createElement('img');
-        img.src = resource;
-        img.alt = 'no img';
-
-        callback(img, 'image alt attribute');
+        callback(resource, 'image alt attribute');
       } catch (error) {
         console.error('업로드 실패 : ', error);
       }
@@ -115,64 +110,15 @@ var categorySelect = mobiscroll.select('#category-multiple-select', {
 
 mobiscroll.select('#tag-multiple-select', {
   inputElement: document.getElementById('tag-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
-  onOpen: function (event, inst) {
-    try {
-      // Get the selected values directly from the Mobiscroll instance
-      var selectedValues = inst.getVal();
-
-      var options = document.getElementById(
-          'tag-multiple-select').querySelectorAll('option');
-      options.forEach(function (option) {
-        if (option.selected) {
-          selectedValues.push(option.value);
-        }
-      });
-
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  }
 });
-
+mobiscroll.select('#status-multiple-select', {
+  inputElement: document.getElementById('status-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
+});
 mobiscroll.select('#author-multiple-select', {
   inputElement: document.getElementById('author-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
-  onInit: function (event, inst) {
-    try {
-      // Get the selected values directly from the Mobiscroll instance
-      var selectedValues = inst.getVal();
-
-      var options = document.getElementById(
-          'author-multiple-select').querySelectorAll('option');
-      options.forEach(function (option) {
-        if (option.selected) {
-          selectedValues.push(option.value);
-        }
-      });
-
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  }
 });
 mobiscroll.select('#publisher-multiple-select', {
   inputElement: document.getElementById('publisher-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
-  onInit: function (event, inst) {
-    try {
-      // Get the selected values directly from the Mobiscroll instance
-      var selectedValues = inst.getVal();
-
-      var options = document.getElementById(
-          'publisher-multiple-select').querySelectorAll('option');
-      options.forEach(function (option) {
-        if (option.selected) {
-          selectedValues.push(option.value);
-        }
-      });
-
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  }
 });
 
 (function () {
@@ -213,7 +159,11 @@ mobiscroll.select('#publisher-multiple-select', {
   function validate(input) {
     // isbn check
     if (input.getAttribute('name') === 'isbn') {
-      return input.value.trim.length === 13 && input.value.match(/\d+/g);
+      return input.value.match(/^\d{13}$/g);
+    }
+    if (input.getAttribute('name') === 'discountRatio' || input.getAttribute(
+        'name') === 'stock') {
+      return input.value >= 0;
     }
     return input.value.trim() !== '';
   }
