@@ -1,10 +1,10 @@
 package com.nhnacademy.inkbridge.front.service;
 
-import com.nhnacademy.inkbridge.front.dto.BookAdminReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.BookAdminRequestDto;
-import com.nhnacademy.inkbridge.front.dto.BookFileReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookAdminUpdateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksAdminReadResponseDto;
 import java.io.IOException;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,34 +34,20 @@ public interface BookService {
     /**
      * 도서를 생성하는 메서드입니다.
      *
-     * @param thumbnail MultipartFile
-     * @param bookAdminRequestDto BookAdminRequestDto
+     * @param thumbnail                 MultipartFile
+     * @param bookAdminCreateRequestDto BookAdminRequestDto
      */
-    void createBook(MultipartFile thumbnail, BookAdminRequestDto bookAdminRequestDto) throws IOException;
+    void createBook(MultipartFile thumbnail, BookAdminCreateRequestDto bookAdminCreateRequestDto)
+        throws IOException;
 
     /**
      * 도서 정보를 수정하는 메서드입니다.
      *
-     * @param thumbnail MultipartFile
-     * @param bookImages MultipartFile[]
-     * @param bookAdminRequestDto BookAdminRequestDto
+     * @param thumbnail                 MultipartFile
+     * @param bookAdminUpdateRequestDto BookAdminRequestDto
      */
-    void updateBook(MultipartFile thumbnail, MultipartFile[] bookImages,
-        BookAdminRequestDto bookAdminRequestDto);
+    void updateBook(Long bookId, MultipartFile thumbnail,
+        BookAdminUpdateRequestDto bookAdminUpdateRequestDto)
+        throws IOException;
 
-    /**
-     * editor에 업로드된 파일을 저장하는 메서드입니다.
-     *
-     * @param image MultipartFile
-     * @return BookFileReadResponseDto
-     */
-    BookFileReadResponseDto uploadFile(MultipartFile image) throws IOException;
-
-    /**
-     * fileName으로 해당 파일을 조회하는 메서드입니다.
-     *
-     * @param fileName String
-     * @return byte[]
-     */
-    byte[] loadFile(String fileName);
 }
