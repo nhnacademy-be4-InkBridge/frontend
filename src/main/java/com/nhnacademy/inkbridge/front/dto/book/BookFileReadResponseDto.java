@@ -1,4 +1,4 @@
-package com.nhnacademy.inkbridge.front.dto;
+package com.nhnacademy.inkbridge.front.dto.book;
 
 import lombok.AccessLevel;
 import lombok.Builder;

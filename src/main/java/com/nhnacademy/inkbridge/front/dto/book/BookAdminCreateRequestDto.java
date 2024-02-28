@@ -1,4 +1,4 @@
-package com.nhnacademy.inkbridge.front.dto;
+package com.nhnacademy.inkbridge.front.dto.book;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
