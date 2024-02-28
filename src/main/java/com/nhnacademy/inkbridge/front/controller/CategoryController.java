@@ -64,7 +64,7 @@ public class CategoryController {
      * @param requestDto CategoryUpdateRequestDto
      * @return redirect - 카테고리 목록 페이지
      */
-    @PutMapping("{categoryId}")
+    @PutMapping("/{categoryId}")
     public String updateCategory(@PathVariable Long categoryId, @ModelAttribute
     CategoryUpdateRequestDto requestDto) {
         categoryService.updateCategory(categoryId, requestDto);
