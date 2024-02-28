@@ -1,0 +1,11 @@
+#book_table th {
+  width: 12.5%;
+}
+
+#pay_table th {
+  text-align: left;
+}
+
+#pay_table td {
+  text-align: right;
+}
