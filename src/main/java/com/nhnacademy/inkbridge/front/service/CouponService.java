@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.service;
 
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
 
 /**
@@ -23,4 +24,5 @@ public interface CouponService {
     PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId, Integer page,
         Integer size);
 
+    void createCoupon(CouponCreateRequestDto couponCreateRequestDto);
 }

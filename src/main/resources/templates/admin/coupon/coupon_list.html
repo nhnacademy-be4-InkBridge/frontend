@@ -4,12 +4,9 @@
       layout:decorate="~{layouts/admin_layout}">
 <head>
   <style>
-
       #layoutSidenav_content {
           position: static !important; /* Flex 제거 */
           display: block !important; /* Flex를 제거하고 블록 레벨로 설정 */
-
-
       }
 
       .table {
@@ -91,10 +88,14 @@
 <div layout:fragment="content" id="layoutSidenav_content" class="fixed-container">
   <div class="d-flex justify-content-between align-items-center">
     <div>
-      <a class="btn btn-primary" th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=1'}">발급 중</a>
-      <a class="btn btn-primary" th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=2'}">삭제</a>
-      <a class="btn btn-primary" th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=3'}">만료</a>
-      <a class="btn btn-primary" th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=4'}">대기</a>
+      <a class="btn btn-primary"
+         th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=1'}">발급 중</a>
+      <a class="btn btn-primary"
+         th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=2'}">삭제</a>
+      <a class="btn btn-primary"
+         th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=3'}">만료</a>
+      <a class="btn btn-primary"
+         th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=4'}">대기</a>
     </div>
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"

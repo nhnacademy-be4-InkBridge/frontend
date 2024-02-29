@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.CouponAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.util.List;
@@ -61,5 +62,24 @@ public class CouponAdaptorImpl implements CouponAdaptor {
         }
 
         return exchange.getBody();
+    }
+
+    @Override
+    public void setCoupons(CouponCreateRequestDto couponCreateRequestDto) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        String url = gatewayProperties.getUrl()+"/api/admin/coupons";
+        HttpEntity<CouponCreateRequestDto> httpEntity = new HttpEntity<>(couponCreateRequestDto, httpHeaders);
+        ResponseEntity<PageRequestDto<CouponReadResponseDto>> exchange = restTemplate.exchange(
+            url,
+            HttpMethod.POST,
+            httpEntity,
+            new ParameterizedTypeReference<PageRequestDto<CouponReadResponseDto>>() {}
+        );
+        if (!exchange.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("Failed to retrieve coupons");
+        }
     }
 }
