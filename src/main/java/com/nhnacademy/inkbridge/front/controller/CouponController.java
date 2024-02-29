@@ -1,10 +1,15 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.CouponService;
 import com.nhnacademy.inkbridge.front.service.impl.CouponServiceImpl;
+import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -48,5 +53,23 @@ public class CouponController {
         model.addAttribute("couponStatusId", couponStatusId);
         model.addAttribute("page", couponService.getAdminCoupons(couponStatusId, page, size));
         return "admin/coupon/coupon_list";
+    }
+
+    @GetMapping("/register")
+    public String createCouponView(){
+        return "admin/coupon/coupon_create";
+    }
+    @GetMapping("/category/register")
+    public String createCategoryCouponView(){
+        return "admin/coupon/coupon_create";
+    }
+    @GetMapping("/book/register")
+    public String createBookCouponView(){
+        return "admin/coupon/coupon_create";
+    }
+    @PostMapping("/register")
+    public String createCoupon(@Valid @ModelAttribute CouponCreateRequestDto couponCreateRequestDto){
+        couponService.createCoupon(couponCreateRequestDto);
+        return "redirect:/admin/coupons";
     }
 }

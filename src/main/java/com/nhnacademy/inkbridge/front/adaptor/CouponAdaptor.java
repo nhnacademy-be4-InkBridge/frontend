@@ -1,7 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
-import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 
 /**
  * class: CouponAdaptor.
@@ -22,4 +22,5 @@ public interface CouponAdaptor {
     PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId,
         Integer page, Integer size);
 
+    void setCoupons(CouponCreateRequestDto couponCreateRequestDto);
 }
