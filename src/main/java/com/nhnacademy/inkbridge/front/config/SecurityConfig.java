@@ -18,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.SecurityContextHolderFilter;
 
 /**
  * class: SecurityConfig.
@@ -39,6 +38,7 @@ public class SecurityConfig {
                 authenticationManager(http.getSharedObject(AuthenticationConfiguration.class));
         http
                 .authorizeRequests()
+                .antMatchers("/", "/login", "/signup").permitAll()
                 .antMatchers("/mympage/**").hasRole("MEMBER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll();
@@ -55,8 +55,8 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
                 .addFilterAt(customLoginAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
-        http
-                .addFilterAfter(customJwtAuthenticationFilter(), SecurityContextHolderFilter.class);
+//        http
+//                .addFilterAfter(customJwtAuthenticationFilter(), SecurityContextHolderFilter.class);
 
         return http.build();
     }

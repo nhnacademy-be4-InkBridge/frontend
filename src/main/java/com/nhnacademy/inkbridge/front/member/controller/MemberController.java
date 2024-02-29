@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class MemberController {
 
-    @GetMapping("/login")
+    @GetMapping("/auth-login")
     public String loginPage() {
         return "member/login";
     }

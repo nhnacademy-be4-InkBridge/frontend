@@ -20,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,6 +34,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @version 2/27/24
  */
 @RequiredArgsConstructor
+@Slf4j
 public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final MemberAdaptor memberAdaptor;
 
@@ -41,6 +43,9 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
             throws AuthenticationException {
         String email = obtainUsername(request);
         String password = obtainPassword(request);
+
+        log.info("Attempt authentication email -> {}", email);
+        log.info("Attempt authentication password -> {}", password);
 
         MemberLoginRequestDto requestDto = new MemberLoginRequestDto(email, password);
 
