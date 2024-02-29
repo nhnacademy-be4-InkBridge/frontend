@@ -1,7 +1,7 @@
 package com.nhnacademy.inkbridge.front.controller;
 
-import com.nhnacademy.inkbridge.front.dto.BookFileReadResponseDto;
-import com.nhnacademy.inkbridge.front.service.BookService;
+import com.nhnacademy.inkbridge.front.dto.book.BookFileReadResponseDto;
+import com.nhnacademy.inkbridge.front.service.FileService;
 import java.io.IOException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,16 +18,17 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class FileController {
 
-    private final BookService bookService;
+    private final FileService fileService;
 
-    public FileController(BookService bookService) {
-        this.bookService = bookService;
+    public FileController(FileService fileService) {
+        this.fileService = fileService;
     }
+
 
     @PostMapping("/image-upload")
     public BookFileReadResponseDto saveFile(@RequestParam MultipartFile image) {
         try {
-            return bookService.uploadFile(image);
+            return fileService.uploadFile(image);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -35,7 +36,7 @@ public class FileController {
 
     @GetMapping("/image-load")
     public byte[] loadFile(@RequestParam(name = "filename") String fileName) {
-        return bookService.loadFile(fileName);
+        return fileService.loadFile(fileName);
     }
 
 }

@@ -1,10 +1,11 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
-import com.nhnacademy.inkbridge.front.dto.BookAdminReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.BookAdminRequestDto;
-import com.nhnacademy.inkbridge.front.dto.BookFileReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.BooksAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookAdminUpdateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksAdminReadResponseDto;
 import java.io.IOException;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,40 +30,32 @@ public interface BookAdaptor {
      * @param bookId Long
      * @return BookAdminReadResponseDto
      */
-    BookAdminReadResponseDto getBookAdmin(Long bookId);
+    BookAdminDetailReadResponseDto getBookAdmin(Long bookId);
+
+    /**
+     * 관리자 페이지에서 등록 페이지를 조회하는 메서드입니다. 등록에 필요한 데이터를 조회합니다.
+     *
+     * @return BookAdminReadResponseDto
+     */
+    BookAdminReadResponseDto getBookAdmin();
 
     /**
      * 관리자 페이지에서 도서를 생성하는 메서드입니다.
      *
-     * @param thumbnail           MultipartFile
-     * @param bookAdminRequestDto BookAdminRequestDto
+     * @param thumbnail                 MultipartFile
+     * @param bookAdminCreateRequestDto BookAdminRequestDto
      */
-    void createBookAdmin(MultipartFile thumbnail, BookAdminRequestDto bookAdminRequestDto)
+    void createBookAdmin(MultipartFile thumbnail,
+        BookAdminCreateRequestDto bookAdminCreateRequestDto)
         throws IOException;
 
     /**
      * 관리자 페이지에서 생성한 도서 정보를 수정하는 메서드입니다.
      *
-     * @param thumbnail           MultipartFile
-     * @param bookImages          MultipartFile[]
-     * @param bookAdminRequestDto BookAdminRequestDto
+     * @param thumbnail                 MultipartFile
+     * @param bookAdminUpdateRequestDto BookAdminRequestDto
      */
-    void updateBookAdmin(MultipartFile thumbnail, MultipartFile[] bookImages,
-        BookAdminRequestDto bookAdminRequestDto);
-
-    /**
-     * editor에 업로드된 파일을 서버로 전송하는 메서드입니다.
-     *
-     * @param image MultipartFile
-     * @return BookFileReadResponseDto
-     */
-    BookFileReadResponseDto uploadFile(MultipartFile image) throws IOException;
-
-    /**
-     * fileName으로 해당 파일을 조회하는 메서드입니다.
-     *
-     * @param fileName String
-     * @return byte[]
-     */
-    byte[] loadFile(String fileName);
+    void updateBookAdmin(Long bookId, MultipartFile thumbnail,
+        BookAdminUpdateRequestDto bookAdminUpdateRequestDto)
+        throws IOException;
 }

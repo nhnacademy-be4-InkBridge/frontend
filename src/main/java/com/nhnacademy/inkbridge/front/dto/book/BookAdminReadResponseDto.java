@@ -1,4 +1,4 @@
-package com.nhnacademy.inkbridge.front.dto;
+package com.nhnacademy.inkbridge.front.dto.book;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,6 +25,8 @@ public class BookAdminReadResponseDto {
     private BigDecimal discountRatio;
     private Integer stock;
     private Boolean isPackagable;
-    private String publisherName;
-
+    private Long publisherId;
+    private Long authorId;
+    private Long statusId;
+    private String url;
 }

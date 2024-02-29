@@ -9,52 +9,56 @@
   <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
 </th:block>
 <th:block layout:fragment="script">
-  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
-          crossorigin="anonymous"></script>
   <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
   <script src="/js/mobiscroll.javascript.min.js"></script>
 </th:block>
 
 <div layout:fragment="content" id="layoutSidenav_content">
   <form class="contact100-form validate-form" method="post"
-        th:action="${mode eq book} ? '/admin/book/create':'/admin/book/update'"
-        enctype="multipart/form-data" id="bookForm">
-    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="도서 이름을 입력하세요">
-      <label for="bookTitle" class="label-input100">도서명</label>
-      <input id="bookTitle" class="input100" type="text" th:name="bookTitle"
-             th:value="${book?.bookTitle}">
-    </div>
+        th:action="'/admin/book/update/' + ${bookId}" enctype="multipart/form-data" id="bookForm">
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="isbn을 입력하세요">
       <label for="isbn" class="label-input100">isbn</label>
       <input id="isbn" class="input100" type="text" th:name="isbn" th:value="${book?.isbn}"
              placeholder="숫자 13자리">
     </div>
-    <div class="wrap-input100 input100-select bg1">
+    <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1 validate-input"
+         data-validate="판매 상태를 선택하세요">
+      <span class="label-input100">판매 상태</span>
+      <label for="status-multiple-select-input">
+        <input mbsc-input id="status-multiple-select-input" data-dropdown="true"
+               data-input-style="outline" data-label-style="stacked"
+               data-tags="true" placeholder="판매 상태를 선택하세요..."/>
+      </label>
+      <select id="status-multiple-select" name="statusId" class="input100">
+        <option th:each="status: ${statuses}" th:value="${status.statusId}"
+                th:text="${status.statusName}"
+                th:selected="${status.statusId==book.statusId}"></option>
+      </select>
+    </div>
+    <div class="wrap-input100 validate-input bg1" data-validate="도서 이름을 입력하세요">
+      <label for="bookTitle" class="label-input100">도서명</label>
+      <input id="bookTitle" class="input100" type="text" th:name="bookTitle"
+             th:value="${book?.bookTitle}">
+    </div>
+    <div class="wrap-input100 input100-select bg1 validate-input"
+         data-validate="10개 이하의 카테고리를 선택하세요">
       <span class="label-input100">카테고리</span>
       <label for="category-multiple-select-input">
         <input mbsc-input id="category-multiple-select-input" data-dropdown="true"
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="10개 이하의 카테고리를 선택하세요..."/></label>
-      <select id="category-multiple-select" name="categories" multiple>
-        <optgroup label="국내도서">
-          <option disabled value="8" hidden="hidden" class="parent"></option>
-          <option th:value="1" th:text="test1"></option>
-          <option th:value="2" th:text="test2"></option>
-          <option th:value="3" th:text="test3"></option>
-        </optgroup>
-        <optgroup label="IT도서">
-          <option disabled value="7" hidden="hidden" class="parent"></option>
-          <option th:value="4" th:text="test1"></option>
-          <option th:value="5" th:text="test2"></option>
-          <option th:value="6" th:text="test3"></option>
+      <select id="category-multiple-select" name="categories" class="input100" multiple>
+        <optgroup th:each="category: ${categories}" th:label="${category.categoryName}">
+          <option th:value="${category.categoryId}"
+                  th:text="${category.categoryId} + ${category.categoryName}"
+                  th:selected="${book.categoryIdList?.contains(category.categoryId)}"
+                  class="parent-category"></option>
+          <option th:each="subCategory: ${category.parentCategories}"
+                  th:value="${subCategory.categoryId}"
+                  th:text="${subCategory.categoryId} + ${subCategory.categoryName}"
+                  th:selected="${book.categoryIdList?.contains(subCategory.categoryId)}"></option>
         </optgroup>
       </select>
-      <!--      <select id="category-multiple-select" name="categories" multiple>-->
-      <!--        <optgroup th:each="category: ${categories}" th:label="${category.categoryName}">-->
-      <!--          <option th:each="subCategory: ${category.parentCategories}"-->
-      <!--                  th:value="subCategory.categoryId" th:text="${subCategory.categoryName}"></option>-->
-      <!--        </optgroup>-->
-      <!--      </select>-->
     </div>
     <div class="demo-multiple-select wrap-input100 bg1">
       <span class="label-input100">태그</span>
@@ -64,34 +68,35 @@
                data-tags="true" placeholder="0개 이상의 태그를 선택하세요..."/></label>
       <select id="tag-multiple-select" name="tags" multiple>
         <option th:each="tag: ${tags}" th:value="${tag.tagId}" th:text="${tag.tagName}"
-                th:selected="${savedTags?.contains(tag.tagId)}"></option>
+                th:selected="${book.tagIdList?.contains(tag.tagId)}"></option>
       </select>
     </div>
-    <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1">
+    <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1 validate-input"
+         data-validate="저자를 선택하세요">
       <span class="label-input100">저자</span>
       <label for="author-multiple-select-input">
         <input mbsc-input id="author-multiple-select-input" data-dropdown="true"
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="저자를 선택하세요..."/>
       </label>
-      <select id="author-multiple-select" name="authors">
-<!--        <option th:each="author: ${authors}" th:value="${author.authorId}"-->
-<!--                th:text="${author.authorName}"-->
-<!--                th:selected="${savedAuthors?.contains(author.authorId)}"></option>-->
-        <option value="1">Movies</option>
-        <option value="2">Movies, Music & Games</option>
+      <select id="author-multiple-select" name="authorId" class="input100">
+        <option th:each="author: ${authors}" th:value="${author.authorId}"
+                th:text="${author.authorName}"
+                th:selected="${book.authorId==author.authorId}"></option>
       </select>
     </div>
-    <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1">
+    <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1 validate-input"
+         data-validate="출판사를 선택하세요">
       <span class="label-input100">출판사</span>
       <label for="publisher-multiple-select-input">
         <input mbsc-input id="publisher-multiple-select-input" data-dropdown="true"
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="출판사를 선택하세요..."/>
       </label>
-      <select id="publisher-multiple-select" th:name="publisherId">
-        <option value="1">Books</option>
-        <option value="2">Movies, Music & Games</option>
+      <select id="publisher-multiple-select" th:name="publisherId" class="input100">
+        <option th:each="publisher: ${publishers}" th:value="${publisher.publisherId}"
+                th:text="${publisher.publisherName}"
+                th:selected="${book.publisherId==publisher.publisherId}"></option>
       </select>
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="정가를 입력하세요">
@@ -103,12 +108,14 @@
       <label for="price" class="label-input100">판매가</label>
       <input id="price" class="input100" type="text" th:name="price" th:value="${book?.price}">
     </div>
-    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="할인율을 입력하세요">
+    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100"
+         data-validate="할인율은 0% 이상이어야 합니다">
       <label for="discountRatio" class="label-input100">할인율(%)</label>
       <input class="input100" type="text" th:name="discountRatio"
              th:value="${book?.discountRatio}" id="discountRatio">
     </div>
-    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="재고를 입력하세요">
+    <div class="wrap-input100 validate-input bg1 rs1-wrap-input100"
+         data-validate="재고는 0개 이상이어야 합니다">
       <label for="stock" class="label-input100">재고</label>
       <input id="stock" class="input100" type="text" th:name="stock" th:value="${book?.stock}">
     </div>
@@ -134,20 +141,25 @@
       <textarea id="bookIndex" class="input100" th:name="bookIndex"
                 th:text="${book?.bookIndex}"></textarea>
     </div>
-    <div class="wrap-input100 bg0 rs1-alert-validate">
+    <div class="wrap-input100 bg0 rs1-alert-validate validate-input" data-validate="도서 설명을 입력하세요">
       <span class="label-input100">도서 설명</span>
       <div id="existing-content" style="display: none" th:text="${book?.description}"></div>
       <input type="hidden" name="description" id="descriptionHidden">
+      <input type="hidden" name="fileIdList" id="fileIdListHidden">
       <div class="input100" id="editor">
       </div>
     </div>
-    <div class="wrap-input100 validate-input bg1" data-validate="썸네일을 삽입하세요">
-      <label for="thumbnail" class="label-input100"></label>
+    <div class="wrap-input100 bg1">
+      <span class="label-input100">기존 썸네일</span>
+      <img th:src="${book.url}" alt="no image">
+    </div>
+    <div class="wrap-input100 bg1">
+      <label for="thumbnail" class="label-input100">새 썸네일</label>
       <input id="thumbnail" type="file" name="thumbnail">
     </div>
     <div class="container-contact100-form-btn">
       <button class="contact100-form-btn" type="submit">
-        <span th:text="${mode eq book} ? '등록' : '수정'"></span>
+        <span>수정</span>
       </button>
       <button class="contact100-form-btn" onclick="location.href='/admin/books'" type="button">
         <span>취소</span>

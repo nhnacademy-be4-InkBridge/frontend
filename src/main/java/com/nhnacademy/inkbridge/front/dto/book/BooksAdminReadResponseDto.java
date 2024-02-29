@@ -1,6 +1,7 @@
-package com.nhnacademy.inkbridge.front.dto;
+package com.nhnacademy.inkbridge.front.dto.book;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,4 +19,14 @@ public class BooksAdminReadResponseDto {
     private String authorName;
     private String publisherName;
     private String statusName;
+
+    @Builder
+    public BooksAdminReadResponseDto(Long bookId, String bookTitle, String authorName,
+        String publisherName, String statusName) {
+        this.bookId = bookId;
+        this.bookTitle = bookTitle;
+        this.authorName = authorName;
+        this.publisherName = publisherName;
+        this.statusName = statusName;
+    }
 }

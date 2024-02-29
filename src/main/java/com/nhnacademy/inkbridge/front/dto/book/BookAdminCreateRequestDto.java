@@ -1,10 +1,12 @@
-package com.nhnacademy.inkbridge.front.dto;
+package com.nhnacademy.inkbridge.front.dto.book;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,13 +21,17 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BookAdminRequestDto {
+public class BookAdminCreateRequestDto {
 
+    @NotBlank(message = "제목에 빈 값이 들어올 수 없습니다.")
     private String bookTitle;
+    @NotBlank(message = "목차에 빈 값이 들어올 수 없습니다.")
     private String bookIndex;
+    @NotBlank(message = "설명에 빈 값이 들어올 수 없습니다.")
     private String description;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate publicatedAt;
+    @Digits(integer = 13, fraction = 0, message = "isbn은 13자리 정수여야 합니다.")
     private String isbn;
     private Long regularPrice;
     private Long price;
@@ -36,12 +42,13 @@ public class BookAdminRequestDto {
     private Long authorId;
     private Set<Long> categories;
     private List<Long> tags = new ArrayList<>();
+    private List<Long> fileIdList;
 
     @Builder
-    public BookAdminRequestDto(String bookTitle, String bookIndex, String description,
+    public BookAdminCreateRequestDto(String bookTitle, String bookIndex, String description,
         LocalDate publicatedAt, String isbn, Long regularPrice, Long price,
         BigDecimal discountRatio, Integer stock, Boolean isPackagable, Long publisherId,
-        Long authorId, List<Long> tags, Set<Long> categories) {
+        Long authorId, List<Long> tags, Set<Long> categories, List<Long> fileIdList) {
         this.bookTitle = bookTitle;
         this.bookIndex = bookIndex;
         this.description = description;
@@ -56,5 +63,6 @@ public class BookAdminRequestDto {
         this.tags = (tags == null ? new ArrayList<>() : tags);
         this.authorId = authorId;
         this.categories = categories;
+        this.fileIdList = fileIdList;
     }
 }

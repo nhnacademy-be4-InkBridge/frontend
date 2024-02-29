@@ -1,6 +1,8 @@
 const existingContent = document.getElementById(
     'existing-content').innerHTML;
 
+let fileIdList = [];
+
 const editor = new toastui.Editor({
   el: document.querySelector('#editor'),
   height: '500px',
@@ -25,11 +27,13 @@ const editor = new toastui.Editor({
         });
 
         // 3. 컨트롤러에서 전달받은 디스크에 저장된 파일명
-        const file = await response.json();
+        const {fileId, fileName} = await response.json();
+
+        fileIdList.push(fileId);
 
         // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
-        const resource = `/image-load?filename=${file.fileName}`;
-        console.log('resource: ' + resource);
+        const resource = `/image-load?filename=${fileName}`;
+
         callback(resource, 'image alt attribute');
       } catch (error) {
         console.error('업로드 실패 : ', error);
@@ -41,6 +45,8 @@ const editor = new toastui.Editor({
 document.getElementById('bookForm').addEventListener('submit',
     function () {
       document.getElementById('descriptionHidden').value = editor.getMarkdown(); // 숨겨진 입력 필드에 설정
+      document.getElementById('fileIdListHidden').value = fileIdList;
+// val count > 10 -> alert
     });
 
 mobiscroll.setOptions({
@@ -49,48 +55,71 @@ mobiscroll.setOptions({
   themeVariant: 'light'                                                // More info about themeVariant: https://mobiscroll.com/docs/javascript/select/api#opt-themeVariant
 });
 
-mobiscroll.select('#category-multiple-select', {
-  inputElement: document.getElementById('category-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
-  // onCancel: handleSelectedCategories,
-});
-document.getElementById('category-multiple-select').addEventListener('change',
-    function () {
-      var selectedOptions = this.selectedOptions;
-      for (var i = 0; i < selectedOptions.length; i++) {
-        var selectedOption = selectedOptions[i];
-        var optgroup = selectedOption.parentElement;
-        var hiddenOption = optgroup.querySelector('.parent');
-        if (hiddenOption && !hiddenOption.selected) { // Check if hiddenOption is not already selected
-          hiddenOption.selected = true;
-        }
+// Initialize Mobiscroll Select
+var categorySelect = mobiscroll.select('#category-multiple-select', {
+  inputElement: document.getElementById('category-multiple-select-input'),
+  onChange: function (event, inst) {
+    try {
+      // Get the selected values directly from the Mobiscroll instance
+      var selectedValues = inst.getVal();
+      var selectedCount = selectedValues.length;
+
+      if (selectedCount > 10) {
+        // Display toast message
+        console.log('over 10');
+        mobiscroll.toast({
+          message: 'You can only select up to 10 options',
+          duration: 3000 // 3 seconds
+        });
+
+        // Unselect the last selected option
+        inst.setVal(selectedValues.slice(0, -1), true); // Remove the last selected option
       }
-    });
+
+      var selectElement = document.getElementById('category-multiple-select');
+      var options = selectElement.querySelectorAll('option');
+
+      selectedValues.forEach(function (value) {
+        options.forEach(function (option) {
+          if (option.value === value) {
+            var optgroup = option.parentElement;
+            var hiddenOption = optgroup.querySelector('.parent-category');
+            if (!hiddenOption.selected && !selectedValues.includes(
+                hiddenOption.value)) {
+              selectedValues.push(hiddenOption.value);
+            }
+            if (!selectedValues.includes(hiddenOption.value)) {
+              var optgroupOptions = Array.from(
+                  optgroup.querySelectorAll('option'));
+              optgroupOptions.forEach(function (optgroupOption) {
+                var elementToRemove = selectedValues.indexOf(
+                    optgroupOption.value);
+                if (elementToRemove !== -1) {
+                  inst.setVal(selectedValues.slice(elementToRemove, 0));
+                }
+              });
+            }
+          }
+        });
+      });
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+});
+
+mobiscroll.select('#tag-multiple-select', {
+  inputElement: document.getElementById('tag-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
+});
+mobiscroll.select('#status-multiple-select', {
+  inputElement: document.getElementById('status-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
+});
 mobiscroll.select('#author-multiple-select', {
   inputElement: document.getElementById('author-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
 });
 mobiscroll.select('#publisher-multiple-select', {
   inputElement: document.getElementById('publisher-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
 });
-mobiscroll.select('#tag-multiple-select', {
-  inputElement: document.getElementById('tag-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
-});
-
-document.getElementById('category-multiple-select').addEventListener('change',
-    function handleSelectedCategories() {
-      var selectedOptions = this.selectedOptions;
-      var selectedCount = 0;
-      for (var i = 0; i < selectedOptions.length; i++) {
-        if (selectedOptions[i].parentElement.tagName === 'OPTGROUP') {
-          selectedCount++;
-          console.log('selected: ' + selectedCount);
-        }
-      }
-      if (selectedCount > 10) {
-        alert('You can only select up to 10 options.');
-        this.options[this.selectedIndex].selected = false;
-        console.log('selected2: ' + selectedCount);
-      }
-    });
 
 (function () {
   "use strict";
@@ -128,8 +157,15 @@ document.getElementById('category-multiple-select').addEventListener('change',
   });
 
   function validate(input) {
+    // isbn check
+    if (input.getAttribute('name') === 'isbn') {
+      return input.value.match(/^\d{13}$/g);
+    }
+    if (input.getAttribute('name') === 'discountRatio' || input.getAttribute(
+        'name') === 'stock') {
+      return input.value >= 0;
+    }
     return input.value.trim() !== '';
-
   }
 
   function showValidate(input) {
@@ -160,12 +196,14 @@ document.getElementById("price").addEventListener("input", function () {
   calculateDiscount();
 });
 
-document.getElementById("discountRatio").addEventListener("input", function () {
-  calculateSalePrice();
-});
+document.getElementById("discountRatio").addEventListener("input",
+    function () {
+      calculateSalePrice();
+    });
 
 function calculateDiscount() {
-  var regularPrice = parseFloat(document.getElementById("regularPrice").value);
+  var regularPrice = parseFloat(
+      document.getElementById("regularPrice").value);
   var price = parseFloat(document.getElementById("price").value);
   if (!isNaN(regularPrice) && !isNaN(price)) {
     var discountRatio = ((regularPrice - price) / regularPrice) * 100;
@@ -174,7 +212,8 @@ function calculateDiscount() {
 }
 
 function calculateSalePrice() {
-  var regularPrice = parseFloat(document.getElementById("regularPrice").value);
+  var regularPrice = parseFloat(
+      document.getElementById("regularPrice").value);
   var discountRatio = parseFloat(
       document.getElementById("discountRatio").value);
   if (!isNaN(regularPrice) && !isNaN(discountRatio)) {
