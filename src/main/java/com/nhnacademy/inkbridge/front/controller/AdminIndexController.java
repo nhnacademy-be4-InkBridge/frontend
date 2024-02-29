@@ -16,4 +16,5 @@ public class AdminIndexController {
     public String admin() {
         return "admin/charts";
     }
+
 }
