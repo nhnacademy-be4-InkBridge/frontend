@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -38,15 +39,15 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
     @Override
     public void createCategory(CategoryCreateRequestDto requestDto) {
         HttpHeaders httpHeaders = createHeaders();
-
-        URI uri = buildUriComponents("api/category").toUri();
+        URI uri = buildUriComponents("api/categories").toUri();
 
         RequestEntity<CategoryCreateRequestDto> requestEntity = RequestEntity
             .post(uri)
             .headers(httpHeaders)
             .body(requestDto);
 
-        restTemplate.exchange(requestEntity, CategoryCreateRequestDto.class);
+            restTemplate.exchange(requestEntity, CategoryCreateRequestDto.class);
+
     }
 
     /**
@@ -54,7 +55,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      */
     @Override
     public List<ParentCategoryReadResponseDto> readCategories() {
-        URI uri = buildUriComponents("api/category").toUri();
+        URI uri = buildUriComponents("api/categories").toUri();
 
         ResponseEntity<List<ParentCategoryReadResponseDto>> responseEntity = restTemplate.exchange(
             uri,
@@ -70,7 +71,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
     @Override
     public void updateCategory(Long categoryId, CategoryUpdateRequestDto requestDto) {
         HttpHeaders httpHeaders = createHeaders();
-        URI uri = buildUriComponents("api/category/{categoryId}").expand(categoryId).toUri();
+        URI uri = buildUriComponents("api/categories/{categoryId}").expand(categoryId).toUri();
 
         RequestEntity<CategoryUpdateRequestDto> requestEntity = RequestEntity
             .put(uri)

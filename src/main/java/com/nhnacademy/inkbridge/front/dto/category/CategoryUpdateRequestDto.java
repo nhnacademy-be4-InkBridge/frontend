@@ -16,6 +16,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CategoryUpdateRequestDto {
-    @Size(message="카테고리 명은 10글자 이하로 작성해야합니다.", min=1,max=10)
+
     private String categoryName;
 }
