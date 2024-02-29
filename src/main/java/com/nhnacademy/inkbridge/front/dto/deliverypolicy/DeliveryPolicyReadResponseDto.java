@@ -1,7 +1,9 @@
 package com.nhnacademy.inkbridge.front.dto.deliverypolicy;
 
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -10,12 +12,13 @@ import lombok.RequiredArgsConstructor;
  * @author jangjaehun
  * @version 2024/02/25
  */
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
+@NoArgsConstructor
 public class DeliveryPolicyReadResponseDto {
 
-    private final Long deliveryPolicyId;
-    private final Long deliveryPrice;
-    private final LocalDate createdAt;
-    private final Long freeDeliveryPrice;
+    private Long deliveryPolicyId;
+    private Long deliveryPrice;
+    private LocalDate createdAt;
+    private Long freeDeliveryPrice;
 }

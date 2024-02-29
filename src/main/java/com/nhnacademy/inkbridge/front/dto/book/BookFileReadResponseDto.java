@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
  * @version 2024/02/26
  */
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class BookFileReadResponseDto {
     private Long fileId;
     private String fileName;

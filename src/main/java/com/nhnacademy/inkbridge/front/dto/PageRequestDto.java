@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.dto;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -13,6 +14,7 @@ import lombok.ToString;
  */
 @Getter
 @ToString
+@NoArgsConstructor
 public class PageRequestDto<T> {
 
     private List<T> content;

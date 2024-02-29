@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.dto.pointpolicytype;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * class: PointPolicyTypeReadResponseDto.
@@ -11,6 +12,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class PointPolicyTypeReadResponseDto {
 
     private Integer pointPolicyTypeId;

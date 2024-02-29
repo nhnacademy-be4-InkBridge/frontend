@@ -1,6 +1,5 @@
 package com.nhnacademy.inkbridge.front.dto.category;
 
-import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

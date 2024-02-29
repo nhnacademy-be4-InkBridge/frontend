@@ -16,14 +16,14 @@ import lombok.NoArgsConstructor;
  * @version 2024/02/22
  */
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class BookAdminReadResponseDto {
 
-    List<ParentCategoryReadResponseDto> parentCategoryReadResponseDtoList;
-    List<PublisherReadResponseDto> publisherReadResponseDtoList;
-    List<AuthorReadResponseDto> authorReadResponseDtoList;
-    List<BookStatusReadResponseDto> bookStatusReadResponseDtoList;
-    List<TagReadResponseDto> tagReadResponseDtoList;
+    private List<ParentCategoryReadResponseDto> parentCategoryReadResponseDtoList;
+    private List<PublisherReadResponseDto> publisherReadResponseDtoList;
+    private List<AuthorReadResponseDto> authorReadResponseDtoList;
+    private List<BookStatusReadResponseDto> bookStatusReadResponseDtoList;
+    private List<TagReadResponseDto> tagReadResponseDtoList;
 
     // builder
 

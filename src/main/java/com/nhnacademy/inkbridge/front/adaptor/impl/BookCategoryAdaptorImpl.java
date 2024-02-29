@@ -1,4 +1,4 @@
-package com.nhnacademy.inkbridge.front.adaptor.Impl;
+package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.BookCategoryAdaptor;
 import com.nhnacademy.inkbridge.front.dto.bookCategory.BookCategoryReadResponseDto;

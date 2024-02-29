@@ -6,6 +6,7 @@ import com.nhnacademy.inkbridge.front.dto.tag.TagReadResponseDto;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * class: BookAdminReadResponse.
@@ -14,13 +15,14 @@ import lombok.Getter;
  * @version 2024/02/29
  */
 @Getter
+@NoArgsConstructor
 public class BookAdminDetailReadResponseDto {
-    BookAdminSelectedReadResponseDto adminSelectedReadResponseDto;
-    List<ParentCategoryReadResponseDto> parentCategoryReadResponseDtoList;
-    List<PublisherReadResponseDto> publisherReadResponseDtoList;
-    List<AuthorReadResponseDto> authorReadResponseDtoList;
-    List<BookStatusReadResponseDto> bookStatusReadResponseDtoList;
-    List<TagReadResponseDto> tagReadResponseDtoList;
+    private BookAdminSelectedReadResponseDto adminSelectedReadResponseDto;
+    private List<ParentCategoryReadResponseDto> parentCategoryReadResponseDtoList;
+    private List<PublisherReadResponseDto> publisherReadResponseDtoList;
+    private List<AuthorReadResponseDto> authorReadResponseDtoList;
+    private List<BookStatusReadResponseDto> bookStatusReadResponseDtoList;
+    private List<TagReadResponseDto> tagReadResponseDtoList;
 
     // builder
 

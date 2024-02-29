@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.dto.bookCategory;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Getter
+@AllArgsConstructor
 public class BookCategoryReadResponseDto {
 
     private Long categoryId;

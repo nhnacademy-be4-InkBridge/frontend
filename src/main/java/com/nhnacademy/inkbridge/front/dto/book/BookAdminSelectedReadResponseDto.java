@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * class: BookAdminReadResponseDto.
@@ -13,39 +14,40 @@ import lombok.Getter;
  * @version 2024/02/15
  */
 @Getter
+@NoArgsConstructor
 public class BookAdminSelectedReadResponseDto {
 
-    private final String bookTitle;
+    private String bookTitle;
 
-    private final String bookIndex;
+    private String bookIndex;
 
-    private final String description;
+    private String description;
 
-    private final LocalDate publicatedAt;
+    private LocalDate publicatedAt;
 
-    private final String isbn;
+    private String isbn;
 
-    private final Long regularPrice;
+    private Long regularPrice;
 
-    private final Long price;
+    private Long price;
 
-    private final BigDecimal discountRatio;
+    private BigDecimal discountRatio;
 
-    private final Integer stock;
+    private Integer stock;
 
-    private final Boolean isPackagable;
+    private Boolean isPackagable;
 
-    private final Long authorId;
+    private Long authorId;
 
-    private final Long publisherId;
+    private Long publisherId;
 
-    private final Long statusId;
+    private Long statusId;
 
-    private final String url;
+    private String url;
 
-    private final List<Long> categoryIdList;
+    private List<Long> categoryIdList;
 
-    private final List<Long> tagIdList;
+    private List<Long> tagIdList;
 
     @Builder
     public BookAdminSelectedReadResponseDto(String bookTitle, String bookIndex, String description,

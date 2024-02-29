@@ -1,6 +1,8 @@
 package com.nhnacademy.inkbridge.front.dto.coupon;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * class: CouponListResponseDto.
@@ -9,6 +11,7 @@ import lombok.Getter;
  * @version 2024/02/22
  */
 @Getter
+@NoArgsConstructor
 public class CouponReadResponseDto {
 
     private String couponId;

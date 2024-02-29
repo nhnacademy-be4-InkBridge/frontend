@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.adaptor;
 
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
 
 /**
  * class: CouponAdaptor.

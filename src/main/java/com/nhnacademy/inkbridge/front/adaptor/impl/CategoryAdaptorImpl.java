@@ -1,4 +1,4 @@
-package com.nhnacademy.inkbridge.front.adaptor.Impl;
+package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.CategoryAdaptor;
 import com.nhnacademy.inkbridge.front.dto.category.CategoryCreateRequestDto;
@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
