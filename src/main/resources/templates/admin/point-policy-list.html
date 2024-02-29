@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}">
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+
+</th:block>
+
+<th:block layout:fragment="script">
+</th:block>
+
+<div layout:fragment="content" id="layoutSidenav_content">
+  <main>
+    <h4 class="fst-normal float-start ms-2 me-4 my-2">적용 정책</h4>
+    <button type="button" class="float-end btn btn-outline-dark" data-bs-toggle="modal"
+            data-bs-target="#createPointPolicyType">
+      정책 유형 생성
+    </button>
+    <div class="modal fade" id="createPointPolicyType" data-bs-backdrop="static"
+         data-bs-keyboard="false"
+         tabindex="-1" aria-labelledby="createPointPolicyTypeLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createPointPolicyTypeLabel">유형 생성</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+          </div>
+          <form method="post" action="/admin/point-policy/point-policy-type">
+            <div class="modal-body">
+
+              <div class="mb-3 col-xs-3">
+                <label for="createPolicyType" class="form-label">유형<span
+                    class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="createPolicyType" name="policyType">
+              </div>
+              <div class="mb-3 col-xs-3">
+                <label for="firstAccumulatePoint" class="form-label">적립 포인트<span
+                    class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="firstAccumulatePoint"
+                       name="accumulatePoint">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+              <button type="submit" class="btn btn-dark">생성</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <table class="table">
+      <tr>
+        <th>#</th>
+        <th>유형</th>
+        <th>적립금액</th>
+        <th>변경일자</th>
+      </tr>
+
+      <tr th:each="pointPolicy : ${pointPolicyCurrentList}">
+        <td th:text="${pointPolicy.pointPolicyId}"></td>
+        <td th:text="${pointPolicy.policyType}"></td>
+        <td th:text="${pointPolicy.accumulatePoint}"></td>
+        <td th:text="${pointPolicy.createdAt}"></td>
+      </tr>
+    </table>
+    <br/>
+    <h4 class="fst-normal float-start ms-2 me-4 my-2">포인트 정책 변경 내역</h4>
+    <select class="form-select float-end ms-2 me-4" aria-label="Default select example"
+            style="width: 20%" onchange="redirectToPolicy()">
+      <option th:if="${pointPolicyTypeId eq null} ? 'selected' : ''" value="">전체</option>
+      <option th:each="pointPolicyType : ${pointPolicyTypeList}"
+              th:value="${pointPolicyType.pointPolicyTypeId}"
+              th:text="${pointPolicyType.policyType}"
+              th:selected="${pointPolicyType.pointPolicyTypeId eq pointPolicyTypeId}"></option>
+    </select>
+    <script>
+      function redirectToPolicy() {
+        var selectBox = document.querySelector('.form-select');
+        var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+        var url = '/admin/point-policy?pointPolicyTypeId=' + selectedValue;
+        window.location.href = url;
+      }
+    </script>
+    <button type="button" class="float-end btn btn-outline-dark" data-bs-toggle="modal"
+            data-bs-target="#updatePointPolicy">
+      포인트 정책 변경
+    </button>
+    <div class="modal fade" id="updatePointPolicy" data-bs-backdrop="static"
+         data-bs-keyboard="false"
+         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">정책 변경</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+          </div>
+          <form method="post" action="/admin/point-policy">
+            <div class="modal-body">
+
+              <div class="mb-3 col-xs-3">
+                <label for="policyType" class="form-label">유형<span
+                    class="text-danger">*</span></label>
+                <select class="form-select" aria-label="Default select example" id="policyType"
+                        name="pointPolicyTypeId">
+                  <option selected>포인트 적립 유형 선택</option>
+                  <option th:each="pointPolicyType : ${pointPolicyTypeList}"
+                          th:value="${pointPolicyType.pointPolicyTypeId}"
+                          th:text="${pointPolicyType.policyType}"></option>
+                </select>
+              </div>
+              <div class="mb-3 col-xs-3">
+                <label for="accumulatePoint" class="form-label">적립 포인트<span
+                    class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="accumulatePoint"
+                       name="accumulatePoint">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+              <button type="submit" class="btn btn-dark">변경</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <br/>
+    <table class="table my-4">
+      <tr>
+        <th>#</th>
+        <th>유형</th>
+        <th>적립금액</th>
+        <th>변경일자</th>
+      </tr>
+      <tr th:each="pointPolicy : ${pointPolicyList}">
+        <td th:text="${pointPolicy.pointPolicyId}"></td>
+        <td th:text="${pointPolicy.policyType}"></td>
+        <td th:text="${pointPolicy.accumulatePoint}"></td>
+        <td th:text="${pointPolicy.createdAt}"></td>
+      </tr>
+    </table>
+  </main>
+</div>
+</html>
