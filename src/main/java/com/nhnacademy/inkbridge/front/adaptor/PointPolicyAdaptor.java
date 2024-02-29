@@ -1,4 +1,4 @@
-package com.nhnacademy.inkbridge.front.adapter;
+package com.nhnacademy.inkbridge.front.adaptor;
 
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyReadResponseDto;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author jangjaehun
  * @version 2024/02/22
  */
-public interface PointPolicyAdapter {
+public interface PointPolicyAdaptor {
 
     List<PointPolicyReadResponseDto> getCurrentPointPolicies();
 

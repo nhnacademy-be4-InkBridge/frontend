@@ -1,6 +1,6 @@
 package com.nhnacademy.inkbridge.front.service.impl;
 
-import com.nhnacademy.inkbridge.front.adapter.PointPolicyAdapter;
+import com.nhnacademy.inkbridge.front.adaptor.PointPolicyAdaptor;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.PointPolicyService;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PointPolicyServiceImpl implements PointPolicyService {
 
-    private final PointPolicyAdapter pointPolicyAdapter;
+    private final PointPolicyAdaptor pointPolicyAdapter;
 
     /**
      * 현재 적용중인 포인트 정책 리스트를 호출하는 메소드입니다.

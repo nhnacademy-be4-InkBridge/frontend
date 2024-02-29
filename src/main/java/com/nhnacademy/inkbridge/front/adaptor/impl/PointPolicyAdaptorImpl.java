@@ -1,6 +1,6 @@
-package com.nhnacademy.inkbridge.front.adapter.impl;
+package com.nhnacademy.inkbridge.front.adaptor.impl;
 
-import com.nhnacademy.inkbridge.front.adapter.PointPolicyAdapter;
+import com.nhnacademy.inkbridge.front.adaptor.PointPolicyAdaptor;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Component
 @RequiredArgsConstructor
-public class PointPolicyAdapterImpl implements PointPolicyAdapter {
+public class PointPolicyAdaptorImpl implements PointPolicyAdaptor {
 
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
