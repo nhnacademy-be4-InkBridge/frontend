@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}">
+<body>
+<th:block layout:fragment="css">
+</th:block>
+<th:block layout:fragment="script">
+  <script src="/js/datatables-simple-demo.js"></script>
+</th:block>
+<div layout:fragment="content" id="layoutSidenav_content">
+  <main>
+    <div class="container-fluid px-4">
+      <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">메인 페이지</a></li>
+        <li class="breadcrumb-item active">수익 통계</li>
+      </ol>
+      <div class="card mb-4">
+        <div class="card-header">
+          <i class="fas fa-chart-area me-1"></i>
+          수익 통계
+        </div>
+        <div class="card-body">
+          <canvas id="myAreaChart" width="100%" height="30"></canvas>
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+      </div>
+    </div>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+          crossorigin="anonymous"></script>
+  <script src="/assets/demo/chart-area-demo.js"></script>
+</div>
+</body>
+</html>

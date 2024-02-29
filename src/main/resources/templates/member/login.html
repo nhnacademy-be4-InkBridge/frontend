@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<!-- 모달을 실행할 버튼 -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalForm">
+    로그인
+</button>
+
+<!-- 모달 -->
+<div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+                <form action="/login" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">InkBridge</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="Email">이메일<span class="text-danger">*</span></label>
+                            <input type="text" name="Email" class="form-control" id="Email" placeholder="이메일">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Password">비밀번호<span class="text-danger">*</span></label>
+                            <input type="password" name="password" class="form-control" id="Password" placeholder="비밀번호">
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="remember" required>
+                            <label class="form-check-label" for="remember">아이디 저장</label>
+                            <a href="#" class="float-end">비밀번호 찾기</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer pt-4">
+                        <button type="button" class="btn btn-success mx-auto w-100">로그인</button>
+                    </div>
+                    <p class="text-center">아이디가 없으시다면, <a href="#">회원 가입</a></p>
+                </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
