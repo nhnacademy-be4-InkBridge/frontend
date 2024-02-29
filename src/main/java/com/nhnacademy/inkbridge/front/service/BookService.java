@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.service;
 
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksAdminReadResponseDto;
@@ -29,7 +30,14 @@ public interface BookService {
      * @param bookId Long
      * @return BookAdminReadResponseDto
      */
-    BookAdminReadResponseDto getBook(Long bookId);
+    BookAdminDetailReadResponseDto getBook(Long bookId);
+
+    /**
+     * 도서 등록에 필요한 데이터를 조회하는 메서드입니다.
+     *
+     * @return BookAdminReadResponseDto
+     */
+    BookAdminReadResponseDto getBook();
 
     /**
      * 도서를 생성하는 메서드입니다.

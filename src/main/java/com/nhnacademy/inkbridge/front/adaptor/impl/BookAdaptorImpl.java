@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksAdminReadResponseDto;
@@ -34,7 +35,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class BookAdaptorImpl implements BookAdaptor {
 
-    private static final String DEFAULT_PATH ="/api/admin/books";
+    private static final String DEFAULT_PATH = "/api/admin/books";
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
 
@@ -72,17 +73,43 @@ public class BookAdaptorImpl implements BookAdaptor {
     /**
      * {@inheritDoc}
      */
-    public BookAdminReadResponseDto getBookAdmin(Long bookId) {
+    public BookAdminDetailReadResponseDto getBookAdmin(Long bookId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         URI uri = UriComponentsBuilder
-            .fromUriString(gatewayProperties.getUrl() + "/{bookId}")
+            .fromUriString(gatewayProperties.getUrl())
             .path(DEFAULT_PATH)
+            .path("/{bookId}")
             .encode()
             .build()
             .expand(bookId)
+            .toUri();
+        ResponseEntity<BookAdminDetailReadResponseDto> exchange = restTemplate.exchange(
+            uri,
+            HttpMethod.GET,
+            new HttpEntity<>(httpHeaders),
+            new ParameterizedTypeReference<>() {
+            });
+        return exchange.getBody();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BookAdminReadResponseDto getBookAdmin() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path(DEFAULT_PATH)
+            .path("/form")
+            .encode()
+            .build()
             .toUri();
 
         ResponseEntity<BookAdminReadResponseDto> exchange = restTemplate.exchange(
@@ -136,8 +163,9 @@ public class BookAdaptorImpl implements BookAdaptor {
             bookAdminUpdateRequestDto, multiValueMap);
 
         URI uri = UriComponentsBuilder
-            .fromUriString(gatewayProperties.getUrl() + "/{bookId}")
+            .fromUriString(gatewayProperties.getUrl())
             .path(DEFAULT_PATH)
+            .path("/{bookId}")
             .encode()
             .build()
             .expand(bookId)

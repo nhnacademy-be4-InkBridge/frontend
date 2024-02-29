@@ -44,7 +44,7 @@ public class FileAdaptorImpl implements FileAdaptor {
         fileToByteArrayResource(image, multiValueMap, httpHeaders);
 
         ResponseEntity<BookFileReadResponseDto> exchange = restTemplate.exchange(
-            "http://localhost:8060/api/image-upload",
+            "http://localhost:8060/api/images",
             HttpMethod.POST,
             new HttpEntity<>(multiValueMap, httpHeaders),
             new ParameterizedTypeReference<>() {
@@ -64,7 +64,7 @@ public class FileAdaptorImpl implements FileAdaptor {
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
 
         ResponseEntity<byte[]> exchange = restTemplate.exchange(
-            "http://localhost:8060/api/image-load?fileName={fileName}",
+            "http://localhost:8060/api/images?fileName={fileName}",
             HttpMethod.GET,
             requestEntity,
             new ParameterizedTypeReference<>() {

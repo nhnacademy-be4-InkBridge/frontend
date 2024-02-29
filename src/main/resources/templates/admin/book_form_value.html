@@ -51,12 +51,12 @@
         <optgroup th:each="category: ${categories}" th:label="${category.categoryName}">
           <option th:value="${category.categoryId}"
                   th:text="${category.categoryId} + ${category.categoryName}"
-                  th:selected="${savedCategories?.contains(category.categoryId)}"
+                  th:selected="${book.categoryIdList?.contains(category.categoryId)}"
                   class="parent-category"></option>
           <option th:each="subCategory: ${category.parentCategories}"
                   th:value="${subCategory.categoryId}"
                   th:text="${subCategory.categoryId} + ${subCategory.categoryName}"
-                  th:selected="${savedCategories?.contains(subCategory.categoryId)}"></option>
+                  th:selected="${book.categoryIdList?.contains(subCategory.categoryId)}"></option>
         </optgroup>
       </select>
     </div>
@@ -68,7 +68,7 @@
                data-tags="true" placeholder="0개 이상의 태그를 선택하세요..."/></label>
       <select id="tag-multiple-select" name="tags" multiple>
         <option th:each="tag: ${tags}" th:value="${tag.tagId}" th:text="${tag.tagName}"
-                th:selected="${savedTags?.contains(tag.tagId)}"></option>
+                th:selected="${book.tagIdList?.contains(tag.tagId)}"></option>
       </select>
     </div>
     <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1 validate-input"

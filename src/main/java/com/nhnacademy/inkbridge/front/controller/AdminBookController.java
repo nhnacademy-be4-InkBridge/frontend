@@ -5,16 +5,11 @@ import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.PublisherResponse;
 import com.nhnacademy.inkbridge.front.dto.TagResponse;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksAdminReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.bookCategory.BookCategoryReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.bookstatus.BookStatusReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
-import com.nhnacademy.inkbridge.front.service.BookCategoryService;
 import com.nhnacademy.inkbridge.front.service.BookService;
-import com.nhnacademy.inkbridge.front.service.BookStatusService;
-import com.nhnacademy.inkbridge.front.service.CategoryService;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -44,16 +39,9 @@ public class AdminBookController {
 
     private static final String BOOK_FORM_PAGE = "admin/book_form";
     private final BookService bookService;
-    private final CategoryService categoryService;
-    private final BookStatusService bookStatusService;
-    private final BookCategoryService bookCategoryService;
 
-    public AdminBookController(BookService bookService, CategoryService categoryService,
-        BookStatusService bookStatusService, BookCategoryService bookCategoryService) {
+    public AdminBookController(BookService bookService) {
         this.bookService = bookService;
-        this.categoryService = categoryService;
-        this.bookStatusService = bookStatusService;
-        this.bookCategoryService = bookCategoryService;
     }
 
     /**
@@ -82,19 +70,22 @@ public class AdminBookController {
      */
     @GetMapping("/book/{bookId}")
     public String getBook(Model model, @PathVariable Long bookId) {
-        setForm(model);
-
-        BookAdminReadResponseDto book = bookService.getBook(bookId);
-        List<BookStatusReadResponseDto> bookStatuses = bookStatusService.getBookStatuses();
-        List<BookCategoryReadResponseDto> bookCategories = bookCategoryService.readBookCategories(
-            bookId);
-        // author, publisher
+        BookAdminDetailReadResponseDto bookAdminDetailReadResponseDto = bookService.getBook(bookId);
 
         model.addAttribute("bookId", bookId);
-        model.addAttribute("book", book);
-        model.addAttribute("savedTags", List.of(1L));
-        model.addAttribute("savedCategories", bookCategories);
-        model.addAttribute("statuses", bookStatuses);
+        model.addAttribute("book",
+            bookAdminDetailReadResponseDto.getAdminSelectedReadResponseDto());
+
+        model.addAttribute("categories",
+            bookAdminDetailReadResponseDto.getParentCategoryReadResponseDtoList());
+        model.addAttribute("publishers",
+            bookAdminDetailReadResponseDto.getPublisherReadResponseDtoList());
+        model.addAttribute("authors",
+            bookAdminDetailReadResponseDto.getAuthorReadResponseDtoList());
+        model.addAttribute("statuses",
+            bookAdminDetailReadResponseDto.getBookStatusReadResponseDtoList());
+        model.addAttribute("tags", bookAdminDetailReadResponseDto.getTagReadResponseDtoList());
+        model.addAttribute("now", LocalDate.now());
         return "admin/book_form_value";
     }
 
@@ -106,7 +97,17 @@ public class AdminBookController {
      */
     @GetMapping("/book/create")
     public String createBook(Model model) {
-        setForm(model);
+        BookAdminReadResponseDto bookAdminReadResponseDto = bookService.getBook();
+
+        model.addAttribute("categories",
+            bookAdminReadResponseDto.getParentCategoryReadResponseDtoList());
+        model.addAttribute("publishers",
+            bookAdminReadResponseDto.getPublisherReadResponseDtoList());
+        model.addAttribute("authors", bookAdminReadResponseDto.getAuthorReadResponseDtoList());
+        model.addAttribute("statuses", bookAdminReadResponseDto.getBookStatusReadResponseDtoList());
+        model.addAttribute("tags", bookAdminReadResponseDto.getTagReadResponseDtoList());
+        model.addAttribute("now", LocalDate.now());
+
         return BOOK_FORM_PAGE;
     }
 
@@ -157,28 +158,5 @@ public class AdminBookController {
             log.debug("book update error: {}", e.getMessage());
         }
         return "redirect:/admin/books";
-    }
-
-    /**
-     * 등록과 조회 페이지에서 공유하는 attribute를 처리하는 메서드입니다.
-     *
-     * @param model Model
-     */
-    private void setForm(Model model) {
-        List<ParentCategoryReadResponseDto> categories = categoryService.readCategory();
-
-        model.addAttribute("categories", categories);
-        // 임시
-        model.addAttribute("tags",
-            List.of(TagResponse.builder().tagId(1L).tagName("이달의 도서").build(),
-                TagResponse.builder().tagId(2L).tagName("test2").build()));
-        model.addAttribute("authors",
-            List.of(AuthorResponse.builder().authorId(1L).authorName("작가1").build(),
-                AuthorResponse.builder().authorId(2L).authorName("작가2").build()));
-        model.addAttribute("publishers",
-            List.of(PublisherResponse.builder().publisherId(1L).publisherName("출판사1").build(),
-                PublisherResponse.builder().publisherId(2L).publisherName("출판사2").build()));
-
-        model.addAttribute("now", LocalDate.now());
     }
 }
