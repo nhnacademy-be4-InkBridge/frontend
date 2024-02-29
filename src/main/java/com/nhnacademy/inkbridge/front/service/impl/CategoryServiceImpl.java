@@ -23,32 +23,23 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryAdaptor categoryAdaptor;
 
     /**
-     * 카테고리 생성하는 메소드입니다.
-     *
-     * @param requestDto CategoryCreateRequestDto
+     * {@inheritDoc}
      */
     @Override
     public void createCategory(CategoryCreateRequestDto requestDto) {
         categoryAdaptor.createCategory(requestDto);
     }
 
-
     /**
-     * 카테고리 목록을 보여주는 메소드입니다.
-     *
-     * @return List<ParentCategoryReadResponseDto>
+     * {@inheritDoc}
      */
     @Override
     public List<ParentCategoryReadResponseDto> readCategory() {
         return categoryAdaptor.readCategories();
     }
 
-
     /**
-     * 카테고리 수정하는 메소드입니다.
-     *
-     * @param categoryId Long
-     * @param requestDto CategoryUpdateRequestDto
+     * {@inheritDoc}
      */
     @Override
     public void updateCategory(Long categoryId, CategoryUpdateRequestDto requestDto) {

@@ -33,9 +33,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
 
 
     /**
-     * 카테고리를 생성하는 메소드입니다.
-     *
-     * @param requestDto CategoryCreateRequestDto
+     * {@inheritDoc}
      */
     @Override
     public void createCategory(CategoryCreateRequestDto requestDto) {
@@ -59,9 +57,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
     }
 
     /**
-     * 전체 카테고리 목록을 호출하는 메소드입니다.
-     *
-     * @return List - CategoryReadResponseDto
+     * {@inheritDoc}
      */
     @Override
     public List<ParentCategoryReadResponseDto> readCategories() {
@@ -81,10 +77,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
 
 
     /**
-     * 카테고리 수정하는 메소드입니다.
-     *
-     * @param categoryId Long
-     * @param requestDto CategoryUpdateRequestDto
+     * {@inheritDoc}
      */
     @Override
     public void updateCategory(Long categoryId, CategoryUpdateRequestDto requestDto) {

@@ -14,7 +14,7 @@ public interface BookCategoryAdaptor {
     /**
      * 첵이 속한 카테고리를 반환해주는 메소드입니다.
      *
-     * @param bookId
+     * @param bookId 책 번호
      * @return book과 관련된 category가 있는 BookCategoryReadResponseDto
      */
     List<BookCategoryReadResponseDto> readBookCategories(Long bookId);

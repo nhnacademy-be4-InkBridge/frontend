@@ -13,9 +13,25 @@ import java.util.List;
  */
 public interface CategoryService {
 
+    /**
+     * 카테고리 생성하는 메소드입니다.
+     *
+     * @param requestDto CategoryCreateRequestDto
+     */
     void createCategory(CategoryCreateRequestDto requestDto);
 
+    /**
+     * 카테고리 목록을 보여주는 메소드입니다.
+     *
+     * @return List<ParentCategoryReadResponseDto>
+     */
     List<ParentCategoryReadResponseDto> readCategory();
 
+    /**
+     * 카테고리 수정하는 메소드입니다.
+     *
+     * @param categoryId Long
+     * @param requestDto CategoryUpdateRequestDto
+     */
     void updateCategory(Long categoryId, CategoryUpdateRequestDto requestDto);
 }
