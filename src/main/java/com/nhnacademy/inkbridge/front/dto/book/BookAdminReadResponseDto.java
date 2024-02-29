@@ -1,8 +1,11 @@
 package com.nhnacademy.inkbridge.front.dto.book;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import com.nhnacademy.inkbridge.front.dto.bookstatus.BookStatusReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.tag.TagReadResponseDto;
+import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,18 +18,26 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookAdminReadResponseDto {
-    private String bookTitle;
-    private String bookIndex;
-    private String description;
-    private LocalDate publicatedAt;
-    private String isbn;
-    private Long regularPrice;
-    private Long price;
-    private BigDecimal discountRatio;
-    private Integer stock;
-    private Boolean isPackagable;
-    private Long publisherId;
-    private Long authorId;
-    private Long statusId;
-    private String url;
+
+    List<ParentCategoryReadResponseDto> parentCategoryReadResponseDtoList;
+    List<PublisherReadResponseDto> publisherReadResponseDtoList;
+    List<AuthorReadResponseDto> authorReadResponseDtoList;
+    List<BookStatusReadResponseDto> bookStatusReadResponseDtoList;
+    List<TagReadResponseDto> tagReadResponseDtoList;
+
+    // builder
+
+    @Builder
+    public BookAdminReadResponseDto(
+        List<ParentCategoryReadResponseDto> parentCategoryReadResponseDtoList,
+        List<PublisherReadResponseDto> publisherReadResponseDtoList,
+        List<AuthorReadResponseDto> authorReadResponseDtoList,
+        List<BookStatusReadResponseDto> bookStatusReadResponseDtoList,
+        List<TagReadResponseDto> tagReadResponseDtoList) {
+        this.parentCategoryReadResponseDtoList = parentCategoryReadResponseDtoList;
+        this.publisherReadResponseDtoList = publisherReadResponseDtoList;
+        this.authorReadResponseDtoList = authorReadResponseDtoList;
+        this.bookStatusReadResponseDtoList = bookStatusReadResponseDtoList;
+        this.tagReadResponseDtoList = tagReadResponseDtoList;
+    }
 }
