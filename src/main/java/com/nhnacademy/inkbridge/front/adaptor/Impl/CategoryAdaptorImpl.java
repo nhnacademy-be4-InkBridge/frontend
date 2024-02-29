@@ -16,6 +16,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -31,22 +32,14 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
 
-
     /**
      * {@inheritDoc}
      */
     @Override
     public void createCategory(CategoryCreateRequestDto requestDto) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders httpHeaders = createHeaders();
 
-        URI uri = UriComponentsBuilder
-            .fromUriString(gatewayProperties.getUrl())
-            .path("/api/category")
-            .encode()
-            .build()
-            .toUri();
+        URI uri = buildUriComponents("api/category").toUri();
 
         RequestEntity<CategoryCreateRequestDto> requestEntity = RequestEntity
             .post(uri)
@@ -61,12 +54,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      */
     @Override
     public List<ParentCategoryReadResponseDto> readCategories() {
-        URI uri = UriComponentsBuilder
-            .fromUriString(gatewayProperties.getUrl())
-            .path("api/category")
-            .encode()
-            .build()
-            .toUri();
+        URI uri = buildUriComponents("api/category").toUri();
 
         ResponseEntity<List<ParentCategoryReadResponseDto>> responseEntity = restTemplate.exchange(
             uri,
@@ -81,17 +69,8 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      */
     @Override
     public void updateCategory(Long categoryId, CategoryUpdateRequestDto requestDto) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        URI uri = UriComponentsBuilder
-            .fromUriString(gatewayProperties.getUrl())
-            .path("api/category/{categoryId}")
-            .encode()
-            .build()
-            .expand(categoryId)
-            .toUri();
+        HttpHeaders httpHeaders = createHeaders();
+        URI uri = buildUriComponents("api/category/{categoryId}").expand(categoryId).toUri();
 
         RequestEntity<CategoryUpdateRequestDto> requestEntity = RequestEntity
             .put(uri)
@@ -99,5 +78,32 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
             .body(requestDto);
 
         restTemplate.exchange(requestEntity, CategoryUpdateRequestDto.class);
+    }
+
+    /**
+     * 공통헤더를 만들어주는 메소드입니다.
+     *
+     * @return HttpHeaders 공통헤더타입
+     */
+    private HttpHeaders createHeaders() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        return httpHeaders;
+    }
+
+
+    /**
+     * 공통 경로를 만들어주는 메소드입니다.
+     *
+     * @param path 개별 경로
+     * @return UriComponentsBuilder
+     */
+    private UriComponents buildUriComponents(String path) {
+        return UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path(path)
+            .encode()
+            .build();
     }
 }
