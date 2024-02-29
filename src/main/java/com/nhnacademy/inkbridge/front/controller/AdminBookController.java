@@ -1,9 +1,6 @@
 package com.nhnacademy.inkbridge.front.controller;
 
-import com.nhnacademy.inkbridge.front.dto.AuthorResponse;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
-import com.nhnacademy.inkbridge.front.dto.PublisherResponse;
-import com.nhnacademy.inkbridge.front.dto.TagResponse;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
@@ -12,7 +9,6 @@ import com.nhnacademy.inkbridge.front.dto.book.BooksAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.BookService;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
