@@ -2,7 +2,7 @@ package com.nhnacademy.inkbridge.front.service.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.DeliveryPolicyAdaptor;
 import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyCreateRequestDto;
-import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.DeliveryPolicyService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class DeliveryPolicyServiceImpl implements DeliveryPolicyService {
      * @return DeliveryPolicyReadResponseDto
      */
     @Override
-    public DeliveryPolicyReadResponseDto getCurrentPolicy() {
+    public DeliveryPolicyAdminReadResponseDto getCurrentPolicy() {
         return deliveryPolicyAdaptor.getCurrentPolicy();
     }
 
@@ -36,7 +36,7 @@ public class DeliveryPolicyServiceImpl implements DeliveryPolicyService {
      * @return List - DeliveryPolicyReadResponseDto
      */
     @Override
-    public List<DeliveryPolicyReadResponseDto> getDeliveryPolicies() {
+    public List<DeliveryPolicyAdminReadResponseDto> getDeliveryPolicies() {
         return deliveryPolicyAdaptor.getDeliveryPolicies();
     }
 
