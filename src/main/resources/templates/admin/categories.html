@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}"
+>
+<body>
+<th:block layout:fragment="css">
+  <link href="/css/categories.css" rel="stylesheet">
+</th:block>
+<th:block layout:fragment="script">
+  <script src="/js/scripts.js"></script>
+  <script src="/js/datatables-simple-demo.js"></script>
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+          crossorigin="anonymous"></script>
+  <script type="text/javascript" async=""
+          src="https://www.googletagmanager.com/gtag/js?id=UA-38417733-17&amp;l=dataLayer&amp;cx=c"></script>
+  <script id="ga-gtag" async=""
+          src="https://www.googletagmanager.com/gtag/js?id=G-PZXV45BPZN"></script>
+</th:block>
+<div layout:fragment="content" id="layoutSidenav_content">
+  <main>
+    <!-- add Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">카테고리 명</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+          </div>
+          <form method="post" action="/admin/categories">
+            <div class="modal-body">
+              <input type="text" name="parentId" class="d-none parent-id"/>
+              <input type="text" name="categoryName" minlength="1" maxlength="10"/>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="submit" class="btn btn-primary">카테고리 등록</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!--    update Modal-->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">카테고리 명</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+          </div>
+          <form method="post" class="update-form" action="/admin/categories">
+            <input type="hidden" name="_method" value="put"/>
+            <div class="modal-body">
+              <input type="text" name="categoryName" minlength="1" maxlength="10"/>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="submit" class="btn btn-primary">카테고리 수정</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid px-4">
+      <h1 class="mt-4">Categories</h1>
+      <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">메인 페이지</a></li>
+        <li class="breadcrumb-item active">카테고리</li>
+      </ol>
+      <div class="category_container">
+        <div class="d-flex justify-content-end gap-2 mb-2">
+          <button type="button" class="all_open btn btn-light">전체 펼치기</button>
+          <button type="button" class="all_close btn btn-light">전체 접기</button>
+        </div>
+        <!--        카테고리-->
+        <div class="category bg-secondary bg-opacity-25">
+          <div class="item_order d-flex justify-content-between">
+            <span class="d-none ">0</span>
+            <span class="d-flex align-items-center">카테고리</span>
+            <div class="info_btn d-flex gap-3 align-items-center">
+              <button type="button" class="btn btn-secondary add-btn" data-bs-toggle="modal"
+                      data-bs-target="#addModal">
+                추가
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="bundle-item" th:each="parentCategory : ${parentCategories}">
+          <!--          부모카테고리 ex. 국내도서, 외국도서-->
+          <div class="category parent_category bg-secondary bg-opacity-25 d-flex">
+            <div class="arrow px-1 d-flex flex-column align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                   class="bi bi-chevron-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+              </svg>
+            </div>
+            <div class="item_order d-flex justify-content-between flex-grow-1">
+              <div class="d-none " th:text="${parentCategory.getCategoryId()}"></div>
+              <span class="d-flex align-items-center"
+                    th:text="${parentCategory.getCategoryName()}"></span>
+              <div class="info_btn d-flex gap-3 align-items-center">
+                <button type="button" class="btn btn-secondary add-btn" data-bs-toggle="modal"
+                        data-bs-target="#addModal">
+                  추가
+                </button>
+                <button type="button" class="btn btn-secondary update-btn" data-bs-toggle="modal"
+                        data-bs-target="#updateModal">
+                  수정
+                </button>
+              </div>
+            </div>
+          </div>
+          <!--          자식카테고리 ex. IT, 어린이 도서-->
+          <div class="children_category hidden">
+            <div class=" bg-secondary bg-opacity-25 d-flex ms-5"
+                 th:each="childCategory:${parentCategory.getParentCategories()}">
+              <div class="item_order d-flex justify-content-between flex-grow-1 ">
+                <div class="d-none " th:text="${childCategory.getCategoryId()}"></div>
+                <span class="d-flex align-items-center"
+                        th:text="${childCategory.getCategoryName()}">
+
+                  </span>
+                <div class="info_btn d-flex gap-3 align-items-center">
+                  <button type="button" class="btn btn-secondary update-btn" data-bs-toggle="modal"
+                          data-bs-target="#updateModal">
+                    수정
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="/js/categories.js"></script>
+</div>
+</body>
+</html>
