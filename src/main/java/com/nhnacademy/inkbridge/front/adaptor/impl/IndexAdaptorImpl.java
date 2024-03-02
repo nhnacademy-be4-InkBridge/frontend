@@ -1,8 +1,8 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.IndexAdaptor;
-import com.nhnacademy.inkbridge.front.dto.BookReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.BooksReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -38,7 +38,7 @@ public class IndexAdaptorImpl implements IndexAdaptor {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         ResponseEntity<List<BooksReadResponseDto>> exchange = restTemplate.exchange(
-            "http://localhost:8060/api/books",
+            "http://localhost:8080/api/books",
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
@@ -58,7 +58,7 @@ public class IndexAdaptorImpl implements IndexAdaptor {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         ResponseEntity<BookReadResponseDto> exchange = restTemplate.exchange(
-            "http://localhost:8060/api/books/{bookId}",
+            "http://localhost:8080/api/books/{bookId}",
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {

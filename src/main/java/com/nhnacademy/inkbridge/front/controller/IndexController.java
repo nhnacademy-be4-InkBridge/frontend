@@ -1,7 +1,7 @@
 package com.nhnacademy.inkbridge.front.controller;
 
-import com.nhnacademy.inkbridge.front.dto.BookReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.BooksReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
 import java.util.List;
 import org.springframework.stereotype.Controller;

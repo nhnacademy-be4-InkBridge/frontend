@@ -1,7 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
-import com.nhnacademy.inkbridge.front.dto.BookReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.BooksReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import java.util.List;
 
 /**

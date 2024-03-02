@@ -1,8 +1,8 @@
 package com.nhnacademy.inkbridge.front.service.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.IndexAdaptor;
-import com.nhnacademy.inkbridge.front.dto.BookReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.BooksReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
 import java.util.List;
 import org.springframework.stereotype.Service;
