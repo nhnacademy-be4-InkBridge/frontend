@@ -34,7 +34,7 @@ public class IndexServiceImpl implements IndexService {
     public BookReadResponseDto getBook(Long bookId) {
         BookReadResponseDto book = indexAdaptor.getBook(bookId);
         String description = book.getDescription();
-        Pattern pattern = Pattern.compile("!\\[image alt attribute\\((.*?)\\)");
+        Pattern pattern = Pattern.compile("!\\[image alt attribute\\]\\((.*?)\\)");
         Matcher matcher = pattern.matcher(description);
 
         List<String> contents = new ArrayList<>();

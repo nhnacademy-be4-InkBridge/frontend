@@ -24,6 +24,7 @@ public class BookReadResponseDto {
     private Long price;
     private BigDecimal discountRatio;
     private Boolean isPackagable;
+    private String thumbnail;
     private Long publisherId;
     private String publisherName;
     private Long authorId;
