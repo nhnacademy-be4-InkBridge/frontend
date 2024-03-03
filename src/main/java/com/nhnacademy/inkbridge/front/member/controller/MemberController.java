@@ -15,14 +15,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class MemberController {
 
-    @GetMapping("/auth-login")
+    @GetMapping("/login")
     public String loginPage() {
         return "member/login";
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletResponse response) {
-        //memberService logout
+        // todo: memberService logout
         return "redirect:/";
+    }
+
+    @GetMapping("/signup")
+    public String signupPage() {
+        return "/member/signup";
     }
 }

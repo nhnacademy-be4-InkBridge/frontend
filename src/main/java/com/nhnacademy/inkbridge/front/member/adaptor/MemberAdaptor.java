@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.member.adaptor;
 
 import com.nhnacademy.inkbridge.front.member.dto.request.MemberLoginRequestDto;
+import com.nhnacademy.inkbridge.front.member.dto.response.MemberInfoResponseDto;
 import org.springframework.http.ResponseEntity;
 
 /**
@@ -17,4 +18,19 @@ public interface MemberAdaptor {
      * @return 토큰 정보를 헤더로 가져옴
      */
     ResponseEntity<Void> login(MemberLoginRequestDto memberLoginRequestDto);
+
+    /**
+     * 토큰 인증을 통해 멤버의 정보를 가져옴
+     * @param accessToken 인가 토큰
+     * @return 인증 받은 유저 정보
+     */
+    MemberInfoResponseDto getMemberInfoByToken(String accessToken);
+
+    /**
+     * 사이트 매번 접속시마다 토큰이 만료되었을대 재발급 요청
+     * @param access access 토큰
+     * @param refresh refresh 토큰
+     * @return access 토큰 헤더로 다시 받아옴
+     */
+    ResponseEntity<Void> reissueToken(String access, String refresh);
 }
