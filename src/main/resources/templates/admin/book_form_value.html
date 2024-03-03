@@ -14,6 +14,24 @@
 </th:block>
 
 <div layout:fragment="content" id="layoutSidenav_content">
+  <div class="modal fade" id="modalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalCenterTitle">등록 안내</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>입력 내용을 다시 확인해주세요.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <form class="contact100-form validate-form" method="post"
         th:action="'/admin/book/update/' + ${bookId}" enctype="multipart/form-data" id="bookForm">
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="isbn을 입력하세요">
@@ -154,7 +172,7 @@
       <img th:src="${book.url}" alt="no image">
     </div>
     <div class="wrap-input100 bg1">
-      <label for="thumbnail" class="label-input100">새 썸네일</label>
+      <label for="thumbnail" class="label-input100">새 썸네일 등록</label>
       <input id="thumbnail" type="file" name="thumbnail">
     </div>
     <div class="container-contact100-form-btn">

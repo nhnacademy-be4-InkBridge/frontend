@@ -41,12 +41,21 @@ const editor = new toastui.Editor({
     }
   }
 });
-// 저장할 때 데이터를 컨트롤러로
 document.getElementById('bookForm').addEventListener('submit',
-    function () {
-      document.getElementById('descriptionHidden').value = editor.getMarkdown(); // 숨겨진 입력 필드에 설정
-      document.getElementById('fileIdListHidden').value = fileIdList;
-// val count > 10 -> alert
+    function (event) {
+      var description = editor.getMarkdown();
+      var fileInput = document.getElementById('thumbnail');
+      if (description.trim().length === 0 || !fileInput?.files?.length) {
+        event.preventDefault();
+        var modal = document.getElementById('modalCenter'); // 모달 요소 가져오기
+        if (modal) {
+          var bootstrapModal = new bootstrap.Modal(modal); // 부트스트랩 모달 인스턴스 생성
+          bootstrapModal.show(); // 모달 보이기
+        }
+      } else {
+        document.getElementById('descriptionHidden').value = description; // 숨겨진 입력 필드에 설정
+        document.getElementById('fileIdListHidden').value = fileIdList;
+      }
     });
 
 mobiscroll.setOptions({
@@ -221,3 +230,19 @@ function calculateSalePrice() {
     document.getElementById("price").value = price.toFixed(0);
   }
 }
+
+window.onload = function () {
+  var modal = document.getElementById('modalCenter'); // 모달 요소 가져오기
+  if (modal) {
+    var error = modal.getAttribute('th:if');
+    if (error === 'true') {
+      modal.classList.add('show'); // 모달에 'show' 클래스 추가
+      modal.style.display = 'block'; // 모달 보이기
+    }
+
+    var closeButton = document.querySelector('[data-bs-dismiss="modal"]'); // 모달 닫기 버튼 가져오기
+    closeButton.addEventListener('click', function () {
+      modal.hide(); // 모달 숨기기
+    });
+  }
+};
