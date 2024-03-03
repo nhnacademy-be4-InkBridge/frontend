@@ -33,7 +33,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/admin")
 public class AdminBookController {
 
-    private static final String BOOK_FORM_PAGE = "admin/book_form";
     private final BookService bookService;
 
     public AdminBookController(BookService bookService) {
@@ -104,7 +103,7 @@ public class AdminBookController {
         model.addAttribute("tags", bookAdminReadResponseDto.getTagReadResponseDtoList());
         model.addAttribute("now", LocalDate.now());
 
-        return BOOK_FORM_PAGE;
+        return "admin/book_form";
     }
 
     /**
@@ -120,13 +119,13 @@ public class AdminBookController {
         @Valid @ModelAttribute BookAdminCreateRequestDto bookAdminCreateRequestDto,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            log.debug("error!!!: {}", bindingResult.getFieldErrors().get(0).getDefaultMessage());
-            return BOOK_FORM_PAGE;
+            return "redirect:/admin/book/create";
         }
         try {
             bookService.createBook(thumbnail, bookAdminCreateRequestDto);
         } catch (IOException e) {
             log.debug("book create error: {}", e.getMessage());
+            return "redirect:/admin/book/create";
         }
         return "redirect:/admin/books";
     }
@@ -145,13 +144,13 @@ public class AdminBookController {
         @Valid @ModelAttribute BookAdminUpdateRequestDto bookAdminUpdateRequestDto,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return BOOK_FORM_PAGE;
+            return "redirect:/admin/book/" + bookId;
         }
-
         try {
             bookService.updateBook(bookId, thumbnail, bookAdminUpdateRequestDto);
         } catch (IOException e) {
             log.debug("book update error: {}", e.getMessage());
+            return "redirect:/admin/book/" + bookId;
         }
         return "redirect:/admin/books";
     }

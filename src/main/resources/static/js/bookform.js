@@ -230,19 +230,3 @@ function calculateSalePrice() {
     document.getElementById("price").value = price.toFixed(0);
   }
 }
-
-window.onload = function () {
-  var modal = document.getElementById('modalCenter'); // 모달 요소 가져오기
-  if (modal) {
-    var error = modal.getAttribute('th:if');
-    if (error === 'true') {
-      modal.classList.add('show'); // 모달에 'show' 클래스 추가
-      modal.style.display = 'block'; // 모달 보이기
-    }
-
-    var closeButton = document.querySelector('[data-bs-dismiss="modal"]'); // 모달 닫기 버튼 가져오기
-    closeButton.addEventListener('click', function () {
-      modal.hide(); // 모달 숨기기
-    });
-  }
-};
