@@ -95,3 +95,15 @@
     font-size: 18px;
     font-weight: 500
 }
+.hide-href {
+    text-decoration: none; /* 링크의 밑줄 제거 */
+    color: #000000; /* 링크의 기본 색상 */
+}
+
+.hide-href:hover {
+    color: blue; /* 링크에 마우스를 올렸을 때 색상 변경 */
+}
+.set-inline {
+    display: inline-block;
+    width: 300px;
+}
