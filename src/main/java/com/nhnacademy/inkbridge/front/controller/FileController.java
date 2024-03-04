@@ -3,6 +3,8 @@ package com.nhnacademy.inkbridge.front.controller;
 import com.nhnacademy.inkbridge.front.dto.book.BookFileReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.FileService;
 import java.io.IOException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,16 +26,27 @@ public class FileController {
         this.fileService = fileService;
     }
 
-
+    /**
+     * 파일을 저장하는 메서드입니다.
+     *
+     * @param image MultipartFile
+     * @return BookFileReadResponseDto
+     */
     @PostMapping("/image-upload")
-    public BookFileReadResponseDto saveFile(@RequestParam MultipartFile image) {
+    public ResponseEntity<BookFileReadResponseDto> saveFile(@RequestParam MultipartFile image) {
         try {
-            return fileService.uploadFile(image);
+            return new ResponseEntity<>(fileService.uploadFile(image), HttpStatus.CREATED);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * 파일을 byte[]로 조회하는 메서드입니다.
+     *
+     * @param fileName String
+     * @return byte[]
+     */
     @GetMapping("/image-load")
     public byte[] loadFile(@RequestParam(name = "filename") String fileName) {
         return fileService.loadFile(fileName);

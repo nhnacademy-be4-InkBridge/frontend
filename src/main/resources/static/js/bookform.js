@@ -25,6 +25,10 @@ const editor = new toastui.Editor({
           method: 'POST',
           body: formData,
         });
+        if (response.status !== 201) {
+          alert('업로드 실패');
+          return;
+        }
 
         // 3. 컨트롤러에서 전달받은 디스크에 저장된 파일명
         const {fileId, fileName} = await response.json();
