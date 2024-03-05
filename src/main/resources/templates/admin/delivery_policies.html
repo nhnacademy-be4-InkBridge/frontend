@@ -59,7 +59,6 @@
         <td th:text="${currentPolicy.deliveryPolicyId}"></td>
         <td th:text="${#numbers.formatInteger(currentPolicy.deliveryPrice, 1, 'COMMA')} + '원'"></td>
         <td th:text="${#numbers.formatInteger(currentPolicy.freeDeliveryPrice, 1, 'COMMA')} + '원'"></td>
-        <td th:text="${currentPolicy.createdAt}"></td>
       </tr>
     </table>
     <h5 class="fst-normal float-start ms-2 me-4 my-2">정책 변경 내역</h5>
