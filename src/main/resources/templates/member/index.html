@@ -120,7 +120,6 @@
           }
 
           books.forEach(book => {
-            console.log('product!!: ' + book.bookId);
             const productHTML = createBook(book);
             productList.insertAdjacentHTML('beforeend', productHTML);
           });
@@ -134,9 +133,9 @@
       return `
       <div class="col-md-6 col-lg-4 col-xl-3">
         <div class="card text-center card-product"
-             th:onclick="|location.href='@{/book(id=${book.bookId})}'|">
+             onclick="location.href='/book?id=${book.bookId}'">
           <div class="card-product__img">
-            <img class="card-img" th:src="${book.fileUrl}" alt="no image"
+            <img class="card-img" src="${book.fileUrl}" alt="no image"
                  style="min-width: 230px; min-height: 250px;">
           </div>
           <div class="card-body">
