@@ -11,49 +11,66 @@
 </th:block>
 
 <div layout:fragment="content" class="container">
-  <div class="container-fluid py-5 mt-5">
-    <div class="container py-5">
+  <div class="container-fluid mt-5">
+    <div class="container">
       <div class="row g-4 mb-5">
         <div class="row g-4">
-          <div class="col-lg-6">
-            <div class="border rounded" style="min-height: 500px">
-              <img th:src="${book.thumbnail}" class="img-fluid rounded" alt="Image">
-            </div>
-          </div>
-          <div class="col-lg-6" style="padding-left: 70px">
-            <h5 class="mb-4"><a href="#" th:text="${book.publisherName}" class="hide-href"></a>
-            </h5>
-            <h3 class="fw-bold mb-3" th:text="${book.bookTitle}"></h3>
-            <h5 class="mb-4"><a href="#" th:text="${book.authorName}+' 저'" class="hide-href"></a>
-            </h5>
-            <h5 class="fw-bold mb-4" th:text="'정가 ' + ${book.regularPrice} + '원'"></h5>
-            <h5 class="fw-bold mb-3" th:text="'판매가 ' + ${book.price} + '원'"></h5>
-            <div class="d-flex mb-4">
-            </div>
-            <div class="input-group quantity mb-5" style="width: 100px;">
-              <div class="input-group-btn">
-                <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                  <i class="fa fa-minus"></i>
-                </button>
-              </div>
-              <input type="text" class="form-control form-control-sm text-center border-0"
-                     value="1">
-              <div class="input-group-btn">
-                <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                  <i class="fa fa-plus"></i>
-                </button>
+          <div class="d-flex mb-5">
+            <div class="col-lg-6">
+              <div class="border rounded" style="min-height: 500px">
+                <img th:src="${book.thumbnail}" class="img-fluid rounded" alt="Image"
+                     id="thumbnail">
               </div>
             </div>
-            <div class="justify-content-between d-flex" style="width: 30rem">
-              <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4">
-                <i class="fas fa-heart"></i>
-              </a>
-              <a href="/cart"
-                 class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-                <i class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니에 담기</a>
-              <a href="#"
-                 class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-                <i class="fa fa-shopping-bag me-2 text-primary"></i> 상품 바로 구매하기</a>
+            <div class="col-lg-6" style="padding-left: 70px">
+              <h5 class="mb-4"><a href="#" th:text="${book.publisherName}" class="hide-href"></a>
+              </h5>
+              <h3 class="fw-bold mb-3" th:text="${book.bookTitle}" id="bookTitle"></h3>
+              <h5 class="mb-4"><a href="#" th:text="${book.authorName}+' 저'"
+                                  class="hide-href"></a>
+              </h5>
+              <div class="mb-3">
+                <span>정가 </span><h5 class="fw-bold mb-4 d-sm-inline" th:text="${book.regularPrice}"
+                                    id="regularPrice"></h5><span> 원</span>
+              </div>
+              <div class="mb-3">
+                <span>판매가 </span><h5 class="fw-bold mb-3 d-sm-inline" th:text="${book.price}"
+                                     id="price"></h5>
+                <span>원</span>
+              </div>
+              <div class="d-flex mb-4">
+              </div>
+              <div class="input-group quantity mb-5" style="width: 100px;">
+                <div class="input-group-btn">
+                  <button class="btn btn-sm btn-minus rounded-circle bg-light border"
+                          type="button">
+                    <i class="fa fa-minus"></i>
+                  </button>
+                </div>
+                <input type="text" class="form-control form-control-sm text-center border-0"
+                       value="1" name="amount" id="amount">
+                <div class="input-group-btn">
+                  <button class="btn btn-sm btn-plus rounded-circle bg-light border"
+                          type="button">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
+                <input type="hidden" th:value="${bookId}" id="bookId">
+                <input type="hidden" th:value="${book.isPackagable}" id="isPackagable">
+              </div>
+              <div class="justify-content-between d-flex" style="width: 30rem">
+                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4">
+                  <i class="fas fa-heart"></i>
+                </a>
+                <button type="button" onclick="setCookie()"
+                        class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                  <i class="fa fa-shopping-bag me-2 text-primary"></i> 상품 바로 구매하기
+                </button>
+                <button type="button"
+                        class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                  <i class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니에 담기
+                </button>
+              </div>
             </div>
           </div>
           <div class="col-lg-12">
@@ -69,9 +86,22 @@
                 <span th:text="${book.publicatedAt}"></span>
               </p>
             </div>
+            <div class="mb-5">
+              <h5 class="fw-bold mb-4">관련 분류</h5>
+              <div class="mb-3">
+                <p>카테고리 분류</p>
+                <span th:each="categoryName: ${book.categoryName}" th:text="${categoryName}"
+                      class="border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"></span>
+              </div>
+              <div class="mb-3">
+                <p>태그 분류</p>
+                <span th:each="tagName: ${book.tagName}" th:text="${tagName}"
+                      class="border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"></span>
+              </div>
+            </div>
             <div class="nav nav-tabs mb-4"></div>
             <div class="tab-content mb-5">
-              <h4 class="fw-bold mb-3">목차</h4>`
+              <h4 class="fw-bold mb-3">목차</h4>
               <p class="mb-4" th:text="${book.bookIndex}"></p>
             </div>
             <div class="nav nav-tabs mb-4"></div>
@@ -126,7 +156,6 @@
   <script src="/js/quantity-count.js"></script>
   <script>
     document.querySelectorAll('.fa-star').forEach(function (star) {
-      console.log('star: ' + star);
       star.addEventListener('click', function () {
         var rating = parseInt(this.getAttribute('data-rating'));
         document.querySelectorAll('.fa-star').forEach(function (star, index) {

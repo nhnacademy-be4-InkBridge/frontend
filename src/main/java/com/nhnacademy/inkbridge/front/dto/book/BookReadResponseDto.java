@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.dto.book;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,7 +30,9 @@ public class BookReadResponseDto {
     private String publisherName;
     private Long authorId;
     private String authorName;
-    private List<String> fileUrl;
+    private Set<String> fileUrl;
+    private Set<String> tagName;
+    private Set<String> categoryName;
     private List<String> contents;
 
     public void setContents(List<String> contents) {
