@@ -28,6 +28,7 @@ public class CustomUserDetailService implements UserDetailsService {
     private final MemberAdaptor memberAdaptor;
     @Override
     public UserDetails loadUserByUsername(String accessToken) throws UsernameNotFoundException {
+        log.info("adaptor start ->");
         MemberInfoResponseDto dto = memberAdaptor.getMemberInfoByToken(accessToken);
 
 
@@ -37,6 +38,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
         List<SimpleGrantedAuthority> authorities = dto.getRoles().stream().map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+        log.info("adaptor end -> {}", authorities);
         return new User(
                 dto.getMemberId().toString(),
                 "",
