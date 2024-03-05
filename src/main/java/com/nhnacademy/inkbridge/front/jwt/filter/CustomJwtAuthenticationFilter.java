@@ -40,11 +40,9 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * 모든 요청마다 사용자인지 아닌지 체크.
      *
-     * @param request
-     * @param response
-     * @param filterChain
-     * @throws ServletException
-     * @throws IOException
+     * @param request request
+     * @param response response
+     * @param filterChain filterChain
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -54,7 +52,6 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
             if (handleInvalidRequest(request, response, filterChain)) {
                 return;
             }
-            log.info("1");
             // 토큰이 쿠키에 존재 유무
             Cookie accessCookie = CookieUtils.getCookie(ACCESS_COOKIE.getName());
             Cookie refreshCookie = CookieUtils.getCookie(REFRESH_COOKIE.getName());
@@ -62,13 +59,11 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
             if (handleNoneExistCookie(request, response, filterChain, accessCookie, refreshCookie, uuidCookie)) {
                 return;
             }
-            log.info("2");
             if (isExpireTime(Objects.requireNonNull(refreshCookie).getValue())) {
                 // todo: 로그아웃 로직 처리
                 filterChain.doFilter(request, response);
                 return;
             }
-            log.info("3");
             // 재발급 로직
             String accessValue = Objects.requireNonNull(accessCookie).getValue();
             String accessExp = accessValue.split("\\.")[3];
@@ -101,21 +96,19 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                 accessValue = newCookie.getValue();
                 accessExp = accessExpiredTime.toString();
             }
-            log.info("4");
 
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
-
                 UserDetails userDetails =
                         userDetailsService.loadUserByUsername(
                                 accessValue.substring(0, tokenWithoutExpLength(accessValue, accessExp)));
                 if (userDetails != null) {
                     UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "",
+                            new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null,
                                     userDetails.getAuthorities());
+
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }
-            log.info("5");
 
             filterChain.doFilter(request, response);
         } catch (Exception e) {
@@ -169,7 +162,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
      */
     private static boolean handleInvalidRequest(HttpServletRequest request, HttpServletResponse response,
                                                 FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().contains("/static/**")) {
+        if (request.getRequestURI().contains("/static/**")|| request.getRequestURI().contains("/css/**")||request.getRequestURI().contains("/error")) {
             filterChain.doFilter(request, response);
             return true;
         }

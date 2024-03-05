@@ -28,10 +28,8 @@ public class CustomUserDetailService implements UserDetailsService {
     private final MemberAdaptor memberAdaptor;
     @Override
     public UserDetails loadUserByUsername(String accessToken) throws UsernameNotFoundException {
-        log.info("userDetailService start ->");
         MemberInfoResponseDto dto = memberAdaptor.getMemberInfoByToken(accessToken);
 
-        log.info("userDetailService end ->");
 
         if (Objects.isNull(dto)) {
             throw new MemberNotFoundException();
@@ -39,7 +37,8 @@ public class CustomUserDetailService implements UserDetailsService {
 
         List<SimpleGrantedAuthority> authorities = dto.getRoles().stream().map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-        return new User(dto.getMemberId().toString(),
+        return new User(
+                dto.getMemberId().toString(),
                 "",
                 authorities);
     }
