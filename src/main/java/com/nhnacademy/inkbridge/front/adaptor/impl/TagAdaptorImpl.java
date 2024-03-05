@@ -59,7 +59,8 @@ public class TagAdaptorImpl implements TagAdaptor {
             uri, HttpMethod.POST, entity, new ParameterizedTypeReference<>() {
             });
         if (responseEntity.getStatusCode() != HttpStatus.CREATED) {
-            throw new TagException(newTag.getTagName() + " 이미 존재하는 테그입니다.");
+            String message = newTag.getTagName() + " 이미 존재하는 테그입니다.";
+            throw new TagException(message);
         }
     }
 

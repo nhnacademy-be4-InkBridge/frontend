@@ -3,13 +3,11 @@ package com.nhnacademy.inkbridge.front.controller;
 import com.nhnacademy.inkbridge.front.dto.tag.Tag;
 import com.nhnacademy.inkbridge.front.dto.tag.TagCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.tag.TagUpdateRequestDto;
-import com.nhnacademy.inkbridge.front.exception.TagException;
 import com.nhnacademy.inkbridge.front.service.TagService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -48,8 +46,7 @@ public class AdminTagController {
 
     @PutMapping("/update/{tagId}")
     public String modifyTag(@ModelAttribute TagUpdateRequestDto tagUpdateRequestDto,
-        @PathVariable Long tagId,
-        BindingResult bindingResult) {
+        @PathVariable Long tagId) {
         tagService.updateTag(tagId, tagUpdateRequestDto);
         return TAG_URL;
     }
@@ -60,9 +57,9 @@ public class AdminTagController {
         return TAG_URL;
     }
 
-    @ExceptionHandler(value = TagException.class)
-    public String tagExceptionHandler(TagException e, RedirectAttributes redirectAttributes){
-        redirectAttributes.addAttribute("message", e.getMessage());
+    @ExceptionHandler(value = Exception.class)
+    public String tagExceptionHandler(Exception e, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("message", e.getMessage());
         return TAG_URL;
     }
 }

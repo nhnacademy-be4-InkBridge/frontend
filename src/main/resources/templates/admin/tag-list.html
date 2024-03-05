@@ -12,6 +12,8 @@
 </head>
 <body>
 <div class="container rounded-3 border border-2 border-dark my-5 bg-white">
+  <div th:if="${message != null}" class="alert alert-warning" role="alert" th:text="${message}">
+  </div>
   <div>
     <h1 class="h1">태그 관리</h1>
     <!-- 태그 생성 폼 -->
@@ -20,7 +22,7 @@
         <form th:action="@{/admin/tags/create}" method="post">
           <td>
             <input class="py-3 form-control shadow" placeholder="태그 이름 입력" type="text"
-                   name="tagName" id="tagName" required>
+                   name="tagName" id="tagName" required maxlength="10">
           </td>
           <td>
             <button type="submit" class="mt-2 btn btn-dark">태그 생성</button>
@@ -54,7 +56,7 @@
               <input type="hidden" name="_method" value="put"/>
               <td>
                 <input type="text" class="form-control" placeholder="태그 이름 수정" name="tagName"
-                       th:value="${tag.tagName}" required>
+                       th:value="${tag.tagName}" required maxlength="10">
               </td>
               <td>
                 <button type="submit" class="btn btn-primary mt-2">수정</button>
