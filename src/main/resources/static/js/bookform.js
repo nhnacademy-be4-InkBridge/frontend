@@ -36,7 +36,7 @@ const editor = new toastui.Editor({
         fileIdList.push(fileId);
 
         // 4. addImageBlobHook의 callback 함수를 통해, 디스크에 저장된 이미지를 에디터에 렌더링
-        const resource = `/image-load?filename=${fileName}`;
+        const resource = `/image-load/${fileName}`;
 
         callback(resource, 'image alt attribute');
       } catch (error) {
@@ -50,7 +50,6 @@ document.getElementById('bookForm').addEventListener('submit',
     function () {
       document.getElementById('descriptionHidden').value = editor.getMarkdown(); // 숨겨진 입력 필드에 설정
       document.getElementById('fileIdListHidden').value = fileIdList;
-// val count > 10 -> alert
     });
 
 mobiscroll.setOptions({

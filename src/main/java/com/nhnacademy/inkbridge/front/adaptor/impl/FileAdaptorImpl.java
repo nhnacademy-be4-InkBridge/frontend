@@ -2,7 +2,9 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.FileAdaptor;
 import com.nhnacademy.inkbridge.front.dto.book.BookFileReadResponseDto;
+import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.io.IOException;
+import java.net.URI;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
@@ -15,6 +17,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * class: FileAdaptorImpl.
@@ -26,9 +29,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileAdaptorImpl implements FileAdaptor {
 
     private final RestTemplate restTemplate;
+    private final GatewayProperties gatewayProperties;
 
-    public FileAdaptorImpl(RestTemplate restTemplate) {
+    public FileAdaptorImpl(RestTemplate restTemplate, GatewayProperties gatewayProperties) {
         this.restTemplate = restTemplate;
+        this.gatewayProperties = gatewayProperties;
     }
 
     /**
@@ -36,6 +41,13 @@ public class FileAdaptorImpl implements FileAdaptor {
      */
     @Override
     public BookFileReadResponseDto uploadFile(MultipartFile image) throws IOException {
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path("/api/images")
+            .encode()
+            .build()
+            .toUri();
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -44,7 +56,7 @@ public class FileAdaptorImpl implements FileAdaptor {
         fileToByteArrayResource(image, multiValueMap, httpHeaders);
 
         ResponseEntity<BookFileReadResponseDto> exchange = restTemplate.exchange(
-            "http://localhost:8060/api/images",
+            uri,
             HttpMethod.POST,
             new HttpEntity<>(multiValueMap, httpHeaders),
             new ParameterizedTypeReference<>() {
@@ -59,16 +71,23 @@ public class FileAdaptorImpl implements FileAdaptor {
      */
     @Override
     public byte[] loadFile(String fileName) {
-        HttpHeaders httpHeaders = new HttpHeaders();
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path("/api/images/{fileName}")
+            .encode()
+            .build()
+            .expand(fileName)
+            .toUri();
 
+        HttpHeaders httpHeaders = new HttpHeaders();
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
 
         ResponseEntity<byte[]> exchange = restTemplate.exchange(
-            "http://localhost:8060/api/images?fileName={fileName}",
+            uri,
             HttpMethod.GET,
             requestEntity,
             new ParameterizedTypeReference<>() {
-            }, fileName);
+            });
         if (!exchange.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException();
         }
