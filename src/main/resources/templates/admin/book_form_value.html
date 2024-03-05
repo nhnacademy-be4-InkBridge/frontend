@@ -30,7 +30,7 @@
                data-tags="true" placeholder="판매 상태를 선택하세요..."/>
       </label>
       <select id="status-multiple-select" name="statusId" class="input100">
-        <option th:each="status: ${statuses}" th:value="${status.statusId}"
+        <option th:if="${statuses}!=null" th:each="status: ${statuses}" th:value="${status.statusId}"
                 th:text="${status.statusName}"
                 th:selected="${status.statusId==book.statusId}"></option>
       </select>
@@ -38,7 +38,7 @@
     <div class="wrap-input100 validate-input bg1" data-validate="도서 이름을 입력하세요">
       <label for="bookTitle" class="label-input100">도서명</label>
       <input id="bookTitle" class="input100" type="text" th:name="bookTitle"
-             th:value="${book?.bookTitle}">
+             th:value="${book.bookTitle}">
     </div>
     <div class="wrap-input100 input100-select bg1 validate-input"
          data-validate="10개 이하의 카테고리를 선택하세요">
@@ -48,15 +48,15 @@
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="10개 이하의 카테고리를 선택하세요..."/></label>
       <select id="category-multiple-select" name="categories" class="input100" multiple>
-        <optgroup th:each="category: ${categories}" th:label="${category.categoryName}">
+        <optgroup th:if="${categories}!=null" th:each="category: ${categories}" th:label="${category.categoryName}">
           <option th:value="${category.categoryId}"
                   th:text="${category.categoryId} + ${category.categoryName}"
-                  th:selected="${book.categoryIdList?.contains(category.categoryId)}"
+                  th:selected="${book.categoryIdList.contains(category.categoryId)}"
                   class="parent-category"></option>
           <option th:each="subCategory: ${category.parentCategories}"
                   th:value="${subCategory.categoryId}"
                   th:text="${subCategory.categoryId} + ${subCategory.categoryName}"
-                  th:selected="${book.categoryIdList?.contains(subCategory.categoryId)}"></option>
+                  th:selected="${book.categoryIdList.contains(subCategory.categoryId)}"></option>
         </optgroup>
       </select>
     </div>
@@ -67,8 +67,8 @@
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="0개 이상의 태그를 선택하세요..."/></label>
       <select id="tag-multiple-select" name="tags" multiple>
-        <option th:each="tag: ${tags}" th:value="${tag.tagId}" th:text="${tag.tagName}"
-                th:selected="${book.tagIdList?.contains(tag.tagId)}"></option>
+        <option th:if="${tags}!=null"  th:each="tag: ${tags}" th:value="${tag.tagId}" th:text="${tag.tagName}"
+                th:selected="${book.tagIdList.contains(tag.tagId)}"></option>
       </select>
     </div>
     <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1 validate-input"
@@ -80,7 +80,7 @@
                data-tags="true" placeholder="저자를 선택하세요..."/>
       </label>
       <select id="author-multiple-select" name="authorId" class="input100">
-        <option th:each="author: ${authors}" th:value="${author.authorId}"
+        <option th:if="${authors}!=null" th:each="author: ${authors}" th:value="${author.authorId}"
                 th:text="${author.authorName}"
                 th:selected="${book.authorId==author.authorId}"></option>
       </select>
@@ -94,7 +94,7 @@
                data-tags="true" placeholder="출판사를 선택하세요..."/>
       </label>
       <select id="publisher-multiple-select" th:name="publisherId" class="input100">
-        <option th:each="publisher: ${publishers}" th:value="${publisher.publisherId}"
+        <option th:if="${publishers}!=null" th:each="publisher: ${publishers}" th:value="${publisher.publisherId}"
                 th:text="${publisher.publisherName}"
                 th:selected="${book.publisherId==publisher.publisherId}"></option>
       </select>
@@ -102,7 +102,7 @@
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="정가를 입력하세요">
       <label for="regularPrice" class="label-input100">정가</label>
       <input id="regularPrice" class="input100" type="text" th:name="regularPrice"
-             th:value="${book?.regularPrice}">
+             th:value="${book.regularPrice}">
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="판매가를 입력하세요">
       <label for="price" class="label-input100">판매가</label>
@@ -112,7 +112,7 @@
          data-validate="할인율은 0% 이상이어야 합니다">
       <label for="discountRatio" class="label-input100">할인율(%)</label>
       <input class="input100" type="text" th:name="discountRatio"
-             th:value="${book?.discountRatio}" id="discountRatio">
+             th:value="${book.discountRatio}" id="discountRatio">
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100"
          data-validate="재고는 0개 이상이어야 합니다">
@@ -123,27 +123,27 @@
       <span class="label-input100">포장 가능 여부</span>
       <div class="input100">
         <input type="radio" th:value="true" th:name="isPackagable" id="packageable"
-               th:checked="${book?.isPackagable}">
+               th:checked="${book.isPackagable}">
         <label for="packageable">포장 가능</label>
         <input type="radio" th:value="false" th:name="isPackagable" id="non_packageable"
-               th:checked="${!book?.isPackagable}?: true">
+               th:checked="${!book.isPackagable}?: true">
         <label for="non_packageable">포장 불가</label>
       </div>
     </div>
     <div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate="출판일을 선택하세요">
       <label for="publicatedAt" class="label-input100">출판일</label>
       <input id="publicatedAt" class="input100" type="date" th:name="publicatedAt"
-             th:value="${book?.publicatedAt}"
+             th:value="${book.publicatedAt}"
              th:max="${now}">
     </div>
     <div class="wrap-input100 bg0 rs1-alert-validate">
       <label for="bookIndex" class="label-input100">목차</label>
       <textarea id="bookIndex" class="input100" th:name="bookIndex"
-                th:text="${book?.bookIndex}"></textarea>
+                th:text="${book.bookIndex}"></textarea>
     </div>
     <div class="wrap-input100 bg0 rs1-alert-validate validate-input" data-validate="도서 설명을 입력하세요">
       <span class="label-input100">도서 설명</span>
-      <div id="existing-content" style="display: none" th:text="${book?.description}"></div>
+      <div id="existing-content" style="display: none" th:text="${book.description}"></div>
       <input type="hidden" name="description" id="descriptionHidden">
       <input type="hidden" name="fileIdList" id="fileIdListHidden">
       <div class="input100" id="editor">
@@ -157,11 +157,11 @@
       <label for="thumbnail" class="label-input100">새 썸네일</label>
       <input id="thumbnail" type="file" name="thumbnail">
     </div>
-    <div class="container-contact100-form-btn">
+    <div class="container-contact100-form-btn mb-4">
       <button class="contact100-form-btn" type="submit">
         <span>수정</span>
       </button>
-      <button class="contact100-form-btn" onclick="location.href='/admin/books'" type="button">
+      <button class="contact100-form-btn mb-4" onclick="location.href='/admin/books'" type="button">
         <span>취소</span>
       </button>
     </div>
