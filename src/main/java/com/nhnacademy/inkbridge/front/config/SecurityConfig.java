@@ -4,7 +4,7 @@ import com.nhnacademy.inkbridge.front.jwt.filter.CustomJwtAuthenticationFilter;
 import com.nhnacademy.inkbridge.front.jwt.filter.CustomLoginAuthenticationFilter;
 import com.nhnacademy.inkbridge.front.jwt.provider.CustomAuthenticationProvider;
 import com.nhnacademy.inkbridge.front.jwt.service.CustomUserDetailService;
-import com.nhnacademy.inkbridge.front.member.adaptor.MemberAdaptor;
+import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

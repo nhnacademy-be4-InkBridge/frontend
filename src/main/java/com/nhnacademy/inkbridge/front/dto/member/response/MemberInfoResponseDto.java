@@ -1,4 +1,4 @@
-package com.nhnacademy.inkbridge.front.member.dto.response;
+package com.nhnacademy.inkbridge.front.dto.member.response;
 
 import java.util.List;
 import lombok.Getter;
