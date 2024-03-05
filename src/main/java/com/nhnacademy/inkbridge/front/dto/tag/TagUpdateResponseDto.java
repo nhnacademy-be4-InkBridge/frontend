@@ -18,6 +18,7 @@ public class TagUpdateResponseDto {
     private Long tagId;
     private String tagName;
 
+
     @Builder
     public TagUpdateResponseDto(Long tagId, String tagName) {
         this.tagId = tagId;
