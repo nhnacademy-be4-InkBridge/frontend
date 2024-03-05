@@ -1,14 +1,14 @@
 package com.nhnacademy.inkbridge.front.jwt.filter;
 
-import static com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums.ACCESS_COOKIE;
-import static com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums.ACCESS_HEADER;
-import static com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums.HEADER_ACCESS_EXPIRED_TIME;
-import static com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums.HEADER_UUID;
-import static com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums.REFRESH_COOKIE;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.ACCESS_COOKIE;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.ACCESS_HEADER;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.HEADER_ACCESS_EXPIRED_TIME;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.HEADER_UUID;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.REFRESH_COOKIE;
 
-import com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtCookie;
+import com.nhnacademy.inkbridge.front.jwt.utils.JwtCookie;
 import com.nhnacademy.inkbridge.front.jwt.service.CustomUserDetailService;
-import com.nhnacademy.inkbridge.front.member.adaptor.MemberAdaptor;
+import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.utils.CookieUtils;
 import java.io.IOException;
 import java.util.Objects;
@@ -54,7 +54,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
             if (handleInvalidRequest(request, response, filterChain)) {
                 return;
             }
-
+            log.info("1");
             // 토큰이 쿠키에 존재 유무
             Cookie accessCookie = CookieUtils.getCookie(ACCESS_COOKIE.getName());
             Cookie refreshCookie = CookieUtils.getCookie(REFRESH_COOKIE.getName());
@@ -62,13 +62,13 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
             if (handleNoneExistCookie(request, response, filterChain, accessCookie, refreshCookie, uuidCookie)) {
                 return;
             }
-
+            log.info("2");
             if (isExpireTime(Objects.requireNonNull(refreshCookie).getValue())) {
                 // todo: 로그아웃 로직 처리
                 filterChain.doFilter(request, response);
                 return;
             }
-
+            log.info("3");
             // 재발급 로직
             String accessValue = Objects.requireNonNull(accessCookie).getValue();
             String accessExp = accessValue.split("\\.")[3];
@@ -101,6 +101,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                 accessValue = newCookie.getValue();
                 accessExp = accessExpiredTime.toString();
             }
+            log.info("4");
 
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
@@ -114,6 +115,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }
+            log.info("5");
 
             filterChain.doFilter(request, response);
         } catch (Exception e) {

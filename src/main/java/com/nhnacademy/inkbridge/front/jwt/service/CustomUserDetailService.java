@@ -1,7 +1,7 @@
 package com.nhnacademy.inkbridge.front.jwt.service;
 
-import com.nhnacademy.inkbridge.front.member.adaptor.MemberAdaptor;
-import com.nhnacademy.inkbridge.front.member.dto.response.MemberInfoResponseDto;
+import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
+import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
 import com.nhnacademy.inkbridge.front.member.excpetion.MemberNotFoundException;
 import java.util.List;
 import java.util.Objects;
@@ -28,8 +28,10 @@ public class CustomUserDetailService implements UserDetailsService {
     private final MemberAdaptor memberAdaptor;
     @Override
     public UserDetails loadUserByUsername(String accessToken) throws UsernameNotFoundException {
+        log.info("userDetailService start ->");
         MemberInfoResponseDto dto = memberAdaptor.getMemberInfoByToken(accessToken);
 
+        log.info("userDetailService end ->");
 
         if (Objects.isNull(dto)) {
             throw new MemberNotFoundException();

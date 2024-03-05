@@ -1,18 +1,18 @@
 package com.nhnacademy.inkbridge.front.jwt.filter;
 
 
-import static com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums.ACCESS_COOKIE;
-import static com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums.ACCESS_HEADER;
-import static com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums.HEADER_ACCESS_EXPIRED_TIME;
-import static com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums.HEADER_REFRESH_EXPIRED_TIME;
-import static com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums.HEADER_UUID;
-import static com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums.REFRESH_COOKIE;
-import static com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums.REFRESH_HEADER;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.ACCESS_COOKIE;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.ACCESS_HEADER;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.HEADER_ACCESS_EXPIRED_TIME;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.HEADER_REFRESH_EXPIRED_TIME;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.HEADER_UUID;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.REFRESH_COOKIE;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.REFRESH_HEADER;
 
-import com.nhnacademy.inkbridge.front.member.adaptor.MemberAdaptor;
-import com.nhnacademy.inkbridge.front.member.dto.request.MemberLoginRequestDto;
-import com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtCookie;
-import com.nhnacademy.inkbridge.front.jwt.filter.utils.JwtEnums;
+import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
+import com.nhnacademy.inkbridge.front.jwt.utils.JwtCookie;
+import com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums;
 import java.io.IOException;
 import java.util.Objects;
 import javax.servlet.FilterChain;
@@ -45,11 +45,12 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
             throws AuthenticationException {
         String email = obtainUsername(request);
         String password = obtainPassword(request);
+        log.info("login filter start ->");
 
         MemberLoginRequestDto requestDto = new MemberLoginRequestDto(email, password);
 
         ResponseEntity<Void> tokenResponse = memberAdaptor.login(requestDto);
-
+        log.info("token 발급 완료 ->");
         String accessToken = getToken(tokenResponse, ACCESS_HEADER);
         Long accessExpiredTime = Long.parseLong(getExpiredTime(tokenResponse, HEADER_ACCESS_EXPIRED_TIME));
         String refreshToken = getToken(tokenResponse, REFRESH_HEADER);

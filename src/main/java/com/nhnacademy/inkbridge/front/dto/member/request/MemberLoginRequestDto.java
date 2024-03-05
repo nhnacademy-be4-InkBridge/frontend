@@ -1,4 +1,4 @@
-package com.nhnacademy.inkbridge.front.member.dto.request;
+package com.nhnacademy.inkbridge.front.dto.member.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.nhnacademy.inkbridge.front.jwt.filter.utils;
+package com.nhnacademy.inkbridge.front.jwt.utils;
 
 
 import javax.servlet.http.Cookie;
