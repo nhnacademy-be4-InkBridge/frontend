@@ -15,7 +15,7 @@
 <div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog modal-dialog-centered">
         <div class="modal-content">
-                <form action="/login" method="post">
+                <form action="/auth-login" method="post">
                     <div class="modal-header">
                         <h5 class="modal-title">InkBridge</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -23,7 +23,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="Email">이메일<span class="text-danger">*</span></label>
-                            <input type="text" name="Email" class="form-control" id="Email" placeholder="이메일">
+                            <input type="text" name="email" class="form-control" id="Email" placeholder="이메일">
                         </div>
 
                         <div class="mb-3">
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <div class="modal-footer pt-4">
-                        <button type="button" class="btn btn-success mx-auto w-100">로그인</button>
+                        <button type="submit" class="btn btn-success mx-auto w-100">로그인</button>
                     </div>
                     <p class="text-center">아이디가 없으시다면, <a href="#">회원 가입</a></p>
                 </form>
