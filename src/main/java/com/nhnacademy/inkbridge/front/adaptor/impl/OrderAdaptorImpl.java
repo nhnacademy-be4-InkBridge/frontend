@@ -36,7 +36,7 @@ public class OrderAdaptorImpl implements OrderAdaptor {
             gatewayProperties.getUrl() + "/api/orders",
             HttpMethod.POST,
             entity,
-            new ParameterizedTypeReference<String>() {
+            new ParameterizedTypeReference<>() {
             });
 
         return exchange.getBody();
