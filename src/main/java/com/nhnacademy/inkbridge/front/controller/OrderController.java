@@ -44,7 +44,7 @@ public class OrderController {
      * @return 주문서 작성 페이지, Cookie에 도서 정보가 존재하지 않는다면 메인페이지로 이동
      */
     @GetMapping
-    public String orderView(Model model, @CookieValue(value = "info", required = false) OrderBookReadResponseDto responseDto) {
+    public String orderView(Model model, @CookieValue(value = "info", required = false) List<OrderBookReadResponseDto> responseDto) {
         // 도서 정보
         // 상품 상세페이지, 장바구니에서 쿠키에 담겨서 넘어옴
         // 값을 모델에 넣은 후 Cookie 삭제
