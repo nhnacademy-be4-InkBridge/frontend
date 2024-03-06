@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.dto.order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * class: BookOrderList.
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class BookOrderList {
 
     private Long bookId;
@@ -20,5 +22,5 @@ public class BookOrderList {
     private Integer amount;
     private Long wrappingId;
     private Long couponId;
-
+    private Long wrappingPrice;
 }
