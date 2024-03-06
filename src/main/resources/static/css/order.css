@@ -9,3 +9,19 @@
 #pay_table td {
   text-align: right;
 }
+
+.jb-text {
+  padding: 5px 10px;
+  font-weight: normal;
+  background-color: #444444;
+  color: #ffffff;
+  position: absolute;
+  display: none;
+}
+.jb-title:hover + .jb-text {
+  display: block;
+}
+
+.input-group-append {
+  cursor: pointer;
+}
