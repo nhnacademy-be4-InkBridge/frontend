@@ -1,9 +1,11 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @modificationReason - index 메서드 수정, bookDetail 메서드 추가
  */
 @Controller
+@RequestMapping("/")
+@Slf4j
 public class IndexController {
 
     private final IndexService indexService;
