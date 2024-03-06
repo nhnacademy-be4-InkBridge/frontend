@@ -1,23 +1,21 @@
 package com.nhnacademy.inkbridge.front.dto.order;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * class: OrderPageResponseDto.
+ * class: OrderBookReadResponseDto.
  *
  * @author jangjaehun
- * @version 2024/02/27
+ * @version 2024/02/28
  */
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrderBookReadResponseDto {
-
-    private Long bookId;
-    private String bookTitle;
-    private Long regularPrice;
-    private Long price;
-    private Integer amount;
-    private boolean isPackable;
-
+    private final Long bookId;
+    private final String bookTitle;
+    private final Boolean isPackagable;
+    private final Long regularPrice;
+    private final Long price;
+    private final Integer amount;
 }
