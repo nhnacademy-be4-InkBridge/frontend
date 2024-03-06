@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +44,7 @@ public class OrderController {
      * @return 주문서 작성 페이지, Cookie에 도서 정보가 존재하지 않는다면 메인페이지로 이동
      */
     @GetMapping
-    public String orderView(Model model) {
+    public String orderView(Model model, @CookieValue(value = "info", required = false) OrderBookReadResponseDto responseDto) {
         // 도서 정보
         // 상품 상세페이지, 장바구니에서 쿠키에 담겨서 넘어옴
         // 값을 모델에 넣은 후 Cookie 삭제
