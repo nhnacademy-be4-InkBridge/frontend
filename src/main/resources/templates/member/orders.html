@@ -41,9 +41,9 @@
 <div layout:fragment="content" class="container">
   <main>
     <h4 class="fw-normal ms-2 mb-5">주문 / 결제</h4>
-    <div class="row">
-      <div class="col-md-9 mb-4">
-        <form action="/orders" method="post" id="book_form">
+    <form action="/orders" method="post" id="book_form">
+      <div class="row">
+        <div class="col-md-9 mb-4">
           <input type="hidden" id="payAmount" name="payAmount" value="">
           <div class="container border rounded-3 mb-4">
             <table class="table table-borderless text-center align-middle" id="book_table">
@@ -67,7 +67,8 @@
                        th:value="${book.amount}">
                 <input type="hidden" th:name="|bookOrderList[${stat.index}].couponId|"
                        th:value="${null}">
-                <input type="hidden" th:name="|bookOrderList[${stat.index}].wrappingPrice|" th:id="|bookOrderList[${stat.index}].wrappingPrice|"
+                <input type="hidden" th:name="|bookOrderList[${stat.index}].wrappingPrice|"
+                       th:id="|bookOrderList[${stat.index}].wrappingPrice|"
                        th:value="0">
                 <td style="width: auto"><img
                     src="data:image/jpeg;base64,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"
@@ -140,7 +141,8 @@
                 <label for="using_point" class="col-form-label">포인트</label>
               </div>
               <div class="col-auto">
-                <input id="using_point" name="usingPoint" type="text" class="form-control" pattern="[0-9]+"
+                <input id="using_point" name="usingPoint" type="text" class="form-control"
+                       pattern="[0-9]+"
                        style="text-align: right"
                        onchange="calcPayAmount()">
               </div>
@@ -153,70 +155,74 @@
                 <tr th:each="book, stat : ${orderBooks}">
                   <td style="width: 60%" th:text="${book.bookTitle}"></td>
                   <td style="width: 20%">
-                    <select class="form-select" th:name="|bookOrderList[${stat.index}].wrappingId|" th:id="|bookOrderList[${stat.index}].wrappingId|" onchange="calcPayAmount()">
+                    <select class="form-select" th:name="|bookOrderList[${stat.index}].wrappingId|"
+                            th:id="|bookOrderList[${stat.index}].wrappingId|"
+                            onchange="calcPayAmount()">
                       <option value="">포장지 선택</option>
-                      <option th:each="wrapping : ${wrappingList}" th:value="${wrapping.wrappingId}" th:if="${wrapping.isActive}" th:text="${wrapping.wrappingName}"></option>
+                      <option th:each="wrapping : ${wrappingList}" th:value="${wrapping.wrappingId}"
+                              th:if="${wrapping.isActive}"
+                              th:text="${wrapping.wrappingName}"></option>
                     </select>
                   </td>
                 </tr>
               </table>
             </div>
           </div>
-        </form>
-      </div>
-      <div class="col-md-3 mb-4">
-        <div class="position-sticky position-webkit-sticky" style="top: 11em">
-          <div class="p-3 border rounded-3 mb-2">
-            <h4 class="fw-normal">결제정보</h4>
-            <table class="table table-borderless" id="pay_table">
-              <tr>
-                <th>상품 금액</th>
-                <td><span id="total_regular_price"></span>원</td>
-              </tr>
-              <tr>
-                <th scope="col">배송비
-                  <i class="fa-regular fa-circle-question jb-title" style="color: #3d966a;">
-                  </i>
-                  <p class="jb-text"><span
-                      th:text="${#numbers.formatInteger(deliveryPolicy.freeDeliveryPrice, 1, 'COMMA')}"></span>원
-                    이상 주문시 무료 배송</p>
-                </th>
-                <td><span id="delivery_price"></span>원</td>
-              </tr>
-              <tr>
-                <th scope="col">포장비</th>
-                <td><span id="package_price"></span>원</td>
-              </tr>
-              <tr>
-                <th scope="col">상품 할인</th>
-                <td><span id="product_discount"></span>원</td>
-              </tr>
-              <tr>
-                <th scope="col">쿠폰 할인</th>
-                <td><span id="coupon_discount"></span>원</td>
-              </tr>
-              <tr>
-                <th scope="col">사용 포인트</th>
-                <td><span id="use_point"></span>원</td>
-              </tr>
-              <tr class="border-top">
-                <th scope="col">결제 금액</th>
-                <td>
-                  <span id="pay_amount" class="fw-bold"></span>원
-                </td>
-              </tr>
-              <tr>
-                <th scope="col" style="font-weight: normal">예상 적립 포인트</th>
-                <td><span id="accumulate_point"></span> P</td>
-              </tr>
-            </table>
-            <button class="btn btn-outline-success btn-lg w-100" type="submit"
-                    id="payment-button">결제
-            </button>
+        </div>
+        <div class="col-md-3 mb-4">
+          <div class="position-sticky position-webkit-sticky" style="top: 11em">
+            <div class="p-3 border rounded-3 mb-2">
+              <h4 class="fw-normal">결제정보</h4>
+              <table class="table table-borderless" id="pay_table">
+                <tr>
+                  <th>상품 금액</th>
+                  <td><span id="total_regular_price"></span>원</td>
+                </tr>
+                <tr>
+                  <th scope="col">배송비
+                    <i class="fa-regular fa-circle-question jb-title" style="color: #3d966a;">
+                    </i>
+                    <p class="jb-text"><span
+                        th:text="${#numbers.formatInteger(deliveryPolicy.freeDeliveryPrice, 1, 'COMMA')}"></span>원
+                      이상 주문시 무료 배송</p>
+                  </th>
+                  <td><span id="delivery_price"></span>원</td>
+                </tr>
+                <tr>
+                  <th scope="col">포장비</th>
+                  <td><span id="package_price"></span>원</td>
+                </tr>
+                <tr>
+                  <th scope="col">상품 할인</th>
+                  <td><span id="product_discount"></span>원</td>
+                </tr>
+                <tr>
+                  <th scope="col">쿠폰 할인</th>
+                  <td><span id="coupon_discount"></span>원</td>
+                </tr>
+                <tr>
+                  <th scope="col">사용 포인트</th>
+                  <td><span id="use_point"></span>원</td>
+                </tr>
+                <tr class="border-top">
+                  <th scope="col">결제 금액</th>
+                  <td>
+                    <span id="pay_amount" class="fw-bold"></span>원
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="col" style="font-weight: normal">예상 적립 포인트</th>
+                  <td><span id="accumulate_point"></span> P</td>
+                </tr>
+              </table>
+              <button class="btn btn-outline-success btn-lg w-100" type="submit"
+                      id="payment-button">결제
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   </main>
 </div>
 </html>

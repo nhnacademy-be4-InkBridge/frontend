@@ -1,5 +1,12 @@
 "use strict";
 
+// input 엔터 방지
+document.addEventListener('keydown', function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+  };
+}, true);
+
 // 페이지 로드 시 결제 정보 초기화 함수
 function paymentInfo() {
   let sumTotalRegular = 0;
@@ -84,36 +91,25 @@ function calcWrapping() {
   let totalWrappingPrice = 0;
 
   for (let i = 0; i < orderBooks.length; i++) {
-    console.log(i);
-    console.log(orderBooks[i].isPackagable);
     if (orderBooks[i].isPackagable) {
       let orderBook = "bookOrderList[" + i + "]";
-      console.log("orderBook" + orderBook);
       let wrappingId = document.getElementById(orderBook + ".wrappingId");
-      console.log("wrappingId" + wrappingId.value);
       let bookWrappingPrice = document.getElementById(orderBook + ".wrappingPrice");
-      console.log("bookWrappingPrice" + bookWrappingPrice.value);
 
       if (wrappingId.value == null || wrappingId.value == "") {
         continue;
       }
 
       let wrappingPrice = getWrappingPrice(wrappingId.value);
-
       if (wrappingPrice == null) {
         alert("잘못된 포장지 번호입니다. 다시 선택해주세요.");
         return null;
       }
 
-      console.log("wrappingPrice" + wrappingPrice);
-
       totalWrappingPrice += wrappingPrice;
-
       bookWrappingPrice.value = wrappingPrice;
-
-      console.log("bookWrappingPrice" + bookWrappingPrice.value);
+      console.log(bookWrappingPrice);
     }
-
   }
 
   document.getElementById("package_price").innerText = totalWrappingPrice;
