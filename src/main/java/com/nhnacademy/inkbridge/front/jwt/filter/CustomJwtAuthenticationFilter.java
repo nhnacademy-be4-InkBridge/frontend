@@ -4,14 +4,19 @@ import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.ACCESS_COOKIE;
 import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.ACCESS_HEADER;
 import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.HEADER_ACCESS_EXPIRED_TIME;
 import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.HEADER_UUID;
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.MEMBER_INFO;
 import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.REFRESH_COOKIE;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
 import com.nhnacademy.inkbridge.front.jwt.utils.JwtCookie;
 import com.nhnacademy.inkbridge.front.jwt.service.CustomUserDetailService;
 import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.utils.CookieUtils;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -19,8 +24,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -35,18 +43,19 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
     private final MemberAdaptor memberAdaptor;
-    private final CustomUserDetailService userDetailsService;
+    private final RedisTemplate<String,Object> redisTemplate;
 
     /**
      * 모든 요청마다 사용자인지 아닌지 체크.
      *
-     * @param request request
-     * @param response response
+     * @param request     request
+     * @param response    response
      * @param filterChain filterChain
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        log.info("jwt filter start ->");
         try {
             // 알맞지 않은 경로
             if (handleInvalidRequest(request, response, filterChain)) {
@@ -59,18 +68,22 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
             if (handleNoneExistCookie(request, response, filterChain, accessCookie, refreshCookie, uuidCookie)) {
                 return;
             }
+
             if (isExpireTime(Objects.requireNonNull(refreshCookie).getValue())) {
-                // todo: 로그아웃 로직 처리
+                log.error("refresh token 만료");
+                goLogout(response);
                 filterChain.doFilter(request, response);
                 return;
             }
             // 재발급 로직
-            String accessValue = Objects.requireNonNull(accessCookie).getValue();
-            String accessExp = accessValue.split("\\.")[3];
             if (isExpireTime(Objects.requireNonNull(accessCookie).getValue())) {
+                log.info("access token 재발급 시작 ->");
 
-            String refreshValue = refreshCookie.getValue();
-            String refreshEXP = refreshValue.split("\\.")[3];
+                String accessValue = Objects.requireNonNull(accessCookie).getValue();
+                String accessExp = accessValue.split("\\.")[3];
+
+                String refreshValue = refreshCookie.getValue();
+                String refreshEXP = refreshValue.split("\\.")[3];
 
                 ResponseEntity<Void> reissued =
                         memberAdaptor.reissueToken(
@@ -83,7 +96,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                                 Objects.requireNonNull(reissued.getHeaders().get(HEADER_ACCESS_EXPIRED_TIME.getName()))
                                         .get(0));
                 if (Objects.isNull(newAccessToken)) {
-                    // todo: 로그아웃 처리
+                    goLogout(response);
                     filterChain.doFilter(request, response);
                     return;
                 }
@@ -92,33 +105,46 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                 // 새로 추가
                 Cookie newCookie = JwtCookie.createJwtCookie(newAccessToken, accessExpiredTime, ACCESS_COOKIE);
                 response.addCookie(newCookie);
-
-                accessValue = newCookie.getValue();
-                accessExp = accessExpiredTime.toString();
+                log.info("access token 재발급 종료 ->");
             }
 
-            if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails =
-                        userDetailsService.loadUserByUsername(
-                                accessValue.substring(0, tokenWithoutExpLength(accessValue, accessExp)));
-                if (userDetails != null) {
-                    UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null,
-                                    userDetails.getAuthorities());
+            if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) &&
+                    uuidCookie != null) {
+                MemberInfoResponseDto responseDto =
+                        (MemberInfoResponseDto) redisTemplate.opsForHash()
+                                .get(uuidCookie.getValue(), MEMBER_INFO.getName());
 
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                if (Objects.isNull(responseDto)) {
+                    filterChain.doFilter(request, response);
+                    return;
                 }
+
+                List<SimpleGrantedAuthority> authorities =
+                        responseDto.getRoles().stream().map(SimpleGrantedAuthority::new).collect(
+                                Collectors.toList());
+
+                UsernamePasswordAuthenticationToken token =
+                        new UsernamePasswordAuthenticationToken(responseDto.getMemberId(), "", authorities);
+
+                SecurityContextHolder.getContext().setAuthentication(token);
+                log.info("컨텍스트 홀드 저장 완료 ->");
             }
 
+            log.info("jwt filter end ->");
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.error("jwtFilter error");
+            goLogout(response);
         } finally {
             SecurityContextHolder.clearContext();
         }
     }
 
-    private static int tokenWithoutExpLength(String value,String exp) {
+    private static void goLogout(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/logout");
+    }
+
+    private static int tokenWithoutExpLength(String value, String exp) {
         return value.length() - (exp.length() + 1);
     }
 
@@ -162,7 +188,8 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
      */
     private static boolean handleInvalidRequest(HttpServletRequest request, HttpServletResponse response,
                                                 FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().contains("/static/**")|| request.getRequestURI().contains("/css/**")||request.getRequestURI().contains("/error")) {
+        if (request.getRequestURI().contains("/static/**") || request.getRequestURI().contains("/css/**") ||
+                request.getRequestURI().contains("/error")) {
             filterChain.doFilter(request, response);
             return true;
         }

@@ -3,7 +3,7 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.ACCESS_HEADER;
 import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.BEARER_PREFIX;
 import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.REFRESH_HEADER;
-import static com.nhnacademy.inkbridge.front.utils.HeaderUtils.createHeader;
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
 
 import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
@@ -15,8 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -83,12 +83,27 @@ public class MemberAdaptorImpl implements MemberAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public ResponseEntity<HttpStatus> signup(MemberSignupRequestDto memberSignupRequestDto) {
-        return restTemplate.exchange(
-                gatewayProperties.getUrl() + "/api/members",
+    public void signup(MemberSignupRequestDto memberSignupRequestDto) {
+        Integer memberId =(Integer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        restTemplate.exchange(
+                gatewayProperties.getUrl() + "/api/members/"+memberId,
                 HttpMethod.POST,
                 new HttpEntity<>(memberSignupRequestDto, createHeader()),
-                HttpStatus.class
+                Void.class
+        );
+    }
+
+    @Override
+    public void logout(String access, String refresh) {
+        HttpHeaders header = createHeader();
+        header.add(ACCESS_HEADER.getName(),BEARER_PREFIX.getName()+access);
+        header.add(REFRESH_HEADER.getName(), BEARER_PREFIX.getName() + refresh);
+
+        restTemplate.exchange(
+                gatewayProperties.getUrl() + "/auth/logout",
+                HttpMethod.GET,
+                new HttpEntity<>(header),
+                Void.class
         );
     }
 }

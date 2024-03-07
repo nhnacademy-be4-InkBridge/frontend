@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -29,11 +30,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfig {
 
     private final MemberAdaptor memberAdaptor;
     private final CustomUserDetailService userDetailService;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -94,7 +96,7 @@ public class SecurityConfig {
      */
     @Bean
     public CustomJwtAuthenticationFilter customJwtAuthenticationFilter() {
-        return new CustomJwtAuthenticationFilter(memberAdaptor, userDetailService);
+        return new CustomJwtAuthenticationFilter(memberAdaptor, redisTemplate);
     }
 
     /**
