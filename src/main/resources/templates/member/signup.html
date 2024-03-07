@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/main_layout}">
 <th:block layout:fragment="css">
@@ -52,7 +51,7 @@
                        maxlength="11" name="phoneNumber">
             </div>
             <div class="d-grid gap-2">
-                <button class="btn btn-primary btn-lg mt-4" type="button" id="submitButton">가입하기</button>
+                <button class="btn btn-outline-dark btn-lg mt-4" type="button" id="submitButton">가입하기</button>
             </div>
         </form>
     </div>

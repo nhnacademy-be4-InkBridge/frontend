@@ -18,7 +18,8 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         User userDetails =
-                (User) this.getUserDetailsService().loadUserByUsername((String) authentication.getPrincipal());
+                (User) this.getUserDetailsService().loadUserByUsername(
+                        (String) authentication.getPrincipal() + "." + authentication.getCredentials());
 
         return new UsernamePasswordAuthenticationToken(
                 userDetails.getUsername(),
