@@ -1,17 +1,20 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.IndexAdaptor;
+import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
-import java.util.List;
+import com.nhnacademy.inkbridge.front.property.GatewayProperties;
+import com.nhnacademy.inkbridge.front.utils.CommonUtils;
+import java.net.URI;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * class: IndexAdaptorImpl.
@@ -23,22 +26,29 @@ import org.springframework.web.client.RestTemplate;
 public class IndexAdaptorImpl implements IndexAdaptor {
 
     private final RestTemplate restTemplate;
+    private final GatewayProperties gatewayProperties;
+    private static final String DEFAULT_PATH = "/api/books";
 
-    public IndexAdaptorImpl(RestTemplate restTemplate) {
+    public IndexAdaptorImpl(RestTemplate restTemplate, GatewayProperties gatewayProperties) {
         this.restTemplate = restTemplate;
+        this.gatewayProperties = gatewayProperties;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<BooksReadResponseDto> getBooks() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+    public PageRequestDto<BooksReadResponseDto> getBooks() {
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path(DEFAULT_PATH)
+            .encode()
+            .build()
+            .toUri();
 
-        ResponseEntity<List<BooksReadResponseDto>> exchange = restTemplate.exchange(
-            "http://localhost:8080/api/books",
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
+        ResponseEntity<PageRequestDto<BooksReadResponseDto>> exchange = restTemplate.exchange(
+            uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
@@ -53,17 +63,23 @@ public class IndexAdaptorImpl implements IndexAdaptor {
      */
     @Override
     public BookReadResponseDto getBook(Long bookId) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path(DEFAULT_PATH)
+            .path("/{bookId}")
+            .encode()
+            .build()
+            .expand(bookId)
+            .toUri();
+
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
 
         ResponseEntity<BookReadResponseDto> exchange = restTemplate.exchange(
-            "http://localhost:8080/api/books/{bookId}",
+            uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
-            }, bookId
-        );
+            });
 
         return exchange.getBody();
     }

@@ -1,6 +1,6 @@
+// 수정 시 저장된 도서 설명을 js로 갖고 온다
 const existingContent = document.getElementById(
     'existing-content').innerHTML;
-
 let fileIdList = [];
 
 const editor = new toastui.Editor({
@@ -13,6 +13,12 @@ const editor = new toastui.Editor({
   hooks: {
     async addImageBlobHook(blob, callback) { // 이미지 업로드 로직 커스텀
       try {
+        const fileExtension = blob.name.split('.').pop().toLowerCase();
+        if (fileExtension === 'svg') {
+          alert('svg 형식은 지원하지 않습니다');
+          return;
+        }
+
         /*
          * 1. 에디터에 업로드한 이미지를 FormData 객체에 저장
          *    (이때, 컨트롤러 uploadEditorImage 메서드의 파라미터인 'image'와 formData에 append 하는 key('image')값은 동일해야 함)
@@ -49,7 +55,7 @@ const editor = new toastui.Editor({
 document.getElementById('bookForm').addEventListener('submit',
     function () {
       document.getElementById('descriptionHidden').value = editor.getMarkdown(); // 숨겨진 입력 필드에 설정
-      document.getElementById('fileIdListHidden').value = fileIdList;
+      document.getElementById('fileIdListHidden').value = fileIdList; // BookFile에 저장할 목적으로 도서 설명에 첨부된 파일 아이디를 전달
     });
 
 mobiscroll.setOptions({
@@ -71,7 +77,7 @@ var categorySelect = mobiscroll.select('#category-multiple-select', {
         // Display toast message
         console.log('over 10');
         mobiscroll.toast({
-          message: 'You can only select up to 10 options',
+          message: '10개까지 선택 가능합니다',
           duration: 3000 // 3 seconds
         });
 
@@ -82,6 +88,7 @@ var categorySelect = mobiscroll.select('#category-multiple-select', {
       var selectElement = document.getElementById('category-multiple-select');
       var options = selectElement.querySelectorAll('option');
 
+      // 자식 카테고리를 설정할 경우 해당하는 부모 카테고리 또한 추가된다
       selectedValues.forEach(function (value) {
         options.forEach(function (option) {
           if (option.value === value) {
@@ -124,6 +131,7 @@ mobiscroll.select('#publisher-multiple-select', {
   inputElement: document.getElementById('publisher-multiple-select-input'),  // More info about inputElement: https://mobiscroll.com/docs/javascript/select/api#opt-inputElement
 });
 
+// 입력값 검증
 (function () {
   "use strict";
   var inputFields = document.querySelectorAll('.validate-input .input100');
@@ -195,6 +203,7 @@ mobiscroll.select('#publisher-multiple-select', {
   }
 })();
 
+// 판매가 - 할인율 연동
 document.getElementById("price").addEventListener("input", function () {
   calculateDiscount();
 });

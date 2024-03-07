@@ -59,11 +59,12 @@
                 <input type="hidden" th:value="${book.isPackagable}" id="isPackagable">
               </div>
               <div class="justify-content-between d-flex" style="width: 30rem">
-                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4">
+                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4"
+                   th:if="${book.wish}">
                   <i class="fas fa-heart"></i>
                 </a>
                 <a href="/orders" th:onclick="setCookie()"
-                        class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary hide-href">
+                   class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary hide-href">
                   <i class="fa fa-shopping-bag me-2 text-primary"></i> 상품 바로 구매하기
                 </a>
                 <button type="button"
@@ -91,12 +92,13 @@
               <div class="mb-3">
                 <p>카테고리 분류</p>
                 <span th:each="categoryName: ${book.categoryName}" th:text="${categoryName}"
-                      class="border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"></span>
+                      class="border border-secondary rounded-pill px-4 py-2 mb-4 text-primary me-3"></span>
               </div>
               <div class="mb-3">
                 <p>태그 분류</p>
                 <span th:each="tagName: ${book.tagName}" th:text="${tagName}"
-                      class="border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"></span>
+                      th:if="${!tagName.isBlank()}"
+                      class="border border-secondary rounded-pill px-4 py-2 mb-4 text-primary me-3"></span>
               </div>
             </div>
             <div class="nav nav-tabs mb-4"></div>
@@ -107,12 +109,7 @@
             <div class="nav nav-tabs mb-4"></div>
             <div class="tab-content mb-5">
               <h4 class="fw-bold mb-3">도서 설명</h4>
-              <div class="mb-3" th:each="content : ${book.contents}">
-                <img th:if="${content.startsWith('![image alt attribute]')}"
-                     th:src="${content.substring(content.indexOf('(') + 1, content.lastIndexOf(')'))}"
-                     alt="이미지를 준비중입니다."/>
-                <p th:unless="${content.startsWith('![image alt attribute]')}"
-                   th:text="${content}"></p>
+              <div class="mb-3" th:utext="${book.description}" id="description">
               </div>
             </div>
           </div>
@@ -153,19 +150,6 @@
       </div>
     </div>
   </div>
-  <script src="/js/quantity-count.js"></script>
-  <script>
-    document.querySelectorAll('.fa-star').forEach(function (star) {
-      star.addEventListener('click', function () {
-        var rating = parseInt(this.getAttribute('data-rating'));
-        document.querySelectorAll('.fa-star').forEach(function (star, index) {
-          if (index < rating) {
-            star.classList.remove('text-muted');
-          } else {
-            star.classList.add('text-muted');
-          }
-        });
-      });
-    });
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.0.0/dist/markdown-it.min.js"></script>
+  <script src="/js/book.js"></script>
 </div>

@@ -1,8 +1,8 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
+import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
-import java.util.List;
 
 /**
  * class: IndexAdaptor.
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface IndexAdaptor {
 
-    List<BooksReadResponseDto> getBooks();
+    PageRequestDto<BooksReadResponseDto> getBooks();
 
     BookReadResponseDto getBook(Long bookId);
 }

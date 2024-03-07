@@ -29,7 +29,7 @@ public class IndexController {
 
     @GetMapping
     public String index(Model model) {
-        List<BooksReadResponseDto> books = indexService.getBooks();
+        List<BooksReadResponseDto> books = indexService.getBooks().getContent();
         model.addAttribute("books", books);
         return "member/index";
     }

@@ -16,14 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/index")
 public class IndexRestController {
+
     private final IndexService indexService;
 
     public IndexRestController(IndexService indexService) {
         this.indexService = indexService;
     }
 
+    /**
+     * 도서 목록을 조회하는 api입니다. 무한 스크롤링에 사용됩니다.
+     *
+     * @return BooksReadResponseDto
+     */
     @GetMapping
     public List<BooksReadResponseDto> indexList() {
-        return indexService.getBooks();
+        return indexService.getBooks().getContent();
     }
 }

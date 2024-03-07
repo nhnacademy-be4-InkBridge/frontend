@@ -30,6 +30,7 @@ public class BookReadResponseDto {
     private String publisherName;
     private Long authorId;
     private String authorName;
+    private Long wish;
     private Set<String> fileUrl;
     private Set<String> tagName;
     private Set<String> categoryName;
