@@ -22,6 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class OrderCreateRequestDto {
 
     private List<BookOrderList> bookOrderList;
+    private String orderId;
     private String orderName;
     private String receiverName;
     private String receiverPhoneNumber;
@@ -36,5 +37,5 @@ public class OrderCreateRequestDto {
     private Long usingPoint;
     private Long payAmount;
     private String memberId;
-    private String deliveryPrice;
+    private Long deliveryPrice;
 }
