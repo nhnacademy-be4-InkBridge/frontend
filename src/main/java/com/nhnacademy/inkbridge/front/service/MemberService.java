@@ -1,7 +1,7 @@
 package com.nhnacademy.inkbridge.front.service;
 
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
-import org.springframework.http.HttpStatus;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * class: MemberService.
@@ -10,5 +10,7 @@ import org.springframework.http.HttpStatus;
  * @version 3/4/24
  */
 public interface MemberService {
-    HttpStatus signup(MemberSignupRequestDto memberSignupRequestDto);
+    void signup(MemberSignupRequestDto memberSignupRequestDto);
+
+    void logout(HttpServletResponse response);
 }
