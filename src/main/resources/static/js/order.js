@@ -15,7 +15,6 @@ function paymentInfo() {
   orderBooks.forEach(book => {
     sumTotalRegular += book.regularPrice * book.amount;
     sumTotalPrice += book.price * book.amount;
-    console.log(book.isPackagable);
   });
 
   document.getElementById("total_regular_price").innerText = sumTotalRegular;
@@ -29,6 +28,7 @@ function paymentInfo() {
       ? deliveryPolicy.deliveryPrice : 0;
 
   document.getElementById("delivery_price").innerText = deliveryPrice;
+  document.getElementById("deliveryPrice").value = deliveryPrice.toString();
 
   // 예상 포인트 적립률
   let accumulatePoint = Math.round(
@@ -39,6 +39,17 @@ function paymentInfo() {
   // 결제 금액 = 판매가 + 배송비 + 포장비 - 쿠폰할인 - 사용 포인트
   document.getElementById("pay_amount").innerText = sumTotalPrice
       + deliveryPrice;
+
+  let orderName = orderBooks[0].bookTitle;
+
+  if (orderBooks.length > 1) {
+    orderName = orderName + " 외 " + (orderBooks.length - 1) + " 상품";
+  }
+
+
+  console.log(orderName);
+
+  document.getElementById("orderName").value = orderName;
 }
 
 // 상품 금액 - 상품 할인 금액 계산 함수
@@ -148,7 +159,8 @@ function calcPayAmount() {
     return;
   }
 
-  document.getElementById("pay_amount").innerText = totalPrice;
+  document.getElementById("payAmount").value = totalPrice;
+  document.getElementById("pay_amount").innerText = totalPrice.toString();
   return totalPrice;
 }
 
@@ -163,3 +175,66 @@ function setDeliveryDate() {
 }
 
 document.addEventListener("DOMContentLoaded", setDeliveryDate);
+
+// 주문서 내용 확인
+document.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  let receiverName = document.getElementById("receiverName").value;
+
+  if (receiverName == null || receiverName == "")  {
+    alert("수취인 이름을 작성해 주세요.")
+    return;
+  }
+
+  let receiverNumber = document.getElementById("receiverPhoneNumber").value;
+
+  if (receiverNumber == null || receiverNumber == "")  {
+    alert("수취인 전화번호를 작성해주세요")
+    return;
+  }
+
+  let zipCode = document.getElementById("zipCode").value;
+
+  if (zipCode == null || zipCode == "") {
+    alert("주소를 선택해주세요");
+    return;
+  }
+
+  let detailAddress = document.getElementById("detailAddress").value;
+
+  if (detailAddress == null || detailAddress == "") {
+    alert("상세주조를 입력해주세요");
+    return;
+  }
+
+  let senderName = document.getElementById("receiverName").value;
+
+  if (senderName == null || senderName == "") {
+    alert("발송인 이름을 입력해주세요");
+    return;
+  }
+
+  let senderNumber = document.getElementById("senderPhoneNumber").value;
+
+  if (senderNumber == null || senderNumber == "") {
+    alert("발송인 전화번호를 입력해주세요");
+    return;
+  }
+
+  let senderEmail = document.getElementById("senderEmail").value;
+
+  if (senderEmail == null || senderEmail == "") {
+    alert("발송인 이메일을 입력해주세요");
+    return;
+  }
+
+  let deliveryDate = document.getElementById("delivery_date").value;
+
+  if (deliveryDate == null || deliveryDate == "") {
+    alert("배송 예정일을 선택해주세요");
+    return;
+  }
+
+  document.getElementById("order_form").submit();
+})
