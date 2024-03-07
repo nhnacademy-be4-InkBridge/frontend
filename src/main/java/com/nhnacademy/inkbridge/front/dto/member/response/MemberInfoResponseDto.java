@@ -1,8 +1,10 @@
 package com.nhnacademy.inkbridge.front.dto.member.response;
 
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * class: MemberInfoResponseDto.
@@ -11,7 +13,9 @@ import lombok.NoArgsConstructor;
  * @version 3/2/24
  */
 @Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class MemberInfoResponseDto {
     private Long memberId;
     private String memberName;

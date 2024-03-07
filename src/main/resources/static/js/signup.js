@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     passwordInput.addEventListener("input", function() {
         var password = passwordInput.value.trim();
-        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+        var passwordRegex = /^(?=.+[A-Z])(?=.+[a-z])(?=.+[0-9])(?=.+[\W_])[A-Za-z0-9\W_]{8,20}$/;
 
         if (!passwordRegex.test(password)) {
             tooltip.style.display = "block";

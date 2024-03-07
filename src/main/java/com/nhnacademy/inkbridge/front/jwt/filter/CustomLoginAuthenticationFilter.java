@@ -14,6 +14,7 @@ import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
 import com.nhnacademy.inkbridge.front.jwt.utils.JwtCookie;
 import com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -22,11 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -50,7 +53,14 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
         MemberLoginRequestDto requestDto = new MemberLoginRequestDto(email, password);
 
         ResponseEntity<Void> tokenResponse = memberAdaptor.login(requestDto);
+
+        List<String> headers = tokenResponse.getHeaders().get(HttpHeaders.ALLOW);
+        if (headers != null && !headers.isEmpty()) {
+            throw new UsernameNotFoundException("회원을 찾을 수 없습니다.");
+        }
+
         log.info("token 발급 완료 ->");
+
         String accessToken = getToken(tokenResponse, ACCESS_HEADER);
         Long accessExpiredTime = Long.parseLong(getExpiredTime(tokenResponse, HEADER_ACCESS_EXPIRED_TIME));
         String refreshToken = getToken(tokenResponse, REFRESH_HEADER);
@@ -65,7 +75,7 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
         response.addCookie(refreshCookie);
         response.addCookie(uuidCookie);
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(accessToken, password);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(accessToken, uuid);
         return getAuthenticationManager().authenticate(token);
 
     }
@@ -85,7 +95,15 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
         return Objects.requireNonNull(response.getHeaders().get(type.getName())).get(0);
     }
 
-    private static String getUUID(ResponseEntity<Void> response,JwtEnums type) {
+    private static String getUUID(ResponseEntity<Void> response, JwtEnums type) {
         return Objects.requireNonNull(response.getHeaders().get(type.getName())).get(0);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException, ServletException {
+        log.info("unsuccess ->");
+        SecurityContextHolder.clearContext();
+        response.sendRedirect("/");
     }
 }

@@ -3,7 +3,6 @@ package com.nhnacademy.inkbridge.front.adaptor;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 /**
@@ -43,7 +42,8 @@ public interface MemberAdaptor {
      * 회원가입 요청
      *
      * @param memberSignupRequestDto 회원가입 폼
-     * @return 회원가입 여부
      */
-    ResponseEntity<HttpStatus> signup(MemberSignupRequestDto memberSignupRequestDto);
+    void signup(MemberSignupRequestDto memberSignupRequestDto);
+
+    void logout(String access, String refresh);
 }
