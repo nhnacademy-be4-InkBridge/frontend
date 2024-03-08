@@ -42,6 +42,23 @@ public class CommonUtils {
 
         return headers;
     }
+    public static HttpHeaders createHeader(MediaType mediaType) {
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(mediaType);
+        headers.setAccept(List.of(mediaType));
+
+        ServletRequestAttributes attributes =
+                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+
+        String token = (String) request.getAttribute(HttpHeaders.AUTHORIZATION);
+        if (Objects.nonNull(token)) {
+            headers.add(HttpHeaders.AUTHORIZATION, token);
+        }
+
+        return headers;
+    }
 
     /**
      * memberId를 반환해줌 로그인 안한 유저이면 null 값 전송.
