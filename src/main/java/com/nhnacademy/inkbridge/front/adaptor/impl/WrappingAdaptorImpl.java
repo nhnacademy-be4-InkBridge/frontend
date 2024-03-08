@@ -3,7 +3,7 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 import com.nhnacademy.inkbridge.front.adaptor.WrappingAdaptor;
 import com.nhnacademy.inkbridge.front.dto.wrapping.WrappingReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
-import com.nhnacademy.inkbridge.front.utils.HeaderUtils;
+import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -30,7 +30,7 @@ public class WrappingAdaptorImpl implements WrappingAdaptor {
 
     @Override
     public List<WrappingReadResponseDto> getWrappingList() {
-        HttpHeaders httpHeaders = HeaderUtils.createHeader();
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
 
         HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
         ResponseEntity<List<WrappingReadResponseDto>> exchange = restTemplate.exchange(

@@ -1,6 +1,5 @@
 package com.nhnacademy.inkbridge.front.controller;
 
-import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -21,8 +20,8 @@ public class PayController {
 
     @GetMapping
     public String payView(Model model) {
-        String memberId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+        String memberId = (String) SecurityContextHolder.getContext().getAuthentication()
+            .getPrincipal();
 
         model.addAttribute("orderInfo", model.getAttribute("orderInfo"));
         model.addAttribute("memberId", memberId);

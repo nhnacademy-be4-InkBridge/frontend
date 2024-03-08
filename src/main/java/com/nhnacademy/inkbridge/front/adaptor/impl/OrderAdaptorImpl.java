@@ -3,7 +3,7 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 import com.nhnacademy.inkbridge.front.adaptor.OrderAdaptor;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
-import com.nhnacademy.inkbridge.front.utils.HeaderUtils;
+import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -29,7 +29,7 @@ public class OrderAdaptorImpl implements OrderAdaptor {
 
     @Override
     public String createOrder(OrderCreateRequestDto requestDto) {
-        HttpHeaders httpHeaders = HeaderUtils.createHeader();
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
 
         HttpEntity<OrderCreateRequestDto> entity = new HttpEntity<>(requestDto, httpHeaders);
         ResponseEntity<String> exchange = restTemplate.exchange(

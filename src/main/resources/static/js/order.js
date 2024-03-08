@@ -1,10 +1,11 @@
 "use strict";
 
 // input 엔터 방지
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
   if (event.keyCode === 13) {
     event.preventDefault();
-  };
+  }
+  ;
 }, true);
 
 // 페이지 로드 시 결제 정보 초기화 함수
@@ -18,7 +19,8 @@ function paymentInfo() {
   });
 
   document.getElementById("total_regular_price").innerText = sumTotalRegular;
-  document.getElementById("product_discount").innerText = sumTotalRegular - sumTotalPrice;
+  document.getElementById("product_discount").innerText = sumTotalRegular
+      - sumTotalPrice;
   document.getElementById("package_price").innerText = '0';
   document.getElementById("coupon_discount").innerText = '0';
   document.getElementById("use_point").innerText = '0';
@@ -46,7 +48,6 @@ function paymentInfo() {
     orderName = orderName + " 외 " + (orderBooks.length - 1) + " 상품";
   }
 
-
   console.log(orderName);
 
   document.getElementById("orderName").value = orderName;
@@ -71,8 +72,16 @@ document.addEventListener("DOMContentLoaded", paymentInfo);
 function calcPoint() {
   let point = document.getElementById("using_point");
 
+  // 비회원
+  if (point == null) {
+    let point = document.createElement("using_point");
+
+    point.value = "0";
+    document.getElementById("order_form").appendChild(point);
+  }
+
   // 아무것도 입력 되지 않은 상태
-  if (point.value === null || point.value === "") {
+  if (point.value === "") {
     point.value = "0";
   }
 
@@ -93,7 +102,6 @@ function calcPoint() {
 // 쿠폰 할인 금액 계산
 function calcCoupon() {
 
-
   return 0;
 }
 
@@ -105,7 +113,8 @@ function calcWrapping() {
     if (orderBooks[i].isPackagable) {
       let orderBook = "bookOrderList[" + i + "]";
       let wrappingId = document.getElementById(orderBook + ".wrappingId");
-      let bookWrappingPrice = document.getElementById(orderBook + ".wrappingPrice");
+      let bookWrappingPrice = document.getElementById(
+          orderBook + ".wrappingPrice");
 
       if (wrappingId.value == null || wrappingId.value == "") {
         continue;
@@ -145,14 +154,16 @@ function calcPayAmount() {
   let pointDiscountPrice = calcPoint();
   let sumBookPrice = calcBookPrice();
 
-  if (wrappingPrice == null || couponDiscountPrice == null || pointDiscountPrice == null) {
+  if (wrappingPrice == null || couponDiscountPrice == null || pointDiscountPrice
+      == null) {
     return;
   }
 
-  let deliveryPrice  = sumBookPrice < deliveryPolicy.freeDeliveryPrice
+  let deliveryPrice = sumBookPrice < deliveryPolicy.freeDeliveryPrice
       ? deliveryPolicy.deliveryPrice : 0;
 
-  let totalPrice = sumBookPrice + deliveryPrice + wrappingPrice - couponDiscountPrice - pointDiscountPrice;
+  let totalPrice = sumBookPrice + deliveryPrice + wrappingPrice
+      - couponDiscountPrice - pointDiscountPrice;
 
   if (totalPrice < 0) {
     alert("결제 금액은 0원 미만일 수 없습니다.");
@@ -160,11 +171,12 @@ function calcPayAmount() {
   }
 
   document.getElementById("payAmount").value = totalPrice;
+  console.log(document.getElementById("payAmount").value)
   document.getElementById("pay_amount").innerText = totalPrice.toString();
   return totalPrice;
 }
 
-// 배송 예정일 익일부터 선택 가능
+// 배송 예정일 익일부터 선택 가능 (기본
 function setDeliveryDate() {
   let deliveryDate = document.getElementById("delivery_date");
 
@@ -182,14 +194,14 @@ document.addEventListener("submit", function (event) {
 
   let receiverName = document.getElementById("receiverName").value;
 
-  if (receiverName == null || receiverName == "")  {
+  if (receiverName == null || receiverName == "") {
     alert("수취인 이름을 작성해 주세요.")
     return;
   }
 
   let receiverNumber = document.getElementById("receiverPhoneNumber").value;
 
-  if (receiverNumber == null || receiverNumber == "")  {
+  if (receiverNumber == null || receiverNumber == "") {
     alert("수취인 전화번호를 작성해주세요")
     return;
   }
@@ -235,6 +247,8 @@ document.addEventListener("submit", function (event) {
     alert("배송 예정일을 선택해주세요");
     return;
   }
+
+  let usingPoint = document.getElementById("using_point").value;
 
   document.getElementById("order_form").submit();
 })
