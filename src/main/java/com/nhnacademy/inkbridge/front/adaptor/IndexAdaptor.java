@@ -12,7 +12,7 @@ import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
  */
 public interface IndexAdaptor {
 
-    PageRequestDto<BooksReadResponseDto> getBooks();
+    PageRequestDto<BooksReadResponseDto> getBooks(Long page);
 
     BookReadResponseDto getBook(Long bookId);
 }

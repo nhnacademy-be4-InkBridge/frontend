@@ -33,8 +33,8 @@ public class IndexController {
     }
 
     @GetMapping
-    public String index(Model model) {
-        List<BooksReadResponseDto> books = indexService.getBooks().getContent();
+    public String index(Model model, @RequestParam(defaultValue = "0") Long page) {
+        List<BooksReadResponseDto> books = indexService.getBooks(page).getContent();
         model.addAttribute("books", books);
         return "member/index";
     }
