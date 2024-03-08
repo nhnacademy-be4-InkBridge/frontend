@@ -16,7 +16,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -84,9 +83,8 @@ public class MemberAdaptorImpl implements MemberAdaptor {
      */
     @Override
     public void signup(MemberSignupRequestDto memberSignupRequestDto) {
-        Integer memberId =(Integer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         restTemplate.exchange(
-                gatewayProperties.getUrl() + "/api/members/"+memberId,
+                gatewayProperties.getUrl() + "/api/members/",
                 HttpMethod.POST,
                 new HttpEntity<>(memberSignupRequestDto, createHeader()),
                 Void.class
