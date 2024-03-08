@@ -59,7 +59,7 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
             throw new UsernameNotFoundException("회원을 찾을 수 없습니다.");
         }
 
-        log.info("token 발급 완료 ->");
+        log.info("login filter token 발급 완료 ->");
 
         String accessToken = getToken(tokenResponse, ACCESS_HEADER);
         Long accessExpiredTime = Long.parseLong(getExpiredTime(tokenResponse, HEADER_ACCESS_EXPIRED_TIME));
@@ -102,7 +102,7 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
-        log.info("unsuccess ->");
+        log.info("login filter unsuccess ->");
         SecurityContextHolder.clearContext();
         response.sendRedirect("/");
     }
