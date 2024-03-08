@@ -8,9 +8,9 @@ import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
+import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
@@ -48,9 +48,7 @@ public class BookAdaptorImpl implements BookAdaptor {
      * {@inheritDoc}
      */
     public PageRequestDto<BooksAdminReadResponseDto> getBooksAdmin(Integer page, Integer size) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
@@ -74,9 +72,7 @@ public class BookAdaptorImpl implements BookAdaptor {
      * {@inheritDoc}
      */
     public BookAdminDetailReadResponseDto getBookAdmin(Long bookId) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
@@ -100,9 +96,7 @@ public class BookAdaptorImpl implements BookAdaptor {
      */
     @Override
     public BookAdminReadResponseDto getBookAdmin() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
@@ -202,8 +196,7 @@ public class BookAdaptorImpl implements BookAdaptor {
 
         fileToByteArrayResource(thumbnail, multiValueMap, multipartHeader);
 
-        HttpHeaders jsonHeader = new HttpHeaders();
-        jsonHeader.setContentType(MediaType.APPLICATION_JSON);
+        HttpHeaders jsonHeader = CommonUtils.createHeader();
         HttpEntity<BookAdminCreateRequestDto> requestEntityJson = new HttpEntity<>(
             bookAdminCreateRequestDto,
             jsonHeader);
@@ -229,8 +222,7 @@ public class BookAdaptorImpl implements BookAdaptor {
 
         fileToByteArrayResource(thumbnail, multiValueMap, multipartHeader);
 
-        HttpHeaders jsonHeader = new HttpHeaders();
-        jsonHeader.setContentType(MediaType.APPLICATION_JSON);
+        HttpHeaders jsonHeader = CommonUtils.createHeader();
         HttpEntity<BookAdminUpdateRequestDto> requestEntityJson = new HttpEntity<>(
             bookAdminUpdateRequestDto,
             jsonHeader);

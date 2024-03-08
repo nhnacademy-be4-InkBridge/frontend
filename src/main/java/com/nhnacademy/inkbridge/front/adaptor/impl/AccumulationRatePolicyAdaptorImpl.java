@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.AccumulationRatePolicyAdaptor;
 import com.nhnacademy.inkbridge.front.dto.accumulationratepolicy.AccumulationRatePolicyCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.accumulationratepolicy.AccumulationRatePolicyAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.accumulationratepolicy.AccumulationRatePolicyReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.util.List;
@@ -54,17 +55,17 @@ public class AccumulationRatePolicyAdaptorImpl implements AccumulationRatePolicy
     /**
      * {@inheritDoc}
      *
-     * @return List - AccumulationRatePolicyReadResponseDto
+     * @return List - AccumulationRatePolicyAdminReadResponseDto
      */
     @Override
-    public List<AccumulationRatePolicyReadResponseDto> getAccumulationRatePolicies() {
+    public List<AccumulationRatePolicyAdminReadResponseDto> getAccumulationRatePolicies() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<List<AccumulationRatePolicyReadResponseDto>> exchange = restTemplate.exchange(
-            gatewayProperties.getUrl() + "/api/accumulation-rate-policies",
+        ResponseEntity<List<AccumulationRatePolicyAdminReadResponseDto>> exchange = restTemplate.exchange(
+            gatewayProperties.getUrl() + "/api/admin/accumulation-rate-policies",
             HttpMethod.GET,
             entity,
             new ParameterizedTypeReference<>() {
@@ -87,7 +88,7 @@ public class AccumulationRatePolicyAdaptorImpl implements AccumulationRatePolicy
         HttpEntity<AccumulationRatePolicyCreateRequestDto> entity = new HttpEntity<>(requestDto,
             httpHeaders);
         restTemplate.exchange(
-            gatewayProperties.getUrl() + "/api/accumulation-rate-policies",
+            gatewayProperties.getUrl() + "/api/admin/accumulation-rate-policies",
             HttpMethod.POST,
             entity,
             new ParameterizedTypeReference<Void>() {

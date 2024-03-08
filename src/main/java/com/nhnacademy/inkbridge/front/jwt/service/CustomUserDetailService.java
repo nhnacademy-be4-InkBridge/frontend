@@ -1,13 +1,15 @@
 package com.nhnacademy.inkbridge.front.jwt.service;
 
+import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.MEMBER_INFO;
+
 import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
-import com.nhnacademy.inkbridge.front.member.excpetion.MemberNotFoundException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,20 +28,29 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CustomUserDetailService implements UserDetailsService {
     private final MemberAdaptor memberAdaptor;
+    private final RedisTemplate<String, Object> redisTemplate;
+
     @Override
     public UserDetails loadUserByUsername(String accessToken) throws UsernameNotFoundException {
-        log.info("adaptor start ->");
-        
-        MemberInfoResponseDto dto = memberAdaptor.getMemberInfoByToken(accessToken);
+        String uuid = accessToken.split("\\.")[3];
+        String token = accessToken.substring(0, accessToken.length() - (uuid.length() + 1));
+
+
+        MemberInfoResponseDto dto = memberAdaptor.getMemberInfoByToken(token);
 
 
         if (Objects.isNull(dto)) {
-            throw new MemberNotFoundException();
+            log.error("회원을 찾을 수 없습니다.");
+            throw new UsernameNotFoundException("회원을 찾을 수 없습니다.");
         }
+
+
+        redisTemplate.opsForHash().put(uuid, MEMBER_INFO.getName(), dto);
 
         List<SimpleGrantedAuthority> authorities = dto.getRoles().stream().map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-        log.info("adaptor end -> {}",authorities);
+
+
         return new User(
                 dto.getMemberId().toString(),
                 "",

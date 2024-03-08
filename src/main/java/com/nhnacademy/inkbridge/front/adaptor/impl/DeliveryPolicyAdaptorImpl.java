@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 import com.nhnacademy.inkbridge.front.adaptor.DeliveryPolicyAdaptor;
 import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -36,13 +37,13 @@ public class DeliveryPolicyAdaptorImpl implements DeliveryPolicyAdaptor {
      * @return DeliveryPolicyReadResponseDto
      */
     @Override
-    public DeliveryPolicyAdminReadResponseDto getCurrentPolicy() {
+    public DeliveryPolicyReadResponseDto getCurrentPolicy() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<DeliveryPolicyAdminReadResponseDto> exchange = restTemplate.exchange(
+        ResponseEntity<DeliveryPolicyReadResponseDto> exchange = restTemplate.exchange(
             gatewayProperties.getUrl() + "/api/delivery-policies/current",
             HttpMethod.GET,
             entity,

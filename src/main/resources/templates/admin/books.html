@@ -52,40 +52,40 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="book: ${books.content}" role="button">
-                  <td th:text="${book.bookId}"></td>
-                  <td th:text="${book.bookTitle}"></td>
-                  <td th:text="${book.authorName}"></td>
-                  <td th:text="${book.publisherName}"></td>
-                  <td th:text="${book.statusName}"></td>
+                <tr th:each="book: ${books?.content}" role="button">
+                  <td th:text="${book?.bookId}"></td>
+                  <td th:text="${book?.bookTitle}"></td>
+                  <td th:text="${book?.authorName}"></td>
+                  <td th:text="${book?.publisherName}"></td>
+                  <td th:text="${book?.statusName}"></td>
                 </tr>
                 </tbody>
               </table>
             </div>
             <div class="datatable-bottom">
-              <th:block th:with="pageSize=${books.size}">
+              <th:block th:with="pageSize=${books!=null ? books.size : 0}">
                 <nav aria-label="Page navigation">
                   <ul class="pagination justify-content-center">
-                    <li th:if="${books.number>= 10}" class="page-item">
+                    <li th:if="${books?.number>= 10}" class="page-item">
                       <a class="page-link"
-                         th:href="@{'/admin/books?page=' + ${((books.number/10)*10 - 1)} + '&size=' + ${pageSize}}"
+                         th:href="@{'/admin/books?page=' + ${((books?.number/10)*10 - 1)} + '&size=' + ${pageSize}}"
                          aria-label="이전 10 페이지">
                         <span aria-hidden="true">&laquo;</span>
                       </a>
                     </li>
                     <th:block
-                        th:with="startPage=${(books.number / 10) * 10}, endPage=${(books.totalPages == 0 ? 0 : (startPage + 9 < books.totalPages ? startPage + 9 : books.totalPages - 1))}">
+                        th:with="startPage=${(books?.number / 10) * 10}, endPage=${(books?.totalPages == 0 ? 0 : (startPage + 9 < books?.totalPages ? startPage + 9 : books?.totalPages - 1))}">
                       <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
-                        <li th:class="${pageNumber == books.number ? 'page-item active' : 'page-item'}">
+                        <li th:class="${pageNumber == books?.number ? 'page-item active' : 'page-item'}">
                           <a class="page-link"
                              th:href="@{'/admin/books?page=' + ${pageNumber} + '&size=' + ${pageSize}}">[[${pageNumber
                             + 1}]]</a>
                         </li>
                       </th:block>
                     </th:block>
-                    <li th:if="${((books.number/10)*10 + 10) < books.totalPages}" class="page-item">
+                    <li th:if="${((books?.number/10)*10 + 10) < books?.totalPages}" class="page-item">
                       <a class="page-link"
-                         th:href="@{'/admin/books?page=' + ${((books.number/10)*10 + 10)} + '&size=' + ${pageSize}}"
+                         th:href="@{'/admin/books?page=' + ${((books?.number/10)*10 + 10)} + '&size=' + ${pageSize}}"
                          aria-label="Next 10 Pages">
                         <span aria-hidden="true">&raquo;</span>
                       </a>

@@ -23,15 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Slf4j
 public class MemberController {
     private final MemberService memberService;
-    /**
-     * login 페이지 보여주는 메서드.
-     *
-     * @return 로그인 페이지
-     */
-    @GetMapping("/login")
-    public String loginPage() {
-        return "member/login";
-    }
+
 
     /**
      * 로그아웃 시켜주는 메서드.
@@ -40,7 +32,9 @@ public class MemberController {
      */
     @GetMapping("/logout")
     public String logout(HttpServletResponse response) {
-        // todo: memberService logoqut
+
+        memberService.logout(response);
+
         return "redirect:/";
     }
 

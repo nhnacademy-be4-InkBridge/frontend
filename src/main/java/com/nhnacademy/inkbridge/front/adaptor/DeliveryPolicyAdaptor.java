@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.adaptor;
 
 import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyReadResponseDto;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public interface DeliveryPolicyAdaptor {
      *
      * @return DeliveryPolicyReadResponseDto
      */
-    DeliveryPolicyAdminReadResponseDto getCurrentPolicy();
+    DeliveryPolicyReadResponseDto getCurrentPolicy();
 
     /**
      * 배송비 변경 내역을 조회하는 메소드입니다.
