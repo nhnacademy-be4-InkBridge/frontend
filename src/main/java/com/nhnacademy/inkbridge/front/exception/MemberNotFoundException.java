@@ -1,4 +1,4 @@
-package com.nhnacademy.inkbridge.front.member.excpetion;
+package com.nhnacademy.inkbridge.front.exception;
 
 /**
  * class: MemberNotFoundException.

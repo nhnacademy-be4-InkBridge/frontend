@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.service.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.AccumulationRatePolicyAdaptor;
 import com.nhnacademy.inkbridge.front.dto.accumulationratepolicy.AccumulationRatePolicyCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.accumulationratepolicy.AccumulationRatePolicyAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.accumulationratepolicy.AccumulationRatePolicyReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.AccumulationRatePolicyService;
 import java.util.List;
@@ -33,10 +34,10 @@ public class AccumulationRatePolicyServiceImpl implements AccumulationRatePolicy
     /**
      * {@inheritDoc}
      *
-     * @return List - AccumulationRatePolicyReadResponseDto
+     * @return List - AccumulationRatePolicyAdminReadResponseDto
      */
     @Override
-    public List<AccumulationRatePolicyReadResponseDto> getAccumulationRatePolicies() {
+    public List<AccumulationRatePolicyAdminReadResponseDto> getAccumulationRatePolicies() {
         return accumulationRatePolicyAdaptor.getAccumulationRatePolicies();
     }
 
