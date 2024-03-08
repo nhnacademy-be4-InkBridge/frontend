@@ -1,5 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
+
 import com.nhnacademy.inkbridge.front.adaptor.WrappingAdaptor;
 import com.nhnacademy.inkbridge.front.dto.wrapping.WrappingReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
@@ -30,9 +32,7 @@ public class WrappingAdaptorImpl implements WrappingAdaptor {
 
     @Override
     public List<WrappingReadResponseDto> getWrappingList() {
-        HttpHeaders httpHeaders = CommonUtils.createHeader();
-
-        HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> entity = new HttpEntity<>(createHeader());
         ResponseEntity<List<WrappingReadResponseDto>> exchange = restTemplate.exchange(
             gatewayProperties.getUrl() + "/api/wrappings",
             HttpMethod.GET,

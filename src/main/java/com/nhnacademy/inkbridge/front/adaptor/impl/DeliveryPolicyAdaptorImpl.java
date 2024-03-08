@@ -1,5 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
+
 import com.nhnacademy.inkbridge.front.adaptor.DeliveryPolicyAdaptor;
 import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyCreateRequestDto;
@@ -38,11 +40,7 @@ public class DeliveryPolicyAdaptorImpl implements DeliveryPolicyAdaptor {
      */
     @Override
     public DeliveryPolicyReadResponseDto getCurrentPolicy() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> entity = new HttpEntity<>(createHeader());
         ResponseEntity<DeliveryPolicyReadResponseDto> exchange = restTemplate.exchange(
             gatewayProperties.getUrl() + "/api/delivery-policies/current",
             HttpMethod.GET,
@@ -60,11 +58,7 @@ public class DeliveryPolicyAdaptorImpl implements DeliveryPolicyAdaptor {
      */
     @Override
     public List<DeliveryPolicyAdminReadResponseDto> getDeliveryPolicies() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> entity = new HttpEntity<>(createHeader());
         ResponseEntity<List<DeliveryPolicyAdminReadResponseDto>> exchange = restTemplate.exchange(
             gatewayProperties.getUrl() + "/api/admin/delivery-policies",
             HttpMethod.GET,
@@ -82,12 +76,8 @@ public class DeliveryPolicyAdaptorImpl implements DeliveryPolicyAdaptor {
      */
     @Override
     public void createDeliveryPolicy(DeliveryPolicyCreateRequestDto requestDto) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
         HttpEntity<DeliveryPolicyCreateRequestDto> entity = new HttpEntity<>(requestDto,
-            httpHeaders);
+            createHeader());
         restTemplate.exchange(gatewayProperties.getUrl() + "/api/admin/delivery-policies",
             HttpMethod.POST,
             entity,

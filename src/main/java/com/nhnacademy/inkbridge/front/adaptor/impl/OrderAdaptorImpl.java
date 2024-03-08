@@ -1,5 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
+
 import com.nhnacademy.inkbridge.front.adaptor.OrderAdaptor;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
@@ -29,9 +31,7 @@ public class OrderAdaptorImpl implements OrderAdaptor {
 
     @Override
     public String createOrder(OrderCreateRequestDto requestDto) {
-        HttpHeaders httpHeaders = CommonUtils.createHeader();
-
-        HttpEntity<OrderCreateRequestDto> entity = new HttpEntity<>(requestDto, httpHeaders);
+        HttpEntity<OrderCreateRequestDto> entity = new HttpEntity<>(requestDto, createHeader());
         ResponseEntity<String> exchange = restTemplate.exchange(
             gatewayProperties.getUrl() + "/api/orders",
             HttpMethod.POST,
