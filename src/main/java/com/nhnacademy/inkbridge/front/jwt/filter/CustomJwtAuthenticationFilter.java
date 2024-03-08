@@ -43,7 +43,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
     private final MemberAdaptor memberAdaptor;
-    private final RedisTemplate<String,Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 모든 요청마다 사용자인지 아닌지 체크.
@@ -70,14 +70,14 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             if (isExpireTime(Objects.requireNonNull(refreshCookie).getValue())) {
-                log.error("refresh token 만료");
+                log.error("jwt filter refresh token 만료");
                 goLogout(response);
                 filterChain.doFilter(request, response);
                 return;
             }
             // 재발급 로직
             if (isExpireTime(Objects.requireNonNull(accessCookie).getValue())) {
-                log.info("access token 재발급 시작 ->");
+                log.info("jwt filter access token 재발급 시작 ->");
 
                 String accessValue = Objects.requireNonNull(accessCookie).getValue();
                 String accessExp = accessValue.split("\\.")[3];
@@ -105,7 +105,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                 // 새로 추가
                 Cookie newCookie = JwtCookie.createJwtCookie(newAccessToken, accessExpiredTime, ACCESS_COOKIE);
                 response.addCookie(newCookie);
-                log.info("access token 재발급 종료 ->");
+                log.info("jwt filter access token 재발급 종료 ->");
             }
 
             if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) &&
@@ -127,13 +127,13 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(responseDto.getMemberId(), "", authorities);
 
                 SecurityContextHolder.getContext().setAuthentication(token);
-                log.info("컨텍스트 홀드 저장 완료 ->");
+                log.info("jwt filter 컨텍스트 홀드 저장 완료 -> {}", SecurityContextHolder.getContext().getAuthentication());
             }
 
             log.info("jwt filter end ->");
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            log.error("jwtFilter error");
+            log.error("jwtFilter error {}", e.getMessage());
             goLogout(response);
         } finally {
             SecurityContextHolder.clearContext();
@@ -188,8 +188,9 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
      */
     private static boolean handleInvalidRequest(HttpServletRequest request, HttpServletResponse response,
                                                 FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().contains("/static/**") || request.getRequestURI().contains("/css/**") ||
-                request.getRequestURI().contains("/error")) {
+        if (request.getRequestURI().contains("/static") || request.getRequestURI().contains("/css") ||
+                request.getRequestURI().contains("/error") || request.getRequestURI().contains("/js") ||
+                request.getRequestURI().contains("/assets")) {
             filterChain.doFilter(request, response);
             return true;
         }
