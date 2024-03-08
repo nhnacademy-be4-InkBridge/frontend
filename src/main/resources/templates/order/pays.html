@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}">
+
+<!-- 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+
+</th:block>
+<!-- 고유 SCRIPT 추가 -->
+<th:block layout:fragment="script">
+  <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+  <script th:inline="javascript">
+    let payInfo = [[${orderInfo}]];
+    let memberId = [[${memberId}]];
+    let clientKey = [[${clientKey}]];
+  </script>
+  <script src="/js/pay.js">
+  </script>
+</th:block>
+
+<!-- 주문서 영역 -->
+<div layout:fragment="content" class="container">
+  <div class="wrapper">
+    <div
+        class="box_section"
+        style="
+          padding: 40px 30px 50px 30px;
+          margin-top: 30px;
+          margin-bottom: 50px;
+        ">
+      <!-- 결제 UI -->
+      <div id="payment-method"></div>
+      <!-- 이용약관 UI -->
+      <div id="agreement"></div>
+      <!-- 결제하기 버튼 -->
+      <div class="result wrapper d-flex justify-content-center">
+        <button class="button btn btn-outline-success w-50" id="payment-button" style="margin-top: 30px">
+          결제하기
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</html>
