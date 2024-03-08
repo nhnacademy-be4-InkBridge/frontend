@@ -1,5 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
+
 import com.nhnacademy.inkbridge.front.adaptor.PointPolicyAdaptor;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyCreateRequestDto;
@@ -37,11 +39,7 @@ public class PointPolicyAdaptorImpl implements PointPolicyAdaptor {
      */
     @Override
     public List<PointPolicyAdminReadResponseDto> getCurrentPointPolicies() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> entity = new HttpEntity<>(createHeader());
         ResponseEntity<List<PointPolicyAdminReadResponseDto>> exchange =
             restTemplate.exchange(gatewayProperties.getUrl() + "/api/admin/point-policies/current",
                 HttpMethod.GET,
@@ -59,11 +57,7 @@ public class PointPolicyAdaptorImpl implements PointPolicyAdaptor {
      */
     @Override
     public List<PointPolicyAdminReadResponseDto> getPointPolicies() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> entity = new HttpEntity<>(createHeader());
         ResponseEntity<List<PointPolicyAdminReadResponseDto>> exchange =
             restTemplate.exchange(gatewayProperties.getUrl() + "/api/admin/point-policies",
                 HttpMethod.GET,
@@ -81,12 +75,8 @@ public class PointPolicyAdaptorImpl implements PointPolicyAdaptor {
      */
     @Override
     public void createPointPolicy(PointPolicyCreateRequestDto requestDto) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
         HttpEntity<PointPolicyCreateRequestDto> entity = new HttpEntity<>(requestDto,
-            httpHeaders);
+            createHeader());
         restTemplate.exchange(gatewayProperties.getUrl() + "/api/admin/point-policies",
             HttpMethod.POST,
             entity,
@@ -103,11 +93,7 @@ public class PointPolicyAdaptorImpl implements PointPolicyAdaptor {
     @Override
     public List<PointPolicyAdminReadResponseDto> getPointPoliciesByTypeId(
         Integer pointPolicyTypeId) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> entity = new HttpEntity<>(createHeader());
         ResponseEntity<List<PointPolicyAdminReadResponseDto>> exchange =
             restTemplate.exchange(
                 gatewayProperties.getUrl() + "/api/admin/point-policies/{pointPolicyTypeId}",
@@ -127,11 +113,7 @@ public class PointPolicyAdaptorImpl implements PointPolicyAdaptor {
      */
     @Override
     public PointPolicyReadResponseDto getCurrentPointPolicyById(Integer pointPolicyTypeId) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> entity = new HttpEntity<>(createHeader());
         ResponseEntity<PointPolicyReadResponseDto> exchange =
             restTemplate.exchange(
                 gatewayProperties.getUrl() + "/api/point-policies/current/{pointPolicyTypeId}",

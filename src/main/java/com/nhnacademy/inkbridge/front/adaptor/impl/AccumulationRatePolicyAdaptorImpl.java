@@ -1,17 +1,17 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
+
 import com.nhnacademy.inkbridge.front.adaptor.AccumulationRatePolicyAdaptor;
-import com.nhnacademy.inkbridge.front.dto.accumulationratepolicy.AccumulationRatePolicyCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.accumulationratepolicy.AccumulationRatePolicyAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.accumulationratepolicy.AccumulationRatePolicyCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.accumulationratepolicy.AccumulationRatePolicyReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -37,11 +37,7 @@ public class AccumulationRatePolicyAdaptorImpl implements AccumulationRatePolicy
      */
     @Override
     public AccumulationRatePolicyReadResponseDto getCurrentPolicy() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> entity = new HttpEntity<>(createHeader());
         ResponseEntity<AccumulationRatePolicyReadResponseDto> exchange = restTemplate.exchange(
             gatewayProperties.getUrl() + "/api/accumulation-rate-policies/current",
             HttpMethod.GET,
@@ -59,11 +55,8 @@ public class AccumulationRatePolicyAdaptorImpl implements AccumulationRatePolicy
      */
     @Override
     public List<AccumulationRatePolicyAdminReadResponseDto> getAccumulationRatePolicies() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
-        HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> entity = new HttpEntity<>(createHeader());
         ResponseEntity<List<AccumulationRatePolicyAdminReadResponseDto>> exchange = restTemplate.exchange(
             gatewayProperties.getUrl() + "/api/admin/accumulation-rate-policies",
             HttpMethod.GET,
@@ -81,12 +74,9 @@ public class AccumulationRatePolicyAdaptorImpl implements AccumulationRatePolicy
      */
     @Override
     public void createAccumulationRatePolicy(AccumulationRatePolicyCreateRequestDto requestDto) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<AccumulationRatePolicyCreateRequestDto> entity = new HttpEntity<>(requestDto,
-            httpHeaders);
+            createHeader());
         restTemplate.exchange(
             gatewayProperties.getUrl() + "/api/admin/accumulation-rate-policies",
             HttpMethod.POST,
