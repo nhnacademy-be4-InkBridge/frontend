@@ -1,7 +1,7 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyCreateRequestDto;
-import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.pointpolicytype.PointPolicyTypeCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.PointPolicyService;
 import com.nhnacademy.inkbridge.front.service.PointPolicyTypeService;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/admin/point-policy")
 @RequiredArgsConstructor
-public class PointPolicyController {
+public class PointPolicyAdminController {
 
     private final PointPolicyService pointPolicyService;
     private final PointPolicyTypeService pointPolicyTypeService;
@@ -42,7 +42,7 @@ public class PointPolicyController {
     public String pointPolicyViewByTypeID(
         @RequestParam(value = "pointPolicyTypeId", required = false) Integer pointPolicyTypeId,
         Model model) {
-        List<PointPolicyReadResponseDto> pointPolicies =
+        List<PointPolicyAdminReadResponseDto> pointPolicies =
             Objects.isNull(pointPolicyTypeId) ? pointPolicyService.getPointPolicies() :
                 pointPolicyService.getPointPoliciesByTypeId(pointPolicyTypeId);
 
