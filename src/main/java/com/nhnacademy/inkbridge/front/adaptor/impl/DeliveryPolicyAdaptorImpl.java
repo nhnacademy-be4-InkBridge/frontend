@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.DeliveryPolicyAdaptor;
+import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
@@ -58,14 +59,14 @@ public class DeliveryPolicyAdaptorImpl implements DeliveryPolicyAdaptor {
      * @return List - DeliveryPolicyReadResponseDto
      */
     @Override
-    public List<DeliveryPolicyReadResponseDto> getDeliveryPolicies() {
+    public List<DeliveryPolicyAdminReadResponseDto> getDeliveryPolicies() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<List<DeliveryPolicyReadResponseDto>> exchange = restTemplate.exchange(
-            gatewayProperties.getUrl() + "/api/delivery-policies",
+        ResponseEntity<List<DeliveryPolicyAdminReadResponseDto>> exchange = restTemplate.exchange(
+            gatewayProperties.getUrl() + "/api/admin/delivery-policies",
             HttpMethod.GET,
             entity,
             new ParameterizedTypeReference<>() {
@@ -87,7 +88,7 @@ public class DeliveryPolicyAdaptorImpl implements DeliveryPolicyAdaptor {
 
         HttpEntity<DeliveryPolicyCreateRequestDto> entity = new HttpEntity<>(requestDto,
             httpHeaders);
-        restTemplate.exchange(gatewayProperties.getUrl() + "/api/delivery-policies",
+        restTemplate.exchange(gatewayProperties.getUrl() + "/api/admin/delivery-policies",
             HttpMethod.POST,
             entity,
             new ParameterizedTypeReference<Void>() {

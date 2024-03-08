@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin/accumulation-policy")
 @RequiredArgsConstructor
-public class AccumulationRatePolicyController {
+public class AccumulationRatePolicyAdminController {
 
     private final AccumulationRatePolicyService accumulationRatePolicyService;
 

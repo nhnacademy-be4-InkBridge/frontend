@@ -43,7 +43,7 @@ public class PointPolicyTypeAdaptorImpl implements PointPolicyTypeAdaptor {
 
         HttpEntity<PointPolicyTypeCreateRequestDto> entity = new HttpEntity<>(requestDto,
             httpHeaders);
-        restTemplate.exchange(gatewayProperties.getUrl() + "/api/point-policy-types",
+        restTemplate.exchange(gatewayProperties.getUrl() + "/api/admin/point-policy-types",
             HttpMethod.POST,
             entity,
             new ParameterizedTypeReference<Void>() {

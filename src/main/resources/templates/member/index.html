@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/main_layout}">
+      layout:decorate="~{layouts/main_layout}" lang="ko">
 
 <!-- index.html 고유 CSS 추가 -->
 <th:block layout:fragment="css">
@@ -46,46 +46,13 @@
                 aria-label="Slide 3"></button>
       </div>
       <div class="carousel-inner">
-        <div class="carousel-item active">
-          <svg class="bd-placeholder-img" width="100%" height="500px"
-               xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-               preserveAspectRatio="xMidYMid slice" focusable="false">
-            <rect width="100%" height="100%" fill="var(--bs-secondary-color)"/>
-          </svg>
+        <div class="carousel-item" th:each="book, index : ${books}"
+             th:if="${index.index &lt; 3}" th:classappend="${index.index==0}?'active'">
+          <img class="bd-placeholder-img" width="100%" height="500px"
+               th:src="${book.fileUrl}" aria-hidden="true" alt="no image">
           <div class="container">
-            <div class="carousel-caption text-start">
-              <h1>Example headline.</h1>
-              <p class="opacity-75">Some representative placeholder content for the first slide of
-                the carousel.</p>
-              <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <svg class="bd-placeholder-img" width="100%" height="500px"
-               xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-               preserveAspectRatio="xMidYMid slice" focusable="false">
-            <rect width="100%" height="100%" fill="var(--bs-secondary-color)"/>
-          </svg>
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>Another example headline.</h1>
-              <p>Some representative placeholder content for the second slide of the carousel.</p>
-              <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <svg class="bd-placeholder-img" width="100%" height="500px"
-               xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-               preserveAspectRatio="xMidYMid slice" focusable="false">
-            <rect width="100%" height="100%" fill="var(--bs-secondary-color)"/>
-          </svg>
-          <div class="container">
-            <div class="carousel-caption text-end">
-              <h1>One more for good measure.</h1>
-              <p>Some representative placeholder content for the third slide of this carousel.</p>
-              <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+            <div class="carousel-caption text-start" style="color: #0a0a0a">
+              <h1 th:text="${book.bookTitle}"></h1>
             </div>
           </div>
         </div>
@@ -101,6 +68,85 @@
         <span class="visually-hidden">Next</span>
       </button>
     </div>
+    <div class="container">
+      <div class="section-intro pb-60px">
+        <h2>전체 상품 목록</h2>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-lg-4 col-xl-3" th:each="book: ${books}" th:if="${books}!=null">
+          <div class="card text-center card-product"
+               th:onclick="|location.href='@{/book(id=${book.bookId})}'|">
+            <div class="card-product__img">
+              <img class="card-img" th:src="${book.fileUrl}" alt="no image"
+                   style="min-width: 230px; min-height: 250px;">
+            </div>
+            <div class="card-body">
+              <h4 class="card-product__title" th:text="${book.bookTitle}"></h4>
+              <p th:text="${book.authorName} + ' | ' + ${book.publisherName}"></p>
+              <p class="card-product__price" th:text="${book.price}">$150.00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="listEnd"></div>
+    </div>
   </main>
+  <script>
+    const listEnd = document.querySelector('#listEnd');
+    const productList = document.querySelector('.row')
+    const options = {
+      root: null,
+      rootMargin: '0px 0px 0px 0px',
+      threshold: 0,
+    };
+
+    let page = 0;
+
+    const onIntersect = async (entries, observer) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          console.log('무한 스크롤 실행');
+          page++;
+
+          const response = await fetch(`/api/index?page=${page}`);
+          const books = await response.json();
+
+          if (books.length < 1) {
+            if (page === 1) {
+              productList.innerHTML = "";
+            }
+            observer.unobserve(listEnd);
+            continue;
+          }
+
+          books.forEach(book => {
+            const productHTML = createBook(book);
+            productList.insertAdjacentHTML('beforeend', productHTML);
+          });
+        }
+      }
+    }
+    const observer = new IntersectionObserver(onIntersect, options);
+    observer.observe(listEnd);
+
+    function createBook(book) {
+      return `
+      <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card text-center card-product"
+             onclick="location.href='/book?id=${book.bookId}'">
+          <div class="card-product__img">
+            <img class="card-img" src="${book.fileUrl}" alt="no image"
+                 style="min-width: 230px; min-height: 250px;">
+          </div>
+          <div class="card-body">
+            <h4 class="card-product__title">${book.bookTitle}</h4>
+            <p>${book.authorName}|${book.publisherName}</p>
+            <p class="card-product__price">${book.price}</p>
+          </div>
+        </div>
+      </div>
+      `;
+    }
+  </script>
 </div>
 </html>

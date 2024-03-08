@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
 import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.deliverypolicy.DeliveryPolicyReadResponseDto;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface DeliveryPolicyAdaptor {
      *
      * @return List - DeliveryPolicyReadResponseDto
      */
-    List<DeliveryPolicyReadResponseDto> getDeliveryPolicies();
+    List<DeliveryPolicyAdminReadResponseDto> getDeliveryPolicies();
 
     /**
      * 적용할 배송비 정책을 생성하는 메소드입니다.

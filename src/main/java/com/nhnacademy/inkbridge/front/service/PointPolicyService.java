@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.service;
 
+import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyReadResponseDto;
 import java.util.List;
@@ -12,11 +13,13 @@ import java.util.List;
  */
 public interface PointPolicyService {
 
-    List<PointPolicyReadResponseDto> getCurrentPointPolicies();
+    List<PointPolicyAdminReadResponseDto> getCurrentPointPolicies();
 
-    List<PointPolicyReadResponseDto> getPointPolicies();
+    List<PointPolicyAdminReadResponseDto> getPointPolicies();
 
     void createPointPolicy(PointPolicyCreateRequestDto requestDto);
 
-    List<PointPolicyReadResponseDto> getPointPoliciesByTypeId(Integer pointPolicyTypeId);
+    List<PointPolicyAdminReadResponseDto> getPointPoliciesByTypeId(Integer pointPolicyTypeId);
+
+    PointPolicyReadResponseDto getCurrentPointPolicyByTypeId(Integer pointPolicyTypeId);
 }

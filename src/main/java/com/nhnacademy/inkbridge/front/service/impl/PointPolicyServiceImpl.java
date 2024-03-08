@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.service.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.PointPolicyAdaptor;
+import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.PointPolicyService;
@@ -26,7 +27,7 @@ public class PointPolicyServiceImpl implements PointPolicyService {
      * @return List - PointPolicyReadResponseDto
      */
     @Override
-    public List<PointPolicyReadResponseDto> getCurrentPointPolicies() {
+    public List<PointPolicyAdminReadResponseDto> getCurrentPointPolicies() {
         return pointPolicyAdapter.getCurrentPointPolicies();
     }
 
@@ -36,7 +37,7 @@ public class PointPolicyServiceImpl implements PointPolicyService {
      * @return List - PointPolicyReadResponseDto
      */
     @Override
-    public List<PointPolicyReadResponseDto> getPointPolicies() {
+    public List<PointPolicyAdminReadResponseDto> getPointPolicies() {
         return pointPolicyAdapter.getPointPolicies();
     }
 
@@ -57,7 +58,12 @@ public class PointPolicyServiceImpl implements PointPolicyService {
      * @return List - PointPolicyReadResponseDto
      */
     @Override
-    public List<PointPolicyReadResponseDto> getPointPoliciesByTypeId(Integer pointPolicyTypeId) {
+    public List<PointPolicyAdminReadResponseDto> getPointPoliciesByTypeId(Integer pointPolicyTypeId) {
         return pointPolicyAdapter.getPointPoliciesByTypeId(pointPolicyTypeId);
+    }
+
+    @Override
+    public PointPolicyReadResponseDto getCurrentPointPolicyByTypeId(Integer pointPolicyTypeId) {
+        return pointPolicyAdapter.getCurrentPointPolicyById(pointPolicyTypeId);
     }
 }

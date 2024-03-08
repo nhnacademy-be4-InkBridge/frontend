@@ -1,6 +1,5 @@
 package com.nhnacademy.inkbridge.front.dto.accumulationratepolicy;
 
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +17,4 @@ public class AccumulationRatePolicyReadResponseDto {
 
     private Long accumulationRatePolicyId;
     private Integer accumulationRate;
-    private LocalDate createdAt;
 }

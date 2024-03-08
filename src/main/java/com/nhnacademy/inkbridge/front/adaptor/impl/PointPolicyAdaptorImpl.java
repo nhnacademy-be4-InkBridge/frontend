@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.PointPolicyAdaptor;
+import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.pointpolicy.PointPolicyReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
@@ -35,14 +36,14 @@ public class PointPolicyAdaptorImpl implements PointPolicyAdaptor {
      * @return List - PointPolicyReadResponseDto
      */
     @Override
-    public List<PointPolicyReadResponseDto> getCurrentPointPolicies() {
+    public List<PointPolicyAdminReadResponseDto> getCurrentPointPolicies() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<List<PointPolicyReadResponseDto>> exchange =
-            restTemplate.exchange(gatewayProperties.getUrl() + "/api/point-policies/current",
+        ResponseEntity<List<PointPolicyAdminReadResponseDto>> exchange =
+            restTemplate.exchange(gatewayProperties.getUrl() + "/api/admin/point-policies/current",
                 HttpMethod.GET,
                 entity,
                 new ParameterizedTypeReference<>() {
@@ -57,14 +58,14 @@ public class PointPolicyAdaptorImpl implements PointPolicyAdaptor {
      * @return List - PointPolicyReadResponseDto
      */
     @Override
-    public List<PointPolicyReadResponseDto> getPointPolicies() {
+    public List<PointPolicyAdminReadResponseDto> getPointPolicies() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<List<PointPolicyReadResponseDto>> exchange =
-            restTemplate.exchange(gatewayProperties.getUrl() + "/api/point-policies",
+        ResponseEntity<List<PointPolicyAdminReadResponseDto>> exchange =
+            restTemplate.exchange(gatewayProperties.getUrl() + "/api/admin/point-policies",
                 HttpMethod.GET,
                 entity,
                 new ParameterizedTypeReference<>() {
@@ -86,7 +87,7 @@ public class PointPolicyAdaptorImpl implements PointPolicyAdaptor {
 
         HttpEntity<PointPolicyCreateRequestDto> entity = new HttpEntity<>(requestDto,
             httpHeaders);
-        restTemplate.exchange(gatewayProperties.getUrl() + "/api/point-policies",
+        restTemplate.exchange(gatewayProperties.getUrl() + "/api/admin/point-policies",
             HttpMethod.POST,
             entity,
             new ParameterizedTypeReference<Void>() {
@@ -100,15 +101,40 @@ public class PointPolicyAdaptorImpl implements PointPolicyAdaptor {
      * @return List - PointPolicyReadResponseDto
      */
     @Override
-    public List<PointPolicyReadResponseDto> getPointPoliciesByTypeId(Integer pointPolicyTypeId) {
+    public List<PointPolicyAdminReadResponseDto> getPointPoliciesByTypeId(
+        Integer pointPolicyTypeId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<List<PointPolicyReadResponseDto>> exchange =
+        ResponseEntity<List<PointPolicyAdminReadResponseDto>> exchange =
             restTemplate.exchange(
-                gatewayProperties.getUrl() + "/api/point-policies/{pointPolicyTypeId}",
+                gatewayProperties.getUrl() + "/api/admin/point-policies/{pointPolicyTypeId}",
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<>() {
+                }, pointPolicyTypeId);
+
+        return exchange.getBody();
+    }
+
+    /**
+     * 포인트 정책 유형 번호로 적용중인 정책을 조회하는 메소드입니다.
+     *
+     * @param pointPolicyTypeId 포인트 정책 유형 번호
+     * @return 적용 포인트 정책
+     */
+    @Override
+    public PointPolicyReadResponseDto getCurrentPointPolicyById(Integer pointPolicyTypeId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<Void> entity = new HttpEntity<>(httpHeaders);
+        ResponseEntity<PointPolicyReadResponseDto> exchange =
+            restTemplate.exchange(
+                gatewayProperties.getUrl() + "/api/point-policies/current/{pointPolicyTypeId}",
                 HttpMethod.GET,
                 entity,
                 new ParameterizedTypeReference<>() {
