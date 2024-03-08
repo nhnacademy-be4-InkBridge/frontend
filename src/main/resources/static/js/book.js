@@ -23,10 +23,11 @@ const setCookie = () => {
     regularPrice: document.getElementById('regularPrice').textContent,
     amount: document.getElementById('amount').value,
     isPackagable: document.getElementById('isPackagable').value
-  }
-
-  document.cookie =
-      'info=[' + JSON.stringify(cookies) + ']; path=/;';
+  };
+  let existingCookie = [];
+  existingCookie.push(cookies);
+  document.cookie = 'info=/' + encodeURIComponent(JSON.stringify(existingCookie))
+      + '; path=/;';
 };
 
 // markdownit 라이브러리를 사용해 markdown을 html로 변환
