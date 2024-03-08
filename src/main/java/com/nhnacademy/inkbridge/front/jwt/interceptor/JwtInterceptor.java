@@ -10,6 +10,7 @@ import java.util.Objects;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -20,15 +21,17 @@ import org.springframework.web.servlet.HandlerInterceptor;
  * @author devminseo
  * @version 3/6/24
  */
+
 @Component
+@Slf4j
 public class JwtInterceptor implements HandlerInterceptor {
 
     /**
      * adaptor 에서 요청하기전 회원이라면 토큰을 헤더에 넣어줌.
      *
-     * @param request request
+     * @param request  request
      * @param response response
-     * @param handler handler
+     * @param handler  handler
      * @return 넣는지 여부
      * @throws Exception exception
      */
@@ -49,7 +52,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         String token = access.getValue().substring(0, expiredLength);
 
-        request.setAttribute(HttpHeaders.AUTHORIZATION, JwtEnums.BEARER_PREFIX + token);
+        request.setAttribute(HttpHeaders.AUTHORIZATION, JwtEnums.BEARER_PREFIX.getName() + token);
 
         return true;
     }
