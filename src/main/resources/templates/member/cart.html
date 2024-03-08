@@ -32,28 +32,28 @@
           <tr>
             <th scope="row">
               <div class="d-flex align-items-center">
-                <img src="img/vegetable-item-3.png" class="img-fluid me-5 rounded-circle"
+                <img th:src="${book?.thumbnail}" class="img-fluid me-5 rounded-circle"
                      style="width: 80px; height: 80px;" alt="">
               </div>
             </th>
             <td>
-              <p class="mb-0 mt-4">Big Banana</p>
+              <p class="mb-0 mt-4" th:text="${book?.bookTitle}"></p>
             </td>
             <td>
-              <span class="mb-0 mt-4" style="text-decoration: line-through">2.99 $</span>
-              <span>19,950원(30% 할인)</span>
+              <span class="mb-0 mt-4" style="text-decoration: line-through" th:text="${book.regularPrice}+'원'"></span>
+              <span th:text="${book.price}+'원'"></span>
             </td>
             <td>
               <div class="input-group quantity mt-4" style="width: 100px;">
                 <div class="input-group-btn">
-                  <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                  <button class="btn btn-sm btn-minus rounded-circle bg-light border" type="button">
                     <i class="fa fa-minus"></i>
                   </button>
                 </div>
                 <input type="text" class="form-control form-control-sm text-center border-0"
-                       value="1">
+                       th:value="${book.amount}">
                 <div class="input-group-btn">
-                  <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                  <button class="btn btn-sm btn-plus rounded-circle bg-light border" type="button">
                     <i class="fa fa-plus"></i>
                   </button>
                 </div>
@@ -80,5 +80,5 @@
       </div>
     </div>
   </div>
-  <script src="/js/quantity-count.js"></script>
+  <script src="/js/book.js"></script>
 </div>
