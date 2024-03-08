@@ -52,7 +52,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         String token = access.getValue().substring(0, expiredLength);
 
-        request.setAttribute(HttpHeaders.AUTHORIZATION, JwtEnums.BEARER_PREFIX + token);
+        request.setAttribute(HttpHeaders.AUTHORIZATION, JwtEnums.BEARER_PREFIX.getName() + token);
 
         return true;
     }
