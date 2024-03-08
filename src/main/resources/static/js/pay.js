@@ -3,8 +3,6 @@ function a() {
   const generateRandomString = () =>
       window.btoa(Math.random()).slice(0, 20);
   // ------  결제위젯 초기화 ------
-  // @docs https://docs.tosspayments.com/reference/widget-sdk#sdk-설치-및-초기화
-
   let paymentWidget = memberId === "anonymousUser" ? PaymentWidget(clientKey,
       PaymentWidget.ANONYMOUS) : PaymentWidget(clientKey, memberId);
 
