@@ -17,7 +17,7 @@ public interface IndexService {
      *
      * @return BooksReadResponseDto page
      */
-    PageRequestDto<BooksReadResponseDto> getBooks();
+    PageRequestDto<BooksReadResponseDto> getBooks(Long page);
 
     /**
      * 도서 상세 정보를 조회하는 메서드입니다.

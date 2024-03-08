@@ -38,12 +38,14 @@ public class IndexAdaptorImpl implements IndexAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public PageRequestDto<BooksReadResponseDto> getBooks() {
+    public PageRequestDto<BooksReadResponseDto> getBooks(Long page) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(DEFAULT_PATH)
+            .queryParam("page", "{page}")
             .encode()
             .build()
+            .expand(page)
             .toUri();
 
         HttpHeaders httpHeaders = CommonUtils.createHeader();
