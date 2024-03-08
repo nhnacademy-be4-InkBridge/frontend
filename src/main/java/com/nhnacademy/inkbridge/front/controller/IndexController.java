@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -32,8 +33,8 @@ public class IndexController {
     }
 
     @GetMapping
-    public String index(Model model) {
-        List<BooksReadResponseDto> books = indexService.getBooks().getContent();
+    public String index(Model model, @RequestParam(defaultValue = "0") Long page) {
+        List<BooksReadResponseDto> books = indexService.getBooks(page).getContent();
         model.addAttribute("books", books);
         return "member/index";
     }

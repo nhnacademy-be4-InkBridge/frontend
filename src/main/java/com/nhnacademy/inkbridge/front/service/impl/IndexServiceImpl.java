@@ -26,8 +26,8 @@ public class IndexServiceImpl implements IndexService {
      * {@inheritDoc}
      */
     @Override
-    public PageRequestDto<BooksReadResponseDto> getBooks() {
-        return indexAdaptor.getBooks();
+    public PageRequestDto<BooksReadResponseDto> getBooks(Long page) {
+        return indexAdaptor.getBooks(page);
     }
 
     /**

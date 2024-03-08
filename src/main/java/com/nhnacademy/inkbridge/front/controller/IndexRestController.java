@@ -5,6 +5,7 @@ import com.nhnacademy.inkbridge.front.service.IndexService;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -29,7 +30,7 @@ public class IndexRestController {
      * @return BooksReadResponseDto
      */
     @GetMapping
-    public List<BooksReadResponseDto> indexList() {
-        return indexService.getBooks().getContent();
+    public List<BooksReadResponseDto> indexList(@RequestParam(value = "page", defaultValue = "0") Long page) {
+        return indexService.getBooks(page).getContent();
     }
 }
