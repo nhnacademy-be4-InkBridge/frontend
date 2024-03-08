@@ -26,7 +26,7 @@ const setCookie = () => {
   }
 
   document.cookie =
-      'info=' + JSON.stringify(cookies) + '; path=/;';
+      'info=[' + JSON.stringify(cookies) + ']; path=/;';
 };
 
 // markdownit 라이브러리를 사용해 markdown을 html로 변환
