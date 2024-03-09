@@ -124,7 +124,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                                 Collectors.toList());
 
                 UsernamePasswordAuthenticationToken token =
-                        new UsernamePasswordAuthenticationToken(responseDto.getMemberId(), "", authorities);
+                        new UsernamePasswordAuthenticationToken(responseDto.getMemberId().toString(), "", authorities);
 
                 SecurityContextHolder.getContext().setAuthentication(token);
                 log.info("jwt filter 컨텍스트 홀드 저장 완료 -> {}", SecurityContextHolder.getContext().getAuthentication());
