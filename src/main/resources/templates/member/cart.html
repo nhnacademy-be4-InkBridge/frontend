@@ -29,19 +29,23 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
+          <tr th:each="book: ${info}">
+            <th>
+              <input type="checkbox">
+            </th>
             <th scope="row">
               <div class="d-flex align-items-center">
-                <img th:src="${book?.thumbnail}" class="img-fluid me-5 rounded-circle"
+                <img th:src="${book.thumbnail}" class="img-fluid me-5 rounded-circle"
                      style="width: 80px; height: 80px;" alt="">
               </div>
             </th>
             <td>
-              <p class="mb-0 mt-4" th:text="${book?.bookTitle}"></p>
+              <p class="mb-0 mt-4" th:text="${book.bookTitle}" th:href="${book.bookId}"></p>
             </td>
             <td>
-              <span class="mb-0 mt-4" style="text-decoration: line-through" th:text="${book.regularPrice}+'원'"></span>
-              <span th:text="${book.price}+'원'"></span>
+              <span class="mb-0 mt-4" style="text-decoration: line-through"
+                    th:text="${book.regularPrice}+'원'"></span>
+              <span th:text="${book.price}+'원(' + ${book.discountRatio} + '할인)'"></span>
             </td>
             <td>
               <div class="input-group quantity mt-4" style="width: 100px;">
@@ -51,7 +55,7 @@
                   </button>
                 </div>
                 <input type="text" class="form-control form-control-sm text-center border-0"
-                       th:value="${book.amount}">
+                       th:value="${bookIds.get(book.bookId)}" name="amount">
                 <div class="input-group-btn">
                   <button class="btn btn-sm btn-plus rounded-circle bg-light border" type="button">
                     <i class="fa fa-plus"></i>
