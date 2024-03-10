@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.utils;
 import java.util.List;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @author devminseo
  * @version 2/29/24
  */
+@Slf4j
 public class CommonUtils {
     private CommonUtils() {
     }

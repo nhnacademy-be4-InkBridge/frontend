@@ -21,7 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @ToString
 public class OrderCreateRequestDto {
 
-    private List<BookOrderList> bookOrderList;
+    private List<BookOrderInfoRequestDto> bookOrderList;
     private String orderId;
     private String orderName;
     private String receiverName;
@@ -34,7 +34,7 @@ public class OrderCreateRequestDto {
     private String senderEmail;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deliveryDate;
-    private Long usingPoint;
+    private Long usePoint;
     private Long payAmount;
     private String memberId;
     private Long deliveryPrice;
