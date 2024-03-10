@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.CartService;
@@ -44,6 +45,9 @@ public class CartController {
 
         model.addAttribute("bookIds", cart.getBookId());
         model.addAttribute("info", cart.getBookInfo());
+        model.addAttribute("totalPrice",
+            cart.getBookInfo().stream().mapToLong(CartBookReadResponseDto::getPrice).sum());
+        log.info("bookIds: {}", cart.getBookId().keySet());
         return "member/cart";
     }
 

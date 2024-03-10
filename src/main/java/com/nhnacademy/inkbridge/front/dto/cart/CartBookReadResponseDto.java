@@ -18,6 +18,7 @@ public class CartBookReadResponseDto {
     private Long price;
     private BigDecimal discountRatio;
     private Integer stock;
+    private Boolean isPackagable;
     private String thumbnail;
 
 }

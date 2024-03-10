@@ -10,13 +10,13 @@
 </th:block>
 
 <th:block layout:fragment="script">
-
 </th:block>
 
 
 <div layout:fragment="content" class="container">
   <div class="container-fluid py-5">
     <h3>장바구니</h3>
+    <p>비회원은 일주일까지 장바구니 정보를 저장합니다</p>
     <div class="container py-5">
       <div class="table-responsive">
         <table class="table" style="margin-bottom: 0">
@@ -26,26 +26,31 @@
             <th scope="col">판매가</th>
             <th scope="col">수량</th>
             <th scope="col">주문</th>
+            <th scope="col">관리</th>
           </tr>
           </thead>
           <tbody>
           <tr th:each="book: ${info}">
             <th>
-              <input type="checkbox">
+              <input type="checkbox" checked>
             </th>
             <th scope="row">
               <div class="d-flex align-items-center">
-                <img th:src="${book.thumbnail}" class="img-fluid me-5 rounded-circle"
-                     style="width: 80px; height: 80px;" alt="">
+                <img th:src="${book.thumbnail}" class="img-fluid me-5" id="thumbnail"
+                     style="width: 80px; height: 80px;" alt="이미지를 불러오는 데 실패했습니다.">
               </div>
             </th>
             <td>
-              <p class="mb-0 mt-4" th:text="${book.bookTitle}" th:href="${book.bookId}"></p>
+              <input type="hidden" id="bookId" th:value="${book.bookId}">
+              <input type="hidden" id="isPackagable" th:value="${book.isPackagable}">
+              <p class="mb-0 mt-4" th:text="${book.bookTitle}" th:href="@{/book?id=${book.bookId}}"
+                 id="bookTitle"></p>
             </td>
             <td>
-              <span class="mb-0 mt-4" style="text-decoration: line-through"
-                    th:text="${book.regularPrice}+'원'"></span>
-              <span th:text="${book.price}+'원(' + ${book.discountRatio} + '할인)'"></span>
+              <p style="text-decoration: line-through" id="regularPrice"
+                 th:text="${book.regularPrice}"></p>
+              <span id="price" th:text="${book.price}"></span><span
+                th:text="'원(' + ${book.discountRatio} + '% 할인)'"></span>
             </td>
             <td>
               <div class="input-group quantity mt-4" style="width: 100px;">
@@ -55,7 +60,8 @@
                   </button>
                 </div>
                 <input type="text" class="form-control form-control-sm text-center border-0"
-                       th:value="${bookIds.get(book.bookId)}" name="amount">
+                       th:with="bookId=${book.bookId}"
+                       th:value="${bookIds[bookId.toString()]}" name="amount">
                 <div class="input-group-btn">
                   <button class="btn btn-sm btn-plus rounded-circle bg-light border" type="button">
                     <i class="fa fa-plus"></i>
@@ -64,7 +70,6 @@
               </div>
             </td>
             <td>
-              <button class="btn btn-md bg-light border mt-4">주문하기</button>
               <button class="btn btn-md bg-light border mt-4">삭제</button>
             </td>
           </tr>
@@ -72,17 +77,17 @@
         </table>
         <div class="bg-light justify-content-between d-flex w-100">
           <p>Total</p>
-          <p>상품 총 금액:<strong>19,950원</strong>( + 배송비 0원)</p>
+          <p>상품 총 금액:<strong th:text="${totalPrice}"></strong>( + 배송비 0원)</p>
         </div>
       </div>
-      <div>
-        <a href="/cart"
-           class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
+      <div class="modal-footer mt-3">
+        <a href="/orders" th:onclick="setCookie()"
+           class="btn border border-secondary rounded-pill px-4 py-2 m-4 text-primary"><i
             class="fa fa-shopping-bag me-2 text-primary"></i> 주문하기</a>
         <a href="/"
-           class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">쇼핑 계속하기</a>
+           class="btn border border-secondary rounded-pill px-4 py-2 m-4 text-primary">쇼핑 계속하기</a>
       </div>
     </div>
   </div>
-  <script src="/js/book.js"></script>
+  <script src="/js/cart.js"></script>
 </div>
