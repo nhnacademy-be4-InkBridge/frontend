@@ -30,6 +30,9 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
     var price = parseInt(
         this.parentElement.parentElement.parentElement.parentElement.querySelector(
             '#price').textContent);
+    var totalPrice = parseInt(
+        this.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.querySelector(
+            '#totalPrice').textContent);
     var newPrice;
     if (this.classList.contains('btn-plus')) {
       newVal = oldValue + 1;
@@ -40,10 +43,14 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
       newPrice = 0;
     } else {
       newPrice = price / oldValue * newVal;
+      totalPrice = totalPrice + price / oldValue;
     }
     this.parentElement.parentElement.querySelector('input').value = newVal;
     this.parentElement.parentElement.parentElement.parentElement.querySelector(
         '#price').textContent = newPrice;
+    this.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.querySelector(
+        '#totalPrice').textContent = totalPrice;
+
   });
 });
 

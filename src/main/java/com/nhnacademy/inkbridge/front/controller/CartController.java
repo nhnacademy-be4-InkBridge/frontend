@@ -2,9 +2,10 @@ package com.nhnacademy.inkbridge.front.controller;
 
 import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartCreateRequestDto;
-import com.nhnacademy.inkbridge.front.dto.cart.CartReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.CartService;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import javax.servlet.http.Cookie;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -41,13 +43,17 @@ public class CartController {
         if (Objects.equals(memberId, "null")) {
             memberId = checkCookie(request.getCookies());
         }
-        CartReadResponseDto cart = cartService.getCart(memberId);
+        // 카트에서 북 ID를 갖고옴
+        // 레디스에서 데이터를 갖고옴
+        // 도서에서 상세 정보를 갖고옴
 
-        model.addAttribute("bookIds", cart.getBookId());
-        model.addAttribute("info", cart.getBookInfo());
+        Map<String, String> cart = cartService.getCartRedis(memberId);
+        List<CartBookReadResponseDto> cartBookInfo = cartService.getCartBookInfo(cart.keySet());
+
+        model.addAttribute("bookIds", cart);
+        model.addAttribute("info", cartBookInfo);
         model.addAttribute("totalPrice",
-            cart.getBookInfo().stream().mapToLong(CartBookReadResponseDto::getPrice).sum());
-        log.info("bookIds: {}", cart.getBookId().keySet());
+            cartBookInfo.stream().mapToLong(CartBookReadResponseDto::getPrice).sum());
         return "member/cart";
     }
 
@@ -57,18 +63,32 @@ public class CartController {
         String memberId = String.valueOf(CommonUtils.getMemberId());
         if (Objects.equals(memberId, "null")) {
             memberId = checkCookie(request.getCookies());
-            Cookie cookie = new Cookie("cart", memberId);
-            cookie.setMaxAge(60 * 60 * 24 * 7); // 일주일
-            cookie.setPath("/");
-            response.addCookie(cookie);
-        }
+            if (Objects.equals(memberId, null)) {
+                Cookie cookie = new Cookie("cart", memberId);
+                cookie.setMaxAge(60 * 60 * 24 * 7); // 일주일
+                cookie.setPath("/");
+                response.addCookie(cookie);
 
+                memberId = String.valueOf(UUID.randomUUID());
+            }
+        }
         cartService.createCart(cartCreateRequestDto, memberId);
         return "redirect:/cart";
     }
 
+    @PostMapping("/delete/{bookId}")
+    public String deleteCartBook(@PathVariable String bookId, HttpServletRequest request) {
+        String memberId = String.valueOf(CommonUtils.getMemberId());
+        if (Objects.equals(memberId, "null")) {
+            memberId = checkCookie(request.getCookies());
+        }
+
+        cartService.deleteCartBook(bookId, memberId);
+        return "redirect:/cart";
+    }
+
     private String checkCookie(Cookie[] cookies) {
-        String memberId = String.valueOf(UUID.randomUUID());
+        String memberId = null;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("cart".equals(cookie.getName())) {

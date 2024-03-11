@@ -32,6 +32,9 @@ public class RedisConfig implements BeanClassLoaderAware {
     private String password;
     @Value("${inkbridge.redis.database}")
     private String database;
+    @Value("${inkbridge.redis.database.cart}")
+    private String database2;
+
     private ClassLoader classLoader;
     /**
      * redis 연결 위한 빈 설정
@@ -45,6 +48,16 @@ public class RedisConfig implements BeanClassLoaderAware {
         configuration.setPort(Integer.parseInt(port));
         configuration.setPassword(password);
         configuration.setDatabase(Integer.parseInt(database));
+
+        return new LettuceConnectionFactory(configuration);
+    }
+    @Bean
+    public RedisConnectionFactory redisConnectionFactoryForCart() {
+        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
+        configuration.setHostName(host);
+        configuration.setPort(Integer.parseInt(port));
+        configuration.setPassword(password);
+        configuration.setDatabase(Integer.parseInt(database2));
 
         return new LettuceConnectionFactory(configuration);
     }
@@ -69,6 +82,18 @@ public class RedisConfig implements BeanClassLoaderAware {
         redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
 
         return redisTemplate;
+    }
+
+    @Bean(name = "redisTemplateForCart")
+    public RedisTemplate<String, Object> redisTemplateForCart() {
+        RedisTemplate<String, Object> redisTemplateForCart = new RedisTemplate<>();
+        redisTemplateForCart.setConnectionFactory(redisConnectionFactoryForCart());
+        redisTemplateForCart.setKeySerializer(new StringRedisSerializer());
+        redisTemplateForCart.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        redisTemplateForCart.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplateForCart.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return redisTemplateForCart;
     }
 
     @Bean

@@ -1,7 +1,10 @@
 package com.nhnacademy.inkbridge.front.service;
 
+import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartCreateRequestDto;
-import com.nhnacademy.inkbridge.front.dto.cart.CartReadResponseDto;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * class: CartService.
@@ -17,5 +20,14 @@ public interface CartService {
      */
     void createCart(CartCreateRequestDto cartCreateRequestDto, String memberId);
 
-    CartReadResponseDto getCart(String memberId);
+    /**
+     *
+     * @param memberId nullable String
+     * @return CartReadResponseDto
+     */
+    Map<String, String> getCartRedis(String memberId);
+
+    List<CartBookReadResponseDto> getCartBookInfo(Set<String> bookIdList);
+
+    void deleteCartBook(String bookId, String memberId);
 }

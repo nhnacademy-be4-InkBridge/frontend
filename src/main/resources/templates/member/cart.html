@@ -70,14 +70,17 @@
               </div>
             </td>
             <td>
-              <button class="btn btn-md bg-light border mt-4">삭제</button>
+              <form th:with="bookId=${book.bookId}" th:action="@{'/cart/delete/' + ${bookId}}"
+                    method="post">
+                <button class="btn btn-md bg-light border mt-4" type="submit">삭제</button>
+              </form>
             </td>
           </tr>
           </tbody>
         </table>
         <div class="bg-light justify-content-between d-flex w-100">
           <p>Total</p>
-          <p>상품 총 금액:<strong th:text="${totalPrice}"></strong>( + 배송비 0원)</p>
+          <p>상품 총 금액:<strong th:text="${totalPrice}" id="totalPrice"></strong>원</p>
         </div>
       </div>
       <div class="modal-footer mt-3">
