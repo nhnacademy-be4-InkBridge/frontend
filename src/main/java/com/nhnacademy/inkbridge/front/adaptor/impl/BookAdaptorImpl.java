@@ -191,8 +191,7 @@ public class BookAdaptorImpl implements BookAdaptor {
     private HttpHeaders getCreateMultipartAndJsonHeaders(MultipartFile thumbnail,
         BookAdminCreateRequestDto bookAdminCreateRequestDto,
         MultiValueMap<String, Object> multiValueMap) throws IOException {
-        HttpHeaders multipartHeader = new HttpHeaders();
-        multipartHeader.setContentType(MediaType.MULTIPART_FORM_DATA);
+        HttpHeaders multipartHeader = CommonUtils.createHeader(MediaType.MULTIPART_FORM_DATA);
 
         fileToByteArrayResource(thumbnail, multiValueMap, multipartHeader);
 
@@ -217,8 +216,7 @@ public class BookAdaptorImpl implements BookAdaptor {
     private HttpHeaders getUpdateMultipartAndJsonHeaders(MultipartFile thumbnail,
         BookAdminUpdateRequestDto bookAdminUpdateRequestDto,
         MultiValueMap<String, Object> multiValueMap) throws IOException {
-        HttpHeaders multipartHeader = new HttpHeaders();
-        multipartHeader.setContentType(MediaType.MULTIPART_FORM_DATA);
+        HttpHeaders multipartHeader = CommonUtils.createHeader(MediaType.MULTIPART_FORM_DATA);
 
         fileToByteArrayResource(thumbnail, multiValueMap, multipartHeader);
 

@@ -17,8 +17,7 @@ const setCookie = () => {
     console.log(cookie);
     existingCookie.push(cookie);
   });
-  // document.cookie = 'info=' + encodeURIComponent(JSON.stringify(existingCookie))
-  document.cookie = 'info=' + JSON.stringify(existingCookie)
+  document.cookie = 'info=' + encodeURIComponent(JSON.stringify(existingCookie))
       + '; path=/;';
 };
 
