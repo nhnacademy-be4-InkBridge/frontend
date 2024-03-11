@@ -24,4 +24,6 @@ public interface CouponAdaptor {
         Integer page, Integer size);
 
     void setCoupons(CouponCreateRequestDto couponCreateRequestDto);
+
+    PageRequestDto<CouponReadResponseDto> getCoupons(Integer page, Integer size);
 }

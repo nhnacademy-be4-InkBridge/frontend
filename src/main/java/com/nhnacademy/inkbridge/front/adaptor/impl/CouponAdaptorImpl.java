@@ -64,6 +64,9 @@ public class CouponAdaptorImpl implements CouponAdaptor {
         return exchange.getBody();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setCoupons(CouponCreateRequestDto couponCreateRequestDto) {
         HttpHeaders httpHeaders = createHeader();
@@ -79,5 +82,27 @@ public class CouponAdaptorImpl implements CouponAdaptor {
         if (!exchange.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed to retrieve coupons");
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PageRequestDto<CouponReadResponseDto> getCoupons(Integer page, Integer size) {
+        HttpHeaders httpHeaders = createHeader();
+        String url = String.format("%s?page=%d&size=%d",
+            gatewayProperties.getUrl() + "/api/coupons", page, size);
+        HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
+
+        ResponseEntity<PageRequestDto<CouponReadResponseDto>> exchange =
+            restTemplate.exchange(url,
+                HttpMethod.GET, httpEntity,
+                new ParameterizedTypeReference<PageRequestDto<CouponReadResponseDto>>() {
+                });
+        if (!exchange.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("Failed to retrieve coupons");
+        }
+
+        return exchange.getBody();
     }
 }

@@ -25,4 +25,6 @@ public interface CouponService {
         Integer size);
 
     void createCoupon(CouponCreateRequestDto couponCreateRequestDto);
+
+    PageRequestDto<CouponReadResponseDto> getCoupons(Integer page, Integer size);
 }

@@ -31,14 +31,23 @@ public class CouponServiceImpl implements CouponService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId,
         Integer page, Integer size) {
         return couponAdaptor.getAdminCoupons(couponStatusId, page, size);
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void createCoupon(CouponCreateRequestDto couponCreateRequestDto) {
-        System.out.println(couponCreateRequestDto.toString());
         couponAdaptor.setCoupons(couponCreateRequestDto);
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PageRequestDto<CouponReadResponseDto> getCoupons(Integer page, Integer size) {
+        return couponAdaptor.getCoupons(page,size);
     }
 }
