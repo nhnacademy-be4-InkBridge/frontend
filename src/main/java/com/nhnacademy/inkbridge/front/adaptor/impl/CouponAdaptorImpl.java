@@ -1,5 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
+
 import com.nhnacademy.inkbridge.front.adaptor.CouponAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
@@ -44,9 +46,7 @@ public class CouponAdaptorImpl implements CouponAdaptor {
     @Override
     public PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId,
         Integer page, Integer size) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders httpHeaders = createHeader();
 
         String url = String.format("%s?coupon-status-id=%d&page=%d&size=%d",
             gatewayProperties.getUrl() + "/api/admin/coupons", couponStatusId, page, size);
@@ -66,9 +66,7 @@ public class CouponAdaptorImpl implements CouponAdaptor {
 
     @Override
     public void setCoupons(CouponCreateRequestDto couponCreateRequestDto) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders httpHeaders = createHeader();
 
         String url = gatewayProperties.getUrl()+"/api/admin/coupons";
         HttpEntity<CouponCreateRequestDto> httpEntity = new HttpEntity<>(couponCreateRequestDto, httpHeaders);
