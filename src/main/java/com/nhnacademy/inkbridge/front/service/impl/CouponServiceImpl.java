@@ -50,7 +50,9 @@ public class CouponServiceImpl implements CouponService {
     public PageRequestDto<CouponReadResponseDto> getCoupons(Integer page, Integer size) {
         return couponAdaptor.getCoupons(page,size);
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void issueCoupon(String memberId,String couponId) {
         couponAdaptor.issueCoupon(memberId,couponId);

@@ -18,22 +18,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/coupons")
 public class CouponController {
-    private CouponService couponService;
+
+    private final CouponService couponService;
 
     public CouponController(CouponService couponService) {
         this.couponService = couponService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @GetMapping
     public String issueCouponsView(@RequestParam(name = "page", defaultValue = "0") Integer page,
         @RequestParam(name = "size", defaultValue = "30") Integer size, Model model) {
-        model.addAttribute("page", couponService.getCoupons(page,size));
+        model.addAttribute("page", couponService.getCoupons(page, size));
 
         return "coupon/issue_coupon_list";
     }
 
     @PostMapping("/issue")
-    public String issueCoupon(@RequestParam("coupon_id")String couponId){
+    public String issueCoupon(@RequestParam("coupon_id") String couponId) {
+        System.out.println("test1");
         String memberId = (String) SecurityContextHolder.getContext().getAuthentication()
             .getPrincipal();
         couponService.issueCoupon(memberId, couponId);
