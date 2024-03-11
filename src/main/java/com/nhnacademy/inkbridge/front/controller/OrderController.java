@@ -3,8 +3,10 @@ package com.nhnacademy.inkbridge.front.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhnacademy.inkbridge.front.dto.order.BookOrderCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.order.OrderCreateResponseDto;
 import com.nhnacademy.inkbridge.front.service.AccumulationRatePolicyService;
 import com.nhnacademy.inkbridge.front.service.CouponService;
 import com.nhnacademy.inkbridge.front.service.DeliveryPolicyService;
@@ -15,7 +17,6 @@ import com.nhnacademy.inkbridge.front.utils.CookieUtils;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -80,9 +81,9 @@ public class OrderController {
                     .collect(Collectors.toList())
             ));
 //            주소록 가져옴
+//            멤버 포인트 가져오기
         }
 
-//      멤버 포인트 가져오기
         return "order/orders";
     }
 
@@ -94,23 +95,11 @@ public class OrderController {
      */
     @PostMapping
     public String createOrder(@ModelAttribute OrderCreateRequestDto requestDto) {
-//      여기서 주문정보를 DB에 저장하고 결제 페이지로 이동 (Return OrderId)
-//      requestDto + principal (memberId or "anonymousUser")
-//      RedirectAttributes paymentInfo 객체 add.
 
-        log.info("order request dto : {}", requestDto);
+        log.info("form request dto  = {}", requestDto);
 
-        String principal = (String) SecurityContextHolder.getContext().getAuthentication()
-            .getPrincipal();
+        String orderId = orderService.createOrder(requestDto);
 
-        if (!"anonymousUser".equals(principal)) {
-            requestDto.setMemberId(principal);
-        }
-
-//      PayReadResponseDto responseDto = orderService.createOrder(requestDto);
-        String orderId = UUID.randomUUID().toString().replace("-", "");
-
-        // 결제 페이지로 변경해야함.
         return "redirect:/pays?order-id=" + orderId;
     }
 

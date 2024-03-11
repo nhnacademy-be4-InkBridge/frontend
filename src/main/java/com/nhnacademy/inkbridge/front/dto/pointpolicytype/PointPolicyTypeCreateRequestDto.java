@@ -23,5 +23,4 @@ public class PointPolicyTypeCreateRequestDto {
     @NotNull(message = "정책 적립금액은 필수 입력 항목입니다.")
     @Min(value = 0, message = "적립금액은 0보다 작을 수 없습니다.")
     private final Long accumulatePoint;
-
 }

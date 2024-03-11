@@ -1,4 +1,4 @@
-function a() {
+function doPay() {
   console.log(payInfo);
   const generateRandomString = () =>
       window.btoa(Math.random()).slice(0, 20);
@@ -28,4 +28,4 @@ function a() {
       });
 }
 
-document.addEventListener("DOMContentLoaded", a);
+document.addEventListener("DOMContentLoaded", doPay);

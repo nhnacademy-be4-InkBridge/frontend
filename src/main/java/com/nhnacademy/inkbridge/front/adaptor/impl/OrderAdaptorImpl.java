@@ -26,7 +26,12 @@ public class OrderAdaptorImpl implements OrderAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
 
-
+    /**
+     * {@inheritDoc}
+     *
+     * @param requestDto 주문 정보
+     * @return 주문 번호
+     */
     @Override
     public String createOrder(OrderCreateRequestDto requestDto) {
         HttpEntity<OrderCreateRequestDto> entity = new HttpEntity<>(requestDto, createHeader());

@@ -1,6 +1,5 @@
 package com.nhnacademy.inkbridge.front.dto.pay;
 
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -14,7 +13,7 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 @ToString
-public class PayReadResponseDto implements Serializable {
+public class PayReadResponseDto {
 
     private String orderId;
     private String orderName;

@@ -6,8 +6,7 @@ let selectedCoupon = [];
 document.addEventListener('keydown', function (event) {
   if (event.keyCode === 13) {
     event.preventDefault();
-  }
-  ;
+  };
 }, true);
 
 // 페이지 로드 시 정보 초기화 함수
@@ -74,10 +73,7 @@ function calcPoint() {
 
   // 비회원
   if (point == null) {
-    let point = document.createElement("using_point");
-
-    point.value = "0";
-    document.getElementById("order_form").appendChild(point);
+    return 0;
   }
 
   // 아무것도 입력 되지 않은 상태
@@ -320,6 +316,8 @@ function calcCoupon() {
     let orderBook = "bookOrderList[" + i + "]";
     let couponId = document.getElementById(orderBook + ".couponId");
 
+    console.log(couponId);
+
     if (!couponId.value) {
       continue;
     }
@@ -327,12 +325,11 @@ function calcCoupon() {
     let price = calcOneBookPrice(orderBooks[i].bookId);
     let coupon = couponList.find(coupon => coupon.bookId == orderBooks[i].bookId);
 
-    totalCouponDiscountPrice += calcCouponPrice(price,
-        coupon.memberCouponReadResponseDtos.find(coupon => coupon.memberCouponId == couponId.value));
-
-
+    if (coupon) {
+      totalCouponDiscountPrice += calcCouponPrice(price,
+          coupon.memberCouponReadResponseDtos.find(coupon => coupon.memberCouponId == couponId.value));
+    }
   }
-
 
   document.getElementById(
       "coupon_discount").innerText = totalCouponDiscountPrice;
@@ -376,7 +373,16 @@ function initCoupon(bookId, index) {
   }
 
   let couponInput = document.getElementById(
-      "bookOrderList[" + index + "].couponId").value = "";
+      "bookOrderList[" + index + "].couponId").value = null;
 
   calcPayAmount();
 }
+
+// 페이지 로드 시 쿠폰 null값으로 초기화
+function loadCoupon() {
+  for (let i = 0; i < orderBooks.length; i++) {
+    document.getElementById("bookOrderList[" + i + "].couponId").value = null;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadCoupon);
