@@ -26,12 +26,24 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
     var oldValue = parseFloat(
         this.parentElement.parentElement.querySelector('input').value);
     var newVal;
+    // price
+    var price = parseInt(
+        this.parentElement.parentElement.parentElement.parentElement.querySelector(
+            '#price').textContent);
+    var newPrice;
     if (this.classList.contains('btn-plus')) {
       newVal = oldValue + 1;
     } else {
       newVal = oldValue > 0 ? oldValue - 1 : 0;
     }
+    if (newVal === 0) {
+      newPrice = 0;
+    } else {
+      newPrice = price / oldValue * newVal;
+    }
     this.parentElement.parentElement.querySelector('input').value = newVal;
+    this.parentElement.parentElement.parentElement.parentElement.querySelector(
+        '#price').textContent = newPrice;
   });
 });
 
