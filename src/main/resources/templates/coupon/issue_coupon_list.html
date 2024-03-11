@@ -39,7 +39,7 @@
           <p class="card-text" th:utext="${coupon.maxDiscountPrice != null ? '(최대 ' + coupon.maxDiscountPrice + '원 할인)' : '&nbsp;'}">2000원</p>
           <p class="card-text" th:text="${coupon.basicIssuedDate + ' ~ ' + coupon.basicExpiredDate}+' 동안 발급 가능'">20xx.01.01 ~ 20xx.01.02</p>
           <p class="card-text" th:text="${'발급시'+coupon.validity + '일동안 사용 가능'}">7일</p>
-          <form th:action="@{'/api/coupons/issue/' + ${coupon.couponId}}" method="post">
+          <form th:action="@{'/coupons/issue?coupon_id=' + ${coupon.couponId}}" method="post">
             <button class="btn btn-primary" type="submit">발급</button>
           </form>
         </div>
