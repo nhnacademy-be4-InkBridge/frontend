@@ -1,7 +1,10 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+import com.nhnacademy.inkbridge.front.property.TossProperties;
+import com.nhnacademy.inkbridge.front.service.OrderService;
+import com.nhnacademy.inkbridge.front.utils.CommonUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/pays")
 @Slf4j
+@RequiredArgsConstructor
 public class PayController {
+
+    private final OrderService orderService;
+    private final TossProperties tossProperties;
 
     /**
      * 결제 페이지를 호출합니다.
@@ -27,15 +34,12 @@ public class PayController {
      */
     @GetMapping
     public String payView(Model model, @RequestParam("order-id") String orderId) {
-        log.info("pay pay pay pay");
+        Long memberId = CommonUtils.getMemberId();
 
-        String memberId = (String) SecurityContextHolder.getContext().getAuthentication()
-            .getPrincipal();
-
-//        model.addAttribute("orderInfo", model.getAttribute("orderInfo"));
-//        model.addAttribute("orderInfo", responseDto);
+        model.addAttribute("payInfo", orderService.getOrderPaymentInfo(orderId));
         model.addAttribute("memberId", memberId);
-        model.addAttribute("clientKey", "test_ck_yL0qZ4G1VO52EWQzLjbO8oWb2MQY");
+        String clientKey = tossProperties.getClientKey();
+        model.addAttribute("clientKey", clientKey);
 
         return "order/pays";
     }

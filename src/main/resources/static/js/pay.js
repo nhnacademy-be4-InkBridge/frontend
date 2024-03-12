@@ -1,15 +1,16 @@
 function doPay() {
   console.log(payInfo);
-  const generateRandomString = () =>
-      window.btoa(Math.random()).slice(0, 20);
+  console.log(memberId);
+  console.log(clientKey);
+
   // ------  결제위젯 초기화 ------
-  let paymentWidget = memberId === "anonymousUser" ? PaymentWidget(clientKey,
+  let paymentWidget = memberId == null ? PaymentWidget(clientKey,
       PaymentWidget.ANONYMOUS) : PaymentWidget(clientKey, memberId);
 
 // ------  결제 UI 렌더링 ------
   paymentMethodWidget = paymentWidget.renderPaymentMethods(
       "#payment-method",
-      {value: payInfo.price},
+      {value: payInfo.amount},
       {variantKey: "DEFAULT"}
   );
 
@@ -22,8 +23,8 @@ function doPay() {
         paymentWidget.requestPayment({
           orderId: payInfo.orderId,
           orderName: payInfo.orderName,
-          successUrl: window.location.origin + "/pay/success",
-          failUrl: window.location.origin + "/pay/fail",
+          successUrl: window.location.origin + "/pays/success",
+          failUrl: window.location.origin + "/pays/fail",
         });
       });
 }

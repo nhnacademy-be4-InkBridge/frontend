@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.service.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.OrderAdaptor;
+import com.nhnacademy.inkbridge.front.dto.order.OrderPaymentInfoReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String createOrder(OrderCreateRequestDto requestDto) {
         return orderAdaptor.createOrder(requestDto);
+    }
+
+    @Override
+    public OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderId) {
+        return orderAdaptor.getOrderPaymentInfo(orderId);
     }
 }

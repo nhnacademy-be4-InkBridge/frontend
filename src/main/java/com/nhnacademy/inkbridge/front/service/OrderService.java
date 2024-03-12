@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.service;
 
+import com.nhnacademy.inkbridge.front.dto.order.OrderPaymentInfoReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 
 /**
@@ -11,4 +12,6 @@ import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 public interface OrderService {
 
     String createOrder(OrderCreateRequestDto requestDto);
+
+    OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderId);
 }

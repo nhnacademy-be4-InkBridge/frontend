@@ -1,5 +1,7 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+import com.nhnacademy.inkbridge.front.config.KeyConfig;
+import com.nhnacademy.inkbridge.front.property.TossProperties;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -8,6 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -25,7 +29,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/pay/confirm")
+@RequiredArgsConstructor
+@Slf4j
 public class PayRestController {
+
+    private final TossProperties tossProperties;
+    private final KeyConfig keyConfig;
 
     /**
      * 결제 정보를 받아 결제 승인 요청을 보낸 후 성공 시 결제 정보를 저장합니다.
@@ -59,7 +68,7 @@ public class PayRestController {
 
         // TODO: 개발자센터에 로그인해서 내 결제위젯 연동 키 > 시크릿 키를 입력하세요. 시크릿 키는 외부에 공개되면 안돼요.
         // @docs https://docs.tosspayments.com/reference/using-api/api-keys
-        String apiKey = "test_sk_P9BRQmyarYyLgxWnWEQ2rJ07KzLN";
+        String apiKey = keyConfig.keyStore(tossProperties.getApiKey());
 
         // 토스페이먼츠 API는 시크릿 키를 사용자 ID로 사용하고, 비밀번호는 사용하지 않습니다.
         // 비밀번호가 없다는 것을 알리기 위해 시크릿 키 뒤에 콜론을 추가합니다.

@@ -6,13 +6,12 @@
 
 <!-- 고유 CSS 추가 -->
 <th:block layout:fragment="css">
-
 </th:block>
 <!-- 고유 SCRIPT 추가 -->
 <th:block layout:fragment="script">
   <script src="https://js.tosspayments.com/v1/payment-widget"></script>
   <script th:inline="javascript">
-    let payInfo = [[${orderInfo}]];
+    let payInfo = [[${payInfo}]];
     let memberId = [[${memberId}]];
     let clientKey = [[${clientKey}]];
   </script>
