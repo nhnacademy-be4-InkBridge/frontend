@@ -1,7 +1,7 @@
 package com.nhnacademy.inkbridge.front.controller;
 
 import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.cart.CartCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.cart.CartRedisCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.CartService;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.util.List;
@@ -12,6 +12,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * class: CartController.
@@ -37,45 +41,60 @@ public class CartController {
         this.cartService = cartService;
     }
 
+    /**
+     * 장바구니를 조회하는 메서드입니다.
+     *
+     * @param model   Model
+     * @param request HttpServletRequest
+     * @return html
+     */
     @GetMapping
     public String getCart(Model model, HttpServletRequest request) {
         String memberId = String.valueOf(CommonUtils.getMemberId());
         if (Objects.equals(memberId, "null")) {
             memberId = checkCookie(request.getCookies());
         }
-        // 카트에서 북 ID를 갖고옴
-        // 레디스에서 데이터를 갖고옴
-        // 도서에서 상세 정보를 갖고옴
 
         Map<String, String> cart = cartService.getCartRedis(memberId);
         List<CartBookReadResponseDto> cartBookInfo = cartService.getCartBookInfo(cart.keySet());
 
         model.addAttribute("bookIds", cart);
         model.addAttribute("info", cartBookInfo);
-        model.addAttribute("totalPrice",
-            cartBookInfo.stream().mapToLong(CartBookReadResponseDto::getPrice).sum());
         return "member/cart";
     }
 
+    /**
+     * 장바구니를 저장하는 메서드입니다.
+     *
+     * @param cartRedisCreateRequestDto CartRedisCreateRequestDto
+     * @param request                   HttpServletRequest
+     * @param response                  HttpServletResponse
+     * @return html
+     */
     @PostMapping
-    public String saveCart(@ModelAttribute CartCreateRequestDto cartCreateRequestDto,
+    public String saveCart(@ModelAttribute CartRedisCreateRequestDto cartRedisCreateRequestDto,
         HttpServletRequest request, HttpServletResponse response) {
         String memberId = String.valueOf(CommonUtils.getMemberId());
         if (Objects.equals(memberId, "null")) {
             memberId = checkCookie(request.getCookies());
-            if (Objects.equals(memberId, null)) {
-                Cookie cookie = new Cookie("cart", memberId);
-                cookie.setMaxAge(60 * 60 * 24 * 7); // 일주일
-                cookie.setPath("/");
-                response.addCookie(cookie);
-
-                memberId = String.valueOf(UUID.randomUUID());
-            }
+            Cookie cookie = new Cookie("cart", memberId);
+            cookie.setMaxAge(60 * 60 * 24 * 7); // 일주일
+            cookie.setPath("/");
+            response.addCookie(cookie);
+            cartService.createCart(cartRedisCreateRequestDto, memberId);
+        } else {
+            cartService.createCartForMember(cartRedisCreateRequestDto, memberId);
         }
-        cartService.createCart(cartCreateRequestDto, memberId);
         return "redirect:/cart";
     }
 
+    /**
+     * 장바구니에서 도서를 삭제하는 메서드입니다.
+     *
+     * @param bookId  String
+     * @param request HttpServletRequest
+     * @return html
+     */
     @PostMapping("/delete/{bookId}")
     public String deleteCartBook(@PathVariable String bookId, HttpServletRequest request) {
         String memberId = String.valueOf(CommonUtils.getMemberId());
@@ -87,8 +106,23 @@ public class CartController {
         return "redirect:/cart";
     }
 
+    /**
+     * 장바구니의 도서 수량 증감에 따라 수량을 수정하는 메서드입니다.
+     *
+     * @param bookId String
+     * @param amount String
+     * @return HttpStatus
+     */
+    @PostMapping("/book/{bookId}")
+    @ResponseBody
+    public ResponseEntity<HttpStatus> updateCartBook(@PathVariable String bookId,
+        @RequestParam String amount) {
+        cartService.updateCartBook(bookId, amount);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     private String checkCookie(Cookie[] cookies) {
-        String memberId = null;
+        String memberId = String.valueOf(UUID.randomUUID());
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("cart".equals(cookie.getName())) {

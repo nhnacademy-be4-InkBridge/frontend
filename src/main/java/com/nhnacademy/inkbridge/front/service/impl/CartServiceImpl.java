@@ -1,16 +1,15 @@
 package com.nhnacademy.inkbridge.front.service.impl;
 
-import com.nhnacademy.inkbridge.front.adaptor.CartAdaptor;
+import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
 import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.cart.CartCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.cart.CartRedisCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.CartService;
-import java.time.LocalDate;
-import java.util.HashMap;
+import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -25,42 +24,70 @@ import org.springframework.stereotype.Service;
 @Service
 public class CartServiceImpl implements CartService {
 
-    private final RedisTemplate<String, Object> redisTemplateForCart;
-    private final CartAdaptor cartAdaptor;
+    private final RedisTemplate<String, Object> redisTemplate;
+    private final BookAdaptor bookAdaptor;
+
+    public CartServiceImpl(RedisTemplate<String, Object> redisTemplate, BookAdaptor bookAdaptor) {
+        this.redisTemplate = redisTemplate;
+        this.bookAdaptor = bookAdaptor;
+    }
 
     /**
      * {@inheritDoc}
      */
-    public CartServiceImpl(@Qualifier("redisTemplateForCart") RedisTemplate<String, Object> redisTemplateForCart, CartAdaptor cartAdaptor) {
-        this.redisTemplateForCart = redisTemplateForCart;
-        this.cartAdaptor = cartAdaptor;
-    }
-
-    @Override
-    public void createCart(CartCreateRequestDto cartCreateRequestDto, String memberId) {
-        log.info("create: {}", memberId);
-        log.info("create: {}", cartCreateRequestDto.getBookId());
-        HashOperations<String, String, Object> hashOperations = redisTemplateForCart.opsForHash();
-        hashOperations.put(memberId, String.valueOf(cartCreateRequestDto.getBookId()), String.valueOf(cartCreateRequestDto.getAmount()));
-    }
-
     @Override
     public Map<String, String> getCartRedis(String memberId) {
-        HashOperations<String, String, String> hashOperations = redisTemplateForCart.opsForHash();
+        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
         log.info("info: {}", hashOperations.entries(memberId));
         return hashOperations.entries(memberId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<CartBookReadResponseDto> getCartBookInfo(Set<String> bookIdList) {
-        log.info("book: {}", bookIdList.size());
-        return cartAdaptor.getBook(bookIdList);
+        log.info("list: {}", bookIdList);
+        return bookAdaptor.getBook(bookIdList);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void createCart(CartRedisCreateRequestDto cartRedisCreateRequestDto, String memberId) {
+        HashOperations<String, String, Object> hashOperations = redisTemplate.opsForHash();
+        hashOperations.put(memberId, String.valueOf(cartRedisCreateRequestDto.getBookId()),
+            String.valueOf(cartRedisCreateRequestDto.getAmount()));
+        redisTemplate.expire(memberId, 7, TimeUnit.DAYS);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void createCartForMember(CartRedisCreateRequestDto cartRedisCreateRequestDto,
+        String memberId) {
+        HashOperations<String, String, Object> hashOperations = redisTemplate.opsForHash();
+        hashOperations.put(memberId, String.valueOf(cartRedisCreateRequestDto.getBookId()),
+            String.valueOf(cartRedisCreateRequestDto.getAmount()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteCartBook(String bookId, String memberId) {
-        log.info("delete!!, {}, {}", memberId, bookId);
-        HashOperations<String, Object, Object> hashOperations = redisTemplateForCart.opsForHash();
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
         hashOperations.delete(memberId, bookId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateCartBook(String bookId, String amount) {
+        String memberId = String.valueOf(CommonUtils.getMemberId());
+        redisTemplate.opsForHash().put(memberId, bookId, amount);
     }
 }

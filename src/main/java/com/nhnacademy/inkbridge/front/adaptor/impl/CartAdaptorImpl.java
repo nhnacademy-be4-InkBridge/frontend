@@ -1,16 +1,18 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.CartAdaptor;
-import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.cart.CartCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.cart.CartReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.net.URI;
 import java.util.List;
-import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -22,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @author minm063
  * @version 2024/03/09
  */
+@Slf4j
 @Component
 public class CartAdaptorImpl implements CartAdaptor {
 
@@ -31,26 +34,49 @@ public class CartAdaptorImpl implements CartAdaptor {
     public CartAdaptorImpl(RestTemplate restTemplate, GatewayProperties gatewayProperties) {
         this.restTemplate = restTemplate;
         this.gatewayProperties = gatewayProperties;
+
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public List<CartBookReadResponseDto> getBook(Set<String> bookIdList) {
+    public void saveCart(List<CartCreateRequestDto> cartList) {
         HttpHeaders httpHeaders = CommonUtils.createHeader();
-
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path("/api/carts")
-            .queryParam("bookIdList", bookIdList)
             .encode()
-            .build()
-            .toUri();
+            .build().toUri();
 
-        ResponseEntity<List<CartBookReadResponseDto>> exchange = restTemplate.exchange(uri,
+        ResponseEntity<HttpStatus> exchange = restTemplate.exchange(uri, HttpMethod.POST,
+            new HttpEntity<>(cartList, httpHeaders),
+            new ParameterizedTypeReference<>() {
+            });
+        if (exchange.getStatusCode() != HttpStatus.CREATED) {
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<CartReadResponseDto> getCart(Long memberId) {
+        log.info("cart adaptor 1");
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path("/api/carts/{memberId}")
+            .encode()
+            .buildAndExpand(memberId).toUri();
+
+        ResponseEntity<List<CartReadResponseDto>> exchange = restTemplate.exchange(
+            uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
             });
-
         return exchange.getBody();
     }
 }

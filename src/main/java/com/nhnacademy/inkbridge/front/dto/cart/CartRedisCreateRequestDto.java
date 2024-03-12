@@ -7,18 +7,16 @@ import lombok.Getter;
  * class: CartCreateRequestDto.
  *
  * @author minm063
- * @version 2024/03/12
+ * @version 2024/03/08
  */
 @Getter
-public class CartCreateRequestDto {
+public class CartRedisCreateRequestDto {
 
-    private final Long memberId;
     private final Long bookId;
-    private final Integer amount;
+    private final Long amount;
 
     @Builder
-    public CartCreateRequestDto(Long memberId, Long bookId, Integer amount) {
-        this.memberId = memberId;
+    public CartRedisCreateRequestDto(Long bookId, Long amount) {
         this.bookId = bookId;
         this.amount = amount;
     }
