@@ -5,6 +5,10 @@ import com.nhnacademy.inkbridge.front.jwt.filter.CustomJwtAuthenticationFilter;
 import com.nhnacademy.inkbridge.front.jwt.filter.CustomLoginAuthenticationFilter;
 import com.nhnacademy.inkbridge.front.jwt.provider.CustomAuthenticationProvider;
 import com.nhnacademy.inkbridge.front.jwt.service.CustomUserDetailService;
+import com.nhnacademy.inkbridge.front.oauth.handler.CustomOAuthSuccessHandler;
+import com.nhnacademy.inkbridge.front.oauth.service.CustomOAuthUserService;
+import java.util.Collections;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +25,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
 
 /**
  * class: SecurityConfig.
@@ -36,6 +43,8 @@ public class SecurityConfig {
     private final MemberAdaptor memberAdaptor;
     private final CustomUserDetailService userDetailService;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final CustomOAuthUserService customOAuthUserService;
+    private final CustomOAuthSuccessHandler customOAuthSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,6 +57,11 @@ public class SecurityConfig {
                 .antMatchers("/mypage/**").hasRole("MEMBER")
                 .anyRequest().permitAll();
         http
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
+                                .userService(customOAuthUserService))
+                        .successHandler(customOAuthSuccessHandler));
+        http
                 .csrf().disable();
         http
                 .cors().disable();
@@ -55,6 +69,8 @@ public class SecurityConfig {
                 .formLogin().disable();
         http
                 .logout().disable();
+        http
+                .httpBasic().disable();
         http
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
