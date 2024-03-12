@@ -31,7 +31,7 @@ public class BookOrderCreateRequestDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deliveryDate;
     private Long usePoint;
-    private String memberId;
+    private Long memberId;
     private Long payAmount;
     private Long deliveryPrice;
 }
