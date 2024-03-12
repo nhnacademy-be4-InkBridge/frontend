@@ -19,11 +19,23 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderAdaptor orderAdaptor;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param requestDto 주문 요청 정보
+     * @return 주문 번호
+     */
     @Override
     public String createOrder(OrderCreateRequestDto requestDto) {
         return orderAdaptor.createOrder(requestDto);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param orderId 주문 번호
+     * @return 주문 결제 정보
+     */
     @Override
     public OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderId) {
         return orderAdaptor.getOrderPaymentInfo(orderId);

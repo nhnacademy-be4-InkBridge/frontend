@@ -11,7 +11,19 @@ import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
  */
 public interface OrderService {
 
+    /**
+     * 주문 요청을 처리하는 메소드입니다.
+     *
+     * @param requestDto 주문 요청 정보
+     * @return 주문 번호
+     */
     String createOrder(OrderCreateRequestDto requestDto);
 
+    /**
+     * 주문 결제 정보를  조회하는 메소드입니다.
+     *
+     * @param orderId 주문 번호
+     * @return  주문 결제 정보
+     */
     OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderId);
 }
