@@ -27,7 +27,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public String createOrder(OrderCreateRequestDto requestDto) {
-        return orderAdaptor.createOrder(requestDto);
+        return orderAdaptor.createOrder(requestDto).getOrderId();
     }
 
     /**

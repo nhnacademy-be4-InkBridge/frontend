@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
 
 import com.nhnacademy.inkbridge.front.adaptor.OrderAdaptor;
+import com.nhnacademy.inkbridge.front.dto.order.OrderCreateResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderPaymentInfoReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
@@ -36,9 +37,9 @@ public class OrderAdaptorImpl implements OrderAdaptor {
      * @return 주문 번호
      */
     @Override
-    public String createOrder(OrderCreateRequestDto requestDto) {
+    public OrderCreateResponseDto createOrder(OrderCreateRequestDto requestDto) {
         HttpEntity<OrderCreateRequestDto> entity = new HttpEntity<>(requestDto, createHeader());
-        ResponseEntity<String> exchange = restTemplate.exchange(
+        ResponseEntity<OrderCreateResponseDto> exchange = restTemplate.exchange(
             gatewayProperties.getUrl() + "/api/orders",
             HttpMethod.POST,
             entity,
