@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/admin_layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <style>
+      #layoutSidenav_content {
+          position: static !important; /* Flex 제거 */
+          display: block !important; /* Flex를 제거하고 블록 레벨로 설정 */
+      }
+
+      .table {
+          margin-top: 30px; /* 상단 마진 */
+      }
+
+      .fixed-table th,
+      .fixed-table td {
+          text-align: center; /* 텍스트 가운데 정렬 */
+          vertical-align: middle; /* 세로 가운데 정렬 */
+      }
+
+      /* 번호 */
+      .column-number {
+          width: 20%;
+      }
+
+      /* 포장지 이름 */
+      .column-name {
+          width: 30%;
+      }
+
+      /* 포장지 가격 */
+      .column-price {
+          width: 20%;
+      }
+
+      /* 포장지 상태 */
+      .column-status {
+          width: 20%;
+      }
+
+      /* 수정 버튼 */
+      .column-edit {
+          width: 10%;
+      }
+  </style>
+</head>
+<body>
+<th:block layout:fragment="css">
+</th:block>
+<th:block layout:fragment="script">
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var dropdownButton = document.getElementById('dropdownMenuButton');
+      var dropdownMenu = document.querySelector('.dropdown-menu');
+
+      dropdownButton.addEventListener('click', function () {
+        dropdownMenu.classList.toggle('show');
+      });
+    });
+  </script>
+</th:block>
+<div class="fixed-container" id="layoutSidenav_content" layout:fragment="content">
+
+
+  <div class="row">
+    <div class="col-md-11">
+      <div class="dropdown">
+        <button aria-expanded="false" aria-haspopup="true" class="btn btn-secondary dropdown-toggle"
+                id="dropdownMenuButton" type="button">
+          사용 여부
+        </button>
+        <div aria-labelledby="dropdownMenuButton" class="dropdown-menu">
+          <a class="dropdown-item" th:href="@{'/admin/wrappings?is_active=true'}">사용 가능</a>
+          <a class="dropdown-item" th:href="@{'/admin/wrappings?is_active=false'}">사용 불가능</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-1">
+      <div class="add-button-container float-right">
+        <a class="btn btn-success" href="/admin/wrapping/create-view">추가</a>
+      </div>
+    </div>
+  </div>
+  <table class="table table-striped ">
+    <thead class="table-light">
+    <tr>
+      <td class="column-number">번호</td>
+      <td class="column-name">포장지 이름</td>
+      <td class="column-price">포장지 가격</td>
+      <td class="column-status">포장지 상태</td>
+      <td class="column-edit">수정</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="wrapping : ${wrappings}">
+      <td th:text="${wrapping.wrappingId}"></td>
+      <td th:text="${wrapping.wrappingName}"></td>
+      <td th:text="${wrapping.price}"></td>
+      <td th:text="${wrapping.isActive} ? '활성' : '비활성'"></td>
+      <td>
+        <form method="post" th:action="@{'/admin/wrapping/update-view/' + ${wrapping.wrappingId}}">
+          <button class="btn btn-primary" type="submit">상태변경</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+</body>
+</html>

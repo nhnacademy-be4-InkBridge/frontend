@@ -20,7 +20,7 @@ public class WrappingServiceImpl implements WrappingService {
     private final WrappingAdaptor wrappingAdaptor;
 
     @Override
-    public List<WrappingReadResponseDto> getWrappingList() {
-        return wrappingAdaptor.getWrappingList();
+    public List<WrappingReadResponseDto> getWrappingList(boolean isActive) {
+        return wrappingAdaptor.getWrappingList(isActive);
     }
 }

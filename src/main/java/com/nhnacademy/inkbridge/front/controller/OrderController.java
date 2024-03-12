@@ -85,7 +85,7 @@ public class OrderController {
         model.addAttribute("deliveryPolicy", deliveryPolicyService.getCurrentPolicy());
         model.addAttribute("accumulationRatePolicy",
             accumulationRatePolicyService.getCurrentPolicy());
-        model.addAttribute("wrappingList", wrappingService.getWrappingList());
+        model.addAttribute("wrappingList", wrappingService.getWrappingList(true));
 
 //      멤버 포인트 조회 메소드 호출
         return "order/orders";

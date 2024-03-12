@@ -5,12 +5,10 @@ import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
 import com.nhnacademy.inkbridge.front.adaptor.WrappingAdaptor;
 import com.nhnacademy.inkbridge.front.dto.wrapping.WrappingReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
-import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -31,10 +29,10 @@ public class WrappingAdaptorImpl implements WrappingAdaptor {
     private final GatewayProperties gatewayProperties;
 
     @Override
-    public List<WrappingReadResponseDto> getWrappingList() {
+    public List<WrappingReadResponseDto> getWrappingList(boolean isActive) {
         HttpEntity<Void> entity = new HttpEntity<>(createHeader());
         ResponseEntity<List<WrappingReadResponseDto>> exchange = restTemplate.exchange(
-            gatewayProperties.getUrl() + "/api/wrappings",
+            gatewayProperties.getUrl() + "/api/wrappings?is_active=" + isActive,
             HttpMethod.GET,
             entity,
             new ParameterizedTypeReference<>() {

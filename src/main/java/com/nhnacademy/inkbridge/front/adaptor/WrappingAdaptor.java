@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface WrappingAdaptor {
 
-    List<WrappingReadResponseDto> getWrappingList();
+    List<WrappingReadResponseDto> getWrappingList(boolean isActive);
 }
