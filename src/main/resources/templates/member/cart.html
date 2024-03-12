@@ -22,17 +22,17 @@
         <table class="table" style="margin-bottom: 0">
           <thead>
           <tr>
-            <th scope="col" colspan="2">상품 정보</th>
+            <th scope="col" colspan="3">상품 정보</th>
             <th scope="col">판매가</th>
             <th scope="col">수량</th>
-            <th scope="col">주문</th>
             <th scope="col">관리</th>
           </tr>
           </thead>
           <tbody>
           <tr th:each="book: ${info}">
             <th>
-              <input type="checkbox" checked>
+              <input type="checkbox" th:checked="${book.stock!=0}" th:disabled="${book.stock == 0}">
+              <div id="toast"></div>
             </th>
             <th scope="row">
               <div class="d-flex align-items-center">
@@ -47,8 +47,9 @@
                  id="bookTitle"></p>
             </td>
             <td>
-              <p style="text-decoration: line-through" id="regularPrice"
-                 th:text="${book.regularPrice}"></p>
+              <div style="text-decoration: line-through">
+                <span id="regularPrice" th:text="${book.regularPrice}"></span><span>원</span>
+              </div>
               <span id="price" th:text="${book.price}"></span><span
                 th:text="'원(' + ${book.discountRatio} + '% 할인)'"></span>
             </td>
@@ -62,6 +63,7 @@
                 <input type="text" class="form-control form-control-sm text-center border-0"
                        th:with="bookId=${book.bookId}"
                        th:value="${bookIds[bookId.toString()]}" name="amount">
+                <input type="hidden" style="display: none" name="stock" th:value="${book.stock}">
                 <div class="input-group-btn">
                   <button class="btn btn-sm btn-plus rounded-circle bg-light border" type="button">
                     <i class="fa fa-plus"></i>
@@ -78,13 +80,14 @@
           </tr>
           </tbody>
         </table>
-        <div class="bg-light justify-content-between d-flex w-100">
-          <p>Total</p>
-          <p>상품 총 금액:<strong th:text="${totalPrice}" id="totalPrice"></strong>원</p>
+        <div class="bg-light justify-content-between d-flex w-100 align-items-sm-center"
+             style="min-height: 3em;">
+          <p class="m-0">Total</p>
+          <p class="m-0">상품 총 금액:<strong id="totalPrice"></strong>원</p>
         </div>
       </div>
       <div class="modal-footer mt-3">
-        <a href="/orders" th:onclick="setCookie()"
+        <a href="/orders" id="order"
            class="btn border border-secondary rounded-pill px-4 py-2 m-4 text-primary"><i
             class="fa fa-shopping-bag me-2 text-primary"></i> 주문하기</a>
         <a href="/"
