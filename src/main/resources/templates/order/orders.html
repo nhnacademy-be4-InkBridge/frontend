@@ -43,7 +43,7 @@
           <input type="hidden" id="deliveryPrice" name="bookOrder.deliveryPrice" value="">
           <input type="hidden" id="orderName" name="bookOrder.orderName">
           <input type="hidden" id="point" name="bookOrder.usePoint" value="0">
-          <input type="hidden" id="memberId" name="bookOrder.memberId" th:value="${#authentication.principal}">
+          <input type="hidden" id="memberId" name="bookOrder.memberId" th:value="${memberId}">
           <div class="container border rounded-3 mb-4">
             <table class="table table-borderless text-center align-middle" id="book_table">
               <thead>
