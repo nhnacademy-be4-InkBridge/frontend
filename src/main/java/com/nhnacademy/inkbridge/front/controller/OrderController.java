@@ -3,10 +3,8 @@ package com.nhnacademy.inkbridge.front.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nhnacademy.inkbridge.front.dto.order.BookOrderCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
-import com.nhnacademy.inkbridge.front.dto.order.OrderCreateResponseDto;
 import com.nhnacademy.inkbridge.front.service.AccumulationRatePolicyService;
 import com.nhnacademy.inkbridge.front.service.CouponService;
 import com.nhnacademy.inkbridge.front.service.DeliveryPolicyService;
@@ -21,7 +19,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -75,6 +72,8 @@ public class OrderController {
         model.addAttribute("accumulationRatePolicy",
             accumulationRatePolicyService.getCurrentPolicy());
 
+        model.addAttribute("memberId", memberId);
+
         if (Objects.nonNull(memberId)) {
             model.addAttribute("couponList", couponService.getOrderCoupons(memberId,
                 orderBooks.stream().map(book -> book.getBookId().toString())
@@ -95,8 +94,6 @@ public class OrderController {
      */
     @PostMapping
     public String createOrder(@ModelAttribute OrderCreateRequestDto requestDto) {
-
-        log.info("form request dto  = {}", requestDto);
 
         String orderId = orderService.createOrder(requestDto);
 
