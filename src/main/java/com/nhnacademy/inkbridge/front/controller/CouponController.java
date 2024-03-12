@@ -38,10 +38,11 @@ public class CouponController {
 
     @PostMapping("/issue")
     public String issueCoupon(@RequestParam("coupon_id") String couponId) {
-        System.out.println("test1");
         String memberId = (String) SecurityContextHolder.getContext().getAuthentication()
             .getPrincipal();
         couponService.issueCoupon(memberId, couponId);
         return "redirect:/coupons";
     }
+
+    
 }

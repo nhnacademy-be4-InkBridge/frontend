@@ -36,6 +36,7 @@ public class CouponServiceImpl implements CouponService {
         Integer page, Integer size) {
         return couponAdaptor.getAdminCoupons(couponStatusId, page, size);
     }
+
     /**
      * {@inheritDoc}
      */
@@ -43,18 +44,27 @@ public class CouponServiceImpl implements CouponService {
     public void createCoupon(CouponCreateRequestDto couponCreateRequestDto) {
         couponAdaptor.setCoupons(couponCreateRequestDto);
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public PageRequestDto<CouponReadResponseDto> getCoupons(Integer page, Integer size) {
-        return couponAdaptor.getCoupons(page,size);
+        return couponAdaptor.getCoupons(page, size);
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void issueCoupon(String memberId,String couponId) {
-        couponAdaptor.issueCoupon(memberId,couponId);
+    public void issueCoupon(String memberId, String couponId) {
+        couponAdaptor.issueCoupon(memberId, couponId);
+    }
+
+    @Override
+    public PageRequestDto<CouponReadResponseDto> getIssuedCoupon(String memberId,
+        Integer couponStatusId,
+        Integer page, Integer size) {
+        return couponAdaptor.getIssuedCoupon(memberId, couponStatusId, page, size);
     }
 }

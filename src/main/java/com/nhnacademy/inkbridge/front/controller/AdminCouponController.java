@@ -54,20 +54,29 @@ public class AdminCouponController {
     }
 
     @GetMapping("/register")
-    public String createCouponView(){
+    public String createCouponView() {
         return "admin/coupon_create";
     }
+
     @GetMapping("/category/register")
-    public String createCategoryCouponView(){
+    public String createCategoryCouponView() {
         return "admin/coupon_create";
     }
+
     @GetMapping("/book/register")
-    public String createBookCouponView(){
+    public String createBookCouponView() {
         return "admin/coupon_create";
     }
+
     @PostMapping("/register")
-    public String createCoupon(@Valid @ModelAttribute CouponCreateRequestDto couponCreateRequestDto){
+    public String createCoupon(
+        @Valid @ModelAttribute CouponCreateRequestDto couponCreateRequestDto) {
         couponService.createCoupon(couponCreateRequestDto);
         return "redirect:/admin/coupons";
     }
+
+//    @GetMapping("/{couponId}")
+//    public String viewAdminCouponDetail(@PathVariable("couponId") String couponId) {
+//        CouponReadResponseDto couponService.getCoupon(couponId);
+//    }
 }
