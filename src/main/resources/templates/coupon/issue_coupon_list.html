@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/main_layout}">
+      layout:decorate="~{layouts/main_layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
   <style>
       #layoutSidenav_content {
@@ -26,39 +26,47 @@
 </th:block>
 <th:block layout:fragment="script">
 </th:block>
-<div layout:fragment="content" id="layoutSidenav_content" class="d-flex justify-content-center" style="max-width: 1200px; margin: auto;">
+<div class="d-flex justify-content-center" id="layoutSidenav_content" layout:fragment="content"
+     style="max-width: 1200px; margin: auto;">
+  <h3 style="margin-bottom: 20px; font-weight: bold;">쿠폰 발급 페이지</h3>
   <div class="row justify-content-center">
-    <div th:each="coupon : ${page.content}" class="col-md-4 mb-3">
+    <div class="col-md-4 mb-3" th:each="coupon : ${page.content}">
       <div class="card" style="max-width: 540px;">
         <div class="card-body">
           <h5 class="card-text" th:text="${coupon.couponName}">0월 생일 쿠폰</h5>
           <p class="card-text" th:text="${coupon.minPrice + '원 이상 구매시'}">1만원 이상 구매시</p>
           <p class="card-text" th:text="${coupon.couponTypeId}"></p>
-          <p class="card-text" th:if="${coupon.getCouponTypeId() == 1}" th:text="${coupon.discountPrice + '% 할인'}">30% 할인</p>
-          <p class="card-text" th:if="${coupon.getCouponTypeId() == 2}" th:text="${coupon.discountPrice + '원 할인'}">2000원 할인</p>
-          <p class="card-text" th:utext="${coupon.maxDiscountPrice != null ? '(최대 ' + coupon.maxDiscountPrice + '원 할인)' : '&nbsp;'}">2000원</p>
-          <p class="card-text" th:text="${coupon.basicIssuedDate + ' ~ ' + coupon.basicExpiredDate}+' 동안 발급 가능'">20xx.01.01 ~ 20xx.01.02</p>
+          <p class="card-text" th:if="${coupon.getCouponTypeId() == 1}"
+             th:text="${coupon.discountPrice + '% 할인'}">30% 할인</p>
+          <p class="card-text" th:if="${coupon.getCouponTypeId() == 2}"
+             th:text="${coupon.discountPrice + '원 할인'}">2000원 할인</p>
+          <p class="card-text"
+             th:utext="${coupon.maxDiscountPrice != null ? '(최대 ' + coupon.maxDiscountPrice + '원 할인)' : '&nbsp;'}">
+            2000원</p>
+          <p class="card-text"
+             th:text="${coupon.basicIssuedDate + ' ~ ' + coupon.basicExpiredDate}+' 동안 발급 가능'">
+            20xx.01.01 ~ 20xx.01.02</p>
           <p class="card-text" th:text="${'발급시'+coupon.validity + '일동안 사용 가능'}">7일</p>
-          <form th:action="@{'/coupons/issue?coupon_id=' + ${coupon.couponId}}" method="post">
+          <form method="post" th:action="@{'/coupons/issue?coupon_id=' + ${coupon.couponId}}">
             <button class="btn btn-primary" type="submit">발급</button>
           </form>
         </div>
       </div>
     </div>
   </div>
-<!--    <th:block th:if="${page.content.isEmpty()}">-->
-<!--      <tr>-->
-<!--        <td colspan="8">NO DATA</td>-->
-<!--      </tr>-->
-<!--    </th:block>-->
+  <!--    <th:block th:if="${page.content.isEmpty()}">-->
+  <!--      <tr>-->
+  <!--        <td colspan="8">NO DATA</td>-->
+  <!--      </tr>-->
+  <!--    </th:block>-->
 
   <th:block th:with="pageSize=${page.size}">
     <nav aria-label="Page navigation">
       <ul class="pagination justify-content-center">
-        <li th:if="${page.number>= 10}" class="page-item">
-          <a class="page-link"
-             th:href="@{'/coupons?page=' + ${((page.number/10)*10 - 1)}}"
-             aria-label="이전 10 페이지">
+        <li class="page-item" th:if="${page.number>= 10}">
+          <a aria-label="이전 10 페이지"
+             class="page-link"
+             th:href="@{'/coupons?page=' + ${((page.number/10)*10 - 1)}}">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
@@ -72,10 +80,10 @@
             </li>
           </th:block>
         </th:block>
-        <li th:if="${((page.number/10)*10 + 10) < page.totalPages}" class="page-item">
-          <a class="page-link"
-             th:href="@{'/coupons?page=' + ${((page.number/10)*10 + 10)}}"
-             aria-label="Next 10 Pages">
+        <li class="page-item" th:if="${((page.number/10)*10 + 10) < page.totalPages}">
+          <a aria-label="Next 10 Pages"
+             class="page-link"
+             th:href="@{'/coupons?page=' + ${((page.number/10)*10 + 10)}}">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
