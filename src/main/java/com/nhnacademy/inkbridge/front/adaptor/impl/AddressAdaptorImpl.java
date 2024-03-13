@@ -33,7 +33,7 @@ public class AddressAdaptorImpl implements AddressAdaptor {
 
     private final GatewayProperties gatewayProperties;
 
-    private static final String ADDRESS_PATH = "api/mypage/addresses";
+    private static final String ADDRESS_PATH = "/api/mypage/addresses";
 
     /**
      * 사용자의 모든 주소 정보를 조회합니다.
