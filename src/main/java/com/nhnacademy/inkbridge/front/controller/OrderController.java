@@ -3,9 +3,11 @@ package com.nhnacademy.inkbridge.front.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhnacademy.inkbridge.front.dto.order.OrderBookInfoReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.AccumulationRatePolicyService;
+import com.nhnacademy.inkbridge.front.service.CartService;
 import com.nhnacademy.inkbridge.front.service.CouponService;
 import com.nhnacademy.inkbridge.front.service.DeliveryPolicyService;
 import com.nhnacademy.inkbridge.front.service.OrderService;
@@ -15,6 +17,7 @@ import com.nhnacademy.inkbridge.front.utils.CookieUtils;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +48,7 @@ public class OrderController {
     private final WrappingService wrappingService;
     private final ObjectMapper objectMapper;
     private final CouponService couponService;
+    private final CartService cartService;
 
     /**
      * 주문서 작성 페이지 호출 요청을 처리하는 메소드입니다.
@@ -63,7 +67,9 @@ public class OrderController {
 
         Long memberId = CommonUtils.getMemberId();
 
-        List<OrderBookReadResponseDto> orderBooks = getOrderBookReadResponseDtos(booksInfo);
+        List<OrderBookReadResponseDto> orderBooks = orderService.getOrderBooks(
+            getOrderBookReadResponseDtos(booksInfo));
+
         CookieUtils.deleteCookie(response, "info");
 
         model.addAttribute("orderBooks", orderBooks);
@@ -106,13 +112,13 @@ public class OrderController {
      * @param booksInfo 도서 정보 문자열
      * @return OrderBookReadResponseDto 객체
      */
-    private List<OrderBookReadResponseDto> getOrderBookReadResponseDtos(String booksInfo) {
+    private Set<OrderBookInfoReadResponseDto> getOrderBookReadResponseDtos(String booksInfo) {
         try {
             return objectMapper.readValue(booksInfo,
                 new TypeReference<>() {
                 });
         } catch (JsonProcessingException ignore) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
     }
 

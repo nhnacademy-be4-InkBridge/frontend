@@ -1,7 +1,11 @@
 package com.nhnacademy.inkbridge.front.service;
 
+import com.nhnacademy.inkbridge.front.dto.order.OrderBookInfoReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.order.OrderBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderPaymentInfoReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
+import java.util.List;
+import java.util.Set;
 
 /**
  * class: OrderService.
@@ -26,4 +30,6 @@ public interface OrderService {
      * @return  주문 결제 정보
      */
     OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderId);
+
+    List<OrderBookReadResponseDto> getOrderBooks(Set<OrderBookInfoReadResponseDto> bookInfo);
 }
