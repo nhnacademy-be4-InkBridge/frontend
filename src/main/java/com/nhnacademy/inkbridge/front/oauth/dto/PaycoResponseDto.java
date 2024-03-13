@@ -25,24 +25,4 @@ public class PaycoResponseDto implements OAuth2ResponseDto {
         return attribute.get("idNo").toString();
     }
 
-    @Override
-    public String getEmail() {
-        return attribute.get("email").toString();
-    }
-
-    @Override
-    public String getMobile() {
-        return attribute.get("mobile").toString();
-    }
-
-    @Override
-    public String getName() {
-        return attribute.get("name").toString();
-    }
-
-    @Override
-    public String getBirthday() {
-        return attribute.get("birthdayMMdd").toString();
-    }
-
 }

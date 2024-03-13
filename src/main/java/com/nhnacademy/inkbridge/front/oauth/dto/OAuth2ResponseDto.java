@@ -10,11 +10,4 @@ public interface OAuth2ResponseDto {
     String getProvider();
 
     String getProviderId();
-
-    String getEmail();
-
-    String getMobile();
-    String getName();
-
-    String getBirthday();
 }

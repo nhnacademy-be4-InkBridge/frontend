@@ -19,6 +19,7 @@ public enum JwtEnums {
     ACCESS_COOKIE("access-cookie"),
     REFRESH_COOKIE("refresh-cookie"),
     BEARER_PREFIX("Bearer "),
+    LOGIN_UUID("login-uuid"),
     MEMBER_INFO("Member-Info"),
     HEADER_UUID("header_uuid");
     private final String name;

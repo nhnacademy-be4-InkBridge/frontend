@@ -7,8 +7,6 @@ import com.nhnacademy.inkbridge.front.jwt.provider.CustomAuthenticationProvider;
 import com.nhnacademy.inkbridge.front.jwt.service.CustomUserDetailService;
 import com.nhnacademy.inkbridge.front.oauth.handler.CustomOAuthSuccessHandler;
 import com.nhnacademy.inkbridge.front.oauth.service.CustomOAuthUserService;
-import java.util.Collections;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +23,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 
 
 /**
@@ -54,7 +50,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/", "/login", "/signup").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/mypage/**").hasRole("MEMBER")
+                .antMatchers("/mypage/**").hasAnyRole("MEMBER","SOCIAL")
                 .anyRequest().permitAll();
         http
                 .oauth2Login(oauth2 -> oauth2
@@ -91,6 +87,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
+                .antMatchers("/favicon.ico","/**/favicon.ico")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 

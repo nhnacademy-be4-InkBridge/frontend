@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
+import com.nhnacademy.inkbridge.front.oauth.dto.OAuthIdRequestDto;
 import org.springframework.http.ResponseEntity;
 
 /**
@@ -21,8 +22,16 @@ public interface OAuthAdaptor {
     /**
      * oauth로 로그인 한적 있는 회원인지 체크하는 메서드.
      *
-     * @param id 회원 아이디
+     * @param oAuthIdRequestDto 회원 아이디
      * @return 체크 유무
      */
-    ResponseEntity<Boolean> isOAuthMember(String id);
+    ResponseEntity<Boolean> isOAuthMember(OAuthIdRequestDto oAuthIdRequestDto);
+
+    /**
+     * oauth 회원의 email 을 가져옵니다.
+     *
+     * @param oAuthIdRequestDto 회원 id
+     * @return 회원 email
+     */
+    ResponseEntity<String> getEmail(OAuthIdRequestDto oAuthIdRequestDto);
 }

@@ -17,6 +17,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 @Slf4j
 public class PaycoService extends OAuthService{
+    private static final String HTTPS = "https";
+    private static final String HOST = "apis-payco.krp.toastoven.net";
+    private static final String PATH = "payco/friends/find_member_v2.json";
     public PaycoService(ObjectMapper objectMapper,
                         OAuthAdaptor oAuthAdaptor) {
         super(objectMapper, oAuthAdaptor);
@@ -25,19 +28,16 @@ public class PaycoService extends OAuthService{
     @Override
     public String userInfoUri() {
         return UriComponentsBuilder.newInstance()
-                .scheme("https")
-                .host("apis-payco.krp.toastoven.net")
-                .path("payco/friends/find_member_v2.json")
+                .scheme(HTTPS)
+                .host(HOST)
+                .path(PATH)
                 .build().toUriString();
     }
 
     @Override
     public PaycoResponseDto parseDto(Map<String, Object> userInfo) {
-        log.info("data -> {}", userInfo.get("data"));
         Map<String, Object> data = (Map<String, Object>) userInfo.get("data");
-
-
-        return new PaycoResponseDto(data);
+        return new PaycoResponseDto((Map<String, Object>) data.get("member"));
 
     }
 }
