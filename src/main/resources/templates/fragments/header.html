@@ -19,7 +19,7 @@
             <li class="nav-item" sec:authorize="hasRole('ADMIN')">
               <a class="nav-link" href="/admin">관리자</a>
             </li>
-            <li class="nav-item" sec:authorize="hasRole('MEMBER')">
+            <li class="nav-item" sec:authorize="hasAnyRole('MEMBER','SOCIAL')">
               <a class="nav-link" href="/mypage">마이페이지</a>
             </li>
             <li class="nav-item" sec:authorize="isAuthenticated()">
@@ -66,6 +66,9 @@
           <div class="modal-footer">
             <button type="submit" class="btn btn-outline-dark btn-lg mt-4 w-100">로그인</button>
           </div>
+          <div class="modal-body">
+            <button type="button" id="payco" class="btn btn-outline-danger btn-lg w-100">Payco로 로그인하기</button>
+          </div>
           <p class="text-center mb-1">아이디가 없으시다면,
             <a href="#" class="text-decoration-none" style="color: black;">비밀번호 찾기</a>
           </p>
@@ -76,7 +79,14 @@
       </div>
     </div>
   </div>
+<script>
+  document.getElementById("payco").addEventListener("click", function() {
+    // Payco 로그인 페이지의 URL
+    var paycoLoginUrl = "https://inkbridge.store/oauth2/authorization/payco";
+    window.location.href = paycoLoginUrl;
+  });
 
+</script>
 
 </div>
 </html>

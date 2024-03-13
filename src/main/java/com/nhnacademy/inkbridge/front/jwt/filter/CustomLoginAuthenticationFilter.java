@@ -48,7 +48,7 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
             throws AuthenticationException {
         String email = obtainUsername(request);
         String password = obtainPassword(request);
-        log.info("login filter start ->");
+        log.info("login filter start -> {},{}",email,password);
 
         MemberLoginRequestDto requestDto = new MemberLoginRequestDto(email, password);
 
@@ -84,6 +84,7 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
         SecurityContextHolder.clearContext();
+        log.info("success");
         response.sendRedirect("/");
     }
 
