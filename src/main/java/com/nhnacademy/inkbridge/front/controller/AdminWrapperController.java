@@ -3,8 +3,10 @@ package com.nhnacademy.inkbridge.front.controller;
 import com.nhnacademy.inkbridge.front.dto.wrapping.WrappingCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.WrappingService;
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,14 +50,22 @@ public class AdminWrapperController {
 
     @PostMapping("/register")
     public String registerWrapping(
-        @Valid @ModelAttribute WrappingCreateRequestDto wrappingCreateRequestDto) {
+        @Valid @ModelAttribute WrappingCreateRequestDto wrappingCreateRequestDto,
+        BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException(bindingResult.getFieldError().getDefaultMessage());
+        }
         wrappingService.registerWrapping(wrappingCreateRequestDto);
         return "redirect:/admin/wrappings";
     }
 
     @PostMapping("/update/{wrappingId}")
     public String updateWrapping(@PathVariable("wrappingId") Long wrappingId,
-        @ModelAttribute WrappingCreateRequestDto wrappingCreateRequestDto) {
+        @ModelAttribute WrappingCreateRequestDto wrappingCreateRequestDto,
+        BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException(bindingResult.getFieldError().getDefaultMessage());
+        }
         wrappingService.updateWrapping(wrappingId, wrappingCreateRequestDto);
         return "redirect:/admin/wrappings";
     }
