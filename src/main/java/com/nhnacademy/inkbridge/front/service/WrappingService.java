@@ -12,11 +12,34 @@ import java.util.List;
  */
 public interface WrappingService {
 
+    /**
+     * 포장지 리스트 가져오기.
+     *
+     * @param isActive 활성여부
+     * @return 포장지 리스트
+     */
     List<WrappingReadResponseDto> getWrappingList(boolean isActive);
 
+    /**
+     * 포장지 상세 정보가져오기.
+     *
+     * @param wrappingId 조회할 포장지 id
+     * @return 포장지 데이터
+     */
     WrappingReadResponseDto getWrapping(Long wrappingId);
 
+    /**
+     * 포장지 업데이트.
+     *
+     * @param wrappingId               업데이트할 포장지 id
+     * @param wrappingCreateRequestDto 업데이트할 내용
+     */
     void updateWrapping(Long wrappingId, WrappingCreateRequestDto wrappingCreateRequestDto);
 
+    /**
+     * 포장지 생성.
+     *
+     * @param wrappingCreateRequestDto 생성할 내용
+     */
     void registerWrapping(WrappingCreateRequestDto wrappingCreateRequestDto);
 }

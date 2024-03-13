@@ -29,6 +29,9 @@ public class WrappingAdaptorImpl implements WrappingAdaptor {
 
     private final GatewayProperties gatewayProperties;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<WrappingReadResponseDto> getWrappingList(boolean isActive) {
         HttpEntity<Void> entity = new HttpEntity<>(createHeader());
@@ -41,6 +44,9 @@ public class WrappingAdaptorImpl implements WrappingAdaptor {
         return exchange.getBody();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WrappingReadResponseDto getWrapping(Long wrappingId) {
         HttpEntity<Void> entity = new HttpEntity<>(createHeader());
@@ -55,6 +61,9 @@ public class WrappingAdaptorImpl implements WrappingAdaptor {
         return exchange.getBody();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateWrapping(Long wrappingId, WrappingCreateRequestDto wrappingCreateRequestDto) {
         HttpEntity<WrappingCreateRequestDto> entity = new HttpEntity<>(wrappingCreateRequestDto,
@@ -70,6 +79,9 @@ public class WrappingAdaptorImpl implements WrappingAdaptor {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void registerWrapping(WrappingCreateRequestDto wrappingCreateRequestDto) {
         HttpEntity<WrappingCreateRequestDto> entity = new HttpEntity<>(wrappingCreateRequestDto,
