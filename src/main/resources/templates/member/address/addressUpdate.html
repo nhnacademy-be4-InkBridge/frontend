@@ -16,17 +16,17 @@
 
   <div class="mb-3">
     <label for="alias" class="form-label">주소 별칭:</label>
-    <input type="text" class="form-control" th:value="${address.alias}" id="alias" placeholder="예: 집, 회사">
+    <input type="text" class="form-control" th:value="${address.alias}" id="alias" placeholder="예: 집, 회사" required maxlength="20">
   </div>
 
   <div class="mb-3">
     <label for="receiverName" class="form-label">받는 사람:</label>
-    <input type="text" class="form-control" th:value="${address.receiverName}" id="receiverName" placeholder="받는 사람 이름">
+    <input type="text" class="form-control" th:value="${address.receiverName}" id="receiverName" placeholder="받는 사람 이름" required maxlength="20">
   </div>
 
   <div class="mb-3">
     <label for="receiverNumber" class="form-label">전화번호:</label>
-    <input type="tel" class="form-control" th:value="${address.receiverNumber}" id="receiverNumber" placeholder="전화번호">
+    <input type="tel" class="form-control" th:value="${address.receiverNumber}" id="receiverNumber" placeholder="전화번호" required maxlength="11">
   </div>
 
   <div class="input-group mb-2">
@@ -39,7 +39,7 @@
   </div>
 
   <div class="mb-3">
-    <input type="text" class="form-control" th:value="${address.addressDetail}" id="detailAddress" placeholder="상세주소">
+    <input type="text" class="form-control" th:value="${address.addressDetail}" id="detailAddress" placeholder="상세주소" required maxlength="200">
   </div>
 
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">

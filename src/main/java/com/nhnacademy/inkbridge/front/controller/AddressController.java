@@ -2,15 +2,21 @@ package com.nhnacademy.inkbridge.front.controller;
 
 import com.nhnacademy.inkbridge.front.dto.address.AddressCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.address.AddressUpdateRequestDto;
+import com.nhnacademy.inkbridge.front.enums.AddressMessageEnum;
+import com.nhnacademy.inkbridge.front.exception.ValidationException;
 import com.nhnacademy.inkbridge.front.service.AddressService;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * class: AddressController.
@@ -25,7 +31,7 @@ public class AddressController {
 
     private final AddressService addressService;
 
-    private static final String ADDRESS_URL = "redirect:/api/mypage/address";
+    private static final String ADDRESS_URL = "redirect:/mypage/address";
 
     /**
      * 사용자의 주소 목록을 조회하여 모델에 추가합니다.
@@ -35,7 +41,7 @@ public class AddressController {
      * @return 주소 목록 페이지의 경로
      */
     @GetMapping
-    String getAddressList(Model model) {
+    public String getAddressList(Model model) {
         model.addAttribute("addressList", addressService.getAddresses());
         return "/member/address/address";
     }
@@ -46,7 +52,7 @@ public class AddressController {
      * @return 주소 등록 폼 페이지의 경로
      */
     @GetMapping("/register")
-    String createAddressForm() {
+    public String createAddressForm() {
         return "/member/address/addressRegister";
     }
 
@@ -57,8 +63,11 @@ public class AddressController {
      * @return 주소 목록 페이지로의 리다이렉션 경로
      */
     @PostMapping("/register")
-    String createAddress(@RequestBody AddressCreateRequestDto addressCreateRequestDto) {
+    public String createAddress(@Valid @RequestBody AddressCreateRequestDto addressCreateRequestDto, BindingResult bindingResult) {
         addressService.createAddress(addressCreateRequestDto);
+        if(bindingResult.hasErrors()){
+            throw new ValidationException(AddressMessageEnum.ADDRESS_VALID_FAIL.getMessage());
+        }
         return ADDRESS_URL;
     }
 
@@ -69,7 +78,7 @@ public class AddressController {
      * @return 주소 목록 페이지로의 리다이렉션 경로
      */
     @PostMapping("/delete/{addressId}")
-    String deleteAddress(@PathVariable("addressId") Long addressId) {
+    public String deleteAddress(@PathVariable("addressId") Long addressId) {
         addressService.deleteAddress(addressId);
         return ADDRESS_URL;
     }
@@ -82,7 +91,7 @@ public class AddressController {
      * @return 주소 수정 폼 페이지의 경로
      */
     @GetMapping("/update/{addressId}")
-    String updateAddress(@PathVariable("addressId") Long addressId, Model model) {
+    public String updateAddress(@PathVariable("addressId") Long addressId, Model model) {
         model.addAttribute("address", addressService.getAddress(addressId));
         return "/member/address/addressUpdate";
     }
@@ -95,8 +104,17 @@ public class AddressController {
      * @return 주소 목록 페이지로의 리다이렉션 경로
      */
     @PostMapping("/update")
-    String updateAddress(@RequestBody AddressUpdateRequestDto addressUpdateRequestDto) {
+    public String updateAddress(@Valid @RequestBody AddressUpdateRequestDto addressUpdateRequestDto, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            throw new ValidationException(AddressMessageEnum.ADDRESS_VALID_FAIL.getMessage());
+        }
         addressService.updateAddress(addressUpdateRequestDto);
+        return ADDRESS_URL;
+    }
+
+    @ExceptionHandler(value = ValidationException.class)
+    public String tagExceptionHandler(ValidationException e, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("message", e.getMessage());
         return ADDRESS_URL;
     }
 

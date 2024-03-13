@@ -16,15 +16,15 @@
   <!-- 주소 별칭, 받는 사람, 전화번호 입력 필드 -->
   <div class="mb-3">
     <label for="alias" class="form-label">주소 별칭:</label>
-    <input type="text" class="form-control" id="alias" placeholder="예: 집, 회사">
+    <input type="text" class="form-control" id="alias" placeholder="예: 집, 회사" required maxlength="20">
   </div>
   <div class="mb-3">
     <label for="recipientName" class="form-label">받는 사람:</label>
-    <input type="text" class="form-control" id="recipientName" placeholder="받는 사람 이름">
+    <input type="text" class="form-control" id="recipientName" placeholder="받는 사람 이름" required maxlength="20">
   </div>
   <div class="mb-3">
     <label for="phoneNumber" class="form-label">전화번호:</label>
-    <input type="tel" class="form-control" id="phoneNumber" placeholder="전화번호">
+    <input type="tel" class="form-control" id="phoneNumber" placeholder="전화번호" required maxlength="11">
   </div>
 
   <!-- 우편번호 검색 필드 -->
@@ -38,7 +38,7 @@
     <input type="text" class="form-control" id="address" placeholder="도로명주소" readonly>
   </div>
   <div class="mb-3">
-    <input type="text" class="form-control" id="detailAddress" placeholder="상세주소">
+    <input type="text" class="form-control" id="detailAddress" placeholder="상세주소" required maxlength="200">
   </div>
 
   <!-- 확인 및 취소 버튼 -->

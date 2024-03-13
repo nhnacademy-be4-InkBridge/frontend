@@ -12,6 +12,8 @@
 </head>
 <body>
 <div class="container my-5">
+  <div th:if="${message != null}" class="alert alert-warning" role="alert" th:text="${message}">
+  </div>
   <h2 class="mb-4">배송지 관리</h2>
 
   <!-- 새 주소 등록 -->
