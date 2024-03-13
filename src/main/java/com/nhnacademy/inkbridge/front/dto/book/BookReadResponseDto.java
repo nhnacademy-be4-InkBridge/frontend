@@ -29,8 +29,8 @@ public class BookReadResponseDto {
     private String statusName;
     private Long publisherId;
     private String publisherName;
-    private Long authorId;
-    private String authorName;
+    private Set<Long> authorId;
+    private Set<String> authorName;
     private Long wish;
     private Set<String> fileUrl;
     private Set<String> tagName;

@@ -63,7 +63,6 @@ public class CartAdaptorImpl implements CartAdaptor {
      */
     @Override
     public List<CartReadResponseDto> getCart(Long memberId) {
-        log.info("cart adaptor 1");
         HttpHeaders httpHeaders = CommonUtils.createHeader();
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())

@@ -82,7 +82,9 @@
             </div>
             <div class="card-body">
               <h4 class="card-product__title" th:text="${book.bookTitle}"></h4>
-              <p th:text="${book.authorName} + ' | ' + ${book.publisherName}"></p>
+              <span th:each="author, iterStat : ${book.authorName}"><span
+                  th:text="${author}"></span><span th:if="${!iterStat.last}">, </span><span
+                  th:if="${iterStat.last}" th:text="' 저 | ' + ${book.publisherName}"></span></span>
               <p class="card-product__price" th:text="${book.price}+'원'"></p>
             </div>
           </div>
@@ -130,6 +132,13 @@
     observer.observe(listEnd);
 
     function createBook(book) {
+      let authors = "";
+      book.authorName.forEach(function(author, index) {
+        authors += author;
+        if (index < book.authorName.length - 1) {
+          authors += ", ";
+        }
+      });
       return `
       <div class="col-md-6 col-lg-4 col-xl-3">
         <div class="card text-center card-product"
@@ -140,7 +149,7 @@
           </div>
           <div class="card-body">
             <h4 class="card-product__title">${book.bookTitle}</h4>
-            <p>${book.authorName}|${book.publisherName}</p>
+        <span>${authors} 저 | ${book.publisherName}</span>
             <p class="card-product__price">${book.price}</p>
           </div>
         </div>

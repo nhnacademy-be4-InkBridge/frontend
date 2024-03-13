@@ -38,7 +38,6 @@ public class CartServiceImpl implements CartService {
     @Override
     public Map<String, String> getCartRedis(String memberId) {
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
-        log.info("info: {}", hashOperations.entries(memberId));
         return hashOperations.entries(memberId);
     }
 
@@ -47,7 +46,6 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public List<CartBookReadResponseDto> getCartBookInfo(Set<String> bookIdList) {
-        log.info("list: {}", bookIdList);
         return bookAdaptor.getBook(bookIdList);
     }
 

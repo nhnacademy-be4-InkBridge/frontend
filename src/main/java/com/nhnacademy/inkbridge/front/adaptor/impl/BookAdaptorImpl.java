@@ -104,6 +104,9 @@ public class BookAdaptorImpl implements BookAdaptor {
         return exchange.getBody();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<CartBookReadResponseDto> getBook(Set<String> bookIdList) {
         HttpHeaders httpHeaders = CommonUtils.createHeader();

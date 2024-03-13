@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.dto.book;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,6 @@ public class BooksReadResponseDto {
     private String bookTitle;
     private Long price;
     private String publisherName;
-    private String authorName;
+    private List<String> authorName;
     private String fileUrl;
 }
