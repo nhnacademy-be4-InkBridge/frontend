@@ -43,8 +43,8 @@
             <td>
               <input type="hidden" id="bookId" th:value="${book.bookId}">
               <input type="hidden" id="isPackagable" th:value="${book.isPackagable}">
-              <p class="mb-0 mt-4" th:text="${book.bookTitle}" th:href="@{/book?id=${book.bookId}}"
-                 id="bookTitle"></p>
+              <a class="mb-0 mt-4 hide-href" th:text="${book.bookTitle}" th:href="@{/book(id=${book.bookId})}"
+                 id="bookTitle"></a>
             </td>
             <td>
               <div style="text-decoration: line-through">
