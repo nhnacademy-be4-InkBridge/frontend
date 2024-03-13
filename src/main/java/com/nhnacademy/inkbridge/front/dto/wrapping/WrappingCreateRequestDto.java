@@ -23,7 +23,6 @@ import org.hibernate.validator.constraints.Length;
 public class WrappingCreateRequestDto {
 
     @Length(max = 20, message = "20글자가 최대입니다")
-    @NotNull(message = "포장지 이름을 입력해주세요.")
     @NotBlank(message = "포장지 이름이 공란입니다.")
     private String wrappingName;
 
