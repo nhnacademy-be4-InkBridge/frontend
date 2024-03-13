@@ -60,23 +60,27 @@ public class WrappingAdaptorImpl implements WrappingAdaptor {
         HttpEntity<WrappingCreateRequestDto> entity = new HttpEntity<>(wrappingCreateRequestDto,
             createHeader());
 
-        restTemplate.exchange(
+        ResponseEntity result = restTemplate.exchange(
             gatewayProperties.getUrl() + "/api/admin/wrappings/" + wrappingId,
             HttpMethod.PUT,
             entity,
-            new ParameterizedTypeReference<>() {
-            });
+            void.class);
+        if (!result.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("포장지 업데이트에 실패하였습니다");
+        }
     }
 
     @Override
     public void registerWrapping(WrappingCreateRequestDto wrappingCreateRequestDto) {
         HttpEntity<WrappingCreateRequestDto> entity = new HttpEntity<>(wrappingCreateRequestDto,
             createHeader());
-        restTemplate.exchange(
+        ResponseEntity result = restTemplate.exchange(
             gatewayProperties.getUrl() + "/api/admin/wrappings",
             HttpMethod.POST,
             entity,
-            new ParameterizedTypeReference<>() {
-            });
+            void.class);
+        if (!result.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("포장지 생성을 실패하였습니다");
+        }
     }
 }
