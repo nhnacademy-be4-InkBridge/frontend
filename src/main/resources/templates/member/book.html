@@ -43,59 +43,67 @@
                 </div>
               </div>
               <div class="col-lg-6" style="padding-left: 70px">
-                <h5 class="mb-4"><a href="#" th:text="${book.publisherName}" class="hide-href"></a>
-                </h5>
-                <h3 class="fw-bold mb-3" th:text="${book.bookTitle}" id="bookTitle"></h3>
-                <h5 class="mb-4"><a href="#" th:text="${book.authorName}+' 저'"
-                                    class="hide-href"></a>
-                </h5>
-                <div class="mb-3">
-                  <span>정가 </span><h5 class="fw-bold mb-4 d-sm-inline"
-                                      th:text="${book.regularPrice}"
-                                      id="regularPrice"></h5><span> 원</span>
-                </div>
-                <div class="mb-3">
-                  <span>판매가 </span><h5 class="fw-bold mb-3 d-sm-inline" th:text="${book.price}"
-                                       id="price"></h5>
-                  <span>원</span>
-                </div>
-                <div class="d-flex mb-4">
-                </div>
-                <div class="input-group quantity mb-5" style="width: 100px;">
-                  <div class="input-group-btn">
-                    <button class="btn btn-sm btn-minus rounded-circle bg-light border"
-                            type="button">
-                      <i class="fa fa-minus"></i>
-                    </button>
+                <div style="padding-top: 8rem;">
+                  <h5 class="mb-4">
+                    <a href="#" th:text="${book.publisherName}" class="hide-href"></a>
+                  </h5>
+                  <h3 class="fw-bold mb-3" th:text="${book.bookTitle}" id="bookTitle"></h3>
+                  <h5 class="mb-4">
+                  <span th:each="author, iterStat : ${book.authors}">
+                    <a th:text="${author.value}" th:href="@{'/author/' + ${author.key}}"
+                       class="hide-href"></a>
+                    <span th:if="${!iterStat.last}">, </span>
+                    <span th:if="${iterStat.last}"> 저</span>
+                  </span>
+                  </h5>
+                  <div class="mb-3">
+                    <span>정가 </span><h5 class="fw-bold mb-4 d-sm-inline"
+                                        th:text="${book.regularPrice}"
+                                        id="regularPrice"></h5><span> 원</span>
                   </div>
-                  <input type="text" class="form-control form-control-sm text-center border-0"
-                         value="1" name="amount" id="amount">
-                  <div class="input-group-btn">
-                    <button class="btn btn-sm btn-plus rounded-circle bg-light border"
-                            type="button">
-                      <i class="fa fa-plus"></i>
-                    </button>
+                  <div class="mb-3">
+                    <span>판매가 </span><h5 class="fw-bold mb-3 d-sm-inline" th:text="${book.price}"
+                                         id="price"></h5>
+                    <span>원</span>
                   </div>
-                  <input type="hidden" th:value="${bookId}" id="bookId" name="bookId">
-                  <input type="hidden" th:value="${book.isPackagable}" id="isPackagable">
-                </div>
-                <div class="justify-content-between d-flex" style="width: 30rem">
-                  <div th:if="${book.statusName.equals('판매')}">
-                    <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4"
-                       th:if="${book.wish}">
-                      <i class="fas fa-heart"></i>
-                    </a>
-                    <a href="/orders" th:onclick="setCookie()"
-                       class="btn border border-secondary rounded-pill px-4 py-2 m-2 text-primary hide-href">
-                      <i class="fa fa-shopping-bag me-2 text-primary"></i> 상품 바로 구매하기
-                    </a>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#cart-modal"
-                            class="btn border border-secondary rounded-pill px-4 py-2 m-2 text-primary">
-                      <i class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니에 담기
-                    </button>
+                  <div class="d-flex mb-4">
                   </div>
-                  <div th:unless="${book.statusName.equals('판매')}">
-                    <h5 th:text="${book.statusName} + '된 도서입니다'"></h5>
+                  <div class="input-group quantity mb-5" style="width: 100px;">
+                    <div class="input-group-btn">
+                      <button class="btn btn-sm btn-minus rounded-circle bg-light border"
+                              type="button">
+                        <i class="fa fa-minus"></i>
+                      </button>
+                    </div>
+                    <input type="text" class="form-control form-control-sm text-center border-0"
+                           value="1" name="amount" id="amount">
+                    <div class="input-group-btn">
+                      <button class="btn btn-sm btn-plus rounded-circle bg-light border"
+                              type="button">
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </div>
+                    <input type="hidden" th:value="${bookId}" id="bookId" name="bookId">
+                    <input type="hidden" th:value="${book.isPackagable}" id="isPackagable">
+                  </div>
+                  <div class="justify-content-between d-flex" style="width: 30rem">
+                    <div th:if="${book.statusName.equals('판매')}">
+                      <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4"
+                         th:if="${book.wish}">
+                        <i class="fas fa-heart"></i>
+                      </a>
+                      <a href="/orders" th:onclick="setCookie()"
+                         class="btn border border-secondary rounded-pill px-4 py-2 m-2 text-primary hide-href">
+                        <i class="fa fa-shopping-bag me-2 text-primary"></i> 상품 바로 구매하기
+                      </a>
+                      <button type="button" data-bs-toggle="modal" data-bs-target="#cart-modal"
+                              class="btn border border-secondary rounded-pill px-4 py-2 m-2 text-primary">
+                        <i class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니에 담기
+                      </button>
+                    </div>
+                    <div th:unless="${book.statusName.equals('판매')}">
+                      <h5 th:text="${book.statusName} + '된 도서입니다'"></h5>
+                    </div>
                   </div>
                 </div>
               </div>

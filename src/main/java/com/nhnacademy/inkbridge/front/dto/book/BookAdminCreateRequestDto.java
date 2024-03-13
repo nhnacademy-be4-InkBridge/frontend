@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -33,9 +35,15 @@ public class BookAdminCreateRequestDto {
     private LocalDate publicatedAt;
     @Digits(integer = 13, fraction = 0, message = "isbn은 13자리 정수여야 합니다.")
     private String isbn;
+    @Max(value = Long.MAX_VALUE - 1)
+    @Min(value = 0)
     private Long regularPrice;
+    @Max(value = Long.MAX_VALUE - 1)
+    @Min(value = 0)
     private Long price;
     private BigDecimal discountRatio;
+    @Max(value = Integer.MAX_VALUE - 1)
+    @Min(value = 0)
     private Integer stock;
     private Boolean isPackagable;
     private Long publisherId;
