@@ -4,7 +4,9 @@ import com.nhnacademy.inkbridge.front.adaptor.IndexAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,5 +38,14 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public BookReadResponseDto getBook(Long bookId) {
         return indexAdaptor.getBook(bookId);
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ParentCategoryReadResponseDto> readCategory() {
+        return indexAdaptor.readCategories();
     }
 }

@@ -4,9 +4,11 @@ import com.nhnacademy.inkbridge.front.adaptor.IndexAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.net.URI;
+import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -84,5 +86,23 @@ public class IndexAdaptorImpl implements IndexAdaptor {
             });
 
         return exchange.getBody();
+    }
+
+    @Override
+    public List<ParentCategoryReadResponseDto> readCategories() {
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
+
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path("api/categories")
+            .encode()
+            .build()
+            .toUri();
+
+        ResponseEntity<List<ParentCategoryReadResponseDto>> responseEntity = restTemplate.exchange(
+            uri,
+            HttpMethod.GET, new HttpEntity<>(httpHeaders), new ParameterizedTypeReference<>() {
+            });
+        return responseEntity.getBody();
     }
 }

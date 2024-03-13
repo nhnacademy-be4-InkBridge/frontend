@@ -4,45 +4,42 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <div th:fragment="headerFragment" class="container">
-  <header class="py-3 my-4 border-bottom">
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">Ink Bridge</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
-                aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav me-auto mb-2 mb-md-0">
-            <!-- 관리자 권한이 있는 경우에만 Admin 링크 표시 -->
-            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-              <a class="nav-link" href="/admin">관리자</a>
-            </li>
-            <li class="nav-item" sec:authorize="hasRole('MEMBER')">
-              <a class="nav-link" href="/mypage">마이페이지</a>
-            </li>
-            <li class="nav-item" sec:authorize="isAuthenticated()">
-              <a class="nav-link" href="/logout">로그아웃</a>
-            </li>
-            <li class="nav-item" sec:authorize="isAnonymous()">
-              <a class="nav-link" href="/login" data-bs-toggle="modal" data-bs-target="#ModalForm">로그인</a>
-            </li>
-            <li class="nav-item" sec:authorize="isAnonymous()">
-              <a class="nav-link" href="/signup">회원가입</a>
-            </li>
-          </ul>
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-
-
+<!--  <header class="py-3 my-4 border-bottom">-->
+<!--    <nav class="navbar navbar-expand-md navbar-light bg-light">-->
+<!--      <div class="container-fluid">-->
+<!--        <a class="navbar-brand" href="/">Ink Bridge</a>-->
+<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"-->
+<!--                data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"-->
+<!--                aria-expanded="false" aria-label="Toggle navigation">-->
+<!--          <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+<!--        <div class="collapse navbar-collapse" id="navbarCollapse">-->
+<!--          <ul class="navbar-nav me-auto mb-2 mb-md-0">-->
+<!--            &lt;!&ndash; 관리자 권한이 있는 경우에만 Admin 링크 표시 &ndash;&gt;-->
+<!--            <li class="nav-item" sec:authorize="hasRole('ADMIN')">-->
+<!--              <a class="nav-link" href="/admin">관리자</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item" sec:authorize="hasRole('MEMBER')">-->
+<!--              <a class="nav-link" href="/mypage">마이페이지</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item" sec:authorize="isAuthenticated()">-->
+<!--              <a class="nav-link" href="/logout">로그아웃</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item" sec:authorize="isAnonymous()">-->
+<!--              <a class="nav-link" href="/login" data-bs-toggle="modal" data-bs-target="#ModalForm">로그인</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item" sec:authorize="isAnonymous()">-->
+<!--              <a class="nav-link" href="/signup">회원가입</a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--          <form class="d-flex" role="search">-->
+<!--            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--            <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--          </form>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </nav>-->
+<!--  </header>-->
 
   <div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -77,6 +74,96 @@
     </div>
   </div>
 
+  <header>
+  <div class="header-top">
+    <div class="header-contact">
+      <div class="header-contact-link">
+        <a href="https://github.com/nhnacademy-be4-InkBridge" class="a-tag">
+          <i class="bi bi-github"></i>
+        </a>
+      </div>
+      <div class="header-contact-link">
+          뭐넣지?
+      </div>
+      <div class="header-contact-link">
+        히히 뭘넣징
+      </div>
+    </div>
+    <div class="header-login">
+        <div class="header-login-item" sec:authorize="hasRole('ADMIN')">
+          <a class="header-login-link a-tag" href="/admin">관리자</a>
+        </div>
+        <div class="header-login-item" sec:authorize="hasRole('MEMBER')">
+          <a class="header-login-link a-tag" href="/mypage">마이페이지</a>
+        </div>
+        <div class="header-login-item" sec:authorize="isAuthenticated()">
+          <a class="header-login-link a-tag" href="/logout">로그아웃</a>
+        </div>
+        <div class="header-login-item" sec:authorize="isAnonymous()">
+          <a class="header-login-link a-tag" href="/login" data-bs-toggle="modal" data-bs-target="#ModalForm">로그인</a>
+        </div>
+        <div class="header-login-item" sec:authorize="isAnonymous()">
+          <a class="header-login-link a-tag" href="/signup">회원가입</a>
+        </div>
+    </div>
+  </div>
+  <div class="header-main">
+      <div class="header-main-container">
+        <div class="header-logo gugi-regular">
+          inkBridge
+        </div>
+        <div class="header-search-container">
+          <input type="search" name="search" class="search"/>
+          <button class="search-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+        <div class="header-user-actions">
+          <div class="action-btn">
+            <i class="fa-regular fa-user"></i>
+          </div>
+          <div class="action-btn">
+            <i class="fa-regular fa-heart"></i>
+<!--            <span class="count">0</span>-->
+          </div>
+          <div class="action-btn">
+            <i class="bi bi-cart"></i>
+<!--            <span class="count">0</span>-->
+          </div>
+        </div>
+      </div>
+  </div>
+  <nav class="header-menu">
+      <ul class="header-menu-list">
+        <li class="menu-category">
+          <a href="/" class="a-tag menu-title">홈</a>
+        </li>
+        <li class="menu-category">
+          <a href="" class="a-tag menu-title">카테고리</a>
+          <div class="item-dropdown">
+            <ul class="item-list" th:each="parentCategory:${parentCategories}">
+                <li class="menu-title parent">
+                  <a class="a-tag list-item" th:href="@{/api/books/${parentCategory.getCategoryId()}}" th:text="${parentCategory.getCategoryName()}">
+                  </a>
+                </li>
+              <li class="list-item child"  th:each="childCategory:${parentCategory.getParentCategories()}">
+                <a class="a-tag list-item" th:href="@{/api/books/${childCategory.getCategoryId}}" th:text="${childCategory.getCategoryName()}"></a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="menu-category">
+          <a class="a-tag menu-title" href="">인기도서</a>
+        </li>
+        <li class="menu-category">
+          <a class="a-tag menu-title" href="">신상도서</a>
+        </li>
+        <li class="menu-category">
+          <a class="a-tag menu-title" href="">이벤트/쿠폰</a>
+        </li>
+      </ul>
+  </nav>
+  </header>
 
 </div>
 </html>
