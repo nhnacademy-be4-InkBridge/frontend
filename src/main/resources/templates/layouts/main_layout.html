@@ -19,14 +19,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Eczar:wght@400..800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Gugi&display=swap" rel="stylesheet">
 
-  <th:block layout:fragment="css">
-  </th:block>
-  <th:block layout:fragment="script"></th:block>
 </head>
 <body>
 
+<!--<th:block th:replace="fragments/common-header :: commonHeader"></th:block>-->
 <th:block th:replace="fragments/header :: headerFragment"></th:block>
-
 <th:block layout:fragment="content"></th:block>
 
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>
