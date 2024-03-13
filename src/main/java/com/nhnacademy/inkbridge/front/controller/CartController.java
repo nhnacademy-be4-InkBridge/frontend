@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/cart")
 public class CartController {
 
+    private static final int A_WEEK = 60 * 60 * 24 * 7;
     private final CartService cartService;
 
     public CartController(CartService cartService) {
@@ -78,7 +79,7 @@ public class CartController {
         if (Objects.equals(memberId, "null")) {
             memberId = checkCookie(request.getCookies());
             Cookie cookie = new Cookie("cart", memberId);
-            cookie.setMaxAge(60 * 60 * 24 * 7); // 일주일
+            cookie.setMaxAge(A_WEEK);
             cookie.setPath("/");
             response.addCookie(cookie);
             cartService.createCart(cartRedisCreateRequestDto, memberId);
