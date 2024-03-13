@@ -17,12 +17,7 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
 const setCookie = () => {
   let cookies = {
     bookId: document.getElementById('bookId').value,
-    thumbnail: document.getElementById('thumbnail').getAttribute('src'),
-    bookTitle: document.getElementById('bookTitle').textContent,
-    price: document.getElementById('price').textContent,
-    regularPrice: document.getElementById('regularPrice').textContent,
     amount: document.getElementById('amount').value,
-    isPackagable: document.getElementById('isPackagable').value
   };
   let existingCookie = [];
   existingCookie.push(cookies);

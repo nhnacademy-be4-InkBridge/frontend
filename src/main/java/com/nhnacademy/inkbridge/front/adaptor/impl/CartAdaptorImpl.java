@@ -1,88 +1,82 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
-import com.nhnacademy.inkbridge.front.adaptor.IndexAdaptor;
-import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
-import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
+import com.nhnacademy.inkbridge.front.adaptor.CartAdaptor;
+import com.nhnacademy.inkbridge.front.dto.cart.CartCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.cart.CartReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.net.URI;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * class: IndexAdaptorImpl.
+ * class: CartAdaptorImpl.
  *
  * @author minm063
- * @version 2024/02/26
+ * @version 2024/03/09
  */
+@Slf4j
 @Component
-public class IndexAdaptorImpl implements IndexAdaptor {
+public class CartAdaptorImpl implements CartAdaptor {
 
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
-    private static final String DEFAULT_PATH = "/api/books";
 
-    public IndexAdaptorImpl(RestTemplate restTemplate, GatewayProperties gatewayProperties) {
+    public CartAdaptorImpl(RestTemplate restTemplate, GatewayProperties gatewayProperties) {
         this.restTemplate = restTemplate;
         this.gatewayProperties = gatewayProperties;
+
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PageRequestDto<BooksReadResponseDto> getBooks(Long page) {
+    public void saveCart(List<CartCreateRequestDto> cartList) {
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
-            .path(DEFAULT_PATH)
-            .queryParam("page", "{page}")
+            .path("/api/carts")
             .encode()
-            .build()
-            .expand(page)
-            .toUri();
+            .build().toUri();
 
-        HttpHeaders httpHeaders = CommonUtils.createHeader();
-        ResponseEntity<PageRequestDto<BooksReadResponseDto>> exchange = restTemplate.exchange(
-            uri,
-            HttpMethod.GET,
-            new HttpEntity<>(httpHeaders),
+        ResponseEntity<HttpStatus> exchange = restTemplate.exchange(uri, HttpMethod.POST,
+            new HttpEntity<>(cartList, httpHeaders),
             new ParameterizedTypeReference<>() {
-            }
-        );
-
-        return exchange.getBody();
+            });
+        if (exchange.getStatusCode() != HttpStatus.CREATED) {
+            throw new RuntimeException();
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public BookReadResponseDto getBook(Long bookId) {
+    public List<CartReadResponseDto> getCart(Long memberId) {
+        log.info("cart adaptor 1");
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
-            .path(DEFAULT_PATH)
-            .path("/{bookId}")
+            .path("/api/carts/{memberId}")
             .encode()
-            .build()
-            .expand(bookId)
-            .toUri();
+            .buildAndExpand(memberId).toUri();
 
-        HttpHeaders httpHeaders = CommonUtils.createHeader();
-
-        ResponseEntity<BookReadResponseDto> exchange = restTemplate.exchange(
+        ResponseEntity<List<CartReadResponseDto>> exchange = restTemplate.exchange(
             uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
             });
-
         return exchange.getBody();
     }
 }

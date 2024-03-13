@@ -5,8 +5,13 @@ import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminUpdateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -16,6 +21,30 @@ import org.springframework.web.multipart.MultipartFile;
  * @version 2024/02/22
  */
 public interface BookAdaptor {
+
+    /**
+     * 메인 페이지에서 도서 전체 목록을 조회하는 메서드입니다.
+     *
+     * @param page Long
+     * @return Page BooksReadResponseDto
+     */
+    PageRequestDto<BooksReadResponseDto> getBooks(Long page);
+
+    /**
+     * 도서 상세 페이지에서 도서 상세 정보를 조회하는 메서드입니다.
+     *
+     * @param bookId Long
+     * @return BookReadResponseDto
+     */
+    BookReadResponseDto getBook(Long bookId);
+
+    /**
+     * 장바구니의 도서 아이디로 도서 상세 정보를 조회하는 메서드입니다.
+     *
+     * @param bookIdList Set
+     * @return CartBookReadResponseDto
+     */
+    List<CartBookReadResponseDto> getBook(Set<String> bookIdList);
 
     /**
      * 관리자 페이지에서 도서 전체 목록을 조회하는 메서드입니다.
