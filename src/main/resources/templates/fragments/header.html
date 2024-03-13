@@ -56,7 +56,7 @@
         <div  sec:authorize="hasRole('ADMIN')">
           관리자
         </div>
-        <div  sec:authorize="hasRole('MEMBER')">
+        <div  sec:authorize="hasAnyRole('MEMBER','SOCIAL')">
           회원
         </div>
         <div class="header-login-item" sec:authorize="isAnonymous()">
