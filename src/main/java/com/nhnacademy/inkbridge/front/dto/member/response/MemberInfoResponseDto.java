@@ -13,9 +13,7 @@ import lombok.Setter;
  * @version 3/2/24
  */
 @Getter
-@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class MemberInfoResponseDto {
     private Long memberId;
     private String memberName;
