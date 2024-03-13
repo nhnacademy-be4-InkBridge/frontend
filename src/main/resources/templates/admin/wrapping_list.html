@@ -78,7 +78,7 @@
     </div>
     <div class="col-md-1">
       <div class="add-button-container float-right">
-        <a class="btn btn-success" href="/admin/wrapping/create-view">추가</a>
+        <a class="btn btn-success" href="/admin/wrappings/create-view">추가</a>
       </div>
     </div>
   </div>
@@ -99,7 +99,7 @@
       <td th:text="${wrapping.price}"></td>
       <td th:text="${wrapping.isActive} ? '활성' : '비활성'"></td>
       <td>
-        <form method="post" th:action="@{'/admin/wrapping/update-view/' + ${wrapping.wrappingId}}">
+        <form method="get" th:action="@{'/admin/wrappings/update-view/' + ${wrapping.wrappingId}}">
           <button class="btn btn-primary" type="submit">상태변경</button>
         </form>
       </td>

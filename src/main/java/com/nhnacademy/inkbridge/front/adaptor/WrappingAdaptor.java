@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
+import com.nhnacademy.inkbridge.front.dto.wrapping.WrappingCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.wrapping.WrappingReadResponseDto;
 import java.util.List;
 
@@ -12,4 +13,10 @@ import java.util.List;
 public interface WrappingAdaptor {
 
     List<WrappingReadResponseDto> getWrappingList(boolean isActive);
+
+    WrappingReadResponseDto getWrapping(Long wrappingId);
+
+    void updateWrapping(Long wrappingId, WrappingCreateRequestDto wrappingReadResponseDto);
+
+    void registerWrapping(WrappingCreateRequestDto wrappingCreateRequestDto);
 }

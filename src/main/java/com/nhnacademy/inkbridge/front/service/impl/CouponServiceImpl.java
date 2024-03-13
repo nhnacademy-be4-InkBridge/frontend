@@ -38,7 +38,6 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public void createCoupon(CouponCreateRequestDto couponCreateRequestDto) {
-        System.out.println(couponCreateRequestDto.toString());
         couponAdaptor.setCoupons(couponCreateRequestDto);
     }
 }

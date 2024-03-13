@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
 
 import com.nhnacademy.inkbridge.front.adaptor.WrappingAdaptor;
+import com.nhnacademy.inkbridge.front.dto.wrapping.WrappingCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.wrapping.WrappingReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.util.List;
@@ -37,7 +38,45 @@ public class WrappingAdaptorImpl implements WrappingAdaptor {
             entity,
             new ParameterizedTypeReference<>() {
             });
+        return exchange.getBody();
+    }
+
+    @Override
+    public WrappingReadResponseDto getWrapping(Long wrappingId) {
+        HttpEntity<Void> entity = new HttpEntity<>(createHeader());
+
+        ResponseEntity<WrappingReadResponseDto> exchange = restTemplate.exchange(
+            gatewayProperties.getUrl() + "/api/wrappings/" + wrappingId,
+            HttpMethod.GET,
+            entity,
+            new ParameterizedTypeReference<>() {
+            });
 
         return exchange.getBody();
+    }
+
+    @Override
+    public void updateWrapping(Long wrappingId, WrappingCreateRequestDto wrappingCreateRequestDto) {
+        HttpEntity<WrappingCreateRequestDto> entity = new HttpEntity<>(wrappingCreateRequestDto,
+            createHeader());
+
+        restTemplate.exchange(
+            gatewayProperties.getUrl() + "/api/admin/wrappings/" + wrappingId,
+            HttpMethod.PUT,
+            entity,
+            new ParameterizedTypeReference<>() {
+            });
+    }
+
+    @Override
+    public void registerWrapping(WrappingCreateRequestDto wrappingCreateRequestDto) {
+        HttpEntity<WrappingCreateRequestDto> entity = new HttpEntity<>(wrappingCreateRequestDto,
+            createHeader());
+        restTemplate.exchange(
+            gatewayProperties.getUrl() + "/api/admin/wrappings",
+            HttpMethod.POST,
+            entity,
+            new ParameterizedTypeReference<>() {
+            });
     }
 }
