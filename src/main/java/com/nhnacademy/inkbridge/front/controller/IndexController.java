@@ -7,6 +7,7 @@ import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto
 import com.nhnacademy.inkbridge.front.service.IndexService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ public class IndexController {
 
     @GetMapping
     public String index(Model model, @RequestParam(defaultValue = "0") Long page) {
+        log.info("context -> {}", SecurityContextHolder.getContext().getAuthentication());
         List<BooksReadResponseDto> books = indexService.getBooks(page).getContent();
         model.addAttribute("books", books);
         List<ParentCategoryReadResponseDto> parentCategories = indexService.readCategory();

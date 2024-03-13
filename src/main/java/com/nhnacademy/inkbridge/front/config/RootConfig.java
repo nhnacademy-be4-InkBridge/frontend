@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -38,6 +39,8 @@ public class RootConfig {
      */
     @Bean
     public RestTemplate restTemplate(ClientHttpRequestFactory clientHttpRequestFactory) {
-        return new RestTemplate(clientHttpRequestFactory);
+        RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
+        restTemplate.getMessageConverters().add(new FormHttpMessageConverter());
+        return restTemplate;
     }
 }
