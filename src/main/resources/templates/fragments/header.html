@@ -63,10 +63,8 @@
           </a>
         </div>
         <div class="header-contact-link">
-          뭐넣지?
         </div>
         <div class="header-contact-link">
-          히히 뭘넣징
         </div>
       </div>
       <div class="header-login">
@@ -140,13 +138,13 @@
           <div class="item-dropdown">
             <ul class="item-list" th:each="parentCategory:${parentCategories}">
               <li class="menu-title parent">
-                <a class="a-tag list-item" th:href="@{/api/books/${parentCategory.getCategoryId()}}"
+                <a class="a-tag list-item" th:href="@{'/books/' + ${parentCategory.categoryId}}"
                    th:text="${parentCategory.getCategoryName()}">
                 </a>
               </li>
               <li class="list-item child"
                   th:each="childCategory:${parentCategory.getParentCategories()}">
-                <a class="a-tag list-item" th:href="@{/api/books/${childCategory.getCategoryId}}"
+                <a class="a-tag list-item" th:href="@{'/books/'+${childCategory.getCategoryId}}"
                    th:text="${childCategory.getCategoryName()}"></a>
               </li>
             </ul>
