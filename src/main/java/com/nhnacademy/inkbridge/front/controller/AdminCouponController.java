@@ -2,14 +2,12 @@ package com.nhnacademy.inkbridge.front.controller;
 
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.CouponService;
-import com.nhnacademy.inkbridge.front.service.impl.CouponServiceImpl;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin/coupons")
-public class CouponController {
+public class AdminCouponController {
 
     private final CouponService couponService;
 
@@ -32,7 +30,7 @@ public class CouponController {
      *
      * @param couponService 쿠폰서비스
      */
-    public CouponController(CouponService couponService) {
+    public AdminCouponController(CouponService couponService) {
         this.couponService = couponService;
     }
 
