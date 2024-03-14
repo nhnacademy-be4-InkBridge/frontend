@@ -47,7 +47,7 @@ public class IndexController {
         BooksReadResponseDto books = indexService.getBooks(page);
         model.addAttribute("books", books.getBooksPaginationReadResponseDtos());
         model.addAttribute("authors", books.getAuthorPaginationReadResponseDto());
-        log.info("context -> {}", SecurityContextHolder.getContext().getAuthentication());
+        log.debug("context -> {}", SecurityContextHolder.getContext().getAuthentication());
 
         List<ParentCategoryReadResponseDto> parentCategories = categoryService.readCategory();
         model.addAttribute("parentCategories", parentCategories);

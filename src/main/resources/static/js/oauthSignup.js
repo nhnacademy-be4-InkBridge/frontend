@@ -2,8 +2,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     // 폼 제출 전 필드 검증
-    var submitButton = document.getElementById("submitButton");
-    var signupForm = document.getElementById("signupForm");
+    var submitButton = document.getElementById("oauthSubmit");
+    var signupForm = document.getElementById("oauthForm");
 
     submitButton.addEventListener("click", function(event) {
         event.preventDefault();

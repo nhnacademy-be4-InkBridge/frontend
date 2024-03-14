@@ -5,6 +5,9 @@ import com.nhnacademy.inkbridge.front.dto.book.BookFileReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
@@ -27,6 +30,8 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 @Component
 public class FileAdaptorImpl implements FileAdaptor {
+
+    private final Path noImageFile = Paths.get("image/noImage.png");
 
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
@@ -82,14 +87,22 @@ public class FileAdaptorImpl implements FileAdaptor {
         HttpHeaders httpHeaders = new HttpHeaders();
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<byte[]> exchange = restTemplate.exchange(
-            uri,
-            HttpMethod.GET,
-            requestEntity,
-            new ParameterizedTypeReference<>() {
-            });
-        if (!exchange.getStatusCode().is2xxSuccessful()) {
-            throw new RuntimeException();
+        ResponseEntity<byte[]> exchange;
+        try {
+            exchange = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+        } catch (Exception e) {
+            byte[] byteFile;
+            try {
+                byteFile = Files.readAllBytes(noImageFile);
+            } catch (IOException e1) {
+                throw new RuntimeException("파일을 찾을수 없습니다");
+            }
+            return byteFile;
         }
 
         return exchange.getBody();

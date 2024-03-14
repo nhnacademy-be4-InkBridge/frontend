@@ -65,7 +65,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void signupWithOAuth(MemberSignupOAuthRequestDto memberSignupOAuthRequestDto) {
-        log.info("signup service start ->");
+        log.debug("signup service start ->");
 
         try {
             memberAdaptor.signupWithOAuth(memberSignupOAuthRequestDto);

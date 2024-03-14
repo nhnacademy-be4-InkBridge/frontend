@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/admin_layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <style>
+      #layoutSidenav_content {
+          position: static !important; /* Flex 제거 */
+          display: block !important; /* Flex를 제거하고 블록 레벨로 설정 */
+      }
+
+      .table {
+          margin-top: 30px; /* 상단 마진 */
+      }
+
+      .fixed-table th,
+      .fixed-table td {
+          text-align: center; /* 텍스트 가운데 정렬 */
+          vertical-align: middle; /* 세로 가운데 정렬 */
+      }
+
+      /* 쿠폰 번호 열 너비 */
+      .coupon-id {
+          width: 25%;
+      }
+
+      /* 쿠폰명 열 너비 */
+      .coupon-name {
+          width: 20%;
+      }
+
+      /* 사용 조건 열 너비 */
+      .coupon-condition {
+          width: 15%;
+      }
+
+      /* 할인 금액 열 너비 */
+      .discount-amount {
+          width: 10%;
+      }
+
+      /* 최대 금액 열 너비 */
+      .max-amount {
+          width: 10%;
+      }
+
+      /* 발급 기간 열 너비 */
+      .issued-period {
+          width: 10%;
+      }
+
+      /* 유효 기간 열 너비 */
+      .validity-period {
+          width: 5%;
+      }
+
+      /* 관리 열 너비 */
+      .management {
+          width: 5%;
+      }
+
+  </style>
+</head>
+<body>
+<th:block layout:fragment="css">
+</th:block>
+<th:block layout:fragment="script">
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // 드롭다운 버튼 클릭 시 드롭다운 메뉴 열기
+      var dropdownButton = document.getElementById('dropdownMenuButton');
+      var dropdownMenu = document.querySelector('.dropdown-menu');
+      dropdownButton.addEventListener('click', function () {
+        dropdownMenu.classList.toggle('show');
+      });
+
+      // 드롭다운 메뉴 항목 클릭 시 선택된 항목 변경
+      var dropdownItems = document.querySelectorAll('.dropdown-item');
+      dropdownItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+          dropdownButton.textContent = item.textContent;
+          dropdownMenu.classList.remove('show');
+        });
+      });
+    });
+  </script>
+</th:block>
+<div class="fixed-container" id="layoutSidenav_content" layout:fragment="content">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <a class="btn btn-primary"
+         th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=1'}">발급 중</a>
+      <a class="btn btn-primary"
+         th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=2'}">삭제</a>
+      <a class="btn btn-primary"
+         th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=3'}">만료</a>
+      <a class="btn btn-primary"
+         th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=4'}">대기</a>
+    </div>
+    <div class="dropdown">
+      <button aria-expanded="false" aria-haspopup="true" class="btn btn-secondary dropdown-toggle"
+              id="dropdownMenuButton" type="button">
+        항목 수 선택
+      </button>
+      <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item"
+           th:href="@{'/admin/coupons?page=0&size=10&coupon-status-id='+${couponStatusId}}">10개</a>
+        <a class="dropdown-item"
+           th:href="@{'/admin/coupons?page=0&size=20&coupon-status-id='+${couponStatusId}}">20개</a>
+        <a class="dropdown-item"
+           th:href="@{'/admin/coupons?page=0&size=30&coupon-status-id='+${couponStatusId}}">30개</a>
+      </div>
+    </div>
+  </div>
+  <table class="table table-striped ">
+    <thead class="table-light">
+    <tr>
+      <th class="coupon-id">쿠폰 번호</th>
+      <th class="coupon-name">쿠폰명</th>
+      <th class="coupon-condition">사용 조건</th>
+      <th class="discount-amount">할인 금액</th>
+      <th class="max-amount">최대 금액</th>
+      <th class="issued-period">발급 기간</th>
+      <th class="validity-period">유효 기간</th>
+      <th class="management">관리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:if="${page.content.isEmpty()}">
+      <tr>
+        <td colspan="8">NO DATA</td>
+      </tr>
+    </th:block>
+    <tr th:each="coupon : ${page.content}">
+      <td><a th:href="@{'/admin/coupons/' + ${coupon.couponId}}" th:text="${coupon.couponId}">OOOOOOOO-OOOO-OOOO-OOOO-OOOOOOOOOOOO</a>
+      </td>
+      <td th:text="${coupon.couponName}">0월 생일 쿠폰</td>
+      <td th:text="${coupon.minPrice} + '원 이상 구매시'">1만원 이상 구매시</td>
+      <td>
+        <span th:if="${coupon.couponTypeId == 1}"
+              th:text="${coupon.discountPrice} + '%'">30% 할인</span>
+        <span th:if="${coupon.couponTypeId == 2}"
+              th:text="${coupon.discountPrice} + '원'">2000원 할인</span>
+      </td>
+      <td th:text="${coupon.maxDiscountPrice != null ? '(최대 ' + coupon.maxDiscountPrice + '원 할인)' : '&nbsp'}">
+        2000원
+      </td>
+      <td th:text="${coupon.basicIssuedDate + ' ~ ' + coupon.basicExpiredDate}">20xx.01.01 ~
+        20xx.01.02
+      </td>
+      <td th:text="${coupon.validity}+ '일'">7일</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <th:block th:with="pageSize=${page.size}, couponStatusId=${couponStatusId}">
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" th:if="${page.number>= 10}">
+          <a aria-label="이전 10 페이지"
+             class="page-link"
+             th:href="@{'/admin/coupons?page=' + ${((page.number/10)*10 - 1)} + '&size=' + ${pageSize}+'&coupon-status-id='+${couponStatusId}}">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <th:block
+            th:with="startPage=${(page.number / 10) * 10}, endPage=${(page.totalPages == 0 ? 0 : (startPage + 9 < page.totalPages ? startPage + 9 : page.totalPages - 1))}">
+          <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
+            <li th:class="${pageNumber == page.number ? 'page-item active' : 'page-item'}">
+              <a class="page-link"
+                 th:href="@{'/admin/coupons?page=' + ${pageNumber} + '&size=' + ${pageSize}+'&coupon-status-id='+${couponStatusId}}">[[${pageNumber
+                + 1}]]</a>
+            </li>
+          </th:block>
+        </th:block>
+        <li class="page-item" th:if="${((page.number/10)*10 + 10) < page.totalPages}">
+          <a aria-label="Next 10 Pages"
+             class="page-link"
+             th:href="@{'/admin/coupons?page=' + ${((page.number/10)*10 + 10)} + '&size=' + ${pageSize}+'&coupon-status-id='+${couponStatusId}}">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </th:block>
+  <div style="margin-bottom: 50px;"></div>
+</div>
+</body>
+</html>
+

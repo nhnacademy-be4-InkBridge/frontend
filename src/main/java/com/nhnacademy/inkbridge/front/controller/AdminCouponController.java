@@ -52,22 +52,22 @@ public class AdminCouponController {
         @RequestParam(name = "size", defaultValue = "10") Integer size, Model model) {
         model.addAttribute("couponStatusId", couponStatusId);
         model.addAttribute("page", couponService.getAdminCoupons(couponStatusId, page, size));
-        return "admin/coupon/coupon_list";
+        return "admin/coupon_list";
     }
 
     @GetMapping("/register")
     public String createCouponView() {
-        return "admin/coupon/coupon_create";
+        return "admin/coupon_create";
     }
 
     @GetMapping("/category/register")
     public String createCategoryCouponView() {
-        return "admin/coupon/coupon_create";
+        return "admin/coupon_create";
     }
 
     @GetMapping("/book/register")
     public String createBookCouponView() {
-        return "admin/coupon/coupon_create";
+        return "admin/coupon_create";
     }
 
     @PostMapping("/register")

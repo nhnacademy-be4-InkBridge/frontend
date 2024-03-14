@@ -78,8 +78,8 @@
           <a class="header-login-link a-tag" href="/logout">로그아웃</a>
         </div>
         <div class="header-login-item" sec:authorize="isAnonymous()">
-          <a class="header-login-link a-tag" href="/login" data-bs-toggle="modal"
-             data-bs-target="#ModalForm">로그인</a>
+          <div class="header-login-link" data-bs-toggle="modal"
+             data-bs-target="#ModalForm">로그인</div>
         </div>
         <div class="header-login-item" sec:authorize="isAnonymous()">
           <a class="header-login-link a-tag" href="/signup">회원가입</a>
@@ -89,7 +89,9 @@
     <div class="header-main">
       <div class="header-main-container">
         <div class="header-logo gugi-regular">
+          <a href="/" class="a-tag">
           inkBridge
+          </a>
         </div>
         <div class="header-search-container">
           <input type="search" name="search" class="search"/>
@@ -120,7 +122,7 @@
             </a>
           </div>
           <div class="action-btn">
-            <a href="" class="a-tag">
+            <a href="/cart" class="a-tag">
               <i class="bi bi-cart"></i>
               <span class="count">0</span>
             </a>
@@ -157,7 +159,7 @@
           <a class="a-tag menu-title" href="">신상도서</a>
         </li>
         <li class="menu-category">
-          <a class="a-tag menu-title" href="">이벤트/쿠폰</a>
+          <a class="a-tag menu-title" href="/coupons">이벤트/쿠폰</a>
         </li>
       </ul>
     </nav>
