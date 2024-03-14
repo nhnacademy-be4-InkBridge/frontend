@@ -1,7 +1,6 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
-import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
@@ -57,7 +56,7 @@ public class BookAdaptorImpl implements BookAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public PageRequestDto<BooksReadResponseDto> getBooks(Long page) {
+    public BooksReadResponseDto getBooks(Long page) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(MAIN_PATH)
@@ -67,13 +66,16 @@ public class BookAdaptorImpl implements BookAdaptor {
             .toUri();
 
         HttpHeaders httpHeaders = CommonUtils.createHeader();
-        ResponseEntity<PageRequestDto<BooksReadResponseDto>> exchange = restTemplate.exchange(
+        ResponseEntity<BooksReadResponseDto> exchange = restTemplate.exchange(
             uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
             }
         );
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
 
         return exchange.getBody();
     }
@@ -100,10 +102,16 @@ public class BookAdaptorImpl implements BookAdaptor {
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
             });
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
 
         return exchange.getBody();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<CartBookReadResponseDto> getBook(Set<String> bookIdList) {
         HttpHeaders httpHeaders = CommonUtils.createHeader();
@@ -121,6 +129,9 @@ public class BookAdaptorImpl implements BookAdaptor {
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
             });
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
 
         return exchange.getBody();
     }
@@ -128,7 +139,7 @@ public class BookAdaptorImpl implements BookAdaptor {
     /**
      * {@inheritDoc}
      */
-    public PageRequestDto<BooksAdminReadResponseDto> getBooksAdmin(Integer page, Integer size) {
+    public BooksAdminReadResponseDto getBooksAdmin(Integer page, Integer size) {
         HttpHeaders httpHeaders = CommonUtils.createHeader();
 
         URI uri = UriComponentsBuilder
@@ -140,12 +151,16 @@ public class BookAdaptorImpl implements BookAdaptor {
             .build()
             .toUri();
 
-        ResponseEntity<PageRequestDto<BooksAdminReadResponseDto>> exchange = restTemplate.exchange(
+        ResponseEntity<BooksAdminReadResponseDto> exchange = restTemplate.exchange(
             uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
             });
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
         return exchange.getBody();
     }
 
@@ -169,6 +184,10 @@ public class BookAdaptorImpl implements BookAdaptor {
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
             });
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
         return exchange.getBody();
     }
 
@@ -193,6 +212,10 @@ public class BookAdaptorImpl implements BookAdaptor {
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
             });
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
         return exchange.getBody();
     }
 
@@ -214,14 +237,10 @@ public class BookAdaptorImpl implements BookAdaptor {
             .build()
             .toUri();
 
-        ResponseEntity<BookAdminCreateRequestDto> exchange = restTemplate.exchange(
-            uri,
-            HttpMethod.POST,
-            new HttpEntity<>(multiValueMap, multipartHeader),
-            new ParameterizedTypeReference<>() {
-            });
+        ResponseEntity<HttpStatus> response = restTemplate.postForEntity(uri,
+            new HttpEntity<>(multiValueMap, multipartHeader), HttpStatus.class);
 
-        if (exchange.getStatusCode() != HttpStatus.CREATED) {
+        if (response.getStatusCode() != HttpStatus.CREATED) {
             throw new RuntimeException();
         }
     }
@@ -246,12 +265,11 @@ public class BookAdaptorImpl implements BookAdaptor {
             .expand(bookId)
             .toUri();
 
-        ResponseEntity<BookAdminCreateRequestDto> exchange = restTemplate.exchange(
+        ResponseEntity<Void> exchange = restTemplate.exchange(
             uri,
             HttpMethod.PUT,
             new HttpEntity<>(multiValueMap, multipartHeader),
-            new ParameterizedTypeReference<>() {
-            });
+            void.class);
 
         if (exchange.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();

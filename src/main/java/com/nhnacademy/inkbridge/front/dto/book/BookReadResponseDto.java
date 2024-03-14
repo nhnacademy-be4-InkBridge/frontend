@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.dto.book;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,8 +30,7 @@ public class BookReadResponseDto {
     private String statusName;
     private Long publisherId;
     private String publisherName;
-    private Long authorId;
-    private String authorName;
+    private Map<Long, String> authors;
     private Long wish;
     private Set<String> fileUrl;
     private Set<String> tagName;

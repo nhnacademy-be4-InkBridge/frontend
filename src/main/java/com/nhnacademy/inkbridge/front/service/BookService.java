@@ -1,6 +1,5 @@
 package com.nhnacademy.inkbridge.front.service;
 
-import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
@@ -22,7 +21,7 @@ public interface BookService {
      *
      * @return List - BooksAdminReadResponseDto
      */
-    PageRequestDto<BooksAdminReadResponseDto> getBooksAdmin(Integer page, Integer size);
+    BooksAdminReadResponseDto getBooksAdmin(Integer page, Integer size);
 
     /**
      * 도서 상세 정보를 조회하는 메서드입니다.

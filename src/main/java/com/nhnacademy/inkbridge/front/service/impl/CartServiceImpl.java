@@ -26,6 +26,7 @@ public class CartServiceImpl implements CartService {
 
     private final RedisTemplate<String, Object> redisTemplate;
     private final BookAdaptor bookAdaptor;
+    private static final int A_WEEK = 7;
 
     public CartServiceImpl(RedisTemplate<String, Object> redisTemplate, BookAdaptor bookAdaptor) {
         this.redisTemplate = redisTemplate;
@@ -38,7 +39,6 @@ public class CartServiceImpl implements CartService {
     @Override
     public Map<String, String> getCartRedis(String memberId) {
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
-        log.info("info: {}", hashOperations.entries(memberId));
         return hashOperations.entries(memberId);
     }
 
@@ -47,7 +47,6 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public List<CartBookReadResponseDto> getCartBookInfo(Set<String> bookIdList) {
-        log.info("list: {}", bookIdList);
         return bookAdaptor.getBook(bookIdList);
     }
 
@@ -59,7 +58,7 @@ public class CartServiceImpl implements CartService {
         HashOperations<String, String, Object> hashOperations = redisTemplate.opsForHash();
         hashOperations.put(memberId, String.valueOf(cartRedisCreateRequestDto.getBookId()),
             String.valueOf(cartRedisCreateRequestDto.getAmount()));
-        redisTemplate.expire(memberId, 7, TimeUnit.DAYS);
+        redisTemplate.expire(memberId, A_WEEK, TimeUnit.DAYS);
     }
 
     /**
