@@ -72,7 +72,7 @@ public class AdminCouponController {
 
     @PostMapping("/register")
     public String createCoupon(
-        @Valid @ModelAttribute CouponCreateRequestDto couponCreateRequestDto) {
+        @Valid @ModelAttribute CouponCreateRequestDto couponCreateRequestDto,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult.getFieldError().getDefaultMessage());
@@ -80,9 +80,4 @@ public class AdminCouponController {
         couponService.createCoupon(couponCreateRequestDto);
         return "redirect:/admin/coupons";
     }
-
-//    @GetMapping("/{couponId}")
-//    public String viewAdminCouponDetail(@PathVariable("couponId") String couponId) {
-//        CouponReadResponseDto couponService.getCoupon(couponId);
-//    }
 }
