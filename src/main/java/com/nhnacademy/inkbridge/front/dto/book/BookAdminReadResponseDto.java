@@ -4,7 +4,6 @@ import com.nhnacademy.inkbridge.front.dto.bookstatus.BookStatusReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.tag.TagReadResponseDto;
 import java.util.List;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +23,6 @@ public class BookAdminReadResponseDto {
     private List<AuthorReadResponseDto> authorReadResponseDtoList;
     private List<BookStatusReadResponseDto> bookStatusReadResponseDtoList;
     private List<TagReadResponseDto> tagReadResponseDtoList;
-
-    // builder
 
     @Builder
     public BookAdminReadResponseDto(

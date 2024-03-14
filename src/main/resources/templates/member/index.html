@@ -78,12 +78,12 @@
                th:onclick="|location.href='@{/book(id=${book.bookId})}'|">
             <div class="card-product__img">
               <img class="card-img" th:src="${book.fileUrl}" alt="no image"
-                   style="min-width: 230px; min-height: 250px;">
+                   style="height: 280px; min-height: 280px; width: 100%">
             </div>
             <div class="card-body">
               <h4 class="card-product__title" th:text="${book.bookTitle}"></h4>
               <p th:text="${book.authorName} + ' | ' + ${book.publisherName}"></p>
-              <p class="card-product__price" th:text="${book.price}">$150.00</p>
+              <p class="card-product__price" th:text="${book.price}+'원'"></p>
             </div>
           </div>
         </div>

@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -24,6 +25,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @author devminseo
  * @version 2/29/24
  */
+@Slf4j
 public class CommonUtils {
     private CommonUtils() {
     }

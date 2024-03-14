@@ -11,5 +11,10 @@ import java.util.List;
  */
 public interface WrappingAdaptor {
 
+    /**
+     * 전체 포장지를 조회합니다.
+     *
+     * @return 전체 포장지 목록
+     */
     List<WrappingReadResponseDto> getWrappingList();
 }
