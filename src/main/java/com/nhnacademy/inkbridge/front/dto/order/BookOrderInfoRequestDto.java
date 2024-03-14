@@ -15,12 +15,12 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class BookOrderList {
+public class BookOrderInfoRequestDto {
 
     private Long bookId;
     private Long price;
     private Integer amount;
     private Long wrappingId;
-    private Long couponId;
+    private String couponId;
     private Long wrappingPrice;
 }

@@ -1,7 +1,7 @@
 package com.nhnacademy.inkbridge.front.dto.book;
 
-import lombok.AccessLevel;
-import lombok.Builder;
+import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,19 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class BooksAdminReadResponseDto {
-    private Long bookId;
-    private String bookTitle;
-    private String authorName;
-    private String publisherName;
-    private String statusName;
 
-    @Builder
-    public BooksAdminReadResponseDto(Long bookId, String bookTitle, String authorName,
-        String publisherName, String statusName) {
-        this.bookId = bookId;
-        this.bookTitle = bookTitle;
-        this.authorName = authorName;
-        this.publisherName = publisherName;
-        this.statusName = statusName;
-    }
+    private PageRequestDto<BooksAdminPaginationReadResponseDto> booksAdminPaginationReadResponseDtos;
+    private List<AuthorPaginationReadResponseDto> authorPaginationReadResponseDtos;
 }

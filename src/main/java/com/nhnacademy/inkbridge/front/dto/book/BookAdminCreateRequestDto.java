@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -33,13 +35,19 @@ public class BookAdminCreateRequestDto {
     private LocalDate publicatedAt;
     @Digits(integer = 13, fraction = 0, message = "isbn은 13자리 정수여야 합니다.")
     private String isbn;
+    @Max(value = Long.MAX_VALUE - 1)
+    @Min(value = 0)
     private Long regularPrice;
+    @Max(value = Long.MAX_VALUE - 1)
+    @Min(value = 0)
     private Long price;
     private BigDecimal discountRatio;
+    @Max(value = Integer.MAX_VALUE - 1)
+    @Min(value = 0)
     private Integer stock;
     private Boolean isPackagable;
     private Long publisherId;
-    private Long authorId;
+    private List<Long> authorIdList;
     private Set<Long> categories;
     private List<Long> tags = new ArrayList<>();
     private List<Long> fileIdList;
@@ -48,7 +56,7 @@ public class BookAdminCreateRequestDto {
     public BookAdminCreateRequestDto(String bookTitle, String bookIndex, String description,
         LocalDate publicatedAt, String isbn, Long regularPrice, Long price,
         BigDecimal discountRatio, Integer stock, Boolean isPackagable, Long publisherId,
-        Long authorId, List<Long> tags, Set<Long> categories, List<Long> fileIdList) {
+        List<Long> authorIdList, List<Long> tags, Set<Long> categories, List<Long> fileIdList) {
         this.bookTitle = bookTitle;
         this.bookIndex = bookIndex;
         this.description = description;
@@ -61,7 +69,7 @@ public class BookAdminCreateRequestDto {
         this.isPackagable = isPackagable;
         this.publisherId = publisherId;
         this.tags = (tags == null ? new ArrayList<>() : tags);
-        this.authorId = authorId;
+        this.authorIdList = authorIdList;
         this.categories = categories;
         this.fileIdList = fileIdList;
     }

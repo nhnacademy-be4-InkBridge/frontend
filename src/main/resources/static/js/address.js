@@ -12,7 +12,9 @@ function execDaumPostcode() {
       }
       if (extraRoadAddr !== '') {
         extraRoadAddr = ' (' + extraRoadAddr + ')';
-        roadAddr += roadAddr + extraRoadAddr;
+        roadAddr = roadAddr + extraRoadAddr;
+
+        console.log(roadAddr);
       }
       document.getElementById('zipCode').value = data.zonecode;
       document.getElementById("address").value = roadAddr;

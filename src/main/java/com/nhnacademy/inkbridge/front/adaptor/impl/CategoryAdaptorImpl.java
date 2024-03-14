@@ -5,10 +5,12 @@ import com.nhnacademy.inkbridge.front.dto.category.CategoryCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.category.CategoryUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
+import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -16,7 +18,6 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -29,6 +30,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class CategoryAdaptorImpl implements CategoryAdaptor {
 
+    private static final String DEFAULT_PATH = "api/categories";
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
 
@@ -37,8 +39,8 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      */
     @Override
     public void createCategory(CategoryCreateRequestDto requestDto) {
-        HttpHeaders httpHeaders = createHeaders();
-        URI uri = buildUriComponents("api/categories").toUri();
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
+        URI uri = buildUriComponents(DEFAULT_PATH).build().toUri();
 
         RequestEntity<CategoryCreateRequestDto> requestEntity = RequestEntity
             .post(uri)
@@ -54,11 +56,13 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      */
     @Override
     public List<ParentCategoryReadResponseDto> readCategories() {
-        URI uri = buildUriComponents("api/categories").toUri();
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
+
+        URI uri = buildUriComponents(DEFAULT_PATH).build().toUri();
 
         ResponseEntity<List<ParentCategoryReadResponseDto>> responseEntity = restTemplate.exchange(
             uri,
-            HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+            HttpMethod.GET, new HttpEntity<>(httpHeaders), new ParameterizedTypeReference<>() {
             });
         return responseEntity.getBody();
     }
@@ -69,8 +73,8 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      */
     @Override
     public void updateCategory(Long categoryId, CategoryUpdateRequestDto requestDto) {
-        HttpHeaders httpHeaders = createHeaders();
-        URI uri = buildUriComponents("api/categories/{categoryId}").expand(categoryId).toUri();
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
+        URI uri = buildUriComponents(DEFAULT_PATH).path("/{categoryId}").build().expand(categoryId).toUri();
 
         RequestEntity<CategoryUpdateRequestDto> requestEntity = RequestEntity
             .put(uri)
@@ -81,29 +85,15 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
     }
 
     /**
-     * 공통헤더를 만들어주는 메소드입니다.
-     *
-     * @return HttpHeaders 공통헤더타입
-     */
-    private HttpHeaders createHeaders() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        return httpHeaders;
-    }
-
-
-    /**
      * 공통 경로를 만들어주는 메소드입니다.
      *
      * @param path 개별 경로
      * @return UriComponentsBuilder
      */
-    private UriComponents buildUriComponents(String path) {
+    private UriComponentsBuilder buildUriComponents(String path) {
         return UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(path)
-            .encode()
-            .build();
+            .encode();
     }
 }

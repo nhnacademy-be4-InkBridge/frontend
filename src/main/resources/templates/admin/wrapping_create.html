@@ -1,0 +1,102 @@
+<!-- wrapping_form.html -->
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}">
+<head>
+  <style>
+      #layoutSidenav_content {
+          position: static !important; /* Flex 제거 */
+          display: block !important; /* Flex를 제거하고 블록 레벨로 설정 */
+      }
+      .error-message {
+          color: red;
+      }
+  </style>
+</head>
+<body>
+<th:block layout:fragment="css">
+  <link rel="stylesheet" href="/css/coupon_form.css">
+</th:block>
+<th:block layout:fragment="script">
+  <script>
+    // 포장지 이름 및 가격 유효성 검사
+    function validateForm() {
+      var wrappingNameInput = document.getElementById('name');
+      var priceInput = document.getElementById('price');
+      var wrappingNameValue = wrappingNameInput.value.trim();
+      var priceValue = parseFloat(priceInput.value);
+
+      var errorMessageWrappingName = document.getElementById('wrapping-name-error');
+      var errorMessagePrice = document.getElementById('price-error');
+
+      // 포장지 이름이 비어 있는지 확인
+      if (wrappingNameValue === '') {
+        errorMessageWrappingName.textContent = '포장지 이름을 입력해주세요.';
+        return false;
+      } else {
+        errorMessageWrappingName.textContent = '';
+      }
+
+      // 포장지 가격이 0보다 작은지 확인
+      if (priceValue < 0) {
+        errorMessagePrice.textContent = '포장지 가격은 0보다 작을 수 없습니다.';
+        return false;
+      } else {
+        errorMessagePrice.textContent = '';
+      }
+
+      return true; // 모든 유효성 검사 통과
+    }
+
+    window.onload = function () {
+      var isActiveCheckbox = document.getElementById('is-active');
+      var hiddenIsActiveInput = document.getElementById('hidden-is-active');
+
+      // 체크박스의 상태가 변경될 때마다 hidden input 필드의 값을 업데이트
+      isActiveCheckbox.addEventListener('change', function() {
+        hiddenIsActiveInput.value = this.checked ? 'true' : 'false';
+      });
+    };
+  </script>
+</th:block>
+<div layout:fragment="content" id="layoutSidenav_content" class="fixed-container">
+  <div class="page-content">
+    <h2 class="title-h2">포장지 등록</h2>
+    <form class="wrapper-box" id="wrapping-form" method="post" role="form"
+          th:action="${wrapping != null ? '/admin/wrappings/update/' + wrapping.wrappingId : '/admin/wrappings/register'}">
+      <div class="form-group form-floating">
+        <input class="form-control" id="name" name="wrappingName" placeholder="포장지 이름" required
+               th:value="${wrapping != null ? wrapping.wrappingName : ''}"
+               type="text">
+        <!-- 데이터가 존재하는 경우 해당 데이터를 출력하고, 아니면 빈 문자열 출력 -->
+        <label for="name">포장지 이름</label>
+        <div class="error-message" id="wrapping-name-error"></div>
+      </div>
+      <div class="form-group form-floating">
+        <input class="form-control" id="price" min="0" name="price" placeholder="포장지 가격"
+               required th:value="${wrapping != null ? wrapping.price : ''}"
+               type="number">
+        <!-- 데이터가 존재하는 경우 해당 데이터를 출력하고, 아니면 빈 문자열 출력 -->
+        <label for="price">포장지 가격</label>
+        <div class="error-message" id="price-error"></div>
+      </div>
+      <div class="form-group form-check">
+        <input class="form-check-input" id="is-active" name="isActive"
+               th:checked="${wrapping != null ? wrapping.isActive : false}" type="checkbox">
+        <!-- 데이터가 존재하는 경우 해당 데이터를 체크하고, 아니면 체크하지 않음 -->
+        <label class="form-check-label" for="is-active">활성 여부</label>
+        <input type="hidden" name="isActive" id="hidden-is-active" th:value="${wrapping != null ? wrapping.isActive : false}">
+      </div>
+      <input th:name="${wrapping != null ? 'wrappingId' : ''}"
+             th:value="${wrapping != null ? wrapping.wrappingId : ''}"
+             type="hidden">
+      <button class="btn btn-submit" type="submit">
+        <span th:text="${wrapping != null ? '수정' : '등록'}"></span>
+      </button>
+    </form>
+  </div>
+</div>
+</div>
+</body>
+</html>
