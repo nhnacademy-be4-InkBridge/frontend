@@ -27,7 +27,7 @@ const editor = new toastui.Editor({
         formData.append('image', blob);
 
         // 2. FileApiController - uploadEditorImage 메서드 호출
-        const response = await fetch('e', {
+        const response = await fetch('http://inkbridge.store/image-upload', {
           method: 'POST',
           body: formData,
         });
