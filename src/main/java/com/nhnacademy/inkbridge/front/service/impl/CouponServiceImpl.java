@@ -68,8 +68,12 @@ public class CouponServiceImpl implements CouponService {
         Integer couponStatusId,
         Integer page, Integer size) {
         return couponAdaptor.getIssuedCoupon(memberId, couponStatusId, page, size);
+    }
+
     @Override
-    public List<OrderCouponReadResponseDto> getOrderCoupons(Long memberId, List<String> bookIds) {
+    public List<OrderCouponReadResponseDto> getOrderCoupons(Long
+        memberId, List<String> bookIds) {
         return couponAdaptor.getOrderCoupons(memberId, bookIds);
     }
+
 }

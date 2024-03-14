@@ -7,6 +7,7 @@ import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.OrderCouponReadResponseDto;
+import com.nhnacademy.inkbridge.front.exception.MemberNotFoundException;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.net.URI;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -130,21 +132,22 @@ public class CouponAdaptorImpl implements CouponAdaptor {
     public PageRequestDto<CouponReadResponseDto> getIssuedCoupon(String memberId,
         Integer couponStatusId, Integer page, Integer size) {
         HttpHeaders httpHeaders = createHeader();
-        System.out.println("test1");
+
         String url = String.format("%s/api/auth/members/%s?coupon-status-id=%d&page=%d&size=%d",
             gatewayProperties.getUrl(), memberId, couponStatusId, page, size);
-        System.out.println(url);
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-        System.out.println("test2");
-        ResponseEntity<PageRequestDto<CouponReadResponseDto>> exchange =
-            restTemplate.exchange(url,
+        ResponseEntity<PageRequestDto<CouponReadResponseDto>> exchange;
+        try {
+            exchange = restTemplate.exchange(url,
                 HttpMethod.GET, httpEntity,
                 new ParameterizedTypeReference<PageRequestDto<CouponReadResponseDto>>() {
                 });
-        System.out.println("test3");
-        if (!exchange.getStatusCode().is2xxSuccessful()) {
-            throw new RuntimeException("Failed to retrieve coupons");
+        } catch (HttpClientErrorException e) {
+            throw new MemberNotFoundException();
         }
+        return exchange.getBody();
+    }
+
     @Override
     public List<OrderCouponReadResponseDto> getOrderCoupons(Long memberId, List<String> bookIds) {
         HttpEntity<Void> httpEntity = new HttpEntity<>(createHeader());
