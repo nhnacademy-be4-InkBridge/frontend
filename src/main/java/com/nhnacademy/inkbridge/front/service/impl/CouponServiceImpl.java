@@ -33,16 +33,41 @@ public class CouponServiceImpl implements CouponService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId,
         Integer page, Integer size) {
         return couponAdaptor.getAdminCoupons(couponStatusId, page, size);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void createCoupon(CouponCreateRequestDto couponCreateRequestDto) {
         couponAdaptor.setCoupons(couponCreateRequestDto);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PageRequestDto<CouponReadResponseDto> getCoupons(Integer page, Integer size) {
+        return couponAdaptor.getCoupons(page, size);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void issueCoupon(String memberId, String couponId) {
+        couponAdaptor.issueCoupon(memberId, couponId);
+    }
+
+    @Override
+    public PageRequestDto<CouponReadResponseDto> getIssuedCoupon(String memberId,
+        Integer couponStatusId,
+        Integer page, Integer size) {
+        return couponAdaptor.getIssuedCoupon(memberId, couponStatusId, page, size);
     @Override
     public List<OrderCouponReadResponseDto> getOrderCoupons(Long memberId, List<String> bookIds) {
         return couponAdaptor.getOrderCoupons(memberId, bookIds);

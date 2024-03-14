@@ -52,27 +52,27 @@ public class AdminCouponController {
         @RequestParam(name = "size", defaultValue = "10") Integer size, Model model) {
         model.addAttribute("couponStatusId", couponStatusId);
         model.addAttribute("page", couponService.getAdminCoupons(couponStatusId, page, size));
-        return "admin/coupon/coupon_list";
+        return "admin/coupon_list";
     }
 
     @GetMapping("/register")
     public String createCouponView() {
-        return "admin/coupon/coupon_create";
+        return "admin/coupon_create";
     }
 
     @GetMapping("/category/register")
     public String createCategoryCouponView() {
-        return "admin/coupon/coupon_create";
+        return "admin/coupon_create";
     }
 
     @GetMapping("/book/register")
     public String createBookCouponView() {
-        return "admin/coupon/coupon_create";
+        return "admin/coupon_create";
     }
 
     @PostMapping("/register")
     public String createCoupon(
-        @Valid @ModelAttribute CouponCreateRequestDto couponCreateRequestDto,
+        @Valid @ModelAttribute CouponCreateRequestDto couponCreateRequestDto) {
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult.getFieldError().getDefaultMessage());
@@ -80,4 +80,9 @@ public class AdminCouponController {
         couponService.createCoupon(couponCreateRequestDto);
         return "redirect:/admin/coupons";
     }
+
+//    @GetMapping("/{couponId}")
+//    public String viewAdminCouponDetail(@PathVariable("couponId") String couponId) {
+//        CouponReadResponseDto couponService.getCoupon(couponId);
+//    }
 }
