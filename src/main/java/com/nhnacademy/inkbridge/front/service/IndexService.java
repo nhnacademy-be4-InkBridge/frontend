@@ -19,6 +19,15 @@ public interface IndexService {
     BooksReadResponseDto getBooks(Long page);
 
     /**
+     * 카테고리에 따라 도서 목록을 조회하는 메서드입니다.
+     *
+     * @param page Long
+     * @param categoryId Long
+     * @return BooksReadResponseDto
+     */
+    BooksReadResponseDto getBooksByCategory(Long page, Long categoryId);
+
+    /**
      * 도서 상세 정보를 조회하는 메서드입니다.
      *
      * @param bookId Long

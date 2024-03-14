@@ -81,7 +81,8 @@
         <h2>전체 상품 목록</h2>
       </div>
       <div class="row">
-        <div class="col-md-6 col-lg-4 col-xl-3" th:each="book, iterStat: ${books.getContent()}" th:if="${books}!=null">
+        <div class="col-md-6 col-lg-4 col-xl-3" th:each="book, iterStat: ${books.getContent()}"
+             th:if="${books}!=null">
           <div class="card text-center card-product"
                th:onclick="|location.href='@{/book(id=${book.bookId})}'|">
             <div class="card-product__img">

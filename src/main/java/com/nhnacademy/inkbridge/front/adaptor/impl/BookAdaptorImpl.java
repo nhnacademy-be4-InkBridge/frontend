@@ -84,6 +84,36 @@ public class BookAdaptorImpl implements BookAdaptor {
      * {@inheritDoc}
      */
     @Override
+    public BooksReadResponseDto getBooksByCategory(Long page, Long categoryId) {
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path(MAIN_PATH)
+            .path("/categories/{categoryId}")
+            .queryParam("page", page)
+            .encode()
+            .build()
+            .expand(categoryId)
+            .toUri();
+
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
+        ResponseEntity<BooksReadResponseDto> exchange = restTemplate.exchange(
+            uri,
+            HttpMethod.GET,
+            new HttpEntity<>(httpHeaders),
+            new ParameterizedTypeReference<>() {
+            }
+        );
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
+        return exchange.getBody();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public BookReadResponseDto getBook(Long bookId) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
