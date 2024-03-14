@@ -54,7 +54,7 @@ public class CategoryController {
     public String readCategories(Model model) {
         List<ParentCategoryReadResponseDto> parentCategories = categoryService.readCategory();
         model.addAttribute("parentCategories", parentCategories);
-        return "/admin/categories";
+        return "admin/categories";
     }
 
     /**

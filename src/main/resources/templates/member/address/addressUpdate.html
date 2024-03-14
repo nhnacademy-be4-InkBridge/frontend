@@ -73,13 +73,13 @@
     };
 
     $.ajax({
-      url: '/api/mypage/address/update/' + addressId,
+      url: '/mypage/address/update/' + addressId,
       type: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(addressData),
       success: function() {
         alert('주소가 성공적으로 수정되었습니다.');
-        window.location.href = '/api/mypage/address';
+        window.location.href = '/mypage/address';
       },
       error: function() {
         alert('주소 수정에 실패했습니다.');
@@ -88,7 +88,7 @@
   }
 
   function cancelAddress() {
-    window.location.href = '/api/mypage/address';
+    window.location.href = '/mypage/address';
   }
 </script>
 

@@ -96,12 +96,12 @@
     };
 
     $.ajax({
-      url: '/api/mypage/address/register',
+      url: '/mypage/address/register',
       type: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(addressData),
       success: function(response) {
-        window.location.href = '/api/mypage/address'; // 성공 시 페이지 리다이렉션
+        window.location.href = '/mypage/address'; // 성공 시 페이지 리다이렉션
       },
       error: function(xhr, status, error) {
         console.error('Error registering address:', xhr.responseText);
@@ -110,7 +110,7 @@
   }
 
   function cancelAddress() {
-    window.location.href = '/api/mypage/address'; // 취소 시 페이지 리다이렉션
+    window.location.href = '/mypage/address'; // 취소 시 페이지 리다이렉션
   }
 </script>
 
