@@ -71,6 +71,7 @@ public class AdminCouponController {
     @PostMapping("/register")
     public String createCoupon(
         @Valid @ModelAttribute CouponCreateRequestDto couponCreateRequestDto) {
+        System.out.println(couponCreateRequestDto.toString());
         couponService.createCoupon(couponCreateRequestDto);
         return "redirect:/admin/coupons";
     }

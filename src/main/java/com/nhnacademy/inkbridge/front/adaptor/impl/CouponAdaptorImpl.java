@@ -68,16 +68,16 @@ public class CouponAdaptorImpl implements CouponAdaptor {
     @Override
     public void setCoupons(CouponCreateRequestDto couponCreateRequestDto) {
         HttpHeaders httpHeaders = createHeader();
-
+        System.out.println("test");
         String url = gatewayProperties.getUrl() + "/api/admin/coupons";
+        System.out.println(url);
         HttpEntity<CouponCreateRequestDto> httpEntity = new HttpEntity<>(couponCreateRequestDto,
             httpHeaders);
-        ResponseEntity<PageRequestDto<CouponReadResponseDto>> exchange = restTemplate.exchange(
+        ResponseEntity exchange = restTemplate.exchange(
             url,
             HttpMethod.POST,
             httpEntity,
-            new ParameterizedTypeReference<PageRequestDto<CouponReadResponseDto>>() {
-            }
+            void.class
         );
         if (!exchange.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed to retrieve coupons");
