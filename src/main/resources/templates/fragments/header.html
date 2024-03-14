@@ -80,8 +80,8 @@
           <a class="header-login-link a-tag" href="/logout">로그아웃</a>
         </div>
         <div class="header-login-item" sec:authorize="isAnonymous()">
-          <a class="header-login-link a-tag" href="/login" data-bs-toggle="modal"
-             data-bs-target="#ModalForm">로그인</a>
+          <div class="header-login-link" data-bs-toggle="modal"
+             data-bs-target="#ModalForm">로그인</div>
         </div>
         <div class="header-login-item" sec:authorize="isAnonymous()">
           <a class="header-login-link a-tag" href="/signup">회원가입</a>
