@@ -48,7 +48,7 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
             throws AuthenticationException {
         String email = obtainUsername(request);
         String password = obtainPassword(request);
-        log.info("login filter start -> {},{}",email,password);
+        log.debug("login filter start -> {},{}",email,password);
 
         MemberLoginRequestDto requestDto = new MemberLoginRequestDto(email, password);
 
@@ -59,7 +59,7 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
             throw new UsernameNotFoundException("회원을 찾을 수 없습니다.");
         }
 
-        log.info("login filter token 발급 완료 ->");
+        log.debug("login filter token 발급 완료 ->");
 
         String accessToken = getToken(tokenResponse, ACCESS_HEADER);
         Long accessExpiredTime = Long.parseLong(getExpiredTime(tokenResponse, HEADER_ACCESS_EXPIRED_TIME));
@@ -84,7 +84,7 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
         SecurityContextHolder.clearContext();
-        log.info("success");
+        log.debug("success");
         response.sendRedirect("/");
     }
 
@@ -103,7 +103,7 @@ public class CustomLoginAuthenticationFilter extends UsernamePasswordAuthenticat
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
-        log.info("login filter unsuccess ->");
+        log.debug("login filter unsuccess ->");
         SecurityContextHolder.clearContext();
         response.sendRedirect("/");
     }

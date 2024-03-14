@@ -99,7 +99,7 @@ public class MemberAdaptorImpl implements MemberAdaptor {
 
     @Override
     public void signupWithOAuth(MemberSignupOAuthRequestDto memberSignupOAuthRequestDto) {
-        log.info("signup oauth start ->");
+        log.debug("signup oauth start ->");
         restTemplate.exchange(
                 gatewayProperties.getUrl() + "/api/members/",
                 HttpMethod.POST,

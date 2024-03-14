@@ -43,7 +43,7 @@ public class AddressController {
     @GetMapping
     public String getAddressList(Model model) {
         model.addAttribute("addressList", addressService.getAddresses());
-        return "/member/address/address";
+        return "member/address/address";
     }
 
     /**
@@ -53,7 +53,7 @@ public class AddressController {
      */
     @GetMapping("/register")
     public String createAddressForm() {
-        return "/member/address/addressRegister";
+        return "member/address/addressRegister";
     }
 
     /**
@@ -93,7 +93,7 @@ public class AddressController {
     @GetMapping("/update/{addressId}")
     public String updateAddress(@PathVariable("addressId") Long addressId, Model model) {
         model.addAttribute("address", addressService.getAddress(addressId));
-        return "/member/address/addressUpdate";
+        return "member/address/addressUpdate";
     }
 
 
