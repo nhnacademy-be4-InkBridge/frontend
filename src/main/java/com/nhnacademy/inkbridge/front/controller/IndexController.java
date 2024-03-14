@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.controller;
 
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,8 @@ public class IndexController {
         log.info("context -> {}", SecurityContextHolder.getContext().getAuthentication());
         List<BooksReadResponseDto> books = indexService.getBooks(page).getContent();
         model.addAttribute("books", books);
+        List<ParentCategoryReadResponseDto> parentCategories = indexService.readCategory();
+        model.addAttribute("parentCategories", parentCategories);
         return "member/index";
     }
 
