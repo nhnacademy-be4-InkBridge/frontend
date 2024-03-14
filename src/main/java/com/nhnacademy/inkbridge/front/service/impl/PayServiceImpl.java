@@ -19,6 +19,12 @@ public class PayServiceImpl implements PayService {
 
     private final PayAdaptor payAdaptor;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param requestDto 결제 승인 정보
+     * @return 요청 응답
+     */
     @Override
     public JSONObject doConfirm(PayConfirmRequestDto requestDto) {
         return payAdaptor.doPayConfirm(requestDto);

@@ -30,6 +30,12 @@ public class PayAdaptorImpl implements PayAdaptor {
     private final TossProperties tossProperties;
     private final KeyConfig keyConfig;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param requestDto 요청 데이터
+     * @return 요청 응답
+     */
     @Override
     public JSONObject doPayConfirm(PayConfirmRequestDto requestDto) {
         String apiKey = keyConfig.keyStore(tossProperties.getApiKey());
@@ -37,12 +43,10 @@ public class PayAdaptorImpl implements PayAdaptor {
         Base64.Encoder encoder = Base64.getEncoder();
         byte[] encodedBytes = encoder.encode((apiKey + ":").getBytes(StandardCharsets.UTF_8));
 
-        String authorizations = "Basic " + new String(encodedBytes, 0, encodedBytes.length);
-
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.set("Authorization", authorizations);
+        httpHeaders.setBasicAuth(new String(encodedBytes));
 
         HttpEntity<PayConfirmRequestDto> entity = new HttpEntity<>(requestDto, httpHeaders);
 
