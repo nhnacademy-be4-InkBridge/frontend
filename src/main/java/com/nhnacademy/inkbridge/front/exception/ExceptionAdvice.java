@@ -34,4 +34,9 @@ public class ExceptionAdvice {
     public String goError() {
         return "redirect:/error";
     }
+
+    @ExceptionHandler(Exception.class)
+    public String goCommonError() {
+        return "redirect:/error";
+    }
 }
