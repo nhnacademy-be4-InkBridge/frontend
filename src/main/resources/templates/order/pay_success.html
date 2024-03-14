@@ -42,7 +42,7 @@
       amount: urlParams.get("amount"),
     };
 
-    console.log(requestData);
+    console.log(JSON.stringify(requestData));
 
     const response = await fetch("/pay/confirm", {
       method: "POST",
