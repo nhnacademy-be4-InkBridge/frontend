@@ -1,5 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
+
 import com.nhnacademy.inkbridge.front.adaptor.TagAdaptor;
 import com.nhnacademy.inkbridge.front.dto.tag.TagCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.tag.TagCreateResponseDto;
@@ -37,15 +39,13 @@ public class TagAdaptorImpl implements TagAdaptor {
 
     private final GatewayProperties gatewayProperties;
 
-    private static final String TAG_PATH = "api/tags";
+    private static final String TAG_PATH = "/api/tags";
 
 
 
     @Override
     public void createTag(TagCreateRequestDto newTag) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders httpHeaders = createHeader();
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
@@ -66,9 +66,8 @@ public class TagAdaptorImpl implements TagAdaptor {
 
     @Override
     public void deleteTag(Long tagId) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders httpHeaders = createHeader();
+
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
@@ -90,9 +89,8 @@ public class TagAdaptorImpl implements TagAdaptor {
 
     @Override
     public void updateTag(Long tagId, TagUpdateRequestDto tagUpdateRequestDto) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders httpHeaders = createHeader();
+
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
@@ -113,9 +111,8 @@ public class TagAdaptorImpl implements TagAdaptor {
 
     @Override
     public List<TagReadResponseDto> getTagList() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders httpHeaders = createHeader();
+
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())

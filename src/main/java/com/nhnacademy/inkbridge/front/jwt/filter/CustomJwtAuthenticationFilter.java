@@ -84,7 +84,6 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
 
                 String refreshValue = refreshCookie.getValue();
                 String refreshEXP = refreshValue.split("\\.")[3];
-
                 ResponseEntity<Void> reissued =
                         memberAdaptor.reissueToken(
                                 accessValue.substring(0, tokenWithoutExpLength(accessValue, accessExp)),

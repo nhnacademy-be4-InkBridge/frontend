@@ -24,14 +24,26 @@ public class JwtCookie {
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setMaxAge(EXPIRED_TIME);
+        cookie.setPath("/");
         return cookie;
     }
+
+    public static Cookie createJwtCookie(String token, JwtEnums type) {
+        Cookie cookie = new Cookie(type.getName(), token);
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(EXPIRED_TIME);
+        cookie.setPath("/");
+        return cookie;
+    }
+
     public static Cookie createUUIDCookie(String uuid, JwtEnums type) {
 
         Cookie cookie = new Cookie(type.getName(), uuid);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setMaxAge(EXPIRED_TIME);
+        cookie.setPath("/");
         return cookie;
     }
 }

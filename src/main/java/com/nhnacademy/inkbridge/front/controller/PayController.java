@@ -1,11 +1,15 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+import com.nhnacademy.inkbridge.front.property.TossProperties;
+import com.nhnacademy.inkbridge.front.service.OrderService;
+import com.nhnacademy.inkbridge.front.utils.CommonUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * class: PayController.
@@ -16,17 +20,50 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/pays")
 @Slf4j
+@RequiredArgsConstructor
 public class PayController {
 
-    @GetMapping
-    public String payView(Model model) {
-        String memberId = (String) SecurityContextHolder.getContext().getAuthentication()
-            .getPrincipal();
+    private final OrderService orderService;
+    private final TossProperties tossProperties;
 
-        model.addAttribute("orderInfo", model.getAttribute("orderInfo"));
+    /**
+     * 결제 페이지를 호출합니다.
+     *
+     * @param model 결제 정보
+     * @return 결제 페이지
+     */
+    @GetMapping
+    public String payView(Model model, @RequestParam("order-id") String orderId) {
+        Long memberId = CommonUtils.getMemberId();
+
+        model.addAttribute("payInfo", orderService.getOrderPaymentInfo(orderId));
         model.addAttribute("memberId", memberId);
-        model.addAttribute("clientKey", "test_ck_yL0qZ4G1VO52EWQzLjbO8oWb2MQY");
+        String clientKey = tossProperties.getClientKey();
+        model.addAttribute("clientKey", clientKey);
 
         return "order/pays";
+    }
+
+    /**
+     * 결제 정보를 저장하고 결제 승인 페이지를 호출합니다.
+     *
+     * @return 결제 성공 페이지
+     */
+    @GetMapping("/success")
+    public String paymentRequest(@RequestParam("paymentKey") String paymentKey,
+        @RequestParam("orderId") String orderId, @RequestParam("amount") Long amount) {
+
+        return "order/pay_success";
+    }
+
+    /**
+     * 결제 실패 페이지를 호출합니다.
+     *
+     * @return 결제 실패 페이지
+     */
+    @GetMapping("/fail")
+    public String failPayment() {
+
+        return "order/pay_fail";
     }
 }

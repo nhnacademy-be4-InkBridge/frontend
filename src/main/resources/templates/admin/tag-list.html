@@ -1,16 +1,36 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--  <title>Tag Management</title>-->
+<!--  &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"-->
+<!--        rel="stylesheet"-->
+<!--        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"-->
+<!--        crossorigin="anonymous">-->
+<!--</head>-->
+<!--<body>-->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tag Management</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-        crossorigin="anonymous">
-</head>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}"
+>
 <body>
+<th:block layout:fragment="css">
+  <link href="/css/categories.css" rel="stylesheet">
+</th:block>
+<th:block layout:fragment="script">
+  <script src="/js/scripts.js"></script>
+  <script src="/js/datatables-simple-demo.js"></script>
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+          crossorigin="anonymous"></script>
+  <script type="text/javascript" async=""
+          src="https://www.googletagmanager.com/gtag/js?id=UA-38417733-17&amp;l=dataLayer&amp;cx=c"></script>
+  <script id="ga-gtag" async=""
+          src="https://www.googletagmanager.com/gtag/js?id=G-PZXV45BPZN"></script>
+</th:block>
+<div layout:fragment="content" id="layoutSidenav_content">
 <div class="container rounded-3 border border-2 border-dark my-5 bg-white">
   <div th:if="${message != null}" class="alert alert-warning" role="alert" th:text="${message}">
   </div>
@@ -74,8 +94,10 @@
     </div>
   </div>
 </div>
-<!-- Bootstrap Bundle with Popper -->
+</div>
+  <!-- Bootstrap Bundle with Popper -->
 <script
     src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

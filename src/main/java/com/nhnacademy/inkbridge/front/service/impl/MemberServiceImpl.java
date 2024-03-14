@@ -8,6 +8,7 @@ import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.REFRESH_COOKIE;
 import com.nhnacademy.inkbridge.front.adaptor.CartAdaptor;
 import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.dto.cart.CartCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
 import com.nhnacademy.inkbridge.front.exception.UnAuthorizedException;
 import com.nhnacademy.inkbridge.front.service.MemberService;
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -49,12 +51,24 @@ public class MemberServiceImpl implements MemberService {
     public void signup(MemberSignupRequestDto memberSignupRequestDto) {
         String password = memberSignupRequestDto.getPassword();
         String digestPassword = passwordEncoder.encode(password);
-        log.info("signup service start ->");
 
         memberSignupRequestDto.setEncodePassword(digestPassword);
 
         try {
             memberAdaptor.signup(memberSignupRequestDto);
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+                throw new UnAuthorizedException();
+            }
+        }
+    }
+
+    @Override
+    public void signupWithOAuth(MemberSignupOAuthRequestDto memberSignupOAuthRequestDto) {
+        log.info("signup service start ->");
+
+        try {
+            memberAdaptor.signupWithOAuth(memberSignupOAuthRequestDto);
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
                 throw new UnAuthorizedException();
@@ -111,5 +125,10 @@ public class MemberServiceImpl implements MemberService {
         hashOperations.keys(memberId).forEach(field -> hashOperations.delete(memberId, field));
 
         SecurityContextHolder.clearContext();
+    }
+
+    @Override
+    public ResponseEntity<Void> doLogin(String email, String password) {
+        return memberAdaptor.doLogin(email, password);
     }
 }

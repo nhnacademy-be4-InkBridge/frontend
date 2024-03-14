@@ -5,6 +5,8 @@ import com.nhnacademy.inkbridge.front.jwt.filter.CustomJwtAuthenticationFilter;
 import com.nhnacademy.inkbridge.front.jwt.filter.CustomLoginAuthenticationFilter;
 import com.nhnacademy.inkbridge.front.jwt.provider.CustomAuthenticationProvider;
 import com.nhnacademy.inkbridge.front.jwt.service.CustomUserDetailService;
+import com.nhnacademy.inkbridge.front.oauth.handler.CustomOAuthSuccessHandler;
+import com.nhnacademy.inkbridge.front.oauth.service.CustomOAuthUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 /**
  * class: SecurityConfig.
  *
@@ -36,6 +39,8 @@ public class SecurityConfig {
     private final MemberAdaptor memberAdaptor;
     private final CustomUserDetailService userDetailService;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final CustomOAuthUserService customOAuthUserService;
+    private final CustomOAuthSuccessHandler customOAuthSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -45,8 +50,13 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/", "/login", "/signup").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/mypage/**").hasRole("MEMBER")
+                .antMatchers("/mypage/**").hasAnyRole("MEMBER","SOCIAL")
                 .anyRequest().permitAll();
+        http
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
+                                .userService(customOAuthUserService))
+                        .successHandler(customOAuthSuccessHandler));
         http
                 .csrf().disable();
         http
@@ -55,6 +65,8 @@ public class SecurityConfig {
                 .formLogin().disable();
         http
                 .logout().disable();
+        http
+                .httpBasic().disable();
         http
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -75,6 +87,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
+                .antMatchers("/favicon.ico","/**/favicon.ico")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
