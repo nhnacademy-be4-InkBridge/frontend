@@ -44,6 +44,7 @@ public class CookieUtils {
     public static void deleteCookie(HttpServletResponse response,String name) {
         Cookie cookie = getCookie(name);
         Objects.requireNonNull(cookie).setMaxAge(0);
+        cookie.setPath("/");
         response.addCookie(cookie);
     }
 

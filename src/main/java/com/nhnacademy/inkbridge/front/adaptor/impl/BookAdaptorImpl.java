@@ -6,11 +6,16 @@ import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminUpdateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
+import java.util.Set;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
@@ -35,13 +40,89 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class BookAdaptorImpl implements BookAdaptor {
 
-    private static final String DEFAULT_PATH = "/api/admin/books";
+    private static final String ADMIN_PATH = "/api/admin/books";
+    private static final String MAIN_PATH = "/api/books";
+    private static final String BOOK_ID = "/{bookId}";
+
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
 
     public BookAdaptorImpl(RestTemplate restTemplate, GatewayProperties gatewayProperties) {
         this.restTemplate = restTemplate;
         this.gatewayProperties = gatewayProperties;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PageRequestDto<BooksReadResponseDto> getBooks(Long page) {
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path(MAIN_PATH)
+            .queryParam("page", page)
+            .encode()
+            .build()
+            .toUri();
+
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
+        ResponseEntity<PageRequestDto<BooksReadResponseDto>> exchange = restTemplate.exchange(
+            uri,
+            HttpMethod.GET,
+            new HttpEntity<>(httpHeaders),
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
+        return exchange.getBody();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BookReadResponseDto getBook(Long bookId) {
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path(MAIN_PATH)
+            .path(BOOK_ID)
+            .encode()
+            .build()
+            .expand(bookId)
+            .toUri();
+
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
+
+        ResponseEntity<BookReadResponseDto> exchange = restTemplate.exchange(
+            uri,
+            HttpMethod.GET,
+            new HttpEntity<>(httpHeaders),
+            new ParameterizedTypeReference<>() {
+            });
+
+        return exchange.getBody();
+    }
+
+    @Override
+    public List<CartBookReadResponseDto> getBook(Set<String> bookIdList) {
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
+
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path("/api/books/orders")
+            .queryParam("book-id", bookIdList)
+            .encode()
+            .build()
+            .toUri();
+
+        ResponseEntity<List<CartBookReadResponseDto>> exchange = restTemplate.exchange(uri,
+            HttpMethod.GET,
+            new HttpEntity<>(httpHeaders),
+            new ParameterizedTypeReference<>() {
+            });
+
+        return exchange.getBody();
     }
 
     /**
@@ -52,7 +133,7 @@ public class BookAdaptorImpl implements BookAdaptor {
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
-            .path(DEFAULT_PATH)
+            .path(ADMIN_PATH)
             .queryParam("page", page)
             .queryParam("size", size)
             .encode()
@@ -76,8 +157,8 @@ public class BookAdaptorImpl implements BookAdaptor {
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
-            .path(DEFAULT_PATH)
-            .path("/{bookId}")
+            .path(ADMIN_PATH)
+            .path(BOOK_ID)
             .encode()
             .build()
             .expand(bookId)
@@ -100,7 +181,7 @@ public class BookAdaptorImpl implements BookAdaptor {
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
-            .path(DEFAULT_PATH)
+            .path(ADMIN_PATH)
             .path("/form")
             .encode()
             .build()
@@ -128,7 +209,7 @@ public class BookAdaptorImpl implements BookAdaptor {
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
-            .path(DEFAULT_PATH)
+            .path(ADMIN_PATH)
             .encode()
             .build()
             .toUri();
@@ -158,8 +239,8 @@ public class BookAdaptorImpl implements BookAdaptor {
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
-            .path(DEFAULT_PATH)
-            .path("/{bookId}")
+            .path(ADMIN_PATH)
+            .path(BOOK_ID)
             .encode()
             .build()
             .expand(bookId)
@@ -191,8 +272,7 @@ public class BookAdaptorImpl implements BookAdaptor {
     private HttpHeaders getCreateMultipartAndJsonHeaders(MultipartFile thumbnail,
         BookAdminCreateRequestDto bookAdminCreateRequestDto,
         MultiValueMap<String, Object> multiValueMap) throws IOException {
-        HttpHeaders multipartHeader = new HttpHeaders();
-        multipartHeader.setContentType(MediaType.MULTIPART_FORM_DATA);
+        HttpHeaders multipartHeader = CommonUtils.createHeader(MediaType.MULTIPART_FORM_DATA);
 
         fileToByteArrayResource(thumbnail, multiValueMap, multipartHeader);
 
@@ -217,8 +297,7 @@ public class BookAdaptorImpl implements BookAdaptor {
     private HttpHeaders getUpdateMultipartAndJsonHeaders(MultipartFile thumbnail,
         BookAdminUpdateRequestDto bookAdminUpdateRequestDto,
         MultiValueMap<String, Object> multiValueMap) throws IOException {
-        HttpHeaders multipartHeader = new HttpHeaders();
-        multipartHeader.setContentType(MediaType.MULTIPART_FORM_DATA);
+        HttpHeaders multipartHeader = CommonUtils.createHeader(MediaType.MULTIPART_FORM_DATA);
 
         fileToByteArrayResource(thumbnail, multiValueMap, multipartHeader);
 

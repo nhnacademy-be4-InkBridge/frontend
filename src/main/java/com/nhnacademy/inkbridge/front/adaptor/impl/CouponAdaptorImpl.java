@@ -6,7 +6,9 @@ import com.nhnacademy.inkbridge.front.adaptor.CouponAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.OrderCouponReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
+import java.net.URI;
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * class: CouponAdaptorImpl.
@@ -79,5 +82,29 @@ public class CouponAdaptorImpl implements CouponAdaptor {
         if (!exchange.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed to retrieve coupons");
         }
+    }
+
+    @Override
+    public List<OrderCouponReadResponseDto> getOrderCoupons(Long memberId, List<String> bookIds) {
+        HttpEntity<Void> httpEntity = new HttpEntity<>(createHeader());
+
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path("/api/members/{memberId}/order-coupons")
+            .queryParam("book-id", String.join(",", bookIds))
+            .encode()
+            .build()
+            .expand(memberId)
+            .toUri();
+
+        ResponseEntity<List<OrderCouponReadResponseDto>> exchange = restTemplate.exchange(
+            uri,
+            HttpMethod.GET,
+            httpEntity,
+            new ParameterizedTypeReference<>() {
+            }
+        );
+
+        return exchange.getBody();
     }
 }

@@ -7,6 +7,7 @@ import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
 
 import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
@@ -15,8 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -31,6 +35,8 @@ import org.springframework.web.client.RestTemplate;
 public class MemberAdaptorImpl implements MemberAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
+    private static final String URL = "https://inkbridge.store/auth-login";
+
 
     /**
      * {@inheritDoc}
@@ -92,9 +98,20 @@ public class MemberAdaptorImpl implements MemberAdaptor {
     }
 
     @Override
+    public void signupWithOAuth(MemberSignupOAuthRequestDto memberSignupOAuthRequestDto) {
+        log.info("signup oauth start ->");
+        restTemplate.exchange(
+                gatewayProperties.getUrl() + "/api/members/",
+                HttpMethod.POST,
+                new HttpEntity<>(memberSignupOAuthRequestDto, createHeader()),
+                Void.class
+        );
+    }
+
+    @Override
     public void logout(String access, String refresh) {
         HttpHeaders header = createHeader();
-        header.add(ACCESS_HEADER.getName(),BEARER_PREFIX.getName()+access);
+        header.add(ACCESS_HEADER.getName(), BEARER_PREFIX.getName() + access);
         header.add(REFRESH_HEADER.getName(), BEARER_PREFIX.getName() + refresh);
 
         restTemplate.exchange(
@@ -103,5 +120,23 @@ public class MemberAdaptorImpl implements MemberAdaptor {
                 new HttpEntity<>(header),
                 Void.class
         );
+    }
+
+    @Override
+    public ResponseEntity<Void> doLogin(String id, String password) {
+
+        // POST 요청에 필요한 데이터
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("email", id);
+        formData.add("password", password);
+
+        // POST 요청 헤더 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        // POST 요청 생성
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData, headers);
+
+        return restTemplate.exchange(URL, HttpMethod.POST, requestEntity, Void.class);
     }
 }

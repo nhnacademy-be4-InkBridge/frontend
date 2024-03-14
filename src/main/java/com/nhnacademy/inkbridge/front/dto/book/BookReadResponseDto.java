@@ -2,7 +2,6 @@ package com.nhnacademy.inkbridge.front.dto.book;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class BookReadResponseDto {
+
     private String bookTitle;
     private String bookIndex;
     private String description;
@@ -26,6 +26,7 @@ public class BookReadResponseDto {
     private BigDecimal discountRatio;
     private Boolean isPackagable;
     private String thumbnail;
+    private String statusName;
     private Long publisherId;
     private String publisherName;
     private Long authorId;
@@ -34,9 +35,4 @@ public class BookReadResponseDto {
     private Set<String> fileUrl;
     private Set<String> tagName;
     private Set<String> categoryName;
-    private List<String> contents;
-
-    public void setContents(List<String> contents) {
-        this.contents = contents;
-    }
 }
