@@ -3,8 +3,11 @@ package com.nhnacademy.inkbridge.front.controller;
 
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
+import com.nhnacademy.inkbridge.front.service.CategoryService;
 import com.nhnacademy.inkbridge.front.service.IndexService;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -24,20 +27,21 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 @RequestMapping("/")
+@RequiredArgsConstructor
 @Slf4j
 public class IndexController {
 
     private final IndexService indexService;
-
-    public IndexController(IndexService indexService) {
-        this.indexService = indexService;
-    }
+    private final CategoryService categoryService;
 
     @GetMapping
     public String index(Model model, @RequestParam(defaultValue = "0") Long page) {
         log.info("context -> {}", SecurityContextHolder.getContext().getAuthentication());
         List<BooksReadResponseDto> books = indexService.getBooks(page).getContent();
         model.addAttribute("books", books);
+
+        List<ParentCategoryReadResponseDto> parentCategories = categoryService.readCategory();
+        model.addAttribute("parentCategories", parentCategories);
         return "member/index";
     }
 
