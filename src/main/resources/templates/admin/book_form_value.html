@@ -30,7 +30,8 @@
                data-tags="true" placeholder="판매 상태를 선택하세요..."/>
       </label>
       <select id="status-multiple-select" name="statusId" class="input100">
-        <option th:if="${statuses}!=null" th:each="status: ${statuses}" th:value="${status.statusId}"
+        <option th:if="${statuses}!=null" th:each="status: ${statuses}"
+                th:value="${status.statusId}"
                 th:text="${status.statusName}"
                 th:selected="${status.statusId==book.statusId}"></option>
       </select>
@@ -48,7 +49,8 @@
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="10개 이하의 카테고리를 선택하세요..."/></label>
       <select id="category-multiple-select" name="categories" class="input100" multiple>
-        <optgroup th:if="${categories}!=null" th:each="category: ${categories}" th:label="${category.categoryName}">
+        <optgroup th:if="${categories}!=null" th:each="category: ${categories}"
+                  th:label="${category.categoryName}">
           <option th:value="${category.categoryId}"
                   th:text="${category.categoryId} + ${category.categoryName}"
                   th:selected="${book.categoryIdList.contains(category.categoryId)}"
@@ -67,7 +69,8 @@
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="0개 이상의 태그를 선택하세요..."/></label>
       <select id="tag-multiple-select" name="tags" multiple>
-        <option th:if="${tags}!=null"  th:each="tag: ${tags}" th:value="${tag.tagId}" th:text="${tag.tagName}"
+        <option th:if="${tags}!=null" th:each="tag: ${tags}" th:value="${tag.tagId}"
+                th:text="${tag.tagName}"
                 th:selected="${book.tagIdList.contains(tag.tagId)}"></option>
       </select>
     </div>
@@ -79,10 +82,10 @@
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="저자를 선택하세요..."/>
       </label>
-      <select id="author-multiple-select" name="authorId" class="input100">
+      <select id="author-multiple-select" name="authorIdList" class="input100" multiple>
         <option th:if="${authors}!=null" th:each="author: ${authors}" th:value="${author.authorId}"
-                th:text="${author.authorName}"
-                th:selected="${book.authorId==author.authorId}"></option>
+                th:text="${author.authorId} + ') ' + ${author.authorName}"
+                th:selected="${book.authorIdList.contains(author.authorId)}"></option>
       </select>
     </div>
     <div class="demo-multiple-select rs1-wrap-input100 wrap-input100 bg1 validate-input"
@@ -94,7 +97,8 @@
                data-tags="true" placeholder="출판사를 선택하세요..."/>
       </label>
       <select id="publisher-multiple-select" th:name="publisherId" class="input100">
-        <option th:if="${publishers}!=null" th:each="publisher: ${publishers}" th:value="${publisher.publisherId}"
+        <option th:if="${publishers}!=null" th:each="publisher: ${publishers}"
+                th:value="${publisher.publisherId}"
                 th:text="${publisher.publisherName}"
                 th:selected="${book.publisherId==publisher.publisherId}"></option>
       </select>

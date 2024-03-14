@@ -62,7 +62,7 @@
                data-input-style="outline" data-label-style="stacked"
                data-tags="true" placeholder="저자를 선택하세요..."/>
       </label>
-      <select id="author-multiple-select" th:name="authorId" class="input100">
+      <select id="author-multiple-select" name="authorIdList" class="input100" multiple>
         <option th:if="${authors}!=null" th:each="author: ${authors}" th:value="${author.authorId}"
                 th:text="${author.authorId} + ') ' + ${author.authorName}"></option>
       </select>

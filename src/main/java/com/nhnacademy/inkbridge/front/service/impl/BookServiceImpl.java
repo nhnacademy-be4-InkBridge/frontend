@@ -1,7 +1,6 @@
 package com.nhnacademy.inkbridge.front.service.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
-import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
@@ -30,7 +29,7 @@ public class BookServiceImpl implements BookService {
     /**
      * {@inheritDoc}
      */
-    public PageRequestDto<BooksAdminReadResponseDto> getBooksAdmin(Integer page, Integer size) {
+    public BooksAdminReadResponseDto getBooksAdmin(Integer page, Integer size) {
         return bookAdaptor.getBooksAdmin(page, size);
     }
 

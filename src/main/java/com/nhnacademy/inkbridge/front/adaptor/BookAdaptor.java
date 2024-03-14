@@ -1,6 +1,5 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
-import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
@@ -28,7 +27,7 @@ public interface BookAdaptor {
      * @param page Long
      * @return Page BooksReadResponseDto
      */
-    PageRequestDto<BooksReadResponseDto> getBooks(Long page);
+    BooksReadResponseDto getBooks(Long page);
 
     /**
      * 도서 상세 페이지에서 도서 상세 정보를 조회하는 메서드입니다.
@@ -51,7 +50,7 @@ public interface BookAdaptor {
      *
      * @return List - BooksAdminReadResponseDto
      */
-    PageRequestDto<BooksAdminReadResponseDto> getBooksAdmin(Integer page, Integer size);
+    BooksAdminReadResponseDto getBooksAdmin(Integer page, Integer size);
 
     /**
      * 관리자 페이지에서 도서 상세를 조회하는 메서드입니다.

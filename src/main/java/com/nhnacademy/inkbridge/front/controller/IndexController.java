@@ -36,9 +36,10 @@ public class IndexController {
 
     @GetMapping
     public String index(Model model, @RequestParam(defaultValue = "0") Long page) {
+        BooksReadResponseDto books = indexService.getBooks(page);
+        model.addAttribute("books", books.getBooksPaginationReadResponseDtos());
+        model.addAttribute("authors", books.getAuthorPaginationReadResponseDto());
         log.info("context -> {}", SecurityContextHolder.getContext().getAuthentication());
-        List<BooksReadResponseDto> books = indexService.getBooks(page).getContent();
-        model.addAttribute("books", books);
 
         List<ParentCategoryReadResponseDto> parentCategories = categoryService.readCategory();
         model.addAttribute("parentCategories", parentCategories);

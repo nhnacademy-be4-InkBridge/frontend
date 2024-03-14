@@ -40,7 +40,7 @@ public class BookAdminUpdateRequestDto {
     private Boolean isPackagable;
     private Long statusId;
     private Long publisherId;
-    private Long authorId;
+    private List<Long> authorIdList;
     private Set<Long> categories;
     private List<Long> tags = new ArrayList<>();
     private List<Long> fileIdList;
@@ -49,7 +49,7 @@ public class BookAdminUpdateRequestDto {
     public BookAdminUpdateRequestDto(String bookTitle, String bookIndex, String description,
         LocalDate publicatedAt, String isbn, Long regularPrice, Long price,
         BigDecimal discountRatio, Integer stock, Boolean isPackagable, Long statusId, Long publisherId,
-        Long authorId, List<Long> tags, Set<Long> categories, List<Long> fileIdList) {
+        List<Long> authorIdList, List<Long> tags, Set<Long> categories, List<Long> fileIdList) {
         this.bookTitle = bookTitle;
         this.bookIndex = bookIndex;
         this.description = description;
@@ -62,8 +62,8 @@ public class BookAdminUpdateRequestDto {
         this.isPackagable = isPackagable;
         this.statusId = statusId;
         this.publisherId = publisherId;
+        this.authorIdList = authorIdList;
         this.tags = (tags == null ? new ArrayList<>() : tags);
-        this.authorId = authorId;
         this.categories = categories;
         this.fileIdList = fileIdList;
     }

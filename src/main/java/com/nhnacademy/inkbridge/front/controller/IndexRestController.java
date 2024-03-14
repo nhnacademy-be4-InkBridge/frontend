@@ -30,7 +30,7 @@ public class IndexRestController {
      * @return BooksReadResponseDto
      */
     @GetMapping
-    public List<BooksReadResponseDto> indexList(@RequestParam(value = "page", defaultValue = "0") Long page) {
-        return indexService.getBooks(page).getContent();
+    public BooksReadResponseDto indexList(@RequestParam(value = "page", defaultValue = "0") Long page) {
+        return indexService.getBooks(page);
     }
 }
