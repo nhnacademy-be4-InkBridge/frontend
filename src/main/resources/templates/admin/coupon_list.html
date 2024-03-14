@@ -21,7 +21,7 @@
 
       /* 쿠폰 번호 열 너비 */
       .coupon-id {
-          width: 30%;
+          width: 25%;
       }
 
       /* 쿠폰명 열 너비 */
@@ -41,7 +41,7 @@
 
       /* 최대 금액 열 너비 */
       .max-amount {
-          width: 5%;
+          width: 10%;
       }
 
       /* 발급 기간 열 너비 */
@@ -142,7 +142,7 @@
         <span th:if="${coupon.couponTypeId == 2}"
               th:text="${coupon.discountPrice} + '원'">2000원 할인</span>
       </td>
-      <td th:text="${coupon.maxDiscountPrice}+ '원'">2000원</td>
+      <td th:text="${coupon.maxDiscountPrice != null ? '(최대 ' + coupon.maxDiscountPrice + '원 할인)' : '&nbsp'}">2000원</td>
       <td th:text="${coupon.basicIssuedDate + ' ~ ' + coupon.basicExpiredDate}">20xx.01.01 ~
         20xx.01.02
       </td>

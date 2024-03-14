@@ -28,5 +28,11 @@ public interface CouponService {
 
     void createCoupon(CouponCreateRequestDto couponCreateRequestDto);
 
+    PageRequestDto<CouponReadResponseDto> getCoupons(Integer page, Integer size);
+
+    void issueCoupon(String memberId, String couponId);
+
+    PageRequestDto<CouponReadResponseDto> getIssuedCoupon(String memberId, Integer couponStatusId,
+        Integer page, Integer size);
     List<OrderCouponReadResponseDto> getOrderCoupons(Long memberId, List<String> bookIds);
 }
