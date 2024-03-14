@@ -112,13 +112,14 @@ public class CouponAdaptorImpl implements CouponAdaptor {
         String url = String.format("%s/api/auth/members/%s/coupons/%s",
             gatewayProperties.getUrl(), memberId, couponId);
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<String> exchange =
-            restTemplate.exchange(url,
-                HttpMethod.POST, httpEntity,
-                new ParameterizedTypeReference<>() {
-                });
-        if (!exchange.getStatusCode().is2xxSuccessful()) {
-            throw new RuntimeException("Failed to retrieve coupons");
+        try {
+            ResponseEntity<String> exchange =
+                restTemplate.exchange(url,
+                    HttpMethod.POST, httpEntity,
+                    new ParameterizedTypeReference<>() {
+                    });
+        } catch (Exception e) {
+            //todo advice 처리하기
         }
     }
 
@@ -126,18 +127,15 @@ public class CouponAdaptorImpl implements CouponAdaptor {
     public PageRequestDto<CouponReadResponseDto> getIssuedCoupon(String memberId,
         Integer couponStatusId, Integer page, Integer size) {
         HttpHeaders httpHeaders = createHeader();
-        System.out.println("test1");
         String url = String.format("%s/api/auth/members/%s?coupon-status-id=%d&page=%d&size=%d",
             gatewayProperties.getUrl(), memberId, couponStatusId, page, size);
         System.out.println(url);
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-        System.out.println("test2");
         ResponseEntity<PageRequestDto<CouponReadResponseDto>> exchange =
             restTemplate.exchange(url,
                 HttpMethod.GET, httpEntity,
                 new ParameterizedTypeReference<PageRequestDto<CouponReadResponseDto>>() {
                 });
-        System.out.println("test3");
         if (!exchange.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed to retrieve coupons");
         }
