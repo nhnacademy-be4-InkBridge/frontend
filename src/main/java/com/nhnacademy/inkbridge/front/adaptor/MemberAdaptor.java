@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
 import org.springframework.http.ResponseEntity;
@@ -45,5 +46,9 @@ public interface MemberAdaptor {
      */
     void signup(MemberSignupRequestDto memberSignupRequestDto);
 
+    void signupWithOAuth(MemberSignupOAuthRequestDto memberSignupOAuthRequestDto);
+
     void logout(String access, String refresh);
+
+    ResponseEntity<Void> doLogin(String id, String password);
 }

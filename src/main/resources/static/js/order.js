@@ -1,14 +1,15 @@
 "use strict";
 
+let selectedCoupon = [];
+
 // input 엔터 방지
 document.addEventListener('keydown', function (event) {
   if (event.keyCode === 13) {
     event.preventDefault();
-  }
-  ;
+  };
 }, true);
 
-// 페이지 로드 시 결제 정보 초기화 함수
+// 페이지 로드 시 정보 초기화 함수
 function paymentInfo() {
   let sumTotalRegular = 0;
   let sumTotalPrice = 0;
@@ -48,8 +49,6 @@ function paymentInfo() {
     orderName = orderName + " 외 " + (orderBooks.length - 1) + " 상품";
   }
 
-  console.log(orderName);
-
   document.getElementById("orderName").value = orderName;
 }
 
@@ -74,10 +73,7 @@ function calcPoint() {
 
   // 비회원
   if (point == null) {
-    let point = document.createElement("using_point");
-
-    point.value = "0";
-    document.getElementById("order_form").appendChild(point);
+    return 0;
   }
 
   // 아무것도 입력 되지 않은 상태
@@ -96,13 +92,9 @@ function calcPoint() {
 
   // 보유 포인트 이상 사용 불가 확인
   document.getElementById("use_point").innerText = point.value;
+
+  document.getElementById("point").value = point.value;
   return parseInt(point.value);
-}
-
-// 쿠폰 할인 금액 계산
-function calcCoupon() {
-
-  return 0;
 }
 
 // 포장 가격 계산
@@ -128,7 +120,6 @@ function calcWrapping() {
 
       totalWrappingPrice += wrappingPrice;
       bookWrappingPrice.value = wrappingPrice;
-      console.log(bookWrappingPrice);
     }
   }
 
@@ -139,7 +130,6 @@ function calcWrapping() {
 function getWrappingPrice(id) {
   for (let i = 0; i < wrappingList.length; i++) {
     if (wrappingList[i].wrappingId == id && wrappingList[i].isActive) {
-      console.log("일치하는 포장지 찾음")
       return wrappingList[i].price;
     }
   }
@@ -155,7 +145,7 @@ function calcPayAmount() {
   let sumBookPrice = calcBookPrice();
 
   if (wrappingPrice == null || couponDiscountPrice == null || pointDiscountPrice
-      == null) {
+      == null || couponDiscountPrice == null) {
     return;
   }
 
@@ -171,26 +161,30 @@ function calcPayAmount() {
   }
 
   document.getElementById("payAmount").value = totalPrice;
-  console.log(document.getElementById("payAmount").value)
   document.getElementById("pay_amount").innerText = totalPrice.toString();
   return totalPrice;
 }
 
-// 배송 예정일 익일부터 선택 가능 (기본
+// 배송 예정일 익일부터 선택 가능 (기본 값 : 익일)
 function setDeliveryDate() {
   let deliveryDate = document.getElementById("delivery_date");
 
   let tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
+  let maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + 15);
+
   deliveryDate.setAttribute("min", tomorrow.toISOString().split("T")[0]);
+  deliveryDate.setAttribute("max", maxDate.toISOString().split("T")[0]);
+  deliveryDate.value = tomorrow.toISOString().split("T")[0];
+
 }
 
 document.addEventListener("DOMContentLoaded", setDeliveryDate);
 
 // 주문서 내용 확인
-document.addEventListener("submit", function (event) {
-  event.preventDefault();
+function doOrder() {
 
   let receiverName = document.getElementById("receiverName").value;
 
@@ -248,7 +242,147 @@ document.addEventListener("submit", function (event) {
     return;
   }
 
-  let usingPoint = document.getElementById("using_point").value;
+  calcPayAmount();
 
   document.getElementById("order_form").submit();
-})
+}
+
+// 쿠폰 적용 함수
+function applyCoupon(bookId, index) {
+  let radioGroup = document.getElementsByName("radio" + bookId);
+
+  console.log(radioGroup);
+
+  let selectCouponId = null;
+
+  for (let i = 0; i < radioGroup.length; i++) {
+    if (radioGroup[i].checked) {
+      selectCouponId = radioGroup[i];
+    }
+  }
+
+  // 선택된 라디오 버튼이 있는지 확인
+  if (!selectCouponId) {
+    return;
+  }
+
+  // 해당 쿠폰이 다른 상품에서 선택된 적이 있는지 여부 확인
+  if (selectedCoupon.find(
+      coupon => coupon.couponId == selectCouponId && bookId != coupon.bookId)) {
+    alert("다른 상품에 적용된 쿠폰입니다. 다른 쿠폰을 선택해주세요.");
+    initCoupon(bookId, index);
+    return;
+  }
+
+  // 쿠폰 가격이 쿠폰 사용 최소 금액보다 큰지 확인
+  let selectCoupon = couponList.find(coupon => coupon.bookId == bookId);
+  let selectCouponInfo = selectCoupon.memberCouponReadResponseDtos.find(coupon => coupon.memberCouponId == selectCouponId.value);
+  if (calcOneBookPrice(bookId) < selectCouponInfo.minPrice) {
+    alert("적용할 수 없는 쿠폰입니다. 다른 쿠폰을 사용해주세요.");
+    initCoupon(bookId, index);
+    return;
+  }
+
+  // 현재 상품에 적용된 다른 쿠폰이 존재하는지 확인
+  let findBookCoupon = selectedCoupon.find(coupon => coupon.bookId == bookId);
+  if (findBookCoupon) {
+    // 적용되있던 쿠폰을 제거
+    selectedCoupon.splice(selectedCoupon.indexOf(findBookCoupon));
+  }
+
+  // 쿠폰 적용
+  let coupon = {
+    bookId: bookId,
+    couponId: selectCouponId.value
+  };
+
+  // 적용 쿠폰 목록에 추가
+  selectedCoupon.push(coupon);
+
+//   해당 도서 쿠폰 Input 요소 가져오기
+  let couponInput = document.getElementById(
+      "bookOrderList[" + index + "].couponId");
+  couponInput.value = selectCouponId.value;
+
+//   결제금액 계산 함수 호출
+  calcPayAmount();
+}
+
+// 쿠폰 할인 금액 계산
+function calcCoupon() {
+  let totalCouponDiscountPrice = 0;
+
+  for (let i = 0; i < orderBooks.length; i++) {
+    let orderBook = "bookOrderList[" + i + "]";
+    let couponId = document.getElementById(orderBook + ".couponId");
+
+    console.log(couponId);
+
+    if (!couponId.value) {
+      continue;
+    }
+
+    let price = calcOneBookPrice(orderBooks[i].bookId);
+    let coupon = couponList.find(coupon => coupon.bookId == orderBooks[i].bookId);
+
+    if (coupon) {
+      totalCouponDiscountPrice += calcCouponPrice(price,
+          coupon.memberCouponReadResponseDtos.find(coupon => coupon.memberCouponId == couponId.value));
+    }
+  }
+
+  document.getElementById(
+      "coupon_discount").innerText = totalCouponDiscountPrice;
+  return totalCouponDiscountPrice;
+}
+
+// 도서의 한권의 가격을 계산하는 함수
+function calcOneBookPrice(bookId) {
+  let book = orderBooks.find(book => book.bookId == bookId);
+  return book.price * book.amount;
+}
+
+function calcCouponPrice(price, coupon) {
+  let result = 0;
+
+  console.log(coupon);
+
+  if (coupon.couponTypeName == "PERCENT") {
+    // 퍼센트 쿠폰 할인 금액 계산
+    let discount = (100 - coupon.discountPrice) / 100 * price;
+
+    console.log(discount);
+
+    result = discount > coupon.maxDiscountPrice ? coupon.maxDiscountPrice : discount;
+  } else {
+  //   금액 쿠폰 할인 금액 계산
+    result = coupon.discountPrice;
+  }
+
+  return result;
+}
+
+function initCoupon(bookId, index) {
+  // 라디오 버튼 초기화
+  $("input[name='radio" + bookId + "'").prop('checked', false);
+
+  let findBookCoupon = selectedCoupon.find(coupon => coupon.bookId == bookId);
+  if (findBookCoupon) {
+    // 적용되있던 쿠폰을 제거
+    selectedCoupon.splice(selectedCoupon.indexOf(findBookCoupon));
+  }
+
+  let couponInput = document.getElementById(
+      "bookOrderList[" + index + "].couponId").value = null;
+
+  calcPayAmount();
+}
+
+// 페이지 로드 시 쿠폰 null값으로 초기화
+function loadCoupon() {
+  for (let i = 0; i < orderBooks.length; i++) {
+    document.getElementById("bookOrderList[" + i + "].couponId").value = null;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadCoupon);

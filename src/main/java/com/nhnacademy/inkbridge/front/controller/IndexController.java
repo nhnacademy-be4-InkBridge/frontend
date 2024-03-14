@@ -6,6 +6,7 @@ import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,8 @@ public class IndexController {
         BooksReadResponseDto books = indexService.getBooks(page);
         model.addAttribute("books", books.getBooksPaginationReadResponseDtos());
         model.addAttribute("authors", books.getAuthorPaginationReadResponseDto());
+        log.info("context -> {}", SecurityContextHolder.getContext().getAuthentication());
+
         return "member/index";
     }
 
