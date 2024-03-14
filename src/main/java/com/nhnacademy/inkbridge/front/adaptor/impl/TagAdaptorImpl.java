@@ -39,7 +39,7 @@ public class TagAdaptorImpl implements TagAdaptor {
 
     private final GatewayProperties gatewayProperties;
 
-    private static final String TAG_PATH = "api/tags";
+    private static final String TAG_PATH = "/api/tags";
 
 
 
