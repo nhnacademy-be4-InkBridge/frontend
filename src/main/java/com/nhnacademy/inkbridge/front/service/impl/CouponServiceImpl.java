@@ -4,7 +4,9 @@ import com.nhnacademy.inkbridge.front.adaptor.CouponAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.OrderCouponReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.CouponService;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -66,5 +68,8 @@ public class CouponServiceImpl implements CouponService {
         Integer couponStatusId,
         Integer page, Integer size) {
         return couponAdaptor.getIssuedCoupon(memberId, couponStatusId, page, size);
+    @Override
+    public List<OrderCouponReadResponseDto> getOrderCoupons(Long memberId, List<String> bookIds) {
+        return couponAdaptor.getOrderCoupons(memberId, bookIds);
     }
 }

@@ -5,6 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,7 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @version 3/4/24
  */
 @Getter
-@Setter
+@AllArgsConstructor
 public class MemberSignupRequestDto {
     @Email(message = "이메일 형식이 틀렸습니다.")
     private String email;

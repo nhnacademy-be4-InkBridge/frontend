@@ -32,6 +32,7 @@ public class RedisConfig implements BeanClassLoaderAware {
     private String password;
     @Value("${inkbridge.redis.database}")
     private String database;
+
     private ClassLoader classLoader;
     /**
      * redis 연결 위한 빈 설정

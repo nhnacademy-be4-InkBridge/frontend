@@ -52,10 +52,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="book: ${books?.content}" role="button">
+                <tr th:each="book, index: ${books.getContent()}" role="button">
                   <td th:text="${book?.bookId}"></td>
                   <td th:text="${book?.bookTitle}"></td>
-                  <td th:text="${book?.authorName}"></td>
+                  <td>
+                    <span th:each="author, iterStat : ${authors[index.index].authorName}"><span
+                        th:text="${author}"></span><span th:if="${!iterStat.last}">, </span></span>
+                  </td>
                   <td th:text="${book?.publisherName}"></td>
                   <td th:text="${book?.statusName}"></td>
                 </tr>
@@ -83,7 +86,8 @@
                         </li>
                       </th:block>
                     </th:block>
-                    <li th:if="${((books?.number/10)*10 + 10) < books?.totalPages}" class="page-item">
+                    <li th:if="${((books?.number/10)*10 + 10) < books?.totalPages}"
+                        class="page-item">
                       <a class="page-link"
                          th:href="@{'/admin/books?page=' + ${((books?.number/10)*10 + 10)} + '&size=' + ${pageSize}}"
                          aria-label="Next 10 Pages">

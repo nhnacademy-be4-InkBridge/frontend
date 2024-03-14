@@ -3,8 +3,10 @@ package com.nhnacademy.inkbridge.front.controller;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.CouponService;
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,6 +73,10 @@ public class AdminCouponController {
     @PostMapping("/register")
     public String createCoupon(
         @Valid @ModelAttribute CouponCreateRequestDto couponCreateRequestDto) {
+        BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException(bindingResult.getFieldError().getDefaultMessage());
+        }
         couponService.createCoupon(couponCreateRequestDto);
         return "redirect:/admin/coupons";
     }
