@@ -1,5 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
+
 import com.nhnacademy.inkbridge.front.adaptor.WrappingAdaptor;
 import com.nhnacademy.inkbridge.front.dto.wrapping.WrappingCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.wrapping.WrappingReadResponseDto;
