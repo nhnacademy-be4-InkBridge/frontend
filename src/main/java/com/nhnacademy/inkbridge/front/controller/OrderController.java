@@ -74,9 +74,9 @@ public class OrderController {
 
         model.addAttribute("orderBooks", orderBooks);
         model.addAttribute("deliveryPolicy", deliveryPolicyService.getCurrentPolicy());
-        model.addAttribute("wrappingList", wrappingService.getWrappingList());
         model.addAttribute("accumulationRatePolicy",
             accumulationRatePolicyService.getCurrentPolicy());
+        model.addAttribute("wrappingList", wrappingService.getWrappingList(true));
 
         model.addAttribute("memberId", memberId);
 

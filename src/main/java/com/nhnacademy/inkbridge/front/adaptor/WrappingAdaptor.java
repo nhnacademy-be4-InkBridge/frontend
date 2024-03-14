@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
+import com.nhnacademy.inkbridge.front.dto.wrapping.WrappingCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.wrapping.WrappingReadResponseDto;
 import java.util.List;
 
@@ -12,9 +13,33 @@ import java.util.List;
 public interface WrappingAdaptor {
 
     /**
-     * 전체 포장지를 조회합니다.
+     * 데이터베이스에서 포장지 리스트 가져오기.
      *
-     * @return 전체 포장지 목록
+     * @param isActive 활성 여부
+     * @return 포장지 리스트
      */
-    List<WrappingReadResponseDto> getWrappingList();
+    List<WrappingReadResponseDto> getWrappingList(boolean isActive);
+
+    /**
+     * 데이터베이스에서 포장지 상세정보 가져오기.
+     *
+     * @param wrappingId 가져올 포장지 id
+     * @return 포장지 상세 정보
+     */
+    WrappingReadResponseDto getWrapping(Long wrappingId);
+
+    /**
+     * 데이터베이스에 포장지 업데이트 하기.
+     *
+     * @param wrappingId              업데이트할 포장지 id
+     * @param wrappingReadResponseDto 업데이트할 내용
+     */
+    void updateWrapping(Long wrappingId, WrappingCreateRequestDto wrappingReadResponseDto);
+
+    /**
+     * 데이터베이스에 포장지 생성.
+     *
+     * @param wrappingCreateRequestDto 생성할 내용
+     */
+    void registerWrapping(WrappingCreateRequestDto wrappingCreateRequestDto);
 }
