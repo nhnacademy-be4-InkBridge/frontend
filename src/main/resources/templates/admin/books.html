@@ -52,11 +52,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="book: ${books?.content}" role="button">
+                <tr th:each="book, index: ${books.getContent()}" role="button">
                   <td th:text="${book?.bookId}"></td>
                   <td th:text="${book?.bookTitle}"></td>
                   <td>
-                    <span th:each="author, iterStat : ${book.authorName}"><span
+                    <span th:each="author, iterStat : ${authors[index.index].authorName}"><span
                         th:text="${author}"></span><span th:if="${!iterStat.last}">, </span></span>
                   </td>
                   <td th:text="${book?.publisherName}"></td>

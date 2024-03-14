@@ -52,8 +52,9 @@ public class AdminBookController {
     public String getBooks(Model model,
         @RequestParam(name = "page", defaultValue = "0") Integer page,
         @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        PageRequestDto<BooksAdminReadResponseDto> books = bookService.getBooksAdmin(page, size);
-        model.addAttribute("books", books);
+        BooksAdminReadResponseDto books = bookService.getBooksAdmin(page, size);
+        model.addAttribute("books", books.getBooksAdminPaginationReadResponseDtos());
+        model.addAttribute("authors", books.getAuthorPaginationReadResponseDtos());
         return "admin/books";
     }
 

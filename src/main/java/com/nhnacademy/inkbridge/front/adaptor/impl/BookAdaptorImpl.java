@@ -1,7 +1,6 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
-import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
@@ -57,7 +56,7 @@ public class BookAdaptorImpl implements BookAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public PageRequestDto<BooksReadResponseDto> getBooks(Long page) {
+    public BooksReadResponseDto getBooks(Long page) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(MAIN_PATH)
@@ -67,7 +66,7 @@ public class BookAdaptorImpl implements BookAdaptor {
             .toUri();
 
         HttpHeaders httpHeaders = CommonUtils.createHeader();
-        ResponseEntity<PageRequestDto<BooksReadResponseDto>> exchange = restTemplate.exchange(
+        ResponseEntity<BooksReadResponseDto> exchange = restTemplate.exchange(
             uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
@@ -140,7 +139,7 @@ public class BookAdaptorImpl implements BookAdaptor {
     /**
      * {@inheritDoc}
      */
-    public PageRequestDto<BooksAdminReadResponseDto> getBooksAdmin(Integer page, Integer size) {
+    public BooksAdminReadResponseDto getBooksAdmin(Integer page, Integer size) {
         HttpHeaders httpHeaders = CommonUtils.createHeader();
 
         URI uri = UriComponentsBuilder
@@ -152,7 +151,7 @@ public class BookAdaptorImpl implements BookAdaptor {
             .build()
             .toUri();
 
-        ResponseEntity<PageRequestDto<BooksAdminReadResponseDto>> exchange = restTemplate.exchange(
+        ResponseEntity<BooksAdminReadResponseDto> exchange = restTemplate.exchange(
             uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),

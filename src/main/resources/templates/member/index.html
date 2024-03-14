@@ -46,8 +46,8 @@
                 aria-label="Slide 3"></button>
       </div>
       <div class="carousel-inner border rounded-1 p-3">
-        <div class="carousel-item" th:each="book, index : ${books}"
-             th:if="${index.index &lt; 3}" th:classappend="${index.index==0}?'active'"
+        <div class="carousel-item" th:each="book, iterStat : ${books.getContent()}"
+             th:if="${iterStat.index &lt; 3}" th:classappend="${iterStat.index==0}?'active'"
              th:onclick="|location.href='@{/book(id=${book.bookId})}'|">
           <img class="bd-placeholder-img" width="50%" height="500px"
                th:src="${book.fileUrl}" aria-hidden="true" alt="no image">
@@ -55,10 +55,10 @@
             <div class="carousel-caption text-end" style="color: #0a0a0a">
               <h1 th:text="${book.bookTitle}"></h1>
               <h1>
-                <span th:each="author, iterStat : ${book.authorName}">
+                <span th:each="author, iterStat2 : ${authors[iterStat.index].authorName}">
                   <span th:text="${author}"></span>
-                <span th:if="${!iterStat.last}">, </span>
-                <span th:if="${iterStat.last}"> 저</span>
+                <span th:if="${!iterStat2.last}">, </span>
+                <span th:if="${iterStat2.last}"> 저</span>
                 </span>
               </h1>
             </div>
@@ -81,7 +81,7 @@
         <h2>전체 상품 목록</h2>
       </div>
       <div class="row">
-        <div class="col-md-6 col-lg-4 col-xl-3" th:each="book: ${books}" th:if="${books}!=null">
+        <div class="col-md-6 col-lg-4 col-xl-3" th:each="book, iterStat: ${books.getContent()}" th:if="${books}!=null">
           <div class="card text-center card-product"
                th:onclick="|location.href='@{/book(id=${book.bookId})}'|">
             <div class="card-product__img">
@@ -90,9 +90,9 @@
             </div>
             <div class="card-body">
               <h4 class="card-product__title" th:text="${book.bookTitle}"></h4>
-              <span th:each="author, iterStat : ${book.authorName}"><span
-                  th:text="${author}"></span><span th:if="${!iterStat.last}">, </span><span
-                  th:if="${iterStat.last}" th:text="' 저 | ' + ${book.publisherName}"></span></span>
+              <span th:each="author, iterStat2 : ${authors[iterStat.index].authorName}"><span
+                  th:text="${author}"></span><span th:if="${!iterStat2.last}">, </span><span
+                  th:if="${iterStat2.last}" th:text="' 저 | ' + ${book.publisherName}"></span></span>
               <p class="card-product__price" th:text="${book.price}+'원'"></p>
             </div>
           </div>
