@@ -143,6 +143,9 @@ public class CouponAdaptorImpl implements CouponAdaptor {
         if (!exchange.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed to retrieve coupons");
         }
+        return exchange.getBody();
+    }
+
     @Override
     public List<OrderCouponReadResponseDto> getOrderCoupons(Long memberId, List<String> bookIds) {
         HttpEntity<Void> httpEntity = new HttpEntity<>(createHeader());
