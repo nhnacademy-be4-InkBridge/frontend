@@ -61,48 +61,31 @@ public class OrderController {
         @CookieValue(value = "info", required = false) String booksInfo,
         HttpServletResponse response) {
 
-        log.debug("orderController view start1");
-
         if (Objects.isNull(booksInfo)) {
             return "redirect:/";
         }
 
-        log.debug("orderController view start2");
-
         Long memberId = CommonUtils.getMemberId();
-
-        log.debug("orderController view start3");
 
         List<OrderBookReadResponseDto> orderBooks = orderService.getOrderBooks(
             getOrderBookReadResponseDtos(booksInfo));
 
-        log.debug("orderController view start4");
-
         CookieUtils.deleteCookie(response, "info");
 
-        log.debug("orderController view start5");
-
         model.addAttribute("orderBooks", orderBooks);
-        log.debug("orderController view start6");
         model.addAttribute("deliveryPolicy", deliveryPolicyService.getCurrentPolicy());
-        log.debug("orderController view start7");
         model.addAttribute("accumulationRatePolicy",
             accumulationRatePolicyService.getCurrentPolicy());
-        log.debug("orderController view start8");
         model.addAttribute("wrappingList", wrappingService.getWrappingList(true));
-        log.debug("orderController view start9");
         model.addAttribute("memberId", memberId);
-        log.debug("orderController view start10");
 
         if (Objects.nonNull(memberId)) {
-            log.debug("orderController view start11");
-            model.addAttribute("couponList", couponService.getOrderCoupons(memberId,
+             model.addAttribute("couponList", couponService.getOrderCoupons(memberId,
                 orderBooks.stream().map(book -> book.getBookId().toString())
                     .collect(Collectors.toList())));
 //            주소록 가져옴
 //            멤버 포인트 가져오기
         }
-        log.debug("orderController view start12");
         return "order/orders";
     }
 
