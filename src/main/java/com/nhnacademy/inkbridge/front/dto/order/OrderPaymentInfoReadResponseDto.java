@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderPaymentInfoReadResponseDto {
 
-    private String orderId;
+    private String orderCode;
     private String orderName;
     private Long amount;
 }

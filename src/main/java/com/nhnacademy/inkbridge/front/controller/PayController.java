@@ -33,10 +33,10 @@ public class PayController {
      * @return 결제 페이지
      */
     @GetMapping
-    public String payView(Model model, @RequestParam("order-id") String orderId) {
+    public String payView(Model model, @RequestParam("order-code") String orderCode) {
         Long memberId = CommonUtils.getMemberId();
 
-        model.addAttribute("payInfo", orderService.getOrderPaymentInfo(orderId));
+        model.addAttribute("payInfo", orderService.getOrderPaymentInfo(orderCode));
         model.addAttribute("memberId", memberId);
         String clientKey = tossProperties.getClientKey();
         model.addAttribute("clientKey", clientKey);
