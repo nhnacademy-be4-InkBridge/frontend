@@ -1,8 +1,7 @@
 package com.nhnacademy.inkbridge.front.service;
 
 import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmRequestDto;
-import org.json.simple.JSONObject;
-import org.springframework.transaction.annotation.Transactional;
+import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmResponseDto;
 
 /**
  * class: PayService.
@@ -18,6 +17,5 @@ public interface PayService {
      * @param requestDto 결제 승인 정보
      * @return 요청 응답
      */
-    @Transactional
-    JSONObject doConfirm(PayConfirmRequestDto requestDto);
+    PayConfirmResponseDto doConfirm(PayConfirmRequestDto requestDto, String vendor);
 }

@@ -1,10 +1,12 @@
 package com.nhnacademy.inkbridge.front.service.impl;
 
-import com.nhnacademy.inkbridge.front.adaptor.PayAdaptor;
+import com.nhnacademy.inkbridge.front.adaptor.PgAdaptor;
 import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmRequestDto;
+import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmResponseDto;
+import com.nhnacademy.inkbridge.front.factory.PaymentGatewayAdaptorFactory;
 import com.nhnacademy.inkbridge.front.service.PayService;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,9 +17,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PayServiceImpl implements PayService {
 
-    private final PayAdaptor payAdaptor;
+
+    private final PaymentGatewayAdaptorFactory paymentGatewayAdaptorFactory;
 
     /**
      * {@inheritDoc}
@@ -26,7 +30,8 @@ public class PayServiceImpl implements PayService {
      * @return 요청 응답
      */
     @Override
-    public JSONObject doConfirm(PayConfirmRequestDto requestDto) {
+    public PayConfirmResponseDto doConfirm(PayConfirmRequestDto requestDto, String vendor) {
+        PgAdaptor payAdaptor = paymentGatewayAdaptorFactory.findMatchesAdaptor(vendor);
         return payAdaptor.doPayConfirm(requestDto);
     }
 }

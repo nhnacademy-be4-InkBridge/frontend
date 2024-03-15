@@ -1,18 +1,20 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
-import com.nhnacademy.inkbridge.front.adaptor.PayAdaptor;
+import com.nhnacademy.inkbridge.front.adaptor.PgAdaptor;
 import com.nhnacademy.inkbridge.front.config.KeyConfig;
 import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmRequestDto;
+import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmResponseDto;
 import com.nhnacademy.inkbridge.front.property.TossProperties;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,7 +26,8 @@ import org.springframework.web.client.RestTemplate;
  */
 @Component
 @RequiredArgsConstructor
-public class PayAdaptorImpl implements PayAdaptor {
+@Slf4j
+public class TossAdaptorImpl implements PgAdaptor {
 
     private final RestTemplate restTemplate;
     private final TossProperties tossProperties;
@@ -37,7 +40,7 @@ public class PayAdaptorImpl implements PayAdaptor {
      * @return 요청 응답
      */
     @Override
-    public JSONObject doPayConfirm(PayConfirmRequestDto requestDto) {
+    public PayConfirmResponseDto doPayConfirm(PayConfirmRequestDto requestDto) {
         String apiKey = keyConfig.keyStore(tossProperties.getApiKey());
 
         Base64.Encoder encoder = Base64.getEncoder();
@@ -50,10 +53,12 @@ public class PayAdaptorImpl implements PayAdaptor {
 
         HttpEntity<PayConfirmRequestDto> entity = new HttpEntity<>(requestDto, httpHeaders);
 
-        return restTemplate.exchange(
+        ResponseEntity<PayConfirmResponseDto> exchange = restTemplate.exchange(
             "https://api.tosspayments.com/v1/payments/confirm",
             HttpMethod.POST,
             entity,
-            JSONObject.class).getBody();
+            PayConfirmResponseDto.class);
+
+        return exchange.getBody();
     }
 }

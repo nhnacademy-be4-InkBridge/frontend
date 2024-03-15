@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.dto.pay;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * class: PayReadResponseDto.
@@ -11,10 +12,10 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
+@Setter
 public class PayConfirmRequestDto {
 
     private String orderId;
     private String paymentKey;
     private Long amount;
-
 }
