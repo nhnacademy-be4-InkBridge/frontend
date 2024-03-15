@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}" lang="ko">
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+</th:block>
+<th:block layout:fragment="script">
+</th:block>
+
+<div layout:fragment="content" class="container">
+  <!--  작가 소개-->
+    <div class="row m-3 p-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title mt-3" th:text="${authorInfo.authorName}">Author Information</h5>
+          <hr>
+          <!-- Author -->
+          <div class="form-group d-flex">
+            <img th:src="${authorInfo.fileUrl}" alt="no image">
+            <p class="form-control-static" th:text="${authorInfo.authorIntroduce}"></p>
+          </div>
+        </div>
+      </div>
+  </div>
+  <!--  작가 도서-->
+  <div>
+    <div class="card-body">
+          <div class="form-group d-flex" th:each="book: ${authorBooks.content}">
+            <img th:src="${book.fileUrl}" alt="no image">
+            <p class="form-control-static" th:text="${authorInfo.authorIntroduce}"></p>
+          </div>
+
+    </div>
+  </div>
+</div>
