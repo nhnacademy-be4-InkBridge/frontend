@@ -71,7 +71,9 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<OrderCouponReadResponseDto> getOrderCoupons(Long memberId, List<String> bookIds) {
+    public List<OrderCouponReadResponseDto> getOrderCoupons(Long
+        memberId, List<String> bookIds) {
         return couponAdaptor.getOrderCoupons(memberId, bookIds);
     }
+
 }

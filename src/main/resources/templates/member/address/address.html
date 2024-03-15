@@ -18,7 +18,7 @@
 
   <!-- 새 주소 등록 -->
   <div class="mb-3">
-    <form th:action="@{/api/mypage/address/register}" method="get">
+    <form th:action="@{/mypage/address/register}" method="get">
       <!-- 주소 입력 필드들 -->
       <button type="submit" class="btn btn-primary">새 주소 등록</button>
     </form>
@@ -39,10 +39,10 @@
           <span th:text="${address.receiverNumber}">전화번호</span>
         </p>
         <!-- 히든 필드로 addressId 전송 -->
-        <form th:action="@{/api/mypage/address/delete/{id}(id=${address.addressId})}" method="post" class="d-inline">
+        <form th:action="@{/mypage/address/delete/{id}(id=${address.addressId})}" method="post" class="d-inline">
           <button type="submit" class="btn btn-danger">삭제</button>
         </form>
-        <button type="button" class="btn btn-secondary" th:onclick="'location.href=\'/api/mypage/address/update/' + ${address.addressId} + '\''">수정</button>
+        <button type="button" class="btn btn-secondary" th:onclick="'location.href=\'/mypage/address/update/' + ${address.addressId} + '\''">수정</button>
       </div>
     </div>
   </div>

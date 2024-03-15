@@ -34,7 +34,6 @@ public class PayRestController {
      */
     @PostMapping
     public ResponseEntity<JSONObject> confirmPayment(@RequestBody PayConfirmRequestDto requestDto) {
-        log.info("pay request data : {}", requestDto);
         return ResponseEntity.status(HttpStatus.OK).body(payService.doConfirm(requestDto));
     }
 

@@ -29,7 +29,7 @@ public abstract class OAuthService {
         Map<String,Object> userInfo;
         try{
             ResponseEntity<String> payco = oAuthAdaptor.getUserInfo(token, userInfoUri);
-            log.info("payco -> {}", payco.getBody());
+            log.debug("payco -> {}", payco.getBody());
             userInfo = objectMapper.readValue(payco.getBody(), Map.class);
         } catch (JsonProcessingException e) {
             throw new OauthException();

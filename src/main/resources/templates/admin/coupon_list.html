@@ -132,7 +132,7 @@
       </tr>
     </th:block>
     <tr th:each="coupon : ${page.content}">
-      <td><a th:href="@{'/api/admin/coupons/' + ${coupon.couponId}}" th:text="${coupon.couponId}">OOOOOOOO-OOOO-OOOO-OOOO-OOOOOOOOOOOO</a>
+      <td><a th:href="@{'/admin/coupons/' + ${coupon.couponId}}" th:text="${coupon.couponId}">OOOOOOOO-OOOO-OOOO-OOOO-OOOOOOOOOOOO</a>
       </td>
       <td th:text="${coupon.couponName}">0월 생일 쿠폰</td>
       <td th:text="${coupon.minPrice} + '원 이상 구매시'">1만원 이상 구매시</td>

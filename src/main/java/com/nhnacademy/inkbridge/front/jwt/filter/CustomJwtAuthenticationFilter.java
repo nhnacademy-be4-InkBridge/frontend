@@ -55,7 +55,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        log.info("jwt filter start ->");
+        log.debug("jwt filter start ->");
         try {
             // 알맞지 않은 경로
             if (handleInvalidRequest(request, response, filterChain)) {
@@ -77,7 +77,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
             }
             // 재발급 로직
             if (isExpireTime(Objects.requireNonNull(accessCookie).getValue())) {
-                log.info("jwt filter access token 재발급 시작 ->");
+                log.debug("jwt filter access token 재발급 시작 ->");
 
                 String accessValue = Objects.requireNonNull(accessCookie).getValue();
                 String accessExp = accessValue.split("\\.")[3];
@@ -104,7 +104,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                 // 새로 추가
                 Cookie newCookie = JwtCookie.createJwtCookie(newAccessToken, accessExpiredTime, ACCESS_COOKIE);
                 response.addCookie(newCookie);
-                log.info("jwt filter access token 재발급 종료 ->");
+                log.debug("jwt filter access token 재발급 종료 ->");
             }
 
             if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) &&
@@ -126,10 +126,10 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(responseDto.getMemberId().toString(), "", authorities);
 
                 SecurityContextHolder.getContext().setAuthentication(token);
-                log.info("jwt filter 컨텍스트 홀드 저장 완료 -> {}", SecurityContextHolder.getContext().getAuthentication());
+                log.debug("jwt filter 컨텍스트 홀드 저장 완료 -> {}", SecurityContextHolder.getContext().getAuthentication());
             }
 
-            log.info("jwt filter end ->");
+            log.debug("jwt filter end ->");
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.error("jwtFilter error {}", e.getMessage());

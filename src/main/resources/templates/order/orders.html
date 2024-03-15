@@ -16,7 +16,21 @@
 </th:block>
 
 <th:block layout:fragment="script">
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+          crossorigin="anonymous"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+  <script src="/js/address.js"></script>
+  <script th:inline="javascript">
+    let orderBooks = [[${orderBooks}]];
+    let deliveryPolicy = [[${deliveryPolicy}]];
+    let accumulationRatePolicy = [[${accumulationRatePolicy}]];
+    let wrappingList = [[${wrappingList}]];
+    let couponList = [[${couponList}]];
+  </script>
+  <script src="/js/order.js"></script>
 </th:block>
 
 <div layout:fragment="content" class="container">
@@ -279,19 +293,5 @@
     </form>
   </main>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
-        crossorigin="anonymous"></script>
-<script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-<script src="/js/address.js"></script>
-<script th:inline="javascript">
-  let orderBooks = [[${orderBooks}]];
-  let deliveryPolicy = [[${deliveryPolicy}]];
-  let accumulationRatePolicy = [[${accumulationRatePolicy}]];
-  let wrappingList = [[${wrappingList}]];
-  let couponList = [[${couponList}]];
-</script>
-<script src="/js/order.js"></script>
+
 </html>

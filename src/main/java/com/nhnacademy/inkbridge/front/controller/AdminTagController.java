@@ -35,7 +35,7 @@ public class AdminTagController {
     public String getTagList(Model model) {
         List<Tag> tagList = tagService.getTagList();
         model.addAttribute("tagList", tagList);
-        return "/admin/tag-list";
+        return "admin/tag-list";
     }
 
     @PostMapping("/create")

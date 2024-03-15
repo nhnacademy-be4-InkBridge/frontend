@@ -80,9 +80,4 @@ public class AdminCouponController {
         couponService.createCoupon(couponCreateRequestDto);
         return "redirect:/admin/coupons";
     }
-
-//    @GetMapping("/{couponId}")
-//    public String viewAdminCouponDetail(@PathVariable("couponId") String couponId) {
-//        CouponReadResponseDto couponService.getCoupon(couponId);
-//    }
 }

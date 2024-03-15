@@ -103,7 +103,7 @@ public class MemberController {
 
     @PostMapping("/signup")
     public String signupAfter(@Valid MemberSignupRequestDto memberSignupRequestDto) {
-        log.info("signup controller start");
+        log.debug("signup controller start");
         memberService.signup(memberSignupRequestDto);
 
         return "redirect:/";

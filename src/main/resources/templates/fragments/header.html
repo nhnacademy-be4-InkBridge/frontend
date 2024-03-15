@@ -63,10 +63,8 @@
           </a>
         </div>
         <div class="header-contact-link">
-          뭐넣지?
         </div>
         <div class="header-contact-link">
-          히히 뭘넣징
         </div>
       </div>
       <div class="header-login">
@@ -91,7 +89,9 @@
     <div class="header-main">
       <div class="header-main-container">
         <div class="header-logo gugi-regular">
+          <a href="/" class="a-tag">
           inkBridge
+          </a>
         </div>
         <div class="header-search-container">
           <input type="search" name="search" class="search"/>
@@ -122,7 +122,7 @@
             </a>
           </div>
           <div class="action-btn">
-            <a href="" class="a-tag">
+            <a href="/cart" class="a-tag">
               <i class="bi bi-cart"></i>
               <span class="count">0</span>
             </a>
@@ -140,13 +140,13 @@
           <div class="item-dropdown">
             <ul class="item-list" th:each="parentCategory:${parentCategories}">
               <li class="menu-title parent">
-                <a class="a-tag list-item" th:href="@{/api/books/${parentCategory.getCategoryId()}}"
+                <a class="a-tag list-item" th:href="@{'/books/' + ${parentCategory.categoryId}}"
                    th:text="${parentCategory.getCategoryName()}">
                 </a>
               </li>
               <li class="list-item child"
                   th:each="childCategory:${parentCategory.getParentCategories()}">
-                <a class="a-tag list-item" th:href="@{/api/books/${childCategory.getCategoryId}}"
+                <a class="a-tag list-item" th:href="@{'/books/'+${childCategory.getCategoryId}}"
                    th:text="${childCategory.getCategoryName()}"></a>
               </li>
             </ul>
@@ -159,7 +159,7 @@
           <a class="a-tag menu-title" href="">신상도서</a>
         </li>
         <li class="menu-category">
-          <a class="a-tag menu-title" href="">이벤트/쿠폰</a>
+          <a class="a-tag menu-title" href="/coupons">이벤트/쿠폰</a>
         </li>
       </ul>
     </nav>
