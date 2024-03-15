@@ -5,7 +5,7 @@ function doPay() {
 
   // ------  결제위젯 초기화 ------
   let paymentWidget = memberId == null ? PaymentWidget(clientKey,
-      PaymentWidget.ANONYMOUS) : PaymentWidget(clientKey, memberId.padStart(2, '0'));
+      PaymentWidget.ANONYMOUS) : PaymentWidget(clientKey, memberId.toString().padStart(2, '0'));
 
 // ------  결제 UI 렌더링 ------
   paymentMethodWidget = paymentWidget.renderPaymentMethods(

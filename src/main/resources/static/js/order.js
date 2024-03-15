@@ -97,6 +97,7 @@ function calcPoint() {
 
 // 포장 가격 계산
 function calcWrapping() {
+
   let totalWrappingPrice = 0;
 
   for (let i = 0; i < orderBooks.length; i++) {
@@ -120,8 +121,6 @@ function calcWrapping() {
       bookWrappingPrice.value = wrappingPrice;
     }
   }
-
-  console.log("wrapping : " + totalWrappingPrice);
 
   document.getElementById("package_price").innerText = priceToString(totalWrappingPrice);
   return totalWrappingPrice;
@@ -161,7 +160,7 @@ function calcPayAmount() {
   }
 
   document.getElementById("payAmount").value = totalPrice;
-  document.getElementById("pay_amount").innerText = totalPrice.toString();
+  document.getElementById("pay_amount").innerText = priceToString(totalPrice);
   return totalPrice;
 }
 
@@ -251,7 +250,6 @@ function doOrder() {
 function applyCoupon(bookId, index) {
   let radioGroup = document.getElementsByName("radio" + bookId);
 
-  console.log(radioGroup);
 
   let selectCouponId = null;
 
@@ -299,7 +297,6 @@ function applyCoupon(bookId, index) {
   // 적용 쿠폰 목록에 추가
   selectedCoupon.push(coupon);
 
-  console.log(selectedCoupon);
 
 //   해당 도서 쿠폰 Input 요소 가져오기
   let couponInput = document.getElementById(
@@ -345,13 +342,9 @@ function calcOneBookPrice(bookId) {
 function calcCouponPrice(price, coupon) {
   let result = 0;
 
-  console.log(coupon);
-
   if (coupon.couponTypeName == "PERCENT") {
     // 퍼센트 쿠폰 할인 금액 계산
     let discount = (100 - coupon.discountPrice) / 100 * price;
-
-    console.log(discount);
 
     result = discount > coupon.maxDiscountPrice ? coupon.maxDiscountPrice : discount;
   } else {
