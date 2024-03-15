@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}" lang="ko">
+
+<th:block layout:fragment="css">
+  <link href="/css/search.css" rel="stylesheet">
+</th:block>
+
+<th:block layout:fragment="script">
+
+</th:block>
+
+
+<div layout:fragment="content" class="container">
+  <nav class="search-title-container">
+    <span class="search-title-keyword">' 자바 '</span>
+    <span class="search-title-sub-content">에 대한 8,939개의 검색 결과</span>
+  </nav>
+  <nav class="search-sub-title-container">
+    <div class="search-sub-title">연관 검색어</div>
+    <ul class="search-sub-title-list">
+      <li class="search-sub-title-item">
+        <a href="">css</a>
+      </li>
+      <li class="search-sub-title-item">
+        <a href="">html</a>
+      </li>
+      <li class="search-sub-title-item">
+        <a href="">자바</a>
+      </li>
+      <li class="search-sub-title-item">
+        <a href="">자바스크립트</a>
+      </li>
+    </ul>
+  </nav>
+  <section class="search-book-container">
+    <!--  정렬이랑 상품 개수    -->
+    <div class="search-book-main">
+      <div class="search-book-count">전체 <span>8,939</span> 건</div>
+      <div class="search-book-option-container">
+        <ul class="search-book-order-list">
+          <li class="search-book-order-item">인기도순</li>
+          <li class="search-book-order-item">신상품순</li>
+          <li class="search-book-order-item">등록일순</li>
+          <li class="search-book-order-item">최저가순</li>
+          <li class="search-book-order-item">최고가순</li>
+          <li class="search-book-order-item">평점순</li>
+          <li class="search-book-order-item">리뷰순</li>
+        </ul>
+        <div class="search-book-selects-container">
+          <div class="search-book-select-container">
+            <select class="search-book-select" name="" id="book-state">
+              <option value="include">품절포함</option>
+              <option value="exclude">품절제외</option>
+            </select>
+          </div>
+          <div class="search-book-select-container">
+            <select class="search-book-select" name="" id="quantity-select">
+              <option value="10">10개씩 보기</option>
+              <option value="20">20개씩 보기</option>
+              <option value="50">50개씩 보기</option>
+            </select>
+          </div>
+          <div class="search-book-type-container">
+            <div class="search-book-type">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+            <div class="search-book-type">
+              <i class="bi bi-grid-fill"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 상품 -->
+    <div class="search-book-container">
+      <div class="search-book-info-list">
+        <div class="search-book-item">
+          <div class="search-book-image-container">
+            <div class="search-book-image">이미지</div>
+          </div>
+          <div class="search-book-info-container">
+            <div class="search-book-info-title">
+              <a href="">
+                명품 JAVA Programming
+              </a>
+            </div>
+            <div class="search-book-info-author-container">
+              <div class="search-book-info-author">
+                <a href="">황기태</a>
+                <a href="">김효수</a>
+              </div>
+              <div>저자</div>
+            </div>
+            <div class="search-book-info-publish-container">
+              <div class="search-book-info-publisher">
+                <a href="">
+                  재훈출판사
+                </a>
+              </div>
+              <div class="search-book-info-publish-date">
+                2024년 1월 1일
+              </div>
+            </div>
+            <div class="search-book-info-price-container">
+              <span class="search-book-info-discount-rate">10%</span>
+              <span class="search-book-info-discount-price">25,000원</span>
+              <span class="search-book-info-original-price">33,000원</span>
+            </div>
+            <div class="search-book-info-review-container">
+              <div class="search-book-info-review">평점</div>
+              <div class="search-book-info-review-star">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+              </div>
+              <div class="search-book-info-review-rate">9.8</div>
+            </div>
+            <ul class="search-book-info-tag-container">
+              <li class="search-book-info-tag">
+                <a href="">#java</a>
+              </li>
+              <li class="search-book-info-tag">
+                <a href="">#프로그래밍</a>
+              </li>
+              <li class="search-book-info-tag">
+                <a href="">#자바</a>
+              </li>
+              <li class="search-book-info-tag">
+                <a href="">#21</a>
+              </li>
+            </ul>
+          </div>
+          <div class="search-book-button-container">
+            <div class="search-book-quantity-container">
+              <div class="search-book-quantity-minus">-</div>
+              <div class="search-book-quantity">3</div>
+              <div class="search-book-quantity-plus">+</div>
+            </div>
+            <div class="search-book-cart">
+              장바구니
+            </div>
+            <div class="search-book-buy">
+              바로 구매
+            </div>
+            <div class="search-book-wish">
+              찜하기
+            </div>
+          </div>
+        </div>
+        <div class="search-book-item">
+          <div class="search-book-image-container">
+            <div class="search-book-image">이미지</div>
+          </div>
+          <div class="search-book-info-container">
+            <div class="search-book-info-title">
+              <a href="">
+                명품 JAVA Programming
+              </a>
+            </div>
+            <div class="search-book-info-author-container">
+              <div class="search-book-info-author">
+                <a href="">황기태</a>
+                <a href="">김효수</a>
+              </div>
+              <div>저자</div>
+            </div>
+            <div class="search-book-info-publish-container">
+              <div class="search-book-info-publisher">
+                <a href="">
+                  재훈출판사
+                </a>
+              </div>
+              <div class="search-book-info-publish-date">
+                2024년 1월 1일
+              </div>
+            </div>
+            <div class="search-book-info-price-container">
+              <span class="search-book-info-discount-rate">10%</span>
+              <span class="search-book-info-discount-price">25,000원</span>
+              <span class="search-book-info-original-price">33,000원</span>
+            </div>
+            <div class="search-book-info-review-container">
+              <div class="search-book-info-review">평점</div>
+              <div class="search-book-info-review-star">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+              </div>
+              <div class="search-book-info-review-rate">9.8</div>
+            </div>
+            <ul class="search-book-info-tag-container">
+              <li class="search-book-info-tag">
+                <a href="">#java</a>
+              </li>
+              <li class="search-book-info-tag">
+                <a href="">#프로그래밍</a>
+              </li>
+              <li class="search-book-info-tag">
+                <a href="">#자바</a>
+              </li>
+              <li class="search-book-info-tag">
+                <a href="">#21</a>
+              </li>
+            </ul>
+          </div>
+          <div class="search-book-button-container">
+            <div class="search-book-quantity-container">
+              <div class="search-book-quantity-minus">-</div>
+              <div class="search-book-quantity">3</div>
+              <div class="search-book-quantity-plus">+</div>
+            </div>
+            <div class="search-book-cart">
+              장바구니
+            </div>
+            <div class="search-book-buy">
+              바로 구매
+            </div>
+            <div class="search-book-wish">
+              찜하기
+            </div>
+          </div>
+        </div>
+        <div class="search-book-item">
+          <div class="search-book-image-container">
+            <div class="search-book-image">이미지</div>
+          </div>
+          <div class="search-book-info-container">
+            <div class="search-book-info-title">
+              <a href="">
+                명품 JAVA Programming
+              </a>
+            </div>
+            <div class="search-book-info-author-container">
+              <div class="search-book-info-author">
+                <a href="">황기태</a>
+                <a href="">김효수</a>
+              </div>
+              <div>저자</div>
+            </div>
+            <div class="search-book-info-publish-container">
+              <div class="search-book-info-publisher">
+                <a href="">
+                  재훈출판사
+                </a>
+              </div>
+              <div class="search-book-info-publish-date">
+                2024년 1월 1일
+              </div>
+            </div>
+            <div class="search-book-info-price-container">
+              <span class="search-book-info-discount-rate">10%</span>
+              <span class="search-book-info-discount-price">25,000원</span>
+              <span class="search-book-info-original-price">33,000원</span>
+            </div>
+            <div class="search-book-info-review-container">
+              <div class="search-book-info-review">평점</div>
+              <div class="search-book-info-review-star">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+              </div>
+              <div class="search-book-info-review-rate">9.8</div>
+            </div>
+            <ul class="search-book-info-tag-container">
+              <li class="search-book-info-tag">
+                <a href="">#java</a>
+              </li>
+              <li class="search-book-info-tag">
+                <a href="">#프로그래밍</a>
+              </li>
+              <li class="search-book-info-tag">
+                <a href="">#자바</a>
+              </li>
+              <li class="search-book-info-tag">
+                <a href="">#21</a>
+              </li>
+            </ul>
+          </div>
+          <div class="search-book-button-container">
+            <div class="search-book-quantity-container">
+              <div class="search-book-quantity-minus">-</div>
+              <div class="search-book-quantity">3</div>
+              <div class="search-book-quantity-plus">+</div>
+            </div>
+            <div class="search-book-cart">
+              장바구니
+            </div>
+            <div class="search-book-buy">
+              바로 구매
+            </div>
+            <div class="search-book-wish">
+              찜하기
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav aria-label="Page navigation" class="paging-container">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">4</a></li>
+        <li class="page-item"><a class="page-link" href="#">5</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </section>
+</div>
+
+</html>
