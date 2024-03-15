@@ -52,19 +52,19 @@ public class OrderAdaptorImpl implements OrderAdaptor {
     /**
      * {@inheritDoc}
      *
-     * @param orderId 주문 번호
+     * @param orderCode 주문 번호
      * @return 주문 결제 정보
      */
     @Override
-    public OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderId) {
+    public OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderCode) {
         HttpEntity<Void> entity = new HttpEntity<>(createHeader());
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .encode()
-            .path("/api/orders/{orderId}/order-pays")
+            .path("/api/orders/{orderCode}/order-pays")
             .build()
-            .expand(orderId)
+            .expand(orderCode)
             .toUri();
 
         ResponseEntity<OrderPaymentInfoReadResponseDto> exchange = restTemplate.exchange(

@@ -154,7 +154,7 @@ public class CouponAdaptorImpl implements CouponAdaptor {
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
-            .path("/api/members/{memberId}/order-coupons")
+            .path("/api/auth/members/{memberId}/order-coupons")
             .queryParam("book-id", String.join(",", bookIds))
             .encode()
             .build()

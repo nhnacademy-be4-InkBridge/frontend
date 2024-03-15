@@ -4,6 +4,7 @@ import com.nhnacademy.inkbridge.front.adaptor.OrderAdaptor;
 import com.nhnacademy.inkbridge.front.dto.order.OrderBookInfoReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.order.OrderCreateResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderPaymentInfoReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.CartService;
 import com.nhnacademy.inkbridge.front.service.OrderService;
@@ -34,18 +35,19 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public String createOrder(OrderCreateRequestDto requestDto) {
-        return orderAdaptor.createOrder(requestDto).getOrderId();
+        OrderCreateResponseDto order = orderAdaptor.createOrder(requestDto);
+        return order.getOrderCode();
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param orderId 주문 번호
+     * @param orderCode 주문 번호
      * @return 주문 결제 정보
      */
     @Override
-    public OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderId) {
-        return orderAdaptor.getOrderPaymentInfo(orderId);
+    public OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderCode) {
+        return orderAdaptor.getOrderPaymentInfo(orderCode);
     }
 
     @Override

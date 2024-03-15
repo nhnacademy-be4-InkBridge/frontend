@@ -19,9 +19,8 @@ function paymentInfo() {
     sumTotalPrice += book.price * book.amount;
   });
 
-  document.getElementById("total_regular_price").innerText = sumTotalRegular;
-  document.getElementById("product_discount").innerText = sumTotalRegular
-      - sumTotalPrice;
+  document.getElementById("total_regular_price").innerText = priceToString(sumTotalRegular);
+  document.getElementById("product_discount").innerText = priceToString(sumTotalRegular - sumTotalPrice);
   document.getElementById("package_price").innerText = '0';
   document.getElementById("coupon_discount").innerText = '0';
   document.getElementById("use_point").innerText = '0';
@@ -30,18 +29,17 @@ function paymentInfo() {
   let deliveryPrice = sumTotalPrice < deliveryPolicy.freeDeliveryPrice
       ? deliveryPolicy.deliveryPrice : 0;
 
-  document.getElementById("delivery_price").innerText = deliveryPrice;
+  document.getElementById("delivery_price").innerText = priceToString(deliveryPrice);
   document.getElementById("deliveryPrice").value = deliveryPrice.toString();
 
   // 예상 포인트 적립률
   let accumulatePoint = Math.round(
       sumTotalPrice * accumulationRatePolicy.accumulationRate / 100);
 
-  document.getElementById("accumulate_point").innerText = accumulatePoint;
+  document.getElementById("accumulate_point").innerText = priceToString(accumulatePoint);
 
   // 결제 금액 = 판매가 + 배송비 + 포장비 - 쿠폰할인 - 사용 포인트
-  document.getElementById("pay_amount").innerText = sumTotalPrice
-      + deliveryPrice;
+  document.getElementById("pay_amount").innerText = priceToString(sumTotalPrice + deliveryPrice);
 
   let orderName = orderBooks[0].bookTitle;
 
@@ -91,7 +89,7 @@ function calcPoint() {
   }
 
   // 보유 포인트 이상 사용 불가 확인
-  document.getElementById("use_point").innerText = point.value;
+  document.getElementById("use_point").innerText = priceToString(point.value);
 
   document.getElementById("point").value = point.value;
   return parseInt(point.value);
@@ -123,7 +121,9 @@ function calcWrapping() {
     }
   }
 
-  document.getElementById("package_price").innerText = totalWrappingPrice;
+  console.log("wrapping : " + totalWrappingPrice);
+
+  document.getElementById("package_price").innerText = priceToString(totalWrappingPrice);
   return totalWrappingPrice;
 }
 
@@ -268,7 +268,7 @@ function applyCoupon(bookId, index) {
 
   // 해당 쿠폰이 다른 상품에서 선택된 적이 있는지 여부 확인
   if (selectedCoupon.find(
-      coupon => coupon.couponId == selectCouponId && bookId != coupon.bookId)) {
+      coupon => coupon.couponId == selectCouponId.value && bookId != coupon.bookId)) {
     alert("다른 상품에 적용된 쿠폰입니다. 다른 쿠폰을 선택해주세요.");
     initCoupon(bookId, index);
     return;
@@ -299,6 +299,8 @@ function applyCoupon(bookId, index) {
   // 적용 쿠폰 목록에 추가
   selectedCoupon.push(coupon);
 
+  console.log(selectedCoupon);
+
 //   해당 도서 쿠폰 Input 요소 가져오기
   let couponInput = document.getElementById(
       "bookOrderList[" + index + "].couponId");
@@ -315,8 +317,6 @@ function calcCoupon() {
   for (let i = 0; i < orderBooks.length; i++) {
     let orderBook = "bookOrderList[" + i + "]";
     let couponId = document.getElementById(orderBook + ".couponId");
-
-    console.log(couponId);
 
     if (!couponId.value) {
       continue;
@@ -383,6 +383,10 @@ function loadCoupon() {
   for (let i = 0; i < orderBooks.length; i++) {
     document.getElementById("bookOrderList[" + i + "].couponId").value = null;
   }
+}
+
+function priceToString(price) {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 document.addEventListener("DOMContentLoaded", loadCoupon);
