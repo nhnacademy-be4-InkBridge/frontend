@@ -3,6 +3,8 @@ package com.nhnacademy.inkbridge.front.service;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.OrderCouponReadResponseDto;
+import java.util.List;
 
 /**
  * class: CouponService.
@@ -32,4 +34,5 @@ public interface CouponService {
 
     PageRequestDto<CouponReadResponseDto> getIssuedCoupon(String memberId, Integer couponStatusId,
         Integer page, Integer size);
+    List<OrderCouponReadResponseDto> getOrderCoupons(Long memberId, List<String> bookIds);
 }

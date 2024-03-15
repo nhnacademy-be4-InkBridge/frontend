@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class BookAdminDetailReadResponseDto {
+
     private BookAdminSelectedReadResponseDto adminSelectedReadResponseDto;
     private List<ParentCategoryReadResponseDto> parentCategoryReadResponseDtoList;
     private List<PublisherReadResponseDto> publisherReadResponseDtoList;
@@ -24,10 +25,9 @@ public class BookAdminDetailReadResponseDto {
     private List<BookStatusReadResponseDto> bookStatusReadResponseDtoList;
     private List<TagReadResponseDto> tagReadResponseDtoList;
 
-    // builder
-
     @Builder
-    public BookAdminDetailReadResponseDto(BookAdminSelectedReadResponseDto adminSelectedReadResponseDto,
+    public BookAdminDetailReadResponseDto(
+        BookAdminSelectedReadResponseDto adminSelectedReadResponseDto,
         List<ParentCategoryReadResponseDto> parentCategoryReadResponseDtoList,
         List<PublisherReadResponseDto> publisherReadResponseDtoList,
         List<AuthorReadResponseDto> authorReadResponseDtoList,

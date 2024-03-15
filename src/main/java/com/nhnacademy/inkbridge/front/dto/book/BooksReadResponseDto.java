@@ -1,5 +1,7 @@
 package com.nhnacademy.inkbridge.front.dto.book;
 
+import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,10 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BooksReadResponseDto {
 
-    private Long bookId;
-    private String bookTitle;
-    private Long price;
-    private String publisherName;
-    private String authorName;
-    private String fileUrl;
+    private PageRequestDto<BooksPaginationReadResponseDto> booksPaginationReadResponseDtos;
+    private List<AuthorPaginationReadResponseDto> authorPaginationReadResponseDto;
 }
