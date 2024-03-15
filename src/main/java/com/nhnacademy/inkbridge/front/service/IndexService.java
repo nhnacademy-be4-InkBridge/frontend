@@ -21,7 +21,7 @@ public interface IndexService {
     /**
      * 카테고리에 따라 도서 목록을 조회하는 메서드입니다.
      *
-     * @param page Long
+     * @param page       Long
      * @param categoryId Long
      * @return BooksReadResponseDto
      */
@@ -30,8 +30,9 @@ public interface IndexService {
     /**
      * 도서 상세 정보를 조회하는 메서드입니다.
      *
-     * @param bookId Long
+     * @param bookId   Long
+     * @param memberId Long
      * @return BookReadResponseDto
      */
-    BookReadResponseDto getBook(Long bookId);
+    BookReadResponseDto getBook(Long bookId, Long memberId);
 }

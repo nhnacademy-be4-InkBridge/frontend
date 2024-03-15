@@ -44,7 +44,7 @@ public interface BookAdaptor {
      * @param bookId Long
      * @return BookReadResponseDto
      */
-    BookReadResponseDto getBook(Long bookId);
+    BookReadResponseDto getBook(Long bookId, Long memberId);
 
     /**
      * 장바구니의 도서 아이디로 도서 상세 정보를 조회하는 메서드입니다.

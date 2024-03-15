@@ -114,11 +114,12 @@ public class BookAdaptorImpl implements BookAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public BookReadResponseDto getBook(Long bookId) {
+    public BookReadResponseDto getBook(Long bookId, Long memberId) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(MAIN_PATH)
             .path(BOOK_ID)
+            .queryParam("memberId", memberId)
             .encode()
             .build()
             .expand(bookId)

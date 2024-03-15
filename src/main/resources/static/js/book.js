@@ -7,17 +7,22 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
     if (this.classList.contains('btn-plus')) {
       newVal = oldValue + 1;
     } else {
-      newVal = oldValue > 0 ? oldValue - 1 : 0;
+      newVal = oldValue > 1 ? oldValue - 1 : 1;
     }
     this.parentElement.parentElement.querySelector('input').value = newVal;
   });
 });
 
 // 쿠키를 설정
-const setCookie = () => {
+const setCookie = (event) => {
+  const amount = document.getElementById('amount').value;
+  if (amount === '0') {
+    alert('최소 한 개 이상의 수량을 담아야 합니다.');
+    return false;
+  }
   let cookies = {
     bookId: document.getElementById('bookId').value,
-    amount: document.getElementById('amount').value,
+    amount: amount,
   };
   let existingCookie = [];
   existingCookie.push(cookies);
@@ -49,4 +54,11 @@ document.querySelectorAll('.fa-star').forEach(function (star) {
       }
     });
   });
+});
+
+document.getElementById('cart').addEventListener('submit', function (event) {
+  if (document.getElementById('amount').value === '0') {
+    event.preventDefault();
+    alert('최소 한 개 이상의 수량을 담아야 합니다.');
+  }
 });

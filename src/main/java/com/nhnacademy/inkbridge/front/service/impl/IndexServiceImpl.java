@@ -41,7 +41,7 @@ public class IndexServiceImpl implements IndexService {
      * {@inheritDoc}
      */
     @Override
-    public BookReadResponseDto getBook(Long bookId) {
-        return bookAdaptor.getBook(bookId);
+    public BookReadResponseDto getBook(Long bookId, Long memberId) {
+        return bookAdaptor.getBook(bookId, memberId);
     }
 }

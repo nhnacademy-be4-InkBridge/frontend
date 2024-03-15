@@ -9,9 +9,14 @@ document.getElementById('order').addEventListener('click', function (event) {
   let existingCookie = [];
   checkboxes.forEach((checkbox) => {
     let row = checkbox.closest('tr');
+    const amount = row.querySelector('input[name="amount"]').value;
+    if (amount === '0') {
+      event.preventDefault();
+      alert('최소 한 개 이상의 수량을 담아야 합니다.');
+    }
     let cookie = {
       bookId: row.querySelector('#bookId').value,
-      amount: row.querySelector('input[name="amount"]').value,
+      amount: amount,
     };
     console.log(cookie);
     existingCookie.push(cookie);
@@ -38,11 +43,12 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
     if (this.classList.contains('btn-plus')) {
       if (oldValue + 1 < stock) {
         newVal = oldValue + 1;
+        totalPrice = totalPrice + price;
       }
     } else {
-      newVal = oldValue > 0 ? oldValue - 1 : 0;
+      newVal = oldValue > 1 ? oldValue - 1 : 1;
+      totalPrice = newVal > 1 ? totalPrice - price : price;
     }
-    totalPrice = totalPrice + price;
     this.parentElement.parentElement.querySelector('input').value = newVal;
     document.getElementById('totalPrice').textContent = totalPrice;
     const bookId = this.parentElement.parentElement.parentElement.parentElement.querySelector(

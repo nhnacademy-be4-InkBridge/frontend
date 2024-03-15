@@ -61,7 +61,7 @@
                   </button>
                 </div>
                 <input type="text" class="form-control form-control-sm text-center border-0"
-                       th:with="bookId=${book.bookId}"
+                       th:with="bookId=${book.bookId}" disabled
                        th:value="${bookIds[bookId.toString()]}" name="amount">
                 <input type="hidden" style="display: none" name="stock" th:value="${book.stock}">
                 <div class="input-group-btn">
