@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthorInfoReadResponseDto {
 
+    private Long authorId;
     private String authorName;
     private String authorIntroduce;
     private String fileUrl;
-
 }
