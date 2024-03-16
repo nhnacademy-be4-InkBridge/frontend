@@ -40,13 +40,14 @@ public class PayServiceImpl implements PayService {
      */
     @Override
     public PayConfirmResponseDto doConfirm(PayConfirmRequestDto requestDto, String provider) {
-        PaymentCompanyAdaptor payCompanyAdaptor = paymentCompanyAdaptorFactory.findMatchesAdaptor(provider);
+        PaymentCompanyAdaptor payCompanyAdaptor = paymentCompanyAdaptorFactory.findMatchesAdaptor(
+            provider);
         String payConfirmJsonResponse = payCompanyAdaptor.doPayConfirm(requestDto);
-
 
         PayConfirmResponseDto responseDto = null;
         try {
-            Map<String, Object> attribute = objectMapper.readValue(payConfirmJsonResponse, Map.class);
+            Map<String, Object> attribute = objectMapper.readValue(payConfirmJsonResponse,
+                Map.class);
 
             if ("toss".equals(provider)) {
                 responseDto = new TossConfirmResponseDto(attribute);
@@ -61,11 +62,16 @@ public class PayServiceImpl implements PayService {
         return responseDto;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param responseDto 결제 정보
+     */
     @Override
     public void doPayment(PayConfirmResponseDto responseDto) {
 
         PayCreateRequestDto payCreateRequestDto = new PayCreateRequestDto(responseDto);
-        log.debug("payCraeteRequestDto {}", payCreateRequestDto);
+        log.debug("payCreateRequestDto {}", payCreateRequestDto);
         payAdaptor.doPay(payCreateRequestDto);
     }
 }

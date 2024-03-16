@@ -24,6 +24,11 @@ public class PayAdaptorImpl implements PayAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param payCreateRequestDto 결제 정보
+     */
     @Override
     public void doPay(PayCreateRequestDto payCreateRequestDto) {
 

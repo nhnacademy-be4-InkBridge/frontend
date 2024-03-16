@@ -10,5 +10,10 @@ import com.nhnacademy.inkbridge.front.dto.pay.PayCreateRequestDto;
  */
 public interface PayAdaptor {
 
+    /**
+     * 결제 생성을 Backend 서버로 요청합니다.
+     *
+     * @param payCreateRequestDto 결제 정보
+     */
     void doPay(PayCreateRequestDto payCreateRequestDto);
 }
