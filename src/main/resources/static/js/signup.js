@@ -80,6 +80,14 @@ async function emailCheck() {
 
     var emailInput = document.getElementById("email");
     var email = emailInput.value.trim();
+
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("올바른 이메일 주소를 입력하세요.");
+        emailInput.focus(); // 이메일 입력란에 포커스를 맞춤
+        return;
+    }
+
     const requestData = {
         email: email
     };
