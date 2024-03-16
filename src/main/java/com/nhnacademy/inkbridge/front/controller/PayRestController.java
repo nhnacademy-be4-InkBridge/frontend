@@ -35,7 +35,8 @@ public class PayRestController {
      */
     @PostMapping("/confirm/{vendor}")
     public ResponseEntity<PayConfirmResponseDto> confirmPayment(@RequestBody PayConfirmRequestDto requestDto, @PathVariable("vendor") String vendor) {
-        return ResponseEntity.status(HttpStatus.OK).body(payService.doConfirm(requestDto, vendor));
+        PayConfirmResponseDto body = payService.doConfirm(requestDto, vendor);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 }

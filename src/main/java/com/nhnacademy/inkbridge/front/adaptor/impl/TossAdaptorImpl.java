@@ -1,9 +1,8 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
-import com.nhnacademy.inkbridge.front.adaptor.PgAdaptor;
+import com.nhnacademy.inkbridge.front.adaptor.PaymentCompanyAdaptor;
 import com.nhnacademy.inkbridge.front.config.KeyConfig;
 import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmRequestDto;
-import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmResponseDto;
 import com.nhnacademy.inkbridge.front.property.TossProperties;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -19,7 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * class: PayAdaptorImpl.
+ * class: TossAdaptorImpl.
  *
  * @author jangjaehun
  * @version 2024/03/13
@@ -27,7 +26,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class TossAdaptorImpl implements PgAdaptor {
+public class TossAdaptorImpl implements PaymentCompanyAdaptor {
 
     private final RestTemplate restTemplate;
     private final TossProperties tossProperties;
@@ -40,7 +39,7 @@ public class TossAdaptorImpl implements PgAdaptor {
      * @return 요청 응답
      */
     @Override
-    public PayConfirmResponseDto doPayConfirm(PayConfirmRequestDto requestDto) {
+    public String doPayConfirm(PayConfirmRequestDto requestDto) {
         String apiKey = keyConfig.keyStore(tossProperties.getApiKey());
 
         Base64.Encoder encoder = Base64.getEncoder();
@@ -53,11 +52,11 @@ public class TossAdaptorImpl implements PgAdaptor {
 
         HttpEntity<PayConfirmRequestDto> entity = new HttpEntity<>(requestDto, httpHeaders);
 
-        ResponseEntity<PayConfirmResponseDto> exchange = restTemplate.exchange(
+        ResponseEntity<String> exchange = restTemplate.exchange(
             "https://api.tosspayments.com/v1/payments/confirm",
             HttpMethod.POST,
             entity,
-            PayConfirmResponseDto.class);
+            String.class);
 
         return exchange.getBody();
     }

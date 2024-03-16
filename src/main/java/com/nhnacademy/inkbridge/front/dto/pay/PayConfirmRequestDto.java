@@ -1,8 +1,7 @@
 package com.nhnacademy.inkbridge.front.dto.pay;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * class: PayReadResponseDto.
@@ -11,8 +10,7 @@ import lombok.Setter;
  * @version 2024/03/07
  */
 @Getter
-@NoArgsConstructor
-@Setter
+@AllArgsConstructor
 public class PayConfirmRequestDto {
 
     private String orderId;

@@ -1,6 +1,6 @@
 package com.nhnacademy.inkbridge.front.factory;
 
-import com.nhnacademy.inkbridge.front.adaptor.PgAdaptor;
+import com.nhnacademy.inkbridge.front.adaptor.PaymentCompanyAdaptor;
 import com.nhnacademy.inkbridge.front.adaptor.impl.TossAdaptorImpl;
 import com.nhnacademy.inkbridge.front.enums.PayMessageEnum;
 import com.nhnacademy.inkbridge.front.exception.NotFoundException;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class PaymentGatewayAdaptorFactory {
+public class PaymentCompanyAdaptorFactory {
 
     private final TossAdaptorImpl payAdaptor;
 
-    public PgAdaptor findMatchesAdaptor(String vendor) {
+    public PaymentCompanyAdaptor findMatchesAdaptor(String vendor) {
         if ("toss".equals(vendor)) {
             return payAdaptor;
         } else {
