@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/main_layout}">
 
@@ -19,12 +20,29 @@
 </th:block>
 
 <div layout:fragment="content" class="container">
-  <div class="text-center align-middle">
-    <p class="my-5 mb-3"><span class="material-symbols-rounded" style="font-size: 200px; color: #cfd9df">
-    check_circle
-    </span></p>
-    <p><span class="coding-regular">결제가 완료되었습니다</span></p>
-    <p class="coding-regular">주문 번호 : fec3b56066b64111bc2b9c83fd27bc00</p>
+  <div class="container">
+    <div class="mb-5">
+      <div class="text-center align-middle">
+        <p class="my-5 mb-3"><span class="material-symbols-rounded"
+                                   style="font-size: 200px; color: #cfd9df">check_circle</span></p>
+        <p><span class="coding-regular">결제가 완료되었습니다</span></p>
+      </div>
+      <div>
+      </div>
+    </div>
+    <div class="border rounded-3 p-5">
+      <table class="table table-borderless" style="line-height: 5vh;">
+        <tr>
+          <td>주문 번호</td>
+          <td class="text-center" th:text="${#request.getParameter('orderId')}"></td>
+        </tr>
+        <tr>
+          <td>주문 금액</td>
+          <td class="text-center" th:text="${#numbers.formatInteger(#request.getParameter('amount'), 1, 'COMMA')} + '원'"></td>
+        </tr>
+      </table>
+    </div>
+    <p style="padding: 8px; color: orangered" sec:authorize="isAnonymous()">&#8251; 주문 번호로 주문 정보를 조회할 수 있습니다.</p>
   </div>
 </div>
 <script src="/js/toss_pay_success.js"></script>
