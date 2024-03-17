@@ -299,6 +299,7 @@ a {
 .search-book-quantity-container {
     display: flex;
     justify-content: center;
+    margin-bottom: 0.5rem;
 }
 
 .search-book-quantity-container > div {
@@ -353,8 +354,8 @@ a {
 }
 
 .search-book-wish {
-    background-color: #BBE1FA;
-    border: 1px solid #BBE1FA;
+    background-color: #40bcd5;
+    border: 1px solid #40bcd5;
     color: #f7f7f7;
 }
 
