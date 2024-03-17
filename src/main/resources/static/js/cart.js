@@ -47,7 +47,7 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
       }
     } else {
       newVal = oldValue > 1 ? oldValue - 1 : 1;
-      totalPrice = newVal > 1 ? totalPrice - price : price;
+      totalPrice = newVal > 1 ? totalPrice - price : totalPrice;
     }
     this.parentElement.parentElement.querySelector('input').value = newVal;
     document.getElementById('totalPrice').textContent = totalPrice;
