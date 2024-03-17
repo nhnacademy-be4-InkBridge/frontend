@@ -35,7 +35,6 @@
         <div class="card-body">
           <h5 class="card-text" th:text="${coupon.couponName}">0월 생일 쿠폰</h5>
           <p class="card-text" th:text="${coupon.minPrice + '원 이상 구매시'}">1만원 이상 구매시</p>
-          <p class="card-text" th:text="${coupon.couponTypeId}"></p>
           <p class="card-text" th:if="${coupon.getCouponTypeId() == 1}"
              th:text="${coupon.discountPrice + '% 할인'}">30% 할인</p>
           <p class="card-text" th:if="${coupon.getCouponTypeId() == 2}"
