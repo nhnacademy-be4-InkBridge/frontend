@@ -15,8 +15,8 @@
 
 <div layout:fragment="content" class="container">
   <nav class="search-title-container">
-    <span class="search-title-keyword">' 자바 '</span>
-    <span class="search-title-sub-content">에 대한 8,939개의 검색 결과</span>
+    <span class="search-title-keyword" th:text="'\''+${text}+'\''"></span>
+    <span class="search-title-sub-content" th:text="'에 대한 '+ ${#numbers.formatInteger(count, 1, 'COMMA')} +'개의 검색 결과'"></span>
   </nav>
   <nav class="search-sub-title-container">
     <div class="search-sub-title">연관 검색어</div>
@@ -38,9 +38,10 @@
   <section class="search-book-container">
     <!--  정렬이랑 상품 개수    -->
     <div class="search-book-main">
-      <div class="search-book-count">전체 <span>8,939</span> 건</div>
+      <div class="search-book-count">전체 <span th:text="${#numbers.formatInteger(count, 1, 'COMMA')}"></span> 건</div>
       <div class="search-book-option-container">
         <ul class="search-book-order-list">
+          <li class="search-book-order-item">정확도순</li>
           <li class="search-book-order-item">인기도순</li>
           <li class="search-book-order-item">신상품순</li>
           <li class="search-book-order-item">최저가순</li>
@@ -76,211 +77,48 @@
     <!-- 상품 -->
     <div class="search-book-container">
       <div class="search-book-info-list">
-        <div class="search-book-item">
+        <div class="search-book-item" th:each="book : ${books}">
           <div class="search-book-image-container">
-            <div class="search-book-image">이미지</div>
+              <img class="search-book-image" th:src="${book.getFileUrl()}" alt="no image"
+            >
           </div>
           <div class="search-book-info-container">
             <div class="search-book-info-title">
-              <a href="">
-                명품 JAVA Programming
+              <a href="" th:text="${book.getBookTitle()}">
               </a>
             </div>
             <div class="search-book-info-author-container">
               <div class="search-book-info-author">
-                <a href="">황기태</a>
-                <a href="">김효수</a>
+                <a href="" th:each="author :${book.getAuthors()}" th:text="${author.getAuthorName()}"></a>
               </div>
               <div>저자</div>
             </div>
             <div class="search-book-info-publish-container">
               <div class="search-book-info-publisher">
-                <a href="">
-                  재훈출판사
+                <a href="" th:text="${book.getPublisherName()}">
                 </a>
               </div>
-              <div class="search-book-info-publish-date">
-                2024년 1월 1일
+              <div class="search-book-info-publish-date" th:text="${#temporals.format(book.getPublicatedAt(), 'yyyy년 MM월 dd일')}">
               </div>
             </div>
             <div class="search-book-info-price-container">
-              <span class="search-book-info-discount-rate">10%</span>
-              <span class="search-book-info-discount-price">25,000원</span>
-              <span class="search-book-info-original-price">33,000원</span>
+              <span class="search-book-info-discount-rate" th:text="${book.getDiscountRatio()} + '%'"></span>
+              <span class="search-book-info-discount-price" th:text="${book.getPrice()} + '원'"></span>
+              <span class="search-book-info-original-price" th:text="${book.getRegularPrice()} + '원'"></span>
             </div>
             <div class="search-book-info-review-container">
               <div class="search-book-info-review">평점</div>
               <div class="search-book-info-review-star">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-regular fa-star"></i>
+                <span th:each="star: ${#numbers.sequence(1,5)}">
+                 <i th:class="${book.getScore() != null && book.getScore() >= star ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i>
+                  </span>
               </div>
-              <div class="search-book-info-review-rate">9.8</div>
+              <div class="search-book-info-review-rate" th:text="${book.getScore()==null?0:book.getScore()}"></div>
+              <div th:text="'('+${book.getReviewQuantity()==null?0:book.getReviewQuantity()}+'개의 리뷰)'"></div>
             </div>
             <ul class="search-book-info-tag-container">
-              <li class="search-book-info-tag">
-                <a href="">#java</a>
-              </li>
-              <li class="search-book-info-tag">
-                <a href="">#프로그래밍</a>
-              </li>
-              <li class="search-book-info-tag">
-                <a href="">#자바</a>
-              </li>
-              <li class="search-book-info-tag">
-                <a href="">#21</a>
-              </li>
-            </ul>
-          </div>
-          <div class="search-book-button-container">
-            <div class="search-book-quantity-container">
-              <div class="search-book-quantity-minus">-</div>
-              <div class="search-book-quantity">3</div>
-              <div class="search-book-quantity-plus">+</div>
-            </div>
-            <div class="search-book-cart">
-              장바구니
-            </div>
-            <div class="search-book-buy">
-              바로 구매
-            </div>
-            <div class="search-book-wish">
-              찜하기
-            </div>
-          </div>
-        </div>
-        <div class="search-book-item">
-          <div class="search-book-image-container">
-            <div class="search-book-image">이미지</div>
-          </div>
-          <div class="search-book-info-container">
-            <div class="search-book-info-title">
-              <a href="">
-                명품 JAVA Programming
-              </a>
-            </div>
-            <div class="search-book-info-author-container">
-              <div class="search-book-info-author">
-                <a href="">황기태</a>
-                <a href="">김효수</a>
-              </div>
-              <div>저자</div>
-            </div>
-            <div class="search-book-info-publish-container">
-              <div class="search-book-info-publisher">
-                <a href="">
-                  재훈출판사
-                </a>
-              </div>
-              <div class="search-book-info-publish-date">
-                2024년 1월 1일
-              </div>
-            </div>
-            <div class="search-book-info-price-container">
-              <span class="search-book-info-discount-rate">10%</span>
-              <span class="search-book-info-discount-price">25,000원</span>
-              <span class="search-book-info-original-price">33,000원</span>
-            </div>
-            <div class="search-book-info-review-container">
-              <div class="search-book-info-review">평점</div>
-              <div class="search-book-info-review-star">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-regular fa-star"></i>
-              </div>
-              <div class="search-book-info-review-rate">9.8</div>
-            </div>
-            <ul class="search-book-info-tag-container">
-              <li class="search-book-info-tag">
-                <a href="">#java</a>
-              </li>
-              <li class="search-book-info-tag">
-                <a href="">#프로그래밍</a>
-              </li>
-              <li class="search-book-info-tag">
-                <a href="">#자바</a>
-              </li>
-              <li class="search-book-info-tag">
-                <a href="">#21</a>
-              </li>
-            </ul>
-          </div>
-          <div class="search-book-button-container">
-            <div class="search-book-quantity-container">
-              <div class="search-book-quantity-minus">-</div>
-              <div class="search-book-quantity">3</div>
-              <div class="search-book-quantity-plus">+</div>
-            </div>
-            <div class="search-book-cart">
-              장바구니
-            </div>
-            <div class="search-book-buy">
-              바로 구매
-            </div>
-            <div class="search-book-wish">
-              찜하기
-            </div>
-          </div>
-        </div>
-        <div class="search-book-item">
-          <div class="search-book-image-container">
-            <div class="search-book-image">이미지</div>
-          </div>
-          <div class="search-book-info-container">
-            <div class="search-book-info-title">
-              <a href="">
-                명품 JAVA Programming
-              </a>
-            </div>
-            <div class="search-book-info-author-container">
-              <div class="search-book-info-author">
-                <a href="">황기태</a>
-                <a href="">김효수</a>
-              </div>
-              <div>저자</div>
-            </div>
-            <div class="search-book-info-publish-container">
-              <div class="search-book-info-publisher">
-                <a href="">
-                  재훈출판사
-                </a>
-              </div>
-              <div class="search-book-info-publish-date">
-                2024년 1월 1일
-              </div>
-            </div>
-            <div class="search-book-info-price-container">
-              <span class="search-book-info-discount-rate">10%</span>
-              <span class="search-book-info-discount-price">25,000원</span>
-              <span class="search-book-info-original-price">33,000원</span>
-            </div>
-            <div class="search-book-info-review-container">
-              <div class="search-book-info-review">평점</div>
-              <div class="search-book-info-review-star">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-regular fa-star"></i>
-              </div>
-              <div class="search-book-info-review-rate">9.8</div>
-            </div>
-            <ul class="search-book-info-tag-container">
-              <li class="search-book-info-tag">
-                <a href="">#java</a>
-              </li>
-              <li class="search-book-info-tag">
-                <a href="">#프로그래밍</a>
-              </li>
-              <li class="search-book-info-tag">
-                <a href="">#자바</a>
-              </li>
-              <li class="search-book-info-tag">
-                <a href="">#21</a>
+              <li th:if="${tag.getTagName()!= null}" class="search-book-info-tag" th:each="tag:${book.getTags()}">
+                <a href="" th:text="'#'+${tag.getTagName()}"></a>
               </li>
             </ul>
           </div>
