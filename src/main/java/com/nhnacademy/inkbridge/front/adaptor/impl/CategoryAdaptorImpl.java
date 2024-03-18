@@ -47,7 +47,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
             .headers(httpHeaders)
             .body(requestDto);
 
-            restTemplate.exchange(requestEntity, CategoryCreateRequestDto.class);
+        restTemplate.exchange(requestEntity, CategoryCreateRequestDto.class);
 
     }
 
@@ -74,7 +74,8 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
     @Override
     public void updateCategory(Long categoryId, CategoryUpdateRequestDto requestDto) {
         HttpHeaders httpHeaders = CommonUtils.createHeader();
-        URI uri = buildUriComponents(DEFAULT_PATH).path("/{categoryId}").build().expand(categoryId).toUri();
+        URI uri = buildUriComponents(DEFAULT_PATH).path("/{categoryId}").build().expand(categoryId)
+            .toUri();
 
         RequestEntity<CategoryUpdateRequestDto> requestEntity = RequestEntity
             .put(uri)
