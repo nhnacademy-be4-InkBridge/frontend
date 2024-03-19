@@ -3,7 +3,6 @@ package com.nhnacademy.inkbridge.front.service;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.author.AuthorCreateUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.author.AuthorInfoReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.author.AuthorReadResponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -18,11 +17,11 @@ public interface AuthorService {
      * 작가 아이디에 따른 작가 상세와 도서 목록을 조회하는 메서드입니다.
      *
      * @param authorId Long
-     * @param page Long
-     * @param size Long
+     * @param page     Long
+     * @param size     Long
      * @return html
      */
-    AuthorReadResponseDto getAuthor(Long authorId, Long page, Long size);
+    AuthorInfoReadResponseDto getAuthor(Long authorId, Long page, Long size);
 
     /**
      * 관리자 페이지에서 작가를 전체 조회하는 메서드입니다.

@@ -4,7 +4,6 @@ import com.nhnacademy.inkbridge.front.adaptor.AuthorAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.author.AuthorCreateUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.author.AuthorInfoReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.author.AuthorReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.io.IOException;
@@ -49,7 +48,7 @@ public class AuthorAdaptorImpl implements AuthorAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public AuthorReadResponseDto getAuthor(Long authorId, Long page, Long size) {
+    public AuthorInfoReadResponseDto getAuthor(Long authorId, Long page, Long size) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(PATH)
@@ -61,7 +60,7 @@ public class AuthorAdaptorImpl implements AuthorAdaptor {
             .expand(authorId)
             .toUri();
 
-        ResponseEntity<AuthorReadResponseDto> exchange = restTemplate.exchange(uri, HttpMethod.GET,
+        ResponseEntity<AuthorInfoReadResponseDto> exchange = restTemplate.exchange(uri, HttpMethod.GET,
             new HttpEntity<>(CommonUtils.createHeader()),
             new ParameterizedTypeReference<>() {
             });

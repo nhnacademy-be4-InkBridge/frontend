@@ -4,7 +4,6 @@ import com.nhnacademy.inkbridge.front.adaptor.AuthorAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.author.AuthorCreateUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.author.AuthorInfoReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.author.AuthorReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.AuthorService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +27,7 @@ public class AuthorServiceImpl implements AuthorService {
      * {@inheritDoc}
      */
     @Override
-    public AuthorReadResponseDto getAuthor(Long authorId, Long page, Long size) {
+    public AuthorInfoReadResponseDto getAuthor(Long authorId, Long page, Long size) {
         return authorAdaptor.getAuthor(authorId, page, size);
     }
 

@@ -26,13 +26,4 @@
       </div>
   </div>
   <!--  작가 도서-->
-  <div>
-    <div class="card-body">
-          <div class="form-group d-flex" th:each="book: ${authorBooks.content}">
-            <img th:src="${book.fileUrl}" alt="no image">
-            <p class="form-control-static" th:text="${authorInfo.authorIntroduce}"></p>
-          </div>
-
-    </div>
-  </div>
 </div>
