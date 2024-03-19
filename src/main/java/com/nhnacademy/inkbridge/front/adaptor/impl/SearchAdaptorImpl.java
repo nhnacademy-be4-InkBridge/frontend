@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.SearchAdaptor;
+import com.nhnacademy.inkbridge.front.dto.search.BookSearchPageResponseDto;
 import com.nhnacademy.inkbridge.front.dto.search.BookSearchResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
@@ -8,6 +9,7 @@ import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -37,7 +39,7 @@ public class SearchAdaptorImpl implements SearchAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public List<BookSearchResponseDto> searchByText(String text, Pageable pageable) {
+    public BookSearchPageResponseDto searchByText(String text, Pageable pageable) {
         HttpHeaders httpHeaders = CommonUtils.createHeader();
         String sortStr = String.join(",", pageable.getSort().toString().split(": "));
         if (pageable.getSort() == Sort.unsorted()) {
@@ -58,7 +60,7 @@ public class SearchAdaptorImpl implements SearchAdaptor {
             .get(uri)
             .headers(httpHeaders)
             .build();
-        ResponseEntity<List<BookSearchResponseDto>> responseEntity = restTemplate.exchange(
+        ResponseEntity<BookSearchPageResponseDto> responseEntity = restTemplate.exchange(
             requestEntity,
             new ParameterizedTypeReference<>() {
             });
@@ -69,7 +71,7 @@ public class SearchAdaptorImpl implements SearchAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public List<BookSearchResponseDto> searchByAll(String field, Pageable pageable) {
+    public BookSearchPageResponseDto searchByAll(String field, Pageable pageable) {
         HttpHeaders httpHeaders = CommonUtils.createHeader();
         String sortStr = String.join(",", Sort.by(Order.desc(field)).toString().split(": "));
         URI uri = UriComponentsBuilder
@@ -87,7 +89,7 @@ public class SearchAdaptorImpl implements SearchAdaptor {
             .headers(httpHeaders)
             .build();
 
-        ResponseEntity<List<BookSearchResponseDto>> responseEntity = restTemplate.exchange(
+        ResponseEntity<BookSearchPageResponseDto> responseEntity = restTemplate.exchange(
             requestEntity, new ParameterizedTypeReference<>() {
             });
         return responseEntity.getBody();

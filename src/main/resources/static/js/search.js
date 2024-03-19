@@ -57,7 +57,7 @@ orderList.forEach((orderItem)=>{
     const currentUrl = new URL(window.location.href);
     const currentParams = currentUrl.searchParams;
     currentUrl.searchParams.set("page","0");
-    currentUrl.searchParams.set("size",currentParams.get("size")||20);
+    currentUrl.searchParams.set("size",currentParams.get("size")||10);
     currentUrl.searchParams.set("sort",sortStr||"");
     window.location.href= currentUrl.href;
   })

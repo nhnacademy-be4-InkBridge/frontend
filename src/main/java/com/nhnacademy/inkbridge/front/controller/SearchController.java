@@ -1,10 +1,12 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+import com.nhnacademy.inkbridge.front.dto.search.BookSearchPageResponseDto;
 import com.nhnacademy.inkbridge.front.dto.search.BookSearchResponseDto;
 import com.nhnacademy.inkbridge.front.service.SearchService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,17 +28,17 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping("search")
-    public String searchByText(@RequestParam String text, Pageable pageable, Model model) {
-        List<BookSearchResponseDto> books = searchService.searchByText(text, pageable);
-        model.addAttribute("books", books);
+    public String searchByText(@RequestParam String text, @PageableDefault(size=10) Pageable pageable, Model model) {
+        BookSearchPageResponseDto pageableBooks = searchService.searchByText(text, pageable);
+        model.addAttribute("books", pageableBooks.getContent());
         model.addAttribute("text",text);
-        model.addAttribute("count",books.size());
+        model.addAttribute("count",pageableBooks.getTotalElements());
         model.addAttribute("isSearch",true);
         return "search/search";
     }
 
     @GetMapping("/{field}")
-    public String searchByAll(@PathVariable String field, Pageable pageable, Model model){
+    public String searchByAll(@PathVariable String field, @PageableDefault(size=10) Pageable pageable, Model model){
         if(field.equals("popular-books")){
             field = "view";
         }else if(field.equals("new-books")){
@@ -44,8 +46,8 @@ public class SearchController {
         }else{
             throw new IllegalArgumentException();
         }
-        List<BookSearchResponseDto> books = searchService.searchByAll(field,pageable);
-        model.addAttribute("books",books);
+        BookSearchPageResponseDto pageableBooks = searchService.searchByAll(field,pageable);
+        model.addAttribute("books",pageableBooks.getContent());
         model.addAttribute("isSearch",false);
         return "search/search";
     }

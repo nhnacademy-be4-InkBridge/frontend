@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.service;
 
+import com.nhnacademy.inkbridge.front.dto.search.BookSearchPageResponseDto;
 import com.nhnacademy.inkbridge.front.dto.search.BookSearchResponseDto;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ public interface SearchService {
      * @param pageable - 페이지 기준
      * @return - 도서 집합
      */
-    List<BookSearchResponseDto> searchByText(String text, Pageable pageable);
+    BookSearchPageResponseDto searchByText(String text, Pageable pageable);
 
     /**
      * 인기도서, 신상도서 등 정렬된 기준에 맞는 책을 찾는 메소드입니다.
@@ -27,5 +28,5 @@ public interface SearchService {
      * @param pageable
      * @return - 도서 집합
      */
-    List<BookSearchResponseDto> searchByAll(String field, Pageable pageable);
+    BookSearchPageResponseDto searchByAll(String field, Pageable pageable);
 }
