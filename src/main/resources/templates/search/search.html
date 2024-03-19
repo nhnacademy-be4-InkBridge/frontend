@@ -79,12 +79,13 @@
       <div class="search-book-info-list">
         <div class="search-book-item" th:each="book : ${books}">
           <div class="search-book-image-container">
-              <img class="search-book-image" th:src="${book.getFileUrl()}" alt="no image"
-            >
+            <a th:href="@{/book(id=${book.getId()})}">
+              <img class="search-book-image" th:src="${book.getFileUrl()}" alt="no image">
+            </a>
           </div>
           <div class="search-book-info-container">
-            <div class="search-book-info-title">
-              <a href="" th:text="${book.getBookTitle()}">
+            <div class="search-book-info-title" th:attr="data-bookId=${book.getId()}">
+              <a th:href="@{/book(id=${book.getId()})}" th:text="${book.getBookTitle()}">
               </a>
             </div>
             <div class="search-book-info-author-container">
@@ -125,14 +126,14 @@
           <div class="search-book-button-container">
             <div class="search-book-quantity-container">
               <div class="search-book-quantity-btn">-</div>
-              <div class="search-book-quantity">3</div>
+              <div class="search-book-quantity">1</div>
               <div class="search-book-quantity-btn">+</div>
             </div>
             <div class="search-book-cart">
               장바구니
             </div>
             <div class="search-book-buy">
-              바로 구매
+              <a href="/orders">바로 구매</a>
             </div>
             <div class="search-book-wish">
               찜하기
