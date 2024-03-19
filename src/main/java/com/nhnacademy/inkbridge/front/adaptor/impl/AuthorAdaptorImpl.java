@@ -140,6 +140,9 @@ public class AuthorAdaptorImpl implements AuthorAdaptor {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateAuthor(MultipartFile authorFile,
         AuthorCreateUpdateRequestDto authorCreateUpdateRequestDto, Long authorId) {
