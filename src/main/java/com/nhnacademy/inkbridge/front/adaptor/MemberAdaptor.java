@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
+import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
@@ -51,4 +52,6 @@ public interface MemberAdaptor {
     void logout(String access, String refresh);
 
     ResponseEntity<Void> doLogin(String id, String password);
+
+    MemberPointReadResponseDto getPoint();
 }
