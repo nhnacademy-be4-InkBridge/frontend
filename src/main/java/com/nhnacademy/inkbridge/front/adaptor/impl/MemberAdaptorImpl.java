@@ -152,10 +152,11 @@ public class MemberAdaptorImpl implements MemberAdaptor {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         ResponseEntity<MemberPointReadResponseDto> responseEntity = restTemplate.exchange(
-            gatewayProperties.getUrl() + "/api/mygage/point", HttpMethod.GET, entity,
+            gatewayProperties.getUrl() + "/api/mygage/points", HttpMethod.GET, entity,
             new ParameterizedTypeReference<>() {
             });
         return responseEntity.getBody();
+    }
     @Override
     public ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto) {
         return restTemplate.exchange(

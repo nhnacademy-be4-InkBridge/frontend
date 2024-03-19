@@ -137,6 +137,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberPointReadResponseDto getPoint() {
         return memberAdaptor.getPoint();
+    }
 
     @Override
     public ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto) {
