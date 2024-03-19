@@ -67,6 +67,14 @@ a {
     border-bottom: 1px solid rgb(187 192 198);
 }
 
+.classify-book-option-container{
+    display:flex;
+    justify-content: end;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgb(187 192 198);
+}
+
 .search-book-order-list {
     display: flex;
     gap: 1rem;
@@ -97,14 +105,6 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.search-book-select-container > select {
-
-}
-
-.search-book-select {
-    /*padding:0.1rem 0.2rem;*/
 }
 
 .search-book-type-container {

@@ -31,10 +31,7 @@ items.forEach((item) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        bookId,
-        amount
-      }),
+      body: JSON.stringify({bookId, amount}),
     })
     .then((response) => response.json)
   })
@@ -48,14 +45,9 @@ function changeQuantity(amount, quantityDisplay) {
 }
 
 const setCookie = (bookId, amount) => {
-  let cookies = {
-    bookId: bookId,
-    amount: amount
-  };
-  let existingCookie = [];
-  existingCookie.push(cookies);
-  document.cookie = 'info=' + encodeURIComponent(JSON.stringify(existingCookie))
-      + '; path=/;';
+  let cookies = {bookId, amount};
+  let existingCookie = [cookies];
+  document.cookie = `info=${encodeURIComponent(JSON.stringify(existingCookie))}; path=/;`;
 };
 
 const orderList = document.querySelectorAll(".search-book-order-item");
@@ -68,6 +60,5 @@ orderList.forEach((orderItem)=>{
     currentUrl.searchParams.set("size",currentParams.get("size")||20);
     currentUrl.searchParams.set("sort",sortStr||"");
     window.location.href= currentUrl.href;
-    console.log(currentUrl.href);
   })
 })

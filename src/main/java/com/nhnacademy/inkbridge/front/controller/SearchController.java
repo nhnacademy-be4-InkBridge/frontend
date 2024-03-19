@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,17 +21,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/search")
 public class SearchController {
 
     private final SearchService searchService;
 
-    @GetMapping
+    @GetMapping("search")
     public String searchByText(@RequestParam String text, Pageable pageable, Model model) {
         List<BookSearchResponseDto> books = searchService.searchByText(text, pageable);
         model.addAttribute("books", books);
         model.addAttribute("text",text);
         model.addAttribute("count",books.size());
+        model.addAttribute("isSearch",true);
+        return "search/search";
+    }
+
+    @GetMapping("/{field}")
+    public String searchByAll(@PathVariable String field, Pageable pageable, Model model){
+        if(field.equals("popular-books")){
+            field = "view";
+        }else if(field.equals("new-books")){
+            field = "publicatedAt";
+        }else{
+            throw new IllegalArgumentException();
+        }
+        List<BookSearchResponseDto> books = searchService.searchByAll(field,pageable);
+        model.addAttribute("books",books);
+        model.addAttribute("isSearch",false);
         return "search/search";
     }
 }

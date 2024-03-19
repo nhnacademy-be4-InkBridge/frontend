@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class SearchAdaptorImpl implements SearchAdaptor {
     @Override
     public List<BookSearchResponseDto> searchByText(String text, Pageable pageable) {
         HttpHeaders httpHeaders = CommonUtils.createHeader();
-        String sortStr = String.join(",",pageable.getSort().toString().split(": "));
+        String sortStr = String.join(",", pageable.getSort().toString().split(": "));
         if (pageable.getSort() == Sort.unsorted()) {
             sortStr = "view,desc";
         }
@@ -70,13 +71,13 @@ public class SearchAdaptorImpl implements SearchAdaptor {
     @Override
     public List<BookSearchResponseDto> searchByAll(String field, Pageable pageable) {
         HttpHeaders httpHeaders = CommonUtils.createHeader();
+        String sortStr = String.join(",", Sort.by(Order.desc(field)).toString().split(": "));
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path("api/books/filter")
-            .queryParam("field", field)
             .queryParam("page", pageable.getPageNumber())
             .queryParam("size", pageable.getPageSize())
-            .queryParam("sort", pageable.getSort().toString())
+            .queryParam("sort", sortStr)
             .encode()
             .build()
             .toUri();
@@ -87,10 +88,8 @@ public class SearchAdaptorImpl implements SearchAdaptor {
             .build();
 
         ResponseEntity<List<BookSearchResponseDto>> responseEntity = restTemplate.exchange(
-            requestEntity,
-            new ParameterizedTypeReference<>() {
+            requestEntity, new ParameterizedTypeReference<>() {
             });
-
         return responseEntity.getBody();
     }
 }

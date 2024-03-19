@@ -14,43 +14,43 @@
 
 
 <div layout:fragment="content" class="container">
-  <nav class="search-title-container">
+  <nav class="search-title-container" th:if="${isSearch}">
     <span class="search-title-keyword" th:text="'\''+${text}+'\''"></span>
     <span class="search-title-sub-content" th:text="'에 대한 '+ ${#numbers.formatInteger(count, 1, 'COMMA')} +'개의 검색 결과'"></span>
   </nav>
-  <nav class="search-sub-title-container">
-    <div class="search-sub-title">연관 검색어</div>
-    <ul class="search-sub-title-list">
-      <li class="search-sub-title-item">
-        <a href="">css</a>
-      </li>
-      <li class="search-sub-title-item">
-        <a href="">html</a>
-      </li>
-      <li class="search-sub-title-item">
-        <a href="">자바</a>
-      </li>
-      <li class="search-sub-title-item">
-        <a href="">자바스크립트</a>
-      </li>
-    </ul>
-  </nav>
+<!--  <nav class="search-sub-title-container">-->
+<!--    <div class="search-sub-title">연관 검색어</div>-->
+<!--    <ul class="search-sub-title-list">-->
+<!--      <li class="search-sub-title-item">-->
+<!--        <a href="">css</a>-->
+<!--      </li>-->
+<!--      <li class="search-sub-title-item">-->
+<!--        <a href="">html</a>-->
+<!--      </li>-->
+<!--      <li class="search-sub-title-item">-->
+<!--        <a href="">자바</a>-->
+<!--      </li>-->
+<!--      <li class="search-sub-title-item">-->
+<!--        <a href="">자바스크립트</a>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </nav>-->
   <section class="search-book-container">
     <!--  정렬이랑 상품 개수    -->
     <div class="search-book-main">
-      <div class="search-book-count">전체 <span th:text="${#numbers.formatInteger(count, 1, 'COMMA')}"></span> 건</div>
-      <div class="search-book-option-container">
-        <ul class="search-book-order-list">
+      <div class="search-book-count" th:if="${isSearch}">전체 <span th:text="${#numbers.formatInteger(count, 1, 'COMMA')}"></span> 건</div>
+      <div th:classappend="${isSearch}?'search-book-option-container':'classify-book-option-container'">
+        <ul class="search-book-order-list" th:if="${isSearch}">
           <li class="search-book-order-item search-book-order-item-click">정확도순</li>
           <li class="search-book-order-item" data-name="view,desc">인기도순</li>
           <li class="search-book-order-item" data-name="publicatedAt,desc">신상품순</li>
-          <li class="search-book-order-item" data-name="price,asc">최저가순</li>
           <li class="search-book-order-item" data-name="price,desc">최고가순</li>
+          <li class="search-book-order-item" data-name="price,asc">최저가순</li>
           <li class="search-book-order-item" data-name="score,desc">평점순</li>
           <li class="search-book-order-item" data-name="reviewQuantity,desc">리뷰순</li>
         </ul>
         <div class="search-book-selects-container">
-          <div class="search-book-select-container">
+          <div class="search-book-selects-container" th:if="${isSearch}">
             <select class="search-book-select" name="" id="book-state">
               <option value="include">품절포함</option>
               <option value="exclude">품절제외</option>
@@ -90,13 +90,13 @@
             </div>
             <div class="search-book-info-author-container">
               <div class="search-book-info-author">
-                <a href="" th:each="author :${book.getAuthors()}" th:text="${author.getAuthorName()}"></a>
+                <a th:href="@{/search(text=${author.getAuthorName()})}" th:each="author :${book.getAuthors()}" th:text="${author.getAuthorName()}"></a>
               </div>
               <div>저자</div>
             </div>
             <div class="search-book-info-publish-container">
               <div class="search-book-info-publisher">
-                <a href="" th:text="${book.getPublisherName()}">
+                <a th:href="@{/search(text=${book.getPublisherName()})}" th:text="${book.getPublisherName()}">
                 </a>
               </div>
               <div class="search-book-info-publish-date" th:text="${#temporals.format(book.getPublicatedAt(), 'yyyy년 MM월 dd일')}">
@@ -104,8 +104,8 @@
             </div>
             <div class="search-book-info-price-container">
               <span class="search-book-info-discount-rate" th:text="${book.getDiscountRatio()} + '%'"></span>
-              <span class="search-book-info-discount-price" th:text="${book.getPrice()} + '원'"></span>
-              <span class="search-book-info-original-price" th:text="${book.getRegularPrice()} + '원'"></span>
+              <span class="search-book-info-discount-price" th:text="${#numbers.formatInteger(book.getPrice(), 1, 'COMMA')} + '원'"></span>
+              <span class="search-book-info-original-price" th:text="${#numbers.formatInteger(book.getRegularPrice(), 1, 'COMMA')} + '원'"></span>
             </div>
             <div class="search-book-info-review-container">
               <div class="search-book-info-review">평점</div>
