@@ -6,6 +6,7 @@ import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import java.io.IOException;
@@ -32,11 +33,11 @@ public interface BookAdaptor {
     /**
      * 카테고리 아이디에 따라 도서 목록을 조회하는 메서드입니다.
      *
-     * @param page Long
+     * @param page       Long
      * @param categoryId Long
      * @return BooksReadResponseDto
      */
-    BooksReadResponseDto getBooksByCategory(Long page, Long categoryId);
+    BooksByCategoryReadResponseDto getBooksByCategory(Long page, Long categoryId);
 
     /**
      * 도서 상세 페이지에서 도서 상세 정보를 조회하는 메서드입니다.
