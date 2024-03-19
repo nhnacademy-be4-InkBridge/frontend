@@ -157,7 +157,8 @@ a {
     height: 80%;
     width: 100%;
     margin-left: 1px;
-    border: 1px solid black;
+    border: 1px solid #eaeaea;
+    object-fit: cover;
 }
 
 .search-book-image:hover {
@@ -232,7 +233,7 @@ a {
 
 .search-book-info-publish-date::before {
     content: "|";
-    margin-left: 0.2rem;
+    margin: 0 0.2rem;
 }
 
 
@@ -308,20 +309,20 @@ a {
     box-sizing: border-box;
 }
 
-.search-book-quantity-minus {
+.search-book-quantity-container > div:first-child{
     border-radius: 6px 0 0 6px;
 }
 
-.search-book-quantity-minus:hover {
+.search-book-quantity-container > div:first-child:hover {
     cursor: pointer;
     background-color: #f7f7f7;
 }
 
-.search-book-quantity-plus {
+.search-book-quantity-container > div:last-child{
     border-radius: 0 6px 6px 0;
 }
 
-.search-book-quantity-plus:hover {
+.search-book-quantity-container > div:last-child:hover {
     cursor: pointer;
     background-color: #f7f7f7;
 }
