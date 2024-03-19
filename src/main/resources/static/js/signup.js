@@ -1,16 +1,16 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 
 
     // 폼 제출 전 필드 검증
     var submitButton = document.getElementById("submitButton");
     var signupForm = document.getElementById("signupForm");
 
-    submitButton.addEventListener("click", function(event) {
+    submitButton.addEventListener("click", function (event) {
         event.preventDefault();
 
         var email = document.getElementById("email").value;
-        var password = document.getElementById("inputValid").value;
-        var confirmPassword = document.getElementById("inputInvalid").value;
+        var password = document.getElementById("inputValid1").value;
+        var confirmPassword = document.getElementById("inputInvalid2").value;
         var memberName = document.getElementById("memberName").value;
         var birthday = document.getElementById("birthday").value;
         var phoneNumber = document.getElementById("phoneNumber").value;
@@ -23,34 +23,15 @@ document.addEventListener("DOMContentLoaded", function() {
         signupForm.submit();
     });
 
-    // 이메일 중복 확인
-    var checkDuplicateButton = document.getElementById("checkDuplicate");
-
-    checkDuplicateButton.addEventListener("click", function() {
-        var emailInput = document.getElementById("email");
-        var email = emailInput.value.trim();
-
-        // 이메일 형식 검사
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert("올바른 이메일 주소를 입력하세요.");
-            emailInput.focus(); // 이메일 입력란에 포커스를 맞춤
-            return;
-        }
-
-        // TODO: 여기에 나중에 서버에 Ajax 요청을 보내는 로직을 추가.
-        // TODO: Ajax 요청 후의 동작을 여기에 작성.
-    });
-
     // 비밀번호 유효성 검사
-    var passwordInput = document.getElementById("inputValid");
-    var confirmPasswordInput = document.getElementById("inputInvalid");
+    var passwordInput = document.getElementById("inputValid1");
+    var confirmPasswordInput = document.getElementById("inputInvalid2");
     var tooltip = document.querySelector(".invalid-tooltip");
     var feedbackMessage = document.querySelector(".invalid-feedback");
 
-    passwordInput.addEventListener("input", function() {
+    passwordInput.addEventListener("input", function () {
         var password = passwordInput.value.trim();
-        var passwordRegex = /^(?=.+[A-Z])(?=.+[a-z])(?=.+[0-9])(?=.+[\W_])[A-Za-z0-9\W_]{8,20}$/;
+        var passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,20}$/;
 
         if (!passwordRegex.test(password)) {
             tooltip.style.display = "block";
@@ -67,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    confirmPasswordInput.addEventListener("input", function() {
+    confirmPasswordInput.addEventListener("input", function () {
         var password = passwordInput.value.trim();
         var confirmPassword = confirmPasswordInput.value.trim();
 
@@ -93,3 +74,43 @@ document.addEventListener("DOMContentLoaded", function() {
     birthday.setAttribute("max", today.toISOString().split("T")[0]);
 
 });
+
+
+async function emailCheck() {
+
+    var emailInput = document.getElementById("email");
+    var email = emailInput.value.trim();
+
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("올바른 이메일 주소를 입력하세요.");
+        emailInput.focus(); // 이메일 입력란에 포커스를 맞춤
+        return;
+    }
+
+    const requestData = {
+        email: email
+    };
+
+    const response = await fetch("/checkEmail", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        console.log(data);
+    }
+
+    if (data === true) {
+        alert("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
+        emailInput.value = ''; // 이메일 입력란을 비움
+        emailInput.focus(); // 이메일 입력란에 포커스를 맞춤
+    } else {
+        alert("사용 가능한 이메일입니다.");
+    }
+}

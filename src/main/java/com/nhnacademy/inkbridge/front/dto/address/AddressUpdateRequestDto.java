@@ -1,10 +1,12 @@
 package com.nhnacademy.inkbridge.front.dto.address;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * class: AddressUpdateRequestDto.
@@ -14,9 +16,10 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
+@Setter
 public class AddressUpdateRequestDto {
 
-    @NotBlank
+    @NotNull
     private Long addressId;
 
     @NotBlank

@@ -77,18 +77,15 @@ public class OrderController {
         model.addAttribute("accumulationRatePolicy",
             accumulationRatePolicyService.getCurrentPolicy());
         model.addAttribute("wrappingList", wrappingService.getWrappingList(true));
-
         model.addAttribute("memberId", memberId);
 
         if (Objects.nonNull(memberId)) {
-            model.addAttribute("couponList", couponService.getOrderCoupons(memberId,
+             model.addAttribute("couponList", couponService.getOrderCoupons(memberId,
                 orderBooks.stream().map(book -> book.getBookId().toString())
-                    .collect(Collectors.toList())
-            ));
+                    .collect(Collectors.toList())));
 //            주소록 가져옴
 //            멤버 포인트 가져오기
         }
-
         return "order/orders";
     }
 
@@ -100,10 +97,9 @@ public class OrderController {
      */
     @PostMapping
     public String createOrder(@ModelAttribute OrderCreateRequestDto requestDto) {
+        String orderCode = orderService.createOrder(requestDto);
 
-        String orderId = orderService.createOrder(requestDto);
-
-        return "redirect:/pays?order-id=" + orderId;
+        return "redirect:/pays?order-code=" + orderCode;
     }
 
     /**

@@ -23,9 +23,9 @@ public interface OrderAdaptor {
     /**
      * 주문번호에 맞는 결제에 필요한 정보를 조회하는 메소드입니다.
      *
-     * @param orderId 주문 번호
+     * @param orderCode 주문 번호
      * @return 주문 결제 정보
      */
-    OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderId);
+    OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderCode);
 
 }

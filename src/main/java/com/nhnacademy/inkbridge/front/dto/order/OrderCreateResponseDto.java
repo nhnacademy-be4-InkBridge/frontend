@@ -14,4 +14,5 @@ import lombok.NoArgsConstructor;
 public class OrderCreateResponseDto {
 
     private String orderId;
+    private String orderCode;
 }

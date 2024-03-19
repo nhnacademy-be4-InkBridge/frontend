@@ -5,86 +5,90 @@
   <title>주소 수정</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container my-5">
   <h2 class="mb-4">주소 수정</h2>
+  <form id="addressForm" method="post" action="/mypage/address/update"><!-- 주소 별칭, 받는 사람, 전화번호 입력 필드 -->
 
   <!-- 숨겨진 입력 필드로 addressId 값을 포함 -->
-  <input type="hidden" id="addressId" th:value="${address.addressId}">
+  <input type="hidden" id="addressId" name="addressId" th:value="${address.addressId}">
 
   <div class="mb-3">
     <label for="alias" class="form-label">주소 별칭:</label>
-    <input type="text" class="form-control" th:value="${address.alias}" id="alias" placeholder="예: 집, 회사" required maxlength="20">
+    <input type="text" class="form-control" th:value="${address.alias}" id="alias" name="alias" placeholder="예: 집, 회사" required maxlength="20">
   </div>
 
   <div class="mb-3">
     <label for="receiverName" class="form-label">받는 사람:</label>
-    <input type="text" class="form-control" th:value="${address.receiverName}" id="receiverName" placeholder="받는 사람 이름" required maxlength="20">
+    <input type="text" class="form-control" th:value="${address.receiverName}" id="receiverName" name="receiverName" placeholder="받는 사람 이름" required maxlength="20">
   </div>
 
   <div class="mb-3">
     <label for="receiverNumber" class="form-label">전화번호:</label>
-    <input type="tel" class="form-control" th:value="${address.receiverNumber}" id="receiverNumber" placeholder="전화번호" required maxlength="11">
+    <input type="tel" class="form-control" th:value="${address.receiverNumber}" id="receiverNumber" name="receiverNumber" placeholder="전화번호" required maxlength="11">
   </div>
 
   <div class="input-group mb-2">
-    <input type="text" class="form-control" th:value="${address.zipCode}" id="zipCode" placeholder="우편번호" readonly>
+    <input type="text" class="form-control" th:value="${address.zipCode}" id="zipCode" name="zipCode" placeholder="우편번호" readonly>
     <button class="btn btn-outline-secondary" type="button" id="btnZipCode">우편번호 찾기</button>
   </div>
 
   <div class="mb-3">
-    <input type="text" class="form-control" th:value="${address.address}" id="address" placeholder="도로명주소" readonly>
+    <input type="text" class="form-control" th:value="${address.address}" id="address"  name="address" placeholder="도로명주소" readonly>
   </div>
 
   <div class="mb-3">
-    <input type="text" class="form-control" th:value="${address.addressDetail}" id="detailAddress" placeholder="상세주소" required maxlength="200">
+    <input type="text" class="form-control" th:value="${address.addressDetail}" id="addressDetail" name="addressDetail" placeholder="상세주소" required maxlength="200">
   </div>
 
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <button class="btn btn-primary" type="button" onclick="submitAddress()">확인</button>
+    <button class="btn btn-primary" type="submit">확인</button>
     <button class="btn btn-secondary" type="button" onclick="cancelAddress()">취소</button>
-  </div>
+  </div></form>
 </div>
 
 <script>
+  var element_layer = document.createElement('div');
+  element_layer.style.display = 'none';
+  document.body.appendChild(element_layer);
+
   function execDaumPostcode() {
     new daum.Postcode({
       oncomplete: function(data) {
         document.getElementById('zipCode').value = data.zonecode;
         document.getElementById('address').value = data.roadAddress;
         document.getElementById('detailAddress').focus();
-      }
-    }).open();
+        element_layer.style.display = 'none';
+      },
+      width: '100%',
+      height: '100%',
+      maxSuggestItems: 5
+    }).embed(element_layer);
+
+    element_layer.style.display = 'block';
+    initLayerPosition();
+  }
+
+  function initLayerPosition() {
+    var width = 300;
+    var height = 400;
+    var borderWidth = 2;
+
+    element_layer.style.width = width + 'px';
+    element_layer.style.height = height + 'px';
+    element_layer.style.border = borderWidth + 'px solid';
+    element_layer.style.left = (((window.innerWidth || document.documentElement.clientWidth) - width) / 2 - borderWidth) + 'px';
+    element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height) / 2 - borderWidth) + 'px';
   }
 
   document.getElementById('btnZipCode').addEventListener('click', execDaumPostcode);
 
   function submitAddress() {
-    var addressId = $('#addressId').val();
-    var addressData = {
-      alias: $('#alias').val(),
-      receiverName: $('#receiverName').val(),
-      receiverNumber: $('#receiverNumber').val(),
-      zipCode: $('#zipCode').val(),
-      address: $('#address').val(),
-      detailAddress: $('#detailAddress').val()
-    };
-
-    $.ajax({
-      url: '/mypage/address/update/' + addressId,
-      type: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify(addressData),
-      success: function() {
-        alert('주소가 성공적으로 수정되었습니다.');
-        window.location.href = '/mypage/address';
-      },
-      error: function() {
-        alert('주소 수정에 실패했습니다.');
-      }
-    });
+    document.getElementById("addressForm").submit();
   }
 
   function cancelAddress() {

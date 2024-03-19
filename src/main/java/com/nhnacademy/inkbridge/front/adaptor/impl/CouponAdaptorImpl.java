@@ -78,12 +78,11 @@ public class CouponAdaptorImpl implements CouponAdaptor {
         String url = gatewayProperties.getUrl() + "/api/admin/coupons";
         HttpEntity<CouponCreateRequestDto> httpEntity = new HttpEntity<>(couponCreateRequestDto,
             httpHeaders);
-        ResponseEntity<PageRequestDto<CouponReadResponseDto>> exchange = restTemplate.exchange(
+        ResponseEntity exchange = restTemplate.exchange(
             url,
             HttpMethod.POST,
             httpEntity,
-            new ParameterizedTypeReference<PageRequestDto<CouponReadResponseDto>>() {
-            }
+            void.class
         );
         if (!exchange.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed to retrieve coupons");
@@ -118,13 +117,14 @@ public class CouponAdaptorImpl implements CouponAdaptor {
         String url = String.format("%s/api/auth/members/%s/coupons/%s",
             gatewayProperties.getUrl(), memberId, couponId);
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<String> exchange =
-            restTemplate.exchange(url,
-                HttpMethod.POST, httpEntity,
-                new ParameterizedTypeReference<>() {
-                });
-        if (!exchange.getStatusCode().is2xxSuccessful()) {
-            throw new RuntimeException("Failed to retrieve coupons");
+        try {
+            ResponseEntity<String> exchange =
+                restTemplate.exchange(url,
+                    HttpMethod.POST, httpEntity,
+                    new ParameterizedTypeReference<>() {
+                    });
+        } catch (Exception e) {
+            //todo advice 처리하기
         }
     }
 
@@ -132,7 +132,6 @@ public class CouponAdaptorImpl implements CouponAdaptor {
     public PageRequestDto<CouponReadResponseDto> getIssuedCoupon(String memberId,
         Integer couponStatusId, Integer page, Integer size) {
         HttpHeaders httpHeaders = createHeader();
-
         String url = String.format("%s/api/auth/members/%s?coupon-status-id=%d&page=%d&size=%d",
             gatewayProperties.getUrl(), memberId, couponStatusId, page, size);
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
@@ -154,7 +153,7 @@ public class CouponAdaptorImpl implements CouponAdaptor {
 
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
-            .path("/api/members/{memberId}/order-coupons")
+            .path("/api/auth/members/{memberId}/order-coupons")
             .queryParam("book-id", String.join(",", bookIds))
             .encode()
             .build()

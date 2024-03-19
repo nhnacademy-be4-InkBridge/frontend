@@ -21,26 +21,6 @@ document.addEventListener("DOMContentLoaded", function() {
         signupForm.submit();
     });
 
-    // 이메일 중복 확인
-    var checkDuplicateButton = document.getElementById("checkDuplicate");
-
-    checkDuplicateButton.addEventListener("click", function() {
-        var emailInput = document.getElementById("email");
-        var email = emailInput.value.trim();
-
-        // 이메일 형식 검사
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert("올바른 이메일 주소를 입력하세요.");
-            emailInput.focus(); // 이메일 입력란에 포커스를 맞춤
-            return;
-        }
-
-        // TODO: 여기에 나중에 서버에 Ajax 요청을 보내는 로직을 추가.
-        // TODO: Ajax 요청 후의 동작을 여기에 작성.
-    });
-
-
     var birthday = document.getElementById("birthday");
 
     var today = new Date();
@@ -48,3 +28,35 @@ document.addEventListener("DOMContentLoaded", function() {
     birthday.setAttribute("max", today.toISOString().split("T")[0]);
 
 });
+
+
+async function emailCheck() {
+
+    var emailInput = document.getElementById("email");
+    var email = emailInput.value.trim();
+    const requestData = {
+        email: email
+    };
+
+    const response = await fetch("/checkEmail", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        console.log(data);
+    }
+
+    if (data === true) {
+        alert("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
+        emailInput.value = ''; // 이메일 입력란을 비움
+        emailInput.focus(); // 이메일 입력란에 포커스를 맞춤
+    } else {
+        alert("사용 가능한 이메일입니다.");
+    }
+}
