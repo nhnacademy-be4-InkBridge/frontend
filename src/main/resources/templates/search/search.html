@@ -41,13 +41,13 @@
       <div class="search-book-count">전체 <span th:text="${#numbers.formatInteger(count, 1, 'COMMA')}"></span> 건</div>
       <div class="search-book-option-container">
         <ul class="search-book-order-list">
-          <li class="search-book-order-item">정확도순</li>
-          <li class="search-book-order-item">인기도순</li>
-          <li class="search-book-order-item">신상품순</li>
-          <li class="search-book-order-item">최저가순</li>
-          <li class="search-book-order-item">최고가순</li>
-          <li class="search-book-order-item">평점순</li>
-          <li class="search-book-order-item">리뷰순</li>
+          <li class="search-book-order-item search-book-order-item-click">정확도순</li>
+          <li class="search-book-order-item" data-name="view,desc">인기도순</li>
+          <li class="search-book-order-item" data-name="publicatedAt,desc">신상품순</li>
+          <li class="search-book-order-item" data-name="price,asc">최저가순</li>
+          <li class="search-book-order-item" data-name="price,desc">최고가순</li>
+          <li class="search-book-order-item" data-name="score,desc">평점순</li>
+          <li class="search-book-order-item" data-name="reviewQuantity,desc">리뷰순</li>
         </ul>
         <div class="search-book-selects-container">
           <div class="search-book-select-container">

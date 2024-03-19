@@ -28,9 +28,6 @@ public class SearchController {
     @GetMapping
     public String searchByText(@RequestParam String text, Pageable pageable, Model model) {
         List<BookSearchResponseDto> books = searchService.searchByText(text, pageable);
-        for(BookSearchResponseDto book : books){
-            System.out.println(book.toString());
-        }
         model.addAttribute("books", books);
         model.addAttribute("text",text);
         model.addAttribute("count",books.size());

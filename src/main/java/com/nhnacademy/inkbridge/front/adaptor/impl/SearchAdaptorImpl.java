@@ -8,13 +8,9 @@ import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -42,14 +38,18 @@ public class SearchAdaptorImpl implements SearchAdaptor {
     @Override
     public List<BookSearchResponseDto> searchByText(String text, Pageable pageable) {
         HttpHeaders httpHeaders = CommonUtils.createHeader();
+        String sortStr = String.join(",",pageable.getSort().toString().split(": "));
+        if (pageable.getSort() == Sort.unsorted()) {
+            sortStr = "view,desc";
+        }
+
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path("api/search")
             .queryParam("text", text)
             .queryParam("page", pageable.getPageNumber())
             .queryParam("size", pageable.getPageSize())
-            .queryParam("sort",
-                "UNSORTED".equals(pageable.getSort().toString())?"":pageable.getSort().toString())
+            .queryParam("sort", sortStr)
             .encode()
             .build()
             .toUri();
@@ -59,7 +59,8 @@ public class SearchAdaptorImpl implements SearchAdaptor {
             .build();
         ResponseEntity<List<BookSearchResponseDto>> responseEntity = restTemplate.exchange(
             requestEntity,
-            new ParameterizedTypeReference<>() {});
+            new ParameterizedTypeReference<>() {
+            });
         return responseEntity.getBody();
     }
 
@@ -87,7 +88,8 @@ public class SearchAdaptorImpl implements SearchAdaptor {
 
         ResponseEntity<List<BookSearchResponseDto>> responseEntity = restTemplate.exchange(
             requestEntity,
-            new ParameterizedTypeReference<>() {});
+            new ParameterizedTypeReference<>() {
+            });
 
         return responseEntity.getBody();
     }

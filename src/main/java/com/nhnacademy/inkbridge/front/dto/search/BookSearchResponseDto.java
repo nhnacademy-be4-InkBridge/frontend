@@ -26,28 +26,6 @@ public class BookSearchResponseDto {
     private Long regularPrice;
     private Long price;
     private Double discountRatio;
-
-    @Override
-    public String toString() {
-        return "BookSearchResponseDto{" +
-            "id=" + id +
-            ", bookTitle='" + bookTitle + '\'' +
-            ", publicatedAt=" + publicatedAt +
-            ", regularPrice=" + regularPrice +
-            ", price=" + price +
-            ", discountRatio=" + discountRatio +
-            ", view=" + view +
-            ", score=" + score +
-            ", reviewQuantity=" + reviewQuantity +
-            ", publisherId=" + publisherId +
-            ", publisherName='" + publisherName + '\'' +
-            ", statusName='" + statusName + '\'' +
-            ", fileName='" + fileUrl + '\'' +
-            ", authors=" + authors +
-            ", tags=" + tags +
-            '}';
-    }
-
     private Long view;
     private Double score;
     private Long reviewQuantity;

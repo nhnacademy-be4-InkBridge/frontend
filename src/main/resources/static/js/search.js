@@ -37,8 +37,6 @@ items.forEach((item) => {
       }),
     })
     .then((response) => response.json)
-    .then((data) => console.log(data))
-
   })
 })
 
@@ -60,3 +58,16 @@ const setCookie = (bookId, amount) => {
       + '; path=/;';
 };
 
+const orderList = document.querySelectorAll(".search-book-order-item");
+orderList.forEach((orderItem)=>{
+  orderItem.addEventListener("click",()=>{
+    const sortStr=orderItem.getAttribute("data-name");
+    const currentUrl = new URL(window.location.href);
+    const currentParams = currentUrl.searchParams;
+    currentUrl.searchParams.set("page","0");
+    currentUrl.searchParams.set("size",currentParams.get("size")||20);
+    currentUrl.searchParams.set("sort",sortStr||"");
+    window.location.href= currentUrl.href;
+    console.log(currentUrl.href);
+  })
+})

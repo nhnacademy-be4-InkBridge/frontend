@@ -80,8 +80,7 @@ a {
 
 .search-book-order-item:hover {
     cursor: pointer;
-    color: black;
-    text-decoration: underline;
+    color: dodgerblue;
 }
 
 .search-book-order-item-click {
