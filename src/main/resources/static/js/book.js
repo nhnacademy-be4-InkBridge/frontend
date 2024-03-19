@@ -56,9 +56,53 @@ document.querySelectorAll('.fa-star').forEach(function (star) {
   });
 });
 
-document.getElementById('cart').addEventListener('submit', function (event) {
-  if (document.getElementById('amount').value === '0') {
-    event.preventDefault();
+document.getElementById('amount').addEventListener('change', function () {
+  const amount = document.getElementById('amount').value;
+  const replaceNotInt = /[^0-9]/gi;
+
+  if (amount < 1) {
     alert('최소 한 개 이상의 수량을 담아야 합니다.');
+    document.getElementById('amount').value = 1;
+  }
+  if (amount.match(replaceNotInt)) {
+    alert('숫자만 입력 가능합니다.');
+    document.getElementById('amount').value = 1;
   }
 });
+
+document.getElementById('cartButton').addEventListener("click", async (e) => {
+  const replaceNotInt = /[^0-9]/gi;
+
+  const bookId = document.getElementById('bookId').value;
+  const amount = document.getElementById('amount').value;
+
+  if (amount < 1) {
+    alert('최소 한 개 이상의 수량을 담아야 합니다.');
+    document.getElementById('amount').value = 1;
+    e.preventDefault();
+    return;
+  }
+
+  if (amount.match(replaceNotInt)) {
+    alert('숫자만 입력 가능합니다.');
+    document.getElementById('amount').value = 1;
+    e.preventDefault();
+    return;
+  }
+
+  console.log(bookId);
+  console.log(amount);
+
+  await fetch("/cart", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "bookId": bookId,
+      "amount": amount
+    }),
+  })
+  .then((response) => response.json)
+  .then((data) => console.log(data))
+})
