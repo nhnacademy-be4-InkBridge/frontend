@@ -133,7 +133,6 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.error("jwtFilter error {}", e.getMessage());
-            goLogout(response);
         } finally {
             SecurityContextHolder.clearContext();
         }

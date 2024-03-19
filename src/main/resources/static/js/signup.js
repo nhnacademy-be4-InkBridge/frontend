@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
 
         var email = document.getElementById("email").value;
-        var password = document.getElementById("inputValid").value;
-        var confirmPassword = document.getElementById("inputInvalid").value;
+        var password = document.getElementById("inputValid1").value;
+        var confirmPassword = document.getElementById("inputInvalid2").value;
         var memberName = document.getElementById("memberName").value;
         var birthday = document.getElementById("birthday").value;
         var phoneNumber = document.getElementById("phoneNumber").value;
