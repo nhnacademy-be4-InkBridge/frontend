@@ -7,6 +7,7 @@ import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
 
 import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
@@ -155,5 +156,13 @@ public class MemberAdaptorImpl implements MemberAdaptor {
             new ParameterizedTypeReference<>() {
             });
         return responseEntity.getBody();
+    @Override
+    public ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto) {
+        return restTemplate.exchange(
+                gatewayProperties.getUrl() + "/api/members/checkEmail",
+                HttpMethod.POST,
+                new HttpEntity<>(memberEmailRequestDto, createHeader()),
+                Boolean.class
+        );
     }
 }

@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 public class MemberCouponReadResponseDto {
 
-    private String memberCouponId;
+    private Long memberCouponId;
     private LocalDate expiredAt;
     private LocalDate usedAt;
     private String couponName;

@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
 import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
@@ -54,4 +55,7 @@ public interface MemberAdaptor {
     ResponseEntity<Void> doLogin(String id, String password);
 
     MemberPointReadResponseDto getPoint();
+
+    ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto);
+
 }

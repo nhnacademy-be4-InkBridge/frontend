@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.service;
 
 import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
 import javax.servlet.http.HttpServletResponse;
@@ -22,4 +23,6 @@ public interface MemberService {
     ResponseEntity<Void> doLogin(String email, String password);
 
     MemberPointReadResponseDto getPoint();
+  
+    ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto);
 }

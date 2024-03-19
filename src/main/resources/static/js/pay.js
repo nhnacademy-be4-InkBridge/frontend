@@ -5,7 +5,7 @@ function doPay() {
 
   // ------  결제위젯 초기화 ------
   let paymentWidget = memberId == null ? PaymentWidget(clientKey,
-      PaymentWidget.ANONYMOUS) : PaymentWidget(clientKey, memberId);
+      PaymentWidget.ANONYMOUS) : PaymentWidget(clientKey, memberId.toString().padStart(2, '0'));
 
 // ------  결제 UI 렌더링 ------
   paymentMethodWidget = paymentWidget.renderPaymentMethods(
@@ -21,7 +21,7 @@ function doPay() {
   document.getElementById("payment-button").addEventListener("click",
       function () {
         paymentWidget.requestPayment({
-          orderId: payInfo.orderId,
+          orderId: payInfo.orderCode,
           orderName: payInfo.orderName,
           successUrl: window.location.origin + "/pays/success",
           failUrl: window.location.origin + "/pays/fail",
