@@ -5,6 +5,78 @@ document.addEventListener("DOMContentLoaded", function () {
     var submitButton = document.getElementById("submitButton");
     var signupForm = document.getElementById("signupForm");
 
+
+    // 각각의 필드 유효성 검증 여부를 저장할 변수
+    var isEmailValid = false;
+    var isPasswordValid = false;
+    var isPhoneNumberValid = false;
+
+    // 이메일 중복 확인 버튼 클릭 시 이벤트 처리
+    var checkDuplicateButton = document.getElementById("checkDuplicate");
+    checkDuplicateButton.addEventListener("click", function () {
+        emailCheck();
+    });
+
+    async function emailCheck() {
+        var emailInput = document.getElementById("email");
+        var email = emailInput.value.trim();
+
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("올바른 이메일 주소를 입력하세요.");
+            emailInput.focus(); // 이메일 입력란에 포커스를 맞춤
+            isEmailValid = false;
+            return;
+        }
+
+        const requestData = {
+            email: email
+        };
+
+        const response = await fetch("/checkEmail", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.log(data);
+        }
+
+        if (data === true) {
+            alert("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
+            emailInput.value = ''; // 이메일 입력란을 비움
+            emailInput.focus(); // 이메일 입력란에 포커스를 맞춤
+            isEmailValid = false;
+        } else {
+            alert("사용 가능한 이메일입니다.");
+            isEmailValid = true;
+        }
+    }
+
+
+    var phoneNumberInput = document.getElementById("phoneNumber");
+    var phoneNumberFeedback = document.getElementById("phoneNumberFeedback");
+
+    phoneNumberInput.addEventListener("input", function () {
+        var phoneNumber = phoneNumberInput.value.trim();
+        var phoneNumberRegex = /^010\d{8}$/;
+
+        if (!phoneNumberRegex.test(phoneNumber)) {
+            phoneNumberInput.classList.add("is-invalid");
+            phoneNumberFeedback.style.display = "block";
+            isPhoneNumberValid = false;
+        } else {
+            phoneNumberInput.classList.remove("is-invalid");
+            phoneNumberFeedback.style.display = "none";
+            isPhoneNumberValid = true;
+        }
+    });
+
     submitButton.addEventListener("click", function (event) {
         event.preventDefault();
 
@@ -15,12 +87,17 @@ document.addEventListener("DOMContentLoaded", function () {
         var birthday = document.getElementById("birthday").value;
         var phoneNumber = document.getElementById("phoneNumber").value;
 
+
         if (email === "" || password === "" || confirmPassword === "" || memberName === "" || birthday === "" || phoneNumber === "") {
             alert("모든 필드를 채워주세요.");
             return;
         }
-
-        signupForm.submit();
+        // 모든 필드의 유효성 검사를 통과한 경우에만 제출
+        if (isEmailValid && isPasswordValid && isPhoneNumberValid) {
+            signupForm.submit();
+        } else {
+            alert("입력한 정보를 확인하세요.");
+        }
     });
 
     // 비밀번호 유효성 검사
@@ -36,9 +113,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!passwordRegex.test(password)) {
             tooltip.style.display = "block";
             passwordInput.classList.add("is-invalid");
+            isPasswordValid = false;
         } else {
             tooltip.style.display = "none";
             passwordInput.classList.remove("is-invalid");
+            isPasswordValid = true;
         }
 
         // 내용이 지워질 때 알림창 사라지게 함
@@ -55,9 +134,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (password !== confirmPassword) {
             feedbackMessage.style.display = "block";
             confirmPasswordInput.classList.add("is-invalid");
+            isPasswordValid = false;
         } else {
             feedbackMessage.style.display = "none";
             confirmPasswordInput.classList.remove("is-invalid");
+            isPasswordValid = true;
         }
 
         // 내용이 지워질 때 알림창 사라지게 함
@@ -74,43 +155,3 @@ document.addEventListener("DOMContentLoaded", function () {
     birthday.setAttribute("max", today.toISOString().split("T")[0]);
 
 });
-
-
-async function emailCheck() {
-
-    var emailInput = document.getElementById("email");
-    var email = emailInput.value.trim();
-
-    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert("올바른 이메일 주소를 입력하세요.");
-        emailInput.focus(); // 이메일 입력란에 포커스를 맞춤
-        return;
-    }
-
-    const requestData = {
-        email: email
-    };
-
-    const response = await fetch("/checkEmail", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-        console.log(data);
-    }
-
-    if (data === true) {
-        alert("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
-        emailInput.value = ''; // 이메일 입력란을 비움
-        emailInput.focus(); // 이메일 입력란에 포커스를 맞춤
-    } else {
-        alert("사용 가능한 이메일입니다.");
-    }
-}
