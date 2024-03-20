@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var isEmailValid = false;
     var isPasswordValid = false;
     var isPhoneNumberValid = false;
+    var isDooraySendValid = false;
 
     // 이메일 중복 확인 버튼 클릭 시 이벤트 처리
     var checkDuplicateButton = document.getElementById("checkDuplicate");
@@ -93,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         // 모든 필드의 유효성 검사를 통과한 경우에만 제출
-        if (isEmailValid && isPasswordValid && isPhoneNumberValid) {
+        if (isEmailValid && isPasswordValid && isPhoneNumberValid && isDooraySendValid) {
             signupForm.submit();
         } else {
             alert("입력한 정보를 확인하세요.");
@@ -153,5 +154,60 @@ document.addEventListener("DOMContentLoaded", function () {
     var today = new Date();
 
     birthday.setAttribute("max", today.toISOString().split("T")[0]);
+
+
+    var sendVerificationCodeButton = document.getElementById("sendVerificationCode");
+    var confirmVerificationCodeButton = document.getElementById("confirmVerificationCode");
+    var checkDooraySend = false;
+
+    // 전송 버튼 클릭 시
+    sendVerificationCodeButton.addEventListener("click", function () {
+        if (isPhoneNumberValid === false) {
+            alert("전화번호를 입력해주세요.")
+            return;
+        }
+        if (checkDooraySend === false) {
+            sendVerificationCode();
+            checkDooraySend = true;
+        }else{
+            alert("전송된 숫자를 적어주세요.");
+        }
+        // 전송 버튼 숨기고 인증번호 입력 버튼 보이기
+        document.getElementById("verificationLabel").style.display = "inline-block";
+        document.getElementById("verificationCode").style.display = "inline-block";
+        document.getElementById("confirmVerificationCode").style.display = "inline-block";
+    });
+
+    // 인증번호 확인 버튼 클릭 시
+    confirmVerificationCodeButton.addEventListener("click", function () {
+        var confirmCodeInput = document.getElementById("verificationCode")
+        var confirmCode = confirmCodeInput.value.trim();
+        if (certificationMessage === confirmCode) {
+            isDooraySendValid = true;
+            checkDooraySend = true;
+            alert("인증 성공");
+        } else {
+            alert("인증을 다시 시도해주세요.");
+            confirmCodeInput.value = ''; // 이메일 입력란을 비움
+            confirmCodeInput.focus(); // 이메일 입력란에 포커스를 맞춤
+            isDooraySendValid = false;
+            checkDooraySend = false;
+        }
+    });
+
+    // 전송 함수
+    async function sendVerificationCode() {
+        const response = await fetch("/dooraySend", {
+            method: "POST",
+        });
+
+        if (!response.ok) {
+            console.error("Failed to send verification code");
+            return;
+        }
+        certificationMessage = await response.text();
+        alert("인증번호가 메신저로 전송되었습니다.");
+    }
+
 
 });
