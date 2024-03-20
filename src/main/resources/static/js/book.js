@@ -26,7 +26,9 @@ const setCookie = () => {
 };
 
 // markdownit 라이브러리를 사용해 markdown을 html로 변환
-window.onload = function () {
+window.addEventListener('load', convertMarkdown);
+
+function convertMarkdown() {
   const md = window.markdownit();
   const description = document.getElementById('description');
   const content = [];
@@ -36,17 +38,18 @@ window.onload = function () {
     content.push(md.render(splitContent[i]));
   }
   description.innerHTML = content.join('');
-};
+}
 
-document.querySelectorAll('.fa-star').forEach(function (star) {
-  star.addEventListener('click', function () {
-    var rating = parseInt(this.getAttribute('data-rating'));
-    document.querySelectorAll('.fa-star').forEach(function (star, index) {
-      if (index < rating) {
-        star.classList.remove('text-muted');
-      } else {
-        star.classList.add('text-muted');
-      }
-    });
-  });
-});
+
+// document.querySelectorAll('.fa-star').forEach(function (star) {
+//   star.addEventListener('click', function () {
+//     var rating = parseInt(this.getAttribute('data-rating'));
+//     document.querySelectorAll('.fa-star').forEach(function (star, index) {
+//       if (index < rating) {
+//         star.classList.remove('text-muted');
+//       } else {
+//         star.classList.add('text-muted');
+//       }
+//     });
+//   });
+// });

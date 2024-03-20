@@ -4,6 +4,10 @@ import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,9 +20,13 @@ import org.springframework.stereotype.Service;
 public class IndexServiceImpl implements IndexService {
 
     private final BookAdaptor bookAdaptor;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    public IndexServiceImpl(BookAdaptor bookAdaptor) {
+
+    public IndexServiceImpl(BookAdaptor bookAdaptor,
+        @Qualifier(value = "redisTemplateForBook") RedisTemplate<String, Object> redisTemplate) {
         this.bookAdaptor = bookAdaptor;
+        this.redisTemplate = redisTemplate;
     }
 
     /**
@@ -41,7 +49,10 @@ public class IndexServiceImpl implements IndexService {
      * {@inheritDoc}
      */
     @Override
-    public BookReadResponseDto getBook(Long bookId) {
-        return bookAdaptor.getBook(bookId);
+    public BookReadResponseDto getBook(Long bookId, Long memberId) {
+        HashOperations<String, String, Object> hashOperations = redisTemplate.opsForHash();
+        Map<String, Object> entries = hashOperations.entries(String.valueOf(memberId));
+
+        return bookAdaptor.getBook(bookId, memberId);
     }
 }

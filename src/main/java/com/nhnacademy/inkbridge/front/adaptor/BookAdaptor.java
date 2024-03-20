@@ -41,10 +41,11 @@ public interface BookAdaptor {
     /**
      * 도서 상세 페이지에서 도서 상세 정보를 조회하는 메서드입니다.
      *
-     * @param bookId Long
+     * @param bookId   Long
+     * @param memberId Long
      * @return BookReadResponseDto
      */
-    BookReadResponseDto getBook(Long bookId);
+    BookReadResponseDto getBook(Long bookId, Long memberId);
 
     /**
      * 장바구니의 도서 아이디로 도서 상세 정보를 조회하는 메서드입니다.

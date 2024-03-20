@@ -58,11 +58,11 @@
                   </h5>
                   <div class="mb-3">
                     <span>정가 </span><h5 class="fw-bold mb-4 d-sm-inline"
-                                        th:text="${book.regularPrice}"
+                                        th:text="${#numbers.formatInteger(book.regularPrice, 0, 'COMMA')}"
                                         id="regularPrice"></h5><span> 원</span>
                   </div>
                   <div class="mb-3">
-                    <span>판매가 </span><h5 class="fw-bold mb-3 d-sm-inline" th:text="${book.price}"
+                    <span>판매가 </span><h5 class="fw-bold mb-3 d-sm-inline" th:text="${#numbers.formatInteger(book.price, 0, 'COMMA')}"
                                          id="price"></h5>
                     <span>원</span>
                   </div>
@@ -148,39 +148,52 @@
               </div>
             </div>
           </form>
-          <form action="#" method="post">
-            <h4 class="mb-5">리뷰</h4>
-            <div class="row g-4 p-4 card">
-              <div class="col-lg-12">
-                <div class="d-flex justify-content-between py-3">
-                  <div class="d-flex align-items-center">
-                    <div class="d-flex align-items-center" style="font-size: 20px;">
-                      <i class="fa fa-star text-muted" data-rating="1"></i>
-                      <i class="fa fa-star text-muted" data-rating="2"></i>
-                      <i class="fa fa-star text-muted" data-rating="3"></i>
-                      <i class="fa fa-star text-muted" data-rating="4"></i>
-                      <i class="fa fa-star text-muted" data-rating="5"></i>
-                    </div>
+          <h4 class="mb-5" th:text="'리뷰 (' + ${#numbers.formatInteger(reviews.totalElements, 0, 'COMMA')} + ')'"></h4>
+          <div class="row g-4 p-4 card">
+            <div class="col-lg-12">
+              <div class="text-center">평균 별점</div>
+              <div class="d-flex justify-content-center py-3">
+                <div class="d-flex align-items-center"
+                     th:with="avg=${#numbers.formatInteger(5 - reviewNumber.avg, 0)}">
+                  <div class="d-flex align-items-center" style="font-size: 20px;">
+                    <i class="fa-solid fa-star"
+                       th:each="i : ${#numbers.sequence(1, reviewNumber.avg)}"></i>
+                    <i class="fa-regular fa-star" th:if="${reviewNumber.avg > 0}"
+                       th:each="i : ${#numbers.sequence(1, avg)}"></i>
+                    <span th:text="${reviewNumber.avg}" class="h4"
+                          id="avgStar"></span><span>/ 5.0</span>
                   </div>
-                  <button type="submit"
-                          class="btn border border-secondary text-primary rounded-pill px-4 py-3">
-                    리뷰 남기기
-                  </button>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="border-bottom rounded">
-                  <input type="text" class="form-control border-0 me-4" placeholder="리뷰 제목">
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="border-bottom rounded my-4">
-                    <textarea name="" id="" class="form-control border-0" cols="30" rows="8"
-                              placeholder="리뷰 내용" spellcheck="false"></textarea>
                 </div>
               </div>
             </div>
-          </form>
+            <div class="col-lg-auto" th:each="review: ${reviews.content}" th:if="${reviews!=null}">
+              <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center"
+                     th:with="score=${5 - review.score}">
+                  <i class="fa-solid fa-star"
+                     th:each="i : ${#numbers.sequence(1, review.score)}"></i>
+                  <i class="fa-regular fa-star" th:if="${score > 0}"
+                     th:each="i : ${#numbers.sequence(1, score)}"></i>
+                  <span>  (</span><span th:text="${review.score}" id="star"></span><span>)</span>
+                </div>
+              </div>
+              <div class="col-lg-auto">
+                <div class="form-control border-0 me-4" th:text="${review.reviewTitle}">
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-control border-0" th:text="${review.reviewContent}"></div>
+              </div>
+              <!--              <div class="d-flex" style="width: 100%;" th:if="!${review.fileUrls.isEmpty()}">-->
+              <!--                <span th:text="${review.fileUrls.isEmpty()}"></span>-->
+              <!--                <span th:text="${review.fileUrls.size()}"></span>-->
+              <!--                <span th:text="${review.fileUrls}"></span>-->
+              <!--                <img th:src="${img}" alt="no image" th:each="img: ${review.fileUrls}" th:if="!${img.isBlank()}"-->
+              <!--                     class="mx-lg-2" style="height: 120px;">-->
+              <!--              </div>-->
+              <hr>
+            </div>
+          </div>
         </div>
       </div>
     </div>

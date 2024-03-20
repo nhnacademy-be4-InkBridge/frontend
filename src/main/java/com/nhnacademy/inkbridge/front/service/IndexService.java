@@ -30,8 +30,9 @@ public interface IndexService {
     /**
      * 도서 상세 정보를 조회하는 메서드입니다.
      *
-     * @param bookId Long
+     * @param bookId   Long
+     * @param memberId Long
      * @return BookReadResponseDto
      */
-    BookReadResponseDto getBook(Long bookId);
+    BookReadResponseDto getBook(Long bookId, Long memberId);
 }

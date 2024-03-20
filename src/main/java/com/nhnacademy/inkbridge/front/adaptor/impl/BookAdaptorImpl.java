@@ -114,11 +114,12 @@ public class BookAdaptorImpl implements BookAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public BookReadResponseDto getBook(Long bookId) {
+    public BookReadResponseDto getBook(Long bookId, Long memberId) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(MAIN_PATH)
             .path(BOOK_ID)
+            .queryParam("memberId", memberId)
             .encode()
             .build()
             .expand(bookId)
@@ -295,11 +296,11 @@ public class BookAdaptorImpl implements BookAdaptor {
             .expand(bookId)
             .toUri();
 
-        ResponseEntity<Void> exchange = restTemplate.exchange(
+        ResponseEntity<HttpStatus> exchange = restTemplate.exchange(
             uri,
             HttpMethod.PUT,
             new HttpEntity<>(multiValueMap, multipartHeader),
-            void.class);
+            HttpStatus.class);
 
         if (exchange.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();

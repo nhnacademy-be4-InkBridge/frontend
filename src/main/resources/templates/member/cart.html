@@ -43,14 +43,16 @@
             <td>
               <input type="hidden" id="bookId" th:value="${book.bookId}">
               <input type="hidden" id="isPackagable" th:value="${book.isPackagable}">
-              <a class="mb-0 mt-4 hide-href" th:text="${book.bookTitle}" th:href="@{/book(id=${book.bookId})}"
+              <a class="mb-0 mt-4 hide-href" th:text="${book.bookTitle}"
+                 th:href="@{/book(id=${book.bookId})}"
                  id="bookTitle"></a>
             </td>
             <td>
               <div style="text-decoration: line-through">
-                <span id="regularPrice" th:text="${book.regularPrice}"></span><span>원</span>
+                <span id="regularPrice" th:text="${#numbers.formatInteger(book.regularPrice, 0, 'COMMA')}"></span><span>원</span>
               </div>
-              <span id="price" th:text="${book.price}"></span><span
+              <span id="price"
+                    th:text="${#numbers.formatInteger(book.price,0, 'COMMA')}"></span><span
                 th:text="'원(' + ${book.discountRatio} + '% 할인)'"></span>
             </td>
             <td>

@@ -24,6 +24,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableRedisHttpSession
 @Configuration
 public class RedisConfig implements BeanClassLoaderAware {
+
     @Value("${inkbridge.redis.host}")
     private String host;
     @Value("${inkbridge.redis.port}")
@@ -32,8 +33,11 @@ public class RedisConfig implements BeanClassLoaderAware {
     private String password;
     @Value("${inkbridge.redis.database}")
     private String database;
+    @Value("${inkbridge.redis.database.book}")
+    private String bookDatabase;
 
     private ClassLoader classLoader;
+
     /**
      * redis 연결 위한 빈 설정
      *
@@ -46,6 +50,17 @@ public class RedisConfig implements BeanClassLoaderAware {
         configuration.setPort(Integer.parseInt(port));
         configuration.setPassword(password);
         configuration.setDatabase(Integer.parseInt(database));
+
+        return new LettuceConnectionFactory(configuration);
+    }
+
+    @Bean
+    public RedisConnectionFactory redisConnectionFactoryForBook() {
+        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
+        configuration.setHostName(host);
+        configuration.setPort(Integer.parseInt(port));
+        configuration.setPassword(password);
+        configuration.setDatabase(Integer.parseInt(bookDatabase));
 
         return new LettuceConnectionFactory(configuration);
     }
@@ -64,6 +79,18 @@ public class RedisConfig implements BeanClassLoaderAware {
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return redisTemplate;
+    }
+
+    @Bean(value = "redisTemplateForBook")
+    public RedisTemplate<String, Object> redisTemplateForBook() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactoryForBook());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
