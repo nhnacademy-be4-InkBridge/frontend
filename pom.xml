@@ -16,6 +16,19 @@
     <properties>
         <java.version>11</java.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>release</id>
+            <url>https://github.com/edu-springboot/edu-springboot-maven-repo/raw/master/releases</url>
+        </repository>
+
+        <repository>
+            <id>snapshot</id>
+            <url>https://github.com/edu-springboot/edu-springboot-maven-repo/raw/master/snapshots</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -96,6 +109,11 @@
             <artifactId>httpclient</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+        </dependency>
+
         <!--json -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
@@ -103,9 +121,11 @@
             <version>1.1.1</version>
         </dependency>
 
+        <!--dooray api-->
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
+            <groupId>com.nhn.dooray.messenger</groupId>
+            <artifactId>dooray-hook-sender</artifactId>
+            <version>1.2.0-RELEASE</version>
         </dependency>
 
     </dependencies>
