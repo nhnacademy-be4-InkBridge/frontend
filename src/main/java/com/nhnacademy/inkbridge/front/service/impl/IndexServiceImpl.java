@@ -9,6 +9,7 @@ import com.nhnacademy.inkbridge.front.dto.book.BookRedisReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -61,10 +62,7 @@ public class IndexServiceImpl implements IndexService {
 
         ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
 
-        if (valueOperations.get(String.valueOf(bookId)) != null) {
-            // 레디스에 도서 번호가 존재하면 view에 +1
-            valueOperations.increment(bookId + "view", 1);
-        } else {
+        if (Objects.isNull(valueOperations.get(String.valueOf(bookId)))) {
             // 존재하지 않으면 레디스에 도서 정보 저장
             try {
                 redisTemplate.opsForValue()
@@ -79,6 +77,7 @@ public class IndexServiceImpl implements IndexService {
                 throw new RuntimeException(e);
             }
         }
+        valueOperations.increment(bookId + "view", 1);
 
         return book;
     }

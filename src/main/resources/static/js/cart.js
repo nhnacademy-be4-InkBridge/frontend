@@ -86,6 +86,9 @@ function setTotalPrice() {
     let amountValue = element.parentElement.parentElement.querySelector(
         'input[name="amount"]').value;
     totalPrice += parseInt(element.textContent) * amountValue;
+
+    console.log('amount: ' + amountValue);
+    console.log('total: ' + parseInt(element.textContent));
   });
   document.getElementById('totalPrice').textContent = totalPrice;
 }

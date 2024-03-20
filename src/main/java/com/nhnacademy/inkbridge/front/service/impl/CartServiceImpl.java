@@ -84,7 +84,7 @@ public class CartServiceImpl implements CartService {
             }
         }
 
-        if (bookNotInRedis.isEmpty()) {
+        if (!bookNotInRedis.isEmpty()) {
             List<CartBookReadResponseDto> cartBookInfo = getCartBookInfo(bookNotInRedis);
             cartBookInfo.forEach(
                 cartBookReadResponseDto -> book.put(

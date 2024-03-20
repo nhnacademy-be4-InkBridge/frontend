@@ -1,12 +1,10 @@
 package com.nhnacademy.inkbridge.front.controller;
 
 import com.nhnacademy.inkbridge.front.dto.book.BookRedisReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartRedisCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.CartService;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -59,7 +57,8 @@ public class CartController {
         }
 
         Map<String, Long> cartInfo = cartService.getCartRedis(memberId);
-        Map<String, BookRedisReadResponseDto> bookInfo = cartService.getBookInfo(new ArrayList<>(cartInfo.keySet()));
+        Map<String, BookRedisReadResponseDto> bookInfo = cartService.getBookInfo(
+            new ArrayList<>(cartInfo.keySet()));
         model.addAttribute("cartInfo", cartInfo);
         model.addAttribute("bookInfo", bookInfo);
         return "member/cart";
