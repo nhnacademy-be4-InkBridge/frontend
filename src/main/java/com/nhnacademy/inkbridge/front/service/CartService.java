@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.service;
 
+import com.nhnacademy.inkbridge.front.dto.book.BookRedisReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartRedisCreateRequestDto;
 import java.util.List;
@@ -20,7 +21,7 @@ public interface CartService {
      * @param memberId String
      * @return Map
      */
-    Map<String, String> getCartRedis(String memberId);
+    Map<String, BookRedisReadResponseDto> getCartRedis(String memberId);
 
     /**
      * 도서 아이디에 따른 도서 상세 정보를 조회하는 메서드입니다.

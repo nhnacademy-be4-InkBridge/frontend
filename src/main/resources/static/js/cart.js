@@ -25,8 +25,6 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
   button.addEventListener('click', function () {
     var oldValue = parseInt(this.parentElement.parentElement.querySelector(
         'input[name="amount"]').value);
-    const stock = parseInt(this.parentElement.parentElement.querySelector(
-        'input[name="stock"]').value);
     var newVal = oldValue;
     // price
     var price = parseInt(
@@ -36,9 +34,7 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
         document.getElementById('totalPrice').textContent);
 
     if (this.classList.contains('btn-plus')) {
-      if (oldValue + 1 < stock) {
         newVal = oldValue + 1;
-      }
     } else {
       newVal = oldValue > 0 ? oldValue - 1 : 0;
     }

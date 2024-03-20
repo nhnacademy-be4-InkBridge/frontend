@@ -29,31 +29,30 @@
           </tr>
           </thead>
           <tbody>
-          <tr th:each="book: ${info}">
+          <tr th:each="info: ${cartInfo}">
             <th>
-              <input type="checkbox" th:checked="${book.stock!=0}" th:disabled="${book.stock == 0}">
+              <input type="checkbox" th:checked="${cartInfo[cart].stock!=0}" th:disabled="${cart.stock == 0}">
               <div id="toast"></div>
             </th>
             <th scope="row">
               <div class="d-flex align-items-center">
-                <img th:src="${book.thumbnail}" class="img-fluid me-5" id="thumbnail"
+                <img th:src="${info.value.thumbnailUrl}" class="img-fluid me-5" id="thumbnail"
                      style="width: 80px; height: 80px;" alt="이미지를 불러오는 데 실패했습니다.">
               </div>
             </th>
             <td>
-              <input type="hidden" id="bookId" th:value="${book.bookId}">
-              <input type="hidden" id="isPackagable" th:value="${book.isPackagable}">
-              <a class="mb-0 mt-4 hide-href" th:text="${book.bookTitle}"
-                 th:href="@{/book(id=${book.bookId})}"
+              <input type="hidden" id="cartId" th:value="${info.key}">
+              <a class="mb-0 mt-4 hide-href" th:text="${info.value.bookTitle}"
+                 th:href="@{/book(id=${info.key})}"
                  id="bookTitle"></a>
             </td>
             <td>
               <div style="text-decoration: line-through">
-                <span id="regularPrice" th:text="${#numbers.formatInteger(book.regularPrice, 0, 'COMMA')}"></span><span>원</span>
+                <span id="regularPrice" th:text="${#numbers.formatInteger(info.value.regularPrice, 0, 'COMMA')}"></span><span>원</span>
               </div>
               <span id="price"
-                    th:text="${#numbers.formatInteger(book.price,0, 'COMMA')}"></span><span
-                th:text="'원(' + ${book.discountRatio} + '% 할인)'"></span>
+                    th:text="${#numbers.formatInteger(info.value.price,0, 'COMMA')}"></span><span
+                th:text="'원(' + ${info.value.discountRatio} + '% 할인)'"></span>
             </td>
             <td>
               <div class="input-group quantity mt-4" style="width: 100px;">
@@ -63,9 +62,7 @@
                   </button>
                 </div>
                 <input type="text" class="form-control form-control-sm text-center border-0"
-                       th:with="bookId=${book.bookId}"
-                       th:value="${bookIds[bookId.toString()]}" name="amount">
-                <input type="hidden" style="display: none" name="stock" th:value="${book.stock}">
+                       th:value="bookId=${info.key}" name="amount">
                 <div class="input-group-btn">
                   <button class="btn btn-sm btn-plus rounded-circle bg-light border" type="button">
                     <i class="fa fa-plus"></i>
@@ -74,7 +71,7 @@
               </div>
             </td>
             <td>
-              <form th:with="bookId=${book.bookId}" th:action="@{'/cart/delete/' + ${bookId}}"
+              <form th:action="@{'/cart/delete/' + ${info.key}}"
                     method="post">
                 <button class="btn btn-md bg-light border mt-4" type="submit">삭제</button>
               </form>

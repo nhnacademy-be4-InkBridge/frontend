@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -87,7 +88,8 @@ public class RedisConfig implements BeanClassLoaderAware {
         return redisTemplate;
     }
 
-    @Bean(value = "redisTemplateForBook")
+    @Bean
+    @Qualifier(value = "redisTemplateForBook")
     public RedisTemplate<String, Object> redisTemplateForBook() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactoryForBook());

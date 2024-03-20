@@ -32,6 +32,7 @@ public class BookDetailReadResponseDto {
     private String publisherName;
     private Map<Long, String> authors;
     private Long wish;
+    private Long view;
     private Set<String> fileUrl;
     private Set<String> tagName;
     private Set<String> categoryName;

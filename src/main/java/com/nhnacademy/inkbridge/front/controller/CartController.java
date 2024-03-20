@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+import com.nhnacademy.inkbridge.front.dto.book.BookRedisReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartRedisCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.CartService;
@@ -56,11 +57,9 @@ public class CartController {
             memberId = checkCookie(request.getCookies());
         }
 
-        Map<String, String> cart = cartService.getCartRedis(memberId);
-        List<CartBookReadResponseDto> cartBookInfo = cartService.getCartBookInfo(cart.keySet());
-
-        model.addAttribute("bookIds", cart);
-        model.addAttribute("info", cartBookInfo);
+        Map<String, BookRedisReadResponseDto> cartInfo = cartService.getCartRedis(memberId);
+        log.info("data book!!: {}", cartInfo.get("145"));
+        model.addAttribute("cartInfo", cartInfo);
         return "member/cart";
     }
 
@@ -86,6 +85,7 @@ public class CartController {
         } else {
             cartService.createCartForMember(cartRedisCreateRequestDto, memberId);
         }
+
         return "redirect:/cart";
     }
 

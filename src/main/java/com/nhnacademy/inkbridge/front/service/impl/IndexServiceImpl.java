@@ -1,13 +1,16 @@
 package com.nhnacademy.inkbridge.front.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
+import com.nhnacademy.inkbridge.front.dto.book.BookDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookRedisReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 /**
@@ -50,9 +53,32 @@ public class IndexServiceImpl implements IndexService {
      */
     @Override
     public BookReadResponseDto getBook(Long bookId, Long memberId) {
-        HashOperations<String, String, Object> hashOperations = redisTemplate.opsForHash();
-        Map<String, Object> entries = hashOperations.entries(String.valueOf(memberId));
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        return bookAdaptor.getBook(bookId, memberId);
+        BookReadResponseDto book = bookAdaptor.getBook(bookId, memberId);
+        BookDetailReadResponseDto bookDetail = book.getBookDetailReadResponseDto();
+
+        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+
+        if (valueOperations.get(String.valueOf(bookId)) != null) {
+            // 레디스에 도서 번호가 존재하면 view에 +1
+            valueOperations.increment(bookId + "view", 1);
+        } else {
+            // 존재하지 않으면 레디스에 도서 정보 저장
+            try {
+                redisTemplate.opsForValue()
+                    .set(String.valueOf(bookId), objectMapper.writeValueAsString(
+                        BookRedisReadResponseDto.builder().bookTitle(bookDetail.getBookTitle())
+                            .thumbnailUrl(bookDetail.getThumbnail()).price(
+                                bookDetail.getPrice()).regularPrice(bookDetail.getRegularPrice())
+                            .discountRatio(bookDetail.getDiscountRatio()).build()));
+                redisTemplate.opsForValue()
+                    .set(bookId + "view", bookDetail.getView());
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return book;
     }
 }

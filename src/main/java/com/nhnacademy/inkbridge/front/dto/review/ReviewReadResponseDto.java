@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewReadResponseDto {
 
+    private ReviewAverageReadResponseDto reviewAverageReadResponseDto;
     private PageRequestDto<ReviewDetailReadResponseDto> reviewDetailReadResponseDtos;
     private Map<Long, List<String>> reviewFiles;
 }
