@@ -46,7 +46,7 @@ public class PublisherAdaptorImpl implements PublisherAdaptor {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(DEFAULT_PATH)
-            .path("/publisher")
+            .path("/publishers")
             .encode()
             .build()
             .toUri();
@@ -97,7 +97,7 @@ public class PublisherAdaptorImpl implements PublisherAdaptor {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(DEFAULT_PATH)
-            .path("/publisher/{publisherId}")
+            .path("/publishers/{publisherId}")
             .build()
             .expand(publisherId)
             .toUri();
