@@ -50,23 +50,27 @@ public class CartServiceImpl implements CartService {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, BookRedisReadResponseDto> getCartRedis(String memberId) {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public Map<String, Long> getCartRedis(String memberId) {
 
         // 장바구니 가져옴 -> BookId로 정보 조회 -> 레디스에 정보 없으면 Db에서 조회
-        HashOperations<String, String, Object> hashOperations = redisTemplate.opsForHash();
-        Map<String, Object> entries = hashOperations.entries(memberId);// bookId, amount
-        ArrayList<String> keys = new ArrayList<>(entries.keySet());
+        HashOperations<String, String, Long> hashOperations = redisTemplate.opsForHash();
 
-        List<Object> values = redisTemplateForBook.opsForValue()
-            .multiGet(entries.keySet());
-        values = Objects.isNull(values) ? Collections.emptyList() : values;
+        return hashOperations.entries(memberId);
+    }
+
+    @Override
+    public Map<String, BookRedisReadResponseDto> getBookInfo(ArrayList<String> keys) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<Object> bookInfos = redisTemplateForBook.opsForValue()
+            .multiGet(keys);
+        bookInfos = Objects.isNull(bookInfos) ? Collections.emptyList() : bookInfos;
 
         Map<String, BookRedisReadResponseDto> book = new ConcurrentHashMap<>();
         Set<String> bookNotInRedis = new HashSet<>();
-        for (int i = 0; i < values.size(); i++) {
+        for (int i = 0; i < bookInfos.size(); i++) {
             String key = keys.get(i);
-            Object rawValue = values.get(i);
+            Object rawValue = bookInfos.get(i);
             if (rawValue != null) {
                 try {
                     BookRedisReadResponseDto value = objectMapper.readValue(

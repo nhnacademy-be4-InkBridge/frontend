@@ -5,6 +5,7 @@ import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartRedisCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.CartService;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -18,9 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -57,9 +58,10 @@ public class CartController {
             memberId = checkCookie(request.getCookies());
         }
 
-        Map<String, BookRedisReadResponseDto> cartInfo = cartService.getCartRedis(memberId);
-        log.info("data book!!: {}", cartInfo.get("145"));
+        Map<String, Long> cartInfo = cartService.getCartRedis(memberId);
+        Map<String, BookRedisReadResponseDto> bookInfo = cartService.getBookInfo(new ArrayList<>(cartInfo.keySet()));
         model.addAttribute("cartInfo", cartInfo);
+        model.addAttribute("bookInfo", bookInfo);
         return "member/cart";
     }
 
@@ -72,7 +74,7 @@ public class CartController {
      * @return html
      */
     @PostMapping
-    public String saveCart(@ModelAttribute CartRedisCreateRequestDto cartRedisCreateRequestDto,
+    public String saveCart(@RequestBody CartRedisCreateRequestDto cartRedisCreateRequestDto,
         HttpServletRequest request, HttpServletResponse response) {
         String memberId = String.valueOf(CommonUtils.getMemberId());
         if (Objects.equals(memberId, "null")) {

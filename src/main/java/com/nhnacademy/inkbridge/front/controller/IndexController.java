@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.controller;
 
 
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewReadResponseDto;
@@ -98,12 +99,13 @@ public class IndexController {
     @GetMapping("/books/{categoryId}")
     public String indexByCategory(Model model, @PathVariable Long categoryId,
         @RequestParam(defaultValue = "0") Long page) {
-        BooksReadResponseDto booksByCategory = indexService.getBooksByCategory(page, categoryId);
+        BooksByCategoryReadResponseDto booksByCategory = indexService.getBooksByCategory(page,
+            categoryId);
         model.addAttribute("books", booksByCategory.getBooksPaginationReadResponseDtos());
         model.addAttribute("authors", booksByCategory.getAuthorPaginationReadResponseDto());
+        model.addAttribute("category", booksByCategory.getCategoryNameReadResponseDto());
 
         List<ParentCategoryReadResponseDto> parentCategories = categoryService.readCategory();
-        log.debug("parent category: {}", parentCategories.size());
         model.addAttribute("parentCategories", parentCategories);
 
         return "member/index";

@@ -29,9 +29,9 @@
           </tr>
           </thead>
           <tbody>
-          <tr th:each="info: ${cartInfo}">
+          <tr th:each="info: ${bookInfo}">
             <th>
-              <input type="checkbox" th:checked="${cartInfo[cart].stock!=0}" th:disabled="${cart.stock == 0}">
+              <input type="checkbox" checked>
               <div id="toast"></div>
             </th>
             <th scope="row">
@@ -62,7 +62,7 @@
                   </button>
                 </div>
                 <input type="text" class="form-control form-control-sm text-center border-0"
-                       th:value="bookId=${info.key}" name="amount">
+                       th:value="${cartInfo[info.key].value}" name="amount">
                 <div class="input-group-btn">
                   <button class="btn btn-sm btn-plus rounded-circle bg-light border" type="button">
                     <i class="fa fa-plus"></i>

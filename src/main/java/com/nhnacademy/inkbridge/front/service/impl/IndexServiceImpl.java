@@ -6,6 +6,7 @@ import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
 import com.nhnacademy.inkbridge.front.dto.book.BookDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookRedisReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,7 +45,7 @@ public class IndexServiceImpl implements IndexService {
      * {@inheritDoc}
      */
     @Override
-    public BooksReadResponseDto getBooksByCategory(Long page, Long categoryId) {
+    public BooksByCategoryReadResponseDto getBooksByCategory(Long page, Long categoryId) {
         return bookAdaptor.getBooksByCategory(page, categoryId);
     }
 
