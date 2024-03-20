@@ -1,13 +1,17 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmRequestDto;
+import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmResponseDto;
 import com.nhnacademy.inkbridge.front.property.TossProperties;
 import com.nhnacademy.inkbridge.front.service.OrderService;
+import com.nhnacademy.inkbridge.front.service.PayService;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,6 +29,7 @@ public class PayController {
 
     private final OrderService orderService;
     private final TossProperties tossProperties;
+    private final PayService payService;
 
     /**
      * 결제 페이지를 호출합니다.
@@ -45,13 +50,16 @@ public class PayController {
     }
 
     /**
-     * 결제 정보를 저장하고 결제 승인 페이지를 호출합니다.
+     * 결제 승인 요청을 보내고 결제 내용을 반영 한 후 결제 성공 페이지를 호출합니다.
      *
      * @return 결제 성공 페이지
      */
     @GetMapping("/success")
-    public String paymentRequest(@RequestParam("paymentKey") String paymentKey,
-        @RequestParam("orderId") String orderId, @RequestParam("amount") Long amount) {
+    public String paymentRequest(@ModelAttribute PayConfirmRequestDto requestDto) {
+        log.debug("start pay success ->");
+        PayConfirmResponseDto payConfirmResponseDto = payService.doConfirm(requestDto, "toss");
+        log.debug("payConfirmResponseDto -> {}", payConfirmResponseDto);
+        payService.doPayment(payConfirmResponseDto);
 
         return "order/pay_success";
     }
