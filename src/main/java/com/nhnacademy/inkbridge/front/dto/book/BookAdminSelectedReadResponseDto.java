@@ -3,7 +3,6 @@ package com.nhnacademy.inkbridge.front.dto.book;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -48,28 +47,4 @@ public class BookAdminSelectedReadResponseDto {
     private List<Long> categoryIdList;
 
     private List<Long> tagIdList;
-
-    @Builder
-    public BookAdminSelectedReadResponseDto(String bookTitle, String bookIndex, String description,
-        LocalDate publicatedAt, String isbn, Long regularPrice, Long price,
-        BigDecimal discountRatio, Integer stock, Boolean isPackagable,
-        List<Long> authorIdList, Long publisherId, Long statusId, String url, List<Long> categoryIdList,
-        List<Long> tagIdList) {
-        this.bookTitle = bookTitle;
-        this.bookIndex = bookIndex;
-        this.description = description;
-        this.publicatedAt = publicatedAt;
-        this.isbn = isbn;
-        this.regularPrice = regularPrice;
-        this.price = price;
-        this.discountRatio = discountRatio;
-        this.stock = stock;
-        this.isPackagable = isPackagable;
-        this.authorIdList = authorIdList;
-        this.publisherId = publisherId;
-        this.statusId = statusId;
-        this.url = url;
-        this.categoryIdList = categoryIdList;
-        this.tagIdList = tagIdList;
-    }
 }
