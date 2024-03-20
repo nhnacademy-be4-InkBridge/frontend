@@ -2,7 +2,7 @@ package com.nhnacademy.inkbridge.front.adaptor;
 
 import com.nhnacademy.inkbridge.front.dto.publisher.PublisherCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.publisher.PublisherReadResponseDto;
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 /**
  * class: PublisherAdaptor.
@@ -21,7 +21,8 @@ public interface PublisherAdaptor {
 
     /**
      * 출판사 리스트를 호출하는 메소드
+     *
      * @return 출판사 리스트
      */
-    List<PublisherReadResponseDto> readPublishers();
+    Page<PublisherReadResponseDto> readPublishers();
 }
