@@ -1,6 +1,11 @@
 package com.nhnacademy.inkbridge.front.service;
 
+import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.publisher.PublisherCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.publisher.PublisherReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.publisher.PublisherUpdateRequestDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * class: PublisherService.
@@ -16,4 +21,8 @@ public interface PublisherService {
      */
 
     void createPublisher(PublisherCreateRequestDto request);
+
+    PageRequestDto<PublisherReadResponseDto> readPublishers(Pageable pageable);
+
+    void updatePublisher(Long publisherId, PublisherUpdateRequestDto request);
 }
