@@ -6,6 +6,7 @@ import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.REFRESH_HEADER;
 import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
 
 import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
+import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
@@ -14,6 +15,7 @@ import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -34,6 +36,7 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 @Slf4j
 public class MemberAdaptorImpl implements MemberAdaptor {
+
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
     private static final String URL = "https://inkbridge.store/auth-login";
@@ -45,10 +48,10 @@ public class MemberAdaptorImpl implements MemberAdaptor {
     @Override
     public ResponseEntity<Void> login(MemberLoginRequestDto memberLoginRequestDto) {
         return restTemplate.exchange(
-                gatewayProperties.getUrl() + "/auth/login",
-                HttpMethod.POST,
-                new HttpEntity<>(memberLoginRequestDto, createHeader()),
-                Void.class
+            gatewayProperties.getUrl() + "/auth/login",
+            HttpMethod.POST,
+            new HttpEntity<>(memberLoginRequestDto, createHeader()),
+            Void.class
         );
     }
 
@@ -61,10 +64,10 @@ public class MemberAdaptorImpl implements MemberAdaptor {
         header.add(HttpHeaders.AUTHORIZATION, BEARER_PREFIX.getName() + accessToken);
 
         return restTemplate.exchange(
-                gatewayProperties.getUrl() + "/api/auth/info",
-                HttpMethod.GET,
-                new HttpEntity<>(header),
-                MemberInfoResponseDto.class
+            gatewayProperties.getUrl() + "/api/auth/info",
+            HttpMethod.GET,
+            new HttpEntity<>(header),
+            MemberInfoResponseDto.class
         ).getBody();
     }
 
@@ -78,10 +81,10 @@ public class MemberAdaptorImpl implements MemberAdaptor {
         header.add(REFRESH_HEADER.getName(), BEARER_PREFIX.getName() + refresh);
 
         return restTemplate.exchange(
-                gatewayProperties.getUrl() + "/auth/reissue",
-                HttpMethod.POST,
-                new HttpEntity<>(header),
-                Void.class
+            gatewayProperties.getUrl() + "/auth/reissue",
+            HttpMethod.POST,
+            new HttpEntity<>(header),
+            Void.class
         );
     }
 
@@ -91,10 +94,10 @@ public class MemberAdaptorImpl implements MemberAdaptor {
     @Override
     public void signup(MemberSignupRequestDto memberSignupRequestDto) {
         restTemplate.exchange(
-                gatewayProperties.getUrl() + "/api/members/",
-                HttpMethod.POST,
-                new HttpEntity<>(memberSignupRequestDto, createHeader()),
-                Void.class
+            gatewayProperties.getUrl() + "/api/members/",
+            HttpMethod.POST,
+            new HttpEntity<>(memberSignupRequestDto, createHeader()),
+            Void.class
         );
     }
 
@@ -102,10 +105,10 @@ public class MemberAdaptorImpl implements MemberAdaptor {
     public void signupWithOAuth(MemberSignupOAuthRequestDto memberSignupOAuthRequestDto) {
         log.debug("signup oauth start ->");
         restTemplate.exchange(
-                gatewayProperties.getUrl() + "/api/members/",
-                HttpMethod.POST,
-                new HttpEntity<>(memberSignupOAuthRequestDto, createHeader()),
-                Void.class
+            gatewayProperties.getUrl() + "/api/members/",
+            HttpMethod.POST,
+            new HttpEntity<>(memberSignupOAuthRequestDto, createHeader()),
+            Void.class
         );
     }
 
@@ -116,12 +119,13 @@ public class MemberAdaptorImpl implements MemberAdaptor {
         header.add(REFRESH_HEADER.getName(), BEARER_PREFIX.getName() + refresh);
 
         restTemplate.exchange(
-                gatewayProperties.getUrl() + "/auth/logout",
-                HttpMethod.GET,
-                new HttpEntity<>(header),
-                Void.class
+            gatewayProperties.getUrl() + "/auth/logout",
+            HttpMethod.GET,
+            new HttpEntity<>(header),
+            Void.class
         );
     }
+
 
     @Override
     public ResponseEntity<Void> doLogin(String id, String password) {
@@ -136,9 +140,28 @@ public class MemberAdaptorImpl implements MemberAdaptor {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         // POST 요청 생성
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData, headers);
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData,
+            headers);
 
         return restTemplate.exchange(URL, HttpMethod.POST, requestEntity, Void.class);
+    }
+
+    /**
+     * 로그인한 회원의 포인트 가져오는 메서드
+     *
+     * @return 로그인 한 회원의 포인트 값
+     */
+    @Override
+    public MemberPointReadResponseDto getPoint() {
+        HttpHeaders headers = createHeader();
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<MemberPointReadResponseDto> responseEntity = restTemplate.exchange(
+            gatewayProperties.getUrl() + "/api/mygage/points", HttpMethod.GET, entity,
+            new ParameterizedTypeReference<>() {
+            });
+        return responseEntity.getBody();
     }
     @Override
     public ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto) {
