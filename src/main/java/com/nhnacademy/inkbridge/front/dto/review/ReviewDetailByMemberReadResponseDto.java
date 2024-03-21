@@ -19,4 +19,7 @@ public class ReviewDetailByMemberReadResponseDto {
     private String reviewContent;
     private LocalDateTime registeredAt;
     private Integer score;
+    private Long bookId;
+    private String bookTitle;
+    private String thumbnail;
 }

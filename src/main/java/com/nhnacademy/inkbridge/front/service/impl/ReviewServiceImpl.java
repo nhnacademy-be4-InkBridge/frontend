@@ -4,6 +4,7 @@ import com.nhnacademy.inkbridge.front.adaptor.ReviewAdaptor;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewMemberReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.review.ReviewUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.service.ReviewService;
 import java.io.IOException;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,8 @@ public class ReviewServiceImpl implements ReviewService {
      * {@inheritDoc}
      */
     @Override
-    public ReviewMemberReadResponseDto getReviews(Long memberId) {
-        return reviewAdaptor.getReviews(memberId);
+    public ReviewMemberReadResponseDto getReviews(Long memberId, Long size, Long page) {
+        return reviewAdaptor.getReviews(memberId, size, page);
     }
 
     /**
@@ -47,6 +48,15 @@ public class ReviewServiceImpl implements ReviewService {
     public void createReview(MultipartFile[] reviewFiles,
         Long memberId, ReviewCreateRequestDto reviewCreateRequestDto) throws IOException {
         reviewAdaptor.createReview(reviewFiles, memberId, reviewCreateRequestDto);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateReview(MultipartFile[] reviewFiles, Long reviewId, Long memberId,
+        ReviewUpdateRequestDto reviewUpdateRequestDto) throws IOException {
+        reviewAdaptor.updateReview(memberId, reviewId, reviewUpdateRequestDto, reviewFiles);
     }
 
     /**

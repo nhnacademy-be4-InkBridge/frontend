@@ -4,16 +4,14 @@ import com.nhnacademy.inkbridge.front.adaptor.ReviewAdaptor;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewMemberReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.review.ReviewUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -51,11 +49,13 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public ReviewMemberReadResponseDto getReviews(Long memberId) {
+    public ReviewMemberReadResponseDto getReviews(Long memberId, Long size, Long page) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(PATH)
             .queryParam(MEMBER_QUERY_PARAM, memberId)
+            .queryParam("size", size)
+            .queryParam("page", page)
             .encode()
             .build()
             .toUri();
@@ -130,7 +130,8 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
      */
     @Override
     public void updateReview(Long memberId, Long reviewId,
-        ReviewCreateRequestDto reviewCreateRequestDto, List<MultipartFile> reviewFiles) {
+        ReviewUpdateRequestDto reviewUpdateRequestDto, MultipartFile[] reviewFiles)
+        throws IOException {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(PATH)
@@ -143,11 +144,17 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
 
         MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
         HttpHeaders httpHeaders = CommonUtils.createHeader(MediaType.MULTIPART_FORM_DATA);
-        List<Resource> resourceFiles = reviewFiles.stream()
-            .map(MultipartFile::getResource)
-            .collect(Collectors.toList());
-        multiValueMap.add("images", resourceFiles);
-        multiValueMap.add("review", reviewCreateRequestDto);
+        for (MultipartFile file : reviewFiles) {
+            byte[] fileBytes = file.getBytes();
+            ByteArrayResource resource = new ByteArrayResource(fileBytes) {
+                @Override
+                public String getFilename() {
+                    return file.getOriginalFilename();
+                }
+            };
+            multiValueMap.add("images", resource);
+        }
+        multiValueMap.add("review", reviewUpdateRequestDto);
 
         restTemplate.exchange(
             uri,

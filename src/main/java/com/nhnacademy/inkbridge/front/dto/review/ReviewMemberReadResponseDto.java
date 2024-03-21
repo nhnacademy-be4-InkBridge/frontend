@@ -18,4 +18,5 @@ public class ReviewMemberReadResponseDto {
 
     private PageRequestDto<ReviewDetailByMemberReadResponseDto> reviewDetailReadResponseDtos;
     private Map<Long, List<String>> reviewFiles;
+    private Long count;
 }

@@ -3,8 +3,8 @@ package com.nhnacademy.inkbridge.front.adaptor;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewMemberReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.review.ReviewUpdateRequestDto;
 import java.io.IOException;
-import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -19,9 +19,11 @@ public interface ReviewAdaptor {
      * 회원 번호로 전체 리뷰를 조회하는 메서드입니다.
      *
      * @param memberId Long
+     * @param size Long
+     * @param page Long
      * @return ReviewMemberReadResponseDto
      */
-    ReviewMemberReadResponseDto getReviews(Long memberId);
+    ReviewMemberReadResponseDto getReviews(Long memberId, Long size, Long page);
 
     /**
      * 도서 번호로 전체 리뷰를 조회하는 메서드입니다.
@@ -44,13 +46,13 @@ public interface ReviewAdaptor {
     /**
      * 리뷰를 수정하는 메서드입니다.
      *
-     * @param memberId Long
-     * @param reviewId Long
-     * @param reviewCreateRequestDto ReviewCreateRequestDto
-     * @param reviewFiles MultipartFile
+     * @param memberId               Long
+     * @param reviewId               Long
+     * @param reviewUpdateRequestDto ReviewUpdateRequestDto
+     * @param reviewFiles            MultipartFile
      */
-    void updateReview(Long memberId, Long reviewId, ReviewCreateRequestDto reviewCreateRequestDto,
-        List<MultipartFile> reviewFiles);
+    void updateReview(Long memberId, Long reviewId, ReviewUpdateRequestDto reviewUpdateRequestDto,
+        MultipartFile[] reviewFiles) throws IOException;
 
     /**
      * 도서 번호로 페이징처리된 리뷰를 조회하는 메서드입니다.
