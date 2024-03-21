@@ -70,6 +70,6 @@ function setUpdate(element) {
       'textarea[name="reviewContent"]').value = item.querySelector(
       '#reviewContent').textContent;
 
-  const form = document.getElementById('update-form');
+  const form = item.parentElement.querySelector('.update-form');
   form.action = '/mypage/review/' + element.getAttribute('data-review-id');
 }
