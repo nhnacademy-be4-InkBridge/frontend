@@ -28,18 +28,23 @@
         </div>
         <form method="post" action="/admin/authors" enctype="multipart/form-data">
           <div class="modal-body">
-            <div class="col-lg-auto">
-              <label for="authorName" class="block mb-4">작가 이름</label>
-              <input type="text" id="authorName" name="authorName">
-            </div>
-            <div class="col-lg-auto">
-              <label for="authorIntroduce" class="block mb-4">작가 설명</label>
-              <input type="text" id="authorIntroduce" name="authorIntroduce" minlength="3"
-                     maxlength="10" required>
-            </div>
-            <div class="col-lg-auto">
-              <label for="fileUrl" class="block mb-4">작가 파일</label>
-              <input type="file" id="fileUrl" name="authorFile" accept=".jpg, .png, .jpeg" required>
+            <div class="row g-4 p-4 card">
+              <div class="col-lg-auto">
+                <div class="border-bottom rounded">
+                  <input type="text" class="form-control border-0 me-4" placeholder="작가 이름"
+                         maxlength="20" name="authorName">
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="border-bottom rounded my-4">
+                    <textarea class="form-control border-0" cols="30" rows="8" minlength="0" name="authorIntroduce"
+                              maxlength="1000" placeholder="작가 설명" spellcheck="false"></textarea>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label for="image" class="label-input100">이미지 추가</label>
+                <input id="image" name="image" type="file" accept=".jpg, .png, .jpeg" multiple>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -104,7 +109,7 @@
                     </p>
                     <p class="mb-4">
                       <label for="newFileUrl">새 썸네일: </label>
-                      <input type="file" id="newFileUrl" name="authorFile">
+                      <input type="file" id="newFileUrl" name="image">
                     </p>
                     <button type="submit" class="btn btn-secondary">수정</button>
                   </div>
