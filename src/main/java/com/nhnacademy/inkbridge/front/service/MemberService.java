@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.service;
 
+import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
@@ -42,6 +43,10 @@ public interface MemberService {
      * @return 결과값
      */
     ResponseEntity<Void> doLogin(String email, String password);
+
+
+    MemberPointReadResponseDto getPoint();
+  
 
     /**
      * 이메일 중복체크하는 메서드

@@ -8,6 +8,7 @@ import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.REFRESH_COOKIE;
 import com.nhnacademy.inkbridge.front.adaptor.CartAdaptor;
 import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.dto.cart.CartCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
@@ -144,6 +145,11 @@ public class MemberServiceImpl implements MemberService {
     /**
      * {@inheritDoc}
      */
+    @Override
+    public MemberPointReadResponseDto getPoint() {
+        return memberAdaptor.getPoint();
+    }
+
     @Override
     public ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto) {
         return memberAdaptor.isDuplicatedEmail(memberEmailRequestDto);
