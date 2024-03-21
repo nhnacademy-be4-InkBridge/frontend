@@ -144,7 +144,6 @@ public class AddressAdaptorImpl implements AddressAdaptor {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(ADDRESS_PATH)
-            .path("/new")
             .encode()
             .build()
             .toUri();
