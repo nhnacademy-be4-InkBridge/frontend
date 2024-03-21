@@ -21,11 +21,17 @@ public class MemberGradeServiceImpl implements MemberGradeService {
     private final MemberGradeAdaptor memberGradeAdaptor;
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<MemberGradeReadResponseDto> getGrades() {
         return memberGradeAdaptor.getGrades();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateGrade(Long gradeId, MemberGradeUpdateRequestDto memberGradeUpdateRequestDto) {
         memberGradeAdaptor.updateGrade(gradeId, memberGradeUpdateRequestDto);

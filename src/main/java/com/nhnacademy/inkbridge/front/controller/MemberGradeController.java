@@ -30,6 +30,11 @@ public class MemberGradeController {
     private final MemberGradeService memberGradeService;
 
 
+    /**
+     * 모든 회원 등급 정보를 조회합니다.
+     *
+     * @return 조회된 회원 등급 정보 리스트
+     */
     @GetMapping
     String getGradeList(Model model) {
         model.addAttribute("grades", memberGradeService.getGrades());
@@ -37,6 +42,12 @@ public class MemberGradeController {
         return "admin/grade";
     }
 
+    /**
+     * 특정 회원 등급을 업데이트합니다.
+     *
+     * @param gradeId 회원 등급 ID
+     * @param memberGradeUpdateRequestDto 업데이트할 회원 등급 정보
+     */
     @PostMapping("/{gradeId}")
     String updateGrade(@Valid @ModelAttribute MemberGradeUpdateRequestDto memberGradeUpdateRequestDto,
         @PathVariable("gradeId") Long gradeId, BindingResult bindingResult) {

@@ -34,6 +34,9 @@ public class MemberGradeAdaptorImpl implements MemberGradeAdaptor {
 
     private static final String GRADE_PATH = "/api/admin/member/grade";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<MemberGradeReadResponseDto> getGrades() {
         HttpHeaders headers = createHeader();
@@ -47,6 +50,9 @@ public class MemberGradeAdaptorImpl implements MemberGradeAdaptor {
         return responseEntity.getBody();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateGrade(Long gradeId, MemberGradeUpdateRequestDto memberGradeUpdateRequestDto) {
         HttpHeaders headers = createHeader();
