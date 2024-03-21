@@ -18,11 +18,4 @@ public class MemberGradeReadResponseDto {
     private BigDecimal pointRate;
     private Long standardAmount;
 
-    public MemberGradeReadResponseDto(Integer gradeId, String grade, BigDecimal pointRate,
-        Long standardAmount) {
-        this.gradeId = gradeId;
-        this.grade = grade;
-        this.pointRate = pointRate;
-        this.standardAmount = standardAmount;
-    }
 }
