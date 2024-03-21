@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class BookOrderViewResponseDto {
 
-    OrderInfoReadResponseDto orderInfo;
-    PayInfoResponseDto payInfo;
-    List<OrderDetailInfoResponseDto> orderDetailInfoList;
+    private OrderInfoReadResponseDto orderInfo;
+    private PayInfoResponseDto payInfo;
+    private List<OrderDetailInfoResponseDto> orderDetailInfoList;
 
 }
