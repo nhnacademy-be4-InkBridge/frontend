@@ -1,0 +1,85 @@
+a{
+    text-decoration: none;
+    color:black;
+}
+
+img{
+    object-fit: cover;
+    width:15rem;
+}
+
+h1{
+    color:#363f57;
+    font-size :1.5rem;
+}
+
+h3{
+    color:#717890;
+    font-size:1rem;
+    text-transform: capitalize;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap:2rem;
+    border-top:5px solid black;
+    /*background-color: #f7f7f7;*/
+    background-color: #fff;
+    margin-top:3rem;
+}
+
+.footer-main{
+    width:50%;
+    display: flex;
+    padding: 3rem 3rem 0;
+}
+
+.footer-main-left{
+    width:40%;
+    display:flex;
+    /*flex-direction: column;*/
+    /*justify-content: center;*/
+    align-items: center;
+    font-size:5rem;
+    color:#717890;
+}
+
+.footer-main-left > span{
+    font-family: "Bigelow Rules", serif;
+}
+
+/*.bigelow-rules-regular {
+    font-family: "Bigelow Rules", serif;
+    font-weight: 400;
+    font-style: normal;
+}*/
+
+
+.footer-main-right{
+    display:flex;
+    justify-content: right;
+    gap:8rem;
+    width:60%;
+}
+
+.footer-main-right > div> div{
+    display:flex;
+    flex-direction:column;
+    gap:0.5rem;
+}
+
+
+.footer-main-right > div>h1{
+    margin-bottom: 2rem;
+}
+
+
+.footer-bottom{
+    text-align:center;
+    color:#717890;
+    margin-bottom:1rem;
+}
