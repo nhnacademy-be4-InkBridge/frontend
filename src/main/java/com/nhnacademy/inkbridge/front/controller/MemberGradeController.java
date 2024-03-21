@@ -36,7 +36,7 @@ public class MemberGradeController {
      * @return 조회된 회원 등급 정보 리스트
      */
     @GetMapping
-    String getGradeList(Model model) {
+    public String getGradeList(Model model) {
         model.addAttribute("grades", memberGradeService.getGrades());
 
         return "admin/grade";
@@ -49,7 +49,7 @@ public class MemberGradeController {
      * @param memberGradeUpdateRequestDto 업데이트할 회원 등급 정보
      */
     @PostMapping("/{gradeId}")
-    String updateGrade(@Valid @ModelAttribute MemberGradeUpdateRequestDto memberGradeUpdateRequestDto,
+    public String updateGrade(@Valid @ModelAttribute MemberGradeUpdateRequestDto memberGradeUpdateRequestDto,
         @PathVariable("gradeId") Long gradeId, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             throw new MemberGradeException("등급 수정 형식이 잘못 되었습니다.");
