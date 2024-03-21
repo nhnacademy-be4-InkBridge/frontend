@@ -5,7 +5,7 @@ import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.review.ReviewReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.review.ReviewBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.CategoryService;
 import com.nhnacademy.inkbridge.front.service.IndexService;
 import com.nhnacademy.inkbridge.front.service.ReviewService;
@@ -61,7 +61,7 @@ public class IndexController {
 
         List<ParentCategoryReadResponseDto> parentCategories = categoryService.readCategory();
         model.addAttribute("parentCategories", parentCategories);
-        return "member/index";
+        return "main/index";
     }
 
     /**
@@ -77,7 +77,7 @@ public class IndexController {
         memberId = Objects.equals(null, memberId) ? NOT_MEMBER : memberId;
 
         BookReadResponseDto book = indexService.getBook(bookId, memberId);
-        ReviewReadResponseDto reviews = reviewService.getReviewsByBookId(bookId);
+        ReviewBookReadResponseDto reviews = reviewService.getReviewsByBookId(bookId);
 
         model.addAttribute("bookId", bookId);
         model.addAttribute("book", book.getBookDetailReadResponseDto());
@@ -85,7 +85,7 @@ public class IndexController {
         model.addAttribute("reviewFiles", reviews.getReviewFiles());
         model.addAttribute("reviewNumber", book.getReviewAverageReadResponseDto());
 
-        return "member/book";
+        return "main/book";
     }
 
     /**
@@ -108,6 +108,6 @@ public class IndexController {
         List<ParentCategoryReadResponseDto> parentCategories = categoryService.readCategory();
         model.addAttribute("parentCategories", parentCategories);
 
-        return "member/index";
+        return "main/index";
     }
 }

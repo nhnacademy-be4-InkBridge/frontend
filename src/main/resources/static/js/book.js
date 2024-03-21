@@ -45,20 +45,6 @@ function convertMarkdown() {
   description.innerHTML = content.join('');
 }
 
-
-// document.querySelectorAll('.fa-star').forEach(function (star) {
-//   star.addEventListener('click', function () {
-//     var rating = parseInt(this.getAttribute('data-rating'));
-//     document.querySelectorAll('.fa-star').forEach(function (star, index) {
-//       if (index < rating) {
-//         star.classList.remove('text-muted');
-//       } else {
-//         star.classList.add('text-muted');
-//       }
-//     });
-//   });
-// });
-
 document.getElementById('amount').addEventListener('change', function () {
   const amount = document.getElementById('amount').value;
   const replaceNotInt = /[^0-9]/gi;
@@ -109,3 +95,38 @@ document.getElementById('cartButton').addEventListener("click", async (e) => {
   .then((response) => response.json)
   .then((data) => console.log(data))
 })
+
+function loadReview(element) {
+  var pageNumber = element.getAttribute('data-page-number');
+
+  var nextPageNumber = parseInt(pageNumber, 10) + 1; // 다음 페이지 번호 계산
+  var pageSize = element.getAttribute('data-page-size');
+  var totalPage = element.getAttribute('data-total-page');
+  var bookId = document.getElementById('bookId').value/* 여기에 책 ID */;
+  element.setAttribute('data-page-number', nextPageNumber);
+
+  if (totalPage - 1 <= nextPageNumber) {
+    element.style.display = 'none';
+  }
+  // AJAX 요청 보내기
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET',
+      '/review?bookId=' + bookId + '&page=' + nextPageNumber + '&size='
+      + pageSize);
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      // 성공적으로 데이터를 받았을 때, 받아온 HTML을 적용합니다.
+      var receivedHtml = xhr.responseText;
+      document.getElementById('reviewChunk').insertAdjacentHTML('beforebegin',
+          receivedHtml);
+    } else {
+      // 오류 처리
+      console.error('Error while fetching data:', xhr.statusText);
+    }
+  };
+  xhr.onerror = function () {
+    // 오류 처리
+    console.error('Error while fetching data:', xhr.statusText);
+  };
+  xhr.send();
+}

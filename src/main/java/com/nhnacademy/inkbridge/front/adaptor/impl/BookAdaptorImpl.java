@@ -73,12 +73,8 @@ public class BookAdaptorImpl implements BookAdaptor {
             uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
-            new ParameterizedTypeReference<>() {
-            }
+            BooksReadResponseDto.class
         );
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
 
         return exchange.getBody();
     }
@@ -103,12 +99,8 @@ public class BookAdaptorImpl implements BookAdaptor {
             uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
-            new ParameterizedTypeReference<>() {
-            }
+            BooksByCategoryReadResponseDto.class
         );
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
 
         return exchange.getBody();
     }
@@ -134,11 +126,7 @@ public class BookAdaptorImpl implements BookAdaptor {
             uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
-            new ParameterizedTypeReference<>() {
-            });
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
+            BookReadResponseDto.class);
 
         return exchange.getBody();
     }
@@ -163,9 +151,6 @@ public class BookAdaptorImpl implements BookAdaptor {
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
             });
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
 
         return exchange.getBody();
     }
@@ -189,11 +174,7 @@ public class BookAdaptorImpl implements BookAdaptor {
             uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
-            new ParameterizedTypeReference<>() {
-            });
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
+            BooksAdminReadResponseDto.class);
 
         return exchange.getBody();
     }
@@ -212,15 +193,12 @@ public class BookAdaptorImpl implements BookAdaptor {
             .build()
             .expand(bookId)
             .toUri();
+
         ResponseEntity<BookAdminDetailReadResponseDto> exchange = restTemplate.exchange(
             uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
-            new ParameterizedTypeReference<>() {
-            });
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
+            BookAdminDetailReadResponseDto.class);
 
         return exchange.getBody();
     }
@@ -244,11 +222,7 @@ public class BookAdaptorImpl implements BookAdaptor {
             uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
-            new ParameterizedTypeReference<>() {
-            });
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
+            BookAdminReadResponseDto.class);
 
         return exchange.getBody();
     }
@@ -271,12 +245,8 @@ public class BookAdaptorImpl implements BookAdaptor {
             .build()
             .toUri();
 
-        ResponseEntity<HttpStatus> response = restTemplate.postForEntity(uri,
-            new HttpEntity<>(multiValueMap, multipartHeader), HttpStatus.class);
-
-        if (response.getStatusCode() != HttpStatus.CREATED) {
-            throw new RuntimeException();
-        }
+        restTemplate.postForEntity(uri, new HttpEntity<>(multiValueMap, multipartHeader),
+            HttpStatus.class);
     }
 
     /**
@@ -299,15 +269,11 @@ public class BookAdaptorImpl implements BookAdaptor {
             .expand(bookId)
             .toUri();
 
-        ResponseEntity<HttpStatus> exchange = restTemplate.exchange(
+        restTemplate.exchange(
             uri,
             HttpMethod.PUT,
             new HttpEntity<>(multiValueMap, multipartHeader),
             HttpStatus.class);
-
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
     }
 
 
@@ -333,6 +299,7 @@ public class BookAdaptorImpl implements BookAdaptor {
             bookAdminCreateRequestDto,
             jsonHeader);
         multiValueMap.add("book", requestEntityJson);
+
         return multipartHeader;
     }
 

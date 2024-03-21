@@ -1,6 +1,5 @@
 package com.nhnacademy.inkbridge.front.dto.review;
 
-import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewAverageReadResponseDto {
 
-    private BigDecimal avg;
+    private Double avg;
     private Long count;
 }

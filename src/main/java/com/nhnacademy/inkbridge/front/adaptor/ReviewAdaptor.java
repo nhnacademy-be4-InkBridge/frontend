@@ -1,7 +1,9 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
+import com.nhnacademy.inkbridge.front.dto.review.ReviewBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewCreateRequestDto;
-import com.nhnacademy.inkbridge.front.dto.review.ReviewReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.review.ReviewMemberReadResponseDto;
+import java.io.IOException;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,13 +15,50 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface ReviewAdaptor {
 
-    ReviewReadResponseDto getReviews(Long memberId);
+    /**
+     * 회원 번호로 전체 리뷰를 조회하는 메서드입니다.
+     *
+     * @param memberId Long
+     * @return ReviewMemberReadResponseDto
+     */
+    ReviewMemberReadResponseDto getReviews(Long memberId);
 
-    ReviewReadResponseDto getReviewsByBookId(Long bookId);
+    /**
+     * 도서 번호로 전체 리뷰를 조회하는 메서드입니다.
+     *
+     * @param bookId Long
+     * @return ReviewBookReadResponseDto
+     */
+    ReviewBookReadResponseDto getReviewsByBookId(Long bookId);
 
+    /**
+     * 리뷰를 등록하는 메서드입니다.
+     *
+     * @param reviewFiles MultipartFile
+     * @param memberId Long
+     * @param reviewCreateRequestDto ReviewCreateRequestDto
+     */
     void createReview(MultipartFile[] reviewFiles,
-        Long memberId, ReviewCreateRequestDto reviewCreateRequestDto);
+        Long memberId, ReviewCreateRequestDto reviewCreateRequestDto) throws IOException;
 
+    /**
+     * 리뷰를 수정하는 메서드입니다.
+     *
+     * @param memberId Long
+     * @param reviewId Long
+     * @param reviewCreateRequestDto ReviewCreateRequestDto
+     * @param reviewFiles MultipartFile
+     */
     void updateReview(Long memberId, Long reviewId, ReviewCreateRequestDto reviewCreateRequestDto,
         List<MultipartFile> reviewFiles);
+
+    /**
+     * 도서 번호로 페이징처리된 리뷰를 조회하는 메서드입니다.
+     *
+     * @param page Long
+     * @param size Long
+     * @param bookId Long
+     * @return ReviewBookReadResponseDto
+     */
+    ReviewBookReadResponseDto getReviewPagination(Long page, Long size, Long bookId);
 }

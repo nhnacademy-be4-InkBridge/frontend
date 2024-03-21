@@ -1,13 +1,13 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.ReviewAdaptor;
+import com.nhnacademy.inkbridge.front.dto.review.ReviewBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewCreateRequestDto;
-import com.nhnacademy.inkbridge.front.dto.review.ReviewReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.review.ReviewMemberReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -40,34 +40,40 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
     private static final String PATH = "/api/reviews";
+    private static final String MEMBER_QUERY_PARAM = "memberId";
 
     public ReviewAdaptorImpl(RestTemplate restTemplate, GatewayProperties gatewayProperties) {
         this.restTemplate = restTemplate;
         this.gatewayProperties = gatewayProperties;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ReviewReadResponseDto getReviews(Long memberId) {
+    public ReviewMemberReadResponseDto getReviews(Long memberId) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(PATH)
-            .queryParam("memberId", memberId)
+            .queryParam(MEMBER_QUERY_PARAM, memberId)
             .encode()
             .build()
             .toUri();
 
-        ResponseEntity<ReviewReadResponseDto> exchange = restTemplate.exchange(uri, HttpMethod.GET,
+        ResponseEntity<ReviewMemberReadResponseDto> exchange = restTemplate.exchange(uri,
+            HttpMethod.GET,
             new HttpEntity<>(CommonUtils.createHeader()),
             new ParameterizedTypeReference<>() {
             });
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
+
         return exchange.getBody();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ReviewReadResponseDto getReviewsByBookId(Long bookId) {
+    public ReviewBookReadResponseDto getReviewsByBookId(Long bookId) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(PATH)
@@ -77,24 +83,25 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
             .expand(bookId)
             .toUri();
 
-        ResponseEntity<ReviewReadResponseDto> exchange = restTemplate.exchange(uri, HttpMethod.GET,
+        ResponseEntity<ReviewBookReadResponseDto> exchange = restTemplate.exchange(uri,
+            HttpMethod.GET,
             new HttpEntity<>(CommonUtils.createHeader()),
             new ParameterizedTypeReference<>() {
             });
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
 
         return exchange.getBody();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void createReview(MultipartFile[] reviewFiles,
-        Long memberId, ReviewCreateRequestDto reviewCreateRequestDto) {
+        Long memberId, ReviewCreateRequestDto reviewCreateRequestDto) throws IOException {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(PATH)
-            .queryParam("memberId", memberId)
+            .queryParam(MEMBER_QUERY_PARAM, memberId)
             .encode()
             .build()
             .toUri();
@@ -102,35 +109,25 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
         MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
         HttpHeaders httpHeaders = CommonUtils.createHeader(MediaType.MULTIPART_FORM_DATA);
         for (MultipartFile file : reviewFiles) {
-            try {
-                // MultipartFile을 byte 배열로 변환하여 추가
-                byte[] fileBytes = file.getBytes();
-                ByteArrayResource resource = new ByteArrayResource(fileBytes) {
-                    @Override
-                    public String getFilename() {
-                        return file.getOriginalFilename();
-                    }
-                };
-                multiValueMap.add("images", resource);
-            } catch (IOException e) {
-                e.printStackTrace();
-                // 예외 처리
-            }
+            byte[] fileBytes = file.getBytes();
+            ByteArrayResource resource = new ByteArrayResource(fileBytes) {
+                @Override
+                public String getFilename() {
+                    return file.getOriginalFilename();
+                }
+            };
+            multiValueMap.add("images", resource);
         }
         multiValueMap.add("review", reviewCreateRequestDto);
 
-        log.info("create1");
-
-        ResponseEntity<HttpStatus> response = restTemplate.postForEntity(uri,
+        restTemplate.postForEntity(uri,
             new HttpEntity<>(multiValueMap, httpHeaders),
             HttpStatus.class);
-
-        log.info("create2");
-        if (response.getStatusCode() != HttpStatus.CREATED) {
-            throw new RuntimeException();
-        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateReview(Long memberId, Long reviewId,
         ReviewCreateRequestDto reviewCreateRequestDto, List<MultipartFile> reviewFiles) {
@@ -138,7 +135,7 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
             .fromUriString(gatewayProperties.getUrl())
             .path(PATH)
             .path("/{reviewId}")
-            .queryParam("memberId", memberId)
+            .queryParam(MEMBER_QUERY_PARAM, memberId)
             .encode()
             .build()
             .expand(reviewId)
@@ -152,14 +149,33 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
         multiValueMap.add("images", resourceFiles);
         multiValueMap.add("review", reviewCreateRequestDto);
 
-        ResponseEntity<HttpStatus> exchange = restTemplate.exchange(
+        restTemplate.exchange(
             uri,
             HttpMethod.PUT,
             new HttpEntity<>(multiValueMap, httpHeaders),
             HttpStatus.class);
+    }
 
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ReviewBookReadResponseDto getReviewPagination(Long page, Long size, Long bookId) {
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path(PATH)
+            .path("/books/{bookId}")
+            .queryParam("page", page)
+            .queryParam("size", size)
+            .encode()
+            .build()
+            .expand(bookId)
+            .toUri();
+
+        ResponseEntity<ReviewBookReadResponseDto> exchange = restTemplate.exchange(uri,
+            HttpMethod.GET, new HttpEntity<>(CommonUtils.createHeader()),
+            ReviewBookReadResponseDto.class);
+
+        return exchange.getBody();
     }
 }
