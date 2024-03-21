@@ -154,7 +154,7 @@
 
             <hr class="mb-5">
             <h4 class="mb-5"
-                th:text="'리뷰 (' + ${#numbers.formatInteger(reviews.totalElements, 0, 'COMMA')} + ')'"></h4>
+                th:text="'리뷰 (' + ${#numbers.formatInteger(reviewNumber.count, 0, 'COMMA')} + ')'"></h4>
             <div class="row g-4 p-4 card">
               <div class="col-lg-12">
                 <div class="text-center">평균 별점</div>
@@ -172,7 +172,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-auto" th:each="review: ${reviews.content}"
+              <div class="col-lg-auto" th:each="review, iterStat: ${reviews.content}"
                    th:if="${reviews!=null}">
                 <div class="d-flex align-items-center">
                   <div class="d-flex align-items-center"
@@ -208,3 +208,4 @@
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.0.0/dist/markdown-it.min.js"></script>
     <script src="/js/book.js"></script>
   </div>
+</div>

@@ -15,4 +15,5 @@ import lombok.NoArgsConstructor;
 public class ReviewAverageReadResponseDto {
 
     private BigDecimal avg;
+    private Long count;
 }
