@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.search.BookSearchPageResponseDto;
 import com.nhnacademy.inkbridge.front.dto.search.BookSearchResponseDto;
 import com.nhnacademy.inkbridge.front.service.SearchService;
@@ -29,8 +30,8 @@ public class SearchController {
 
     @GetMapping("search")
     public String searchByText(@RequestParam String text, @PageableDefault(size=10) Pageable pageable, Model model) {
-        BookSearchPageResponseDto pageableBooks = searchService.searchByText(text, pageable);
-        model.addAttribute("books", pageableBooks.getContent());
+        PageRequestDto<BookSearchResponseDto> pageableBooks = searchService.searchByText(text, pageable);
+        model.addAttribute("books", pageableBooks);
         model.addAttribute("text",text);
         model.addAttribute("count",pageableBooks.getTotalElements());
         model.addAttribute("isSearch",true);
@@ -38,16 +39,16 @@ public class SearchController {
     }
 
     @GetMapping("/{field}")
-    public String searchByAll(@PathVariable String field, @PageableDefault(size=10) Pageable pageable, Model model){
+    public String searchByAll(@PathVariable String field, Pageable pageable, Model model){
         if(field.equals("popular-books")){
             field = "view";
         }else if(field.equals("new-books")){
             field = "publicatedAt";
-        }else{
+        } else{
             throw new IllegalArgumentException();
         }
-        BookSearchPageResponseDto pageableBooks = searchService.searchByAll(field,pageable);
-        model.addAttribute("books",pageableBooks.getContent());
+        PageRequestDto<BookSearchResponseDto> pageableBooks = searchService.searchByAll(field,pageable);
+        model.addAttribute("books",pageableBooks);
         model.addAttribute("isSearch",false);
         return "search/search";
     }
