@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MemberPointReadResponseDto {
 
-    Long point;
+    private Long point;
 
     @Builder
     public MemberPointReadResponseDto(Long point) {

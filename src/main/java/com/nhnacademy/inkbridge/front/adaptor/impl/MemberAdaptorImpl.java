@@ -126,6 +126,7 @@ public class MemberAdaptorImpl implements MemberAdaptor {
         );
     }
 
+
     @Override
     public ResponseEntity<Void> doLogin(String id, String password) {
 
@@ -145,6 +146,11 @@ public class MemberAdaptorImpl implements MemberAdaptor {
         return restTemplate.exchange(URL, HttpMethod.POST, requestEntity, Void.class);
     }
 
+    /**
+     * 로그인한 회원의 포인트 가져오는 메서드
+     *
+     * @return 로그인 한 회원의 포인트 값
+     */
     @Override
     public MemberPointReadResponseDto getPoint() {
         HttpHeaders headers = createHeader();

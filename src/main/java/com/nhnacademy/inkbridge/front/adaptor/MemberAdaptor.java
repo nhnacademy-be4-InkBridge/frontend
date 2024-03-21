@@ -54,6 +54,11 @@ public interface MemberAdaptor {
 
     ResponseEntity<Void> doLogin(String id, String password);
 
+    /**
+     * 로그인한 회원의 포인트 가져오는 메서드
+     *
+     * @return 로그인 한 회원의 포인트 값
+     */
     MemberPointReadResponseDto getPoint();
 
     ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto);
