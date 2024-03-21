@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}"
+>
+<body>
+<th:block layout:fragment="css">
+  <link href="/css/categories.css" rel="stylesheet">
+</th:block>
+<th:block layout:fragment="script">
+  <script src="/js/scripts.js"></script>
+  <script src="/js/datatables-simple-demo.js"></script>
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+          crossorigin="anonymous"></script>
+  <script type="text/javascript" async=""
+          src="https://www.googletagmanager.com/gtag/js?id=UA-38417733-17&amp;l=dataLayer&amp;cx=c"></script>
+  <script id="ga-gtag" async=""
+          src="https://www.googletagmanager.com/gtag/js?id=G-PZXV45BPZN"></script>
+</th:block>
+<div layout:fragment="content" id="layoutSidenav_content">
+  <div th:if="${message != null}" class="alert alert-warning" role="alert" th:text="${message}">
+  </div>
+  <div class="container rounded-3 border border-2 border-dark my-5 bg-white">
+<div class="container my-5">
+  <h2>등급 리스트</h2>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>등급 번호</th>
+      <th>등급 이름</th>
+      <th>적립률</th>
+      <th>등급 기준</th>
+      <th>동작</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="grade : ${grades}">
+      <td th:text="${grade.gradeId}"></td>
+      <td th:text="${grade.grade}"></td>
+      <form th:action="@{/admin/grades/{gradeId}(gradeId=${grade.gradeId})}" method="post">
+        <td>
+          <input type="number" th:name="pointRate" th:value="${grade.pointRate}" step="0.1" min="0" max="10" pattern="\d+(\.\d{1})?" title="최대 10자리 숫자와 소수점 한 자리까지 입력 가능합니다." required />
+        </td>
+        <td>
+          <input type="number" th:name="standardAmount" th:value="${grade.standardAmount}" min="0" pattern="\d+" title="숫자만 입력 가능합니다." required />
+        </td>
+        <td><button type="submit" class="btn btn-primary">수정</button></td>
+      </form>
+    </tr>
+    </tbody>
+  </table>
+</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
