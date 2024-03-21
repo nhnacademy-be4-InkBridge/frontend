@@ -61,6 +61,12 @@ public class OrderAdminController {
         return "admin/orders_detail";
     }
 
+    /**
+     * 주문 상태를 배송중으로 변경하는 메소드입니다.
+     *
+     * @param orderId 주문 번호
+     * @return 관리자 주문 상세 조회 페이지
+     */
     @PutMapping("/{order-id}")
     public String updateOrderStatus(@PathVariable("order-id") Long orderId) {
 
