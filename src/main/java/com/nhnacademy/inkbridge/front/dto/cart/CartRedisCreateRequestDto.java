@@ -1,7 +1,7 @@
 package com.nhnacademy.inkbridge.front.dto.cart;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * class: CartCreateRequestDto.
@@ -10,14 +10,9 @@ import lombok.Getter;
  * @version 2024/03/08
  */
 @Getter
+@NoArgsConstructor
 public class CartRedisCreateRequestDto {
 
-    private final Long bookId;
-    private final Long amount;
-
-    @Builder
-    public CartRedisCreateRequestDto(Long bookId, Long amount) {
-        this.bookId = bookId;
-        this.amount = amount;
-    }
+    private Long bookId;
+    private Long amount;
 }

@@ -49,6 +49,9 @@ public class MemberServiceImpl implements MemberService {
     private final MemberAdaptor memberAdaptor;
     private final CartAdaptor cartAdaptor;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void signup(MemberSignupRequestDto memberSignupRequestDto) {
         String password = memberSignupRequestDto.getPassword();
@@ -64,7 +67,9 @@ public class MemberServiceImpl implements MemberService {
             }
         }
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void signupWithOAuth(MemberSignupOAuthRequestDto memberSignupOAuthRequestDto) {
         log.debug("signup service start ->");
@@ -77,7 +82,9 @@ public class MemberServiceImpl implements MemberService {
             }
         }
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void logout(HttpServletResponse response) {
         if ("anonymousUser".equals(
@@ -128,12 +135,16 @@ public class MemberServiceImpl implements MemberService {
 
         SecurityContextHolder.clearContext();
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResponseEntity<Void> doLogin(String email, String password) {
         return memberAdaptor.doLogin(email, password);
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MemberPointReadResponseDto getPoint() {
         return memberAdaptor.getPoint();
