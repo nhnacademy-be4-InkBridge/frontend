@@ -56,6 +56,7 @@ public class OrderAdminController {
         BookOrderViewResponseDto response = orderService.getOrderInfo(orderId);
 
         model.addAttribute("order", response);
+        model.addAttribute("orderId", orderId);
         model.addAttribute("couponDiscountList", orderService.getCouponDiscountPrice(response.getOrderDetailInfoList()));
 
         return "admin/orders_detail";

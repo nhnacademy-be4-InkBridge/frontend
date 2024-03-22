@@ -14,7 +14,7 @@
 
 <div layout:fragment="content" id="layoutSidenav_content">
   <main>
-    <form method="post" th:action="@{/admin/orders/{orderId}(orderId=${param.orderId})}">
+    <form method="post" th:action="@{/admin/orders/{orderId}(orderId=${orderId})}">
       <input type="hidden" name="_method" value="put"/>
       <input class="btn btn-outline-dark mt-5 mb-2" type="submit" value="배송 상태 변경">
     </form>
@@ -100,7 +100,7 @@
         <th>주문 상태</th>
       </tr>
       <tr th:each="orderDetail, stat : ${order.orderDetailInfoList}">
-        <td><img th:src="${orderDetail.thumbnailUrl}"></td>
+        <td><img th:src="${orderDetail.thumbnailUrl}" alt="도서 이미지"></td>
         <td class="book-title" th:text="${orderDetail.bookTitle}"></td>
         <td th:text="${orderDetail.amount} + ' 개'"></td>
         <td th:text="${#numbers.formatInteger(orderDetail.bookPrice * orderDetail.amount + orderDetail.wrappingPrice, 1, 'COMMA')} + ' 원'"></td>
