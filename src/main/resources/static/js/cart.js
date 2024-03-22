@@ -85,10 +85,10 @@ function setTotalPrice() {
   document.querySelectorAll('#price').forEach(function (element) {
     let amountValue = element.parentElement.parentElement.querySelector(
         'input[name="amount"]').value;
-    totalPrice += parseInt(element.textContent) * amountValue;
+    totalPrice += parseInt(element.textContent.replaceAll(',', '')) * amountValue;
 
     console.log('amount: ' + amountValue);
     console.log('total: ' + parseInt(element.textContent));
   });
-  document.getElementById('totalPrice').textContent = totalPrice;
+  document.getElementById('totalPrice').textContent = totalPrice.toLocaleString('en-US');
 }
