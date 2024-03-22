@@ -46,8 +46,6 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
   button.addEventListener('click', function () {
     var oldValue = parseInt(this.parentElement.parentElement.querySelector(
         'input[name="amount"]').value);
-    const stock = parseInt(this.parentElement.parentElement.querySelector(
-        'input[name="stock"]').value);
     var newVal = oldValue;
     // price
     var price = parseInt(
@@ -57,10 +55,8 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
         document.getElementById('totalPrice').textContent);
 
     if (this.classList.contains('btn-plus')) {
-      if (oldValue + 1 < stock) {
         newVal = oldValue + 1;
         totalPrice = totalPrice + price;
-      }
     } else {
       newVal = oldValue > 1 ? oldValue - 1 : 1;
       totalPrice = newVal > 1 ? totalPrice - price : totalPrice;
@@ -89,7 +85,10 @@ function setTotalPrice() {
   document.querySelectorAll('#price').forEach(function (element) {
     let amountValue = element.parentElement.parentElement.querySelector(
         'input[name="amount"]').value;
-    totalPrice += parseInt(element.textContent) * amountValue;
+    totalPrice += parseInt(element.textContent.replaceAll(',', '')) * amountValue;
+
+    console.log('amount: ' + amountValue);
+    console.log('total: ' + parseInt(element.textContent));
   });
-  document.getElementById('totalPrice').textContent = totalPrice;
+  document.getElementById('totalPrice').textContent = totalPrice.toLocaleString('en-US');
 }
