@@ -14,7 +14,7 @@
 
 <div layout:fragment="content" id="layoutSidenav_content">
   <main>
-    <form method="post" th:action="@{/admin/orders/{orderId}(orderId=${order.orderInfo.orderId})}">
+    <form method="post" th:action="@{/admin/orders/{orderId}(orderId=${param.orderId})}">
       <input type="hidden" name="_method" value="put"/>
       <input class="btn btn-outline-dark mt-5 mb-2" type="submit" value="배송 상태 변경">
     </form>

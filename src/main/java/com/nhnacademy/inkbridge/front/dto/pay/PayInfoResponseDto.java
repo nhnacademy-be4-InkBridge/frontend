@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PayInfoResponseDto {
 
-    private Long payId;
 
     private String paymentKey;
 
@@ -23,8 +22,6 @@ public class PayInfoResponseDto {
     private String status;
 
     private LocalDateTime requestedAt;
-
-    private LocalDateTime approvedAt;
 
     private Long totalAmount;
 

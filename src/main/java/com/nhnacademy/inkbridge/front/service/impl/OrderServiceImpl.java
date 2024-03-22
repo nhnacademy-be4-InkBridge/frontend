@@ -109,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
     public List<Long> getCouponDiscountPrice(List<OrderDetailInfoResponseDto> orderDetailInfoList) {
         return orderDetailInfoList.stream()
             .map(orderDetail -> {
-                if (Objects.isNull(orderDetail.getMemberCouponId())) {
+                if (Objects.isNull(orderDetail.getCouponName())) {
                     return 0L;
                 }
 
