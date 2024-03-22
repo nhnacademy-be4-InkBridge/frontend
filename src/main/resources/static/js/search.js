@@ -65,12 +65,11 @@ orderList.forEach((orderItem) => {
   })
 })
 
-const orderSelect = document.querySelector(".search-book-select");
+const orderSelect = document.querySelector(".view-select");
 orderSelect.addEventListener("change", (e) => {
-  console.log(e.target.value)
-  console.log(location.href);
   const currentUrl = new URL(location.href);
   currentUrl.searchParams.set("size", e.target.value);
+  console.log(e.target)
   location.href = currentUrl.href;
 })
 
