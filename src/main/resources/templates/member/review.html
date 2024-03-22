@@ -28,7 +28,7 @@
     <div class="comment_list" style="" th:each="review, iterStat: ${reviews.content}"
          th:unless="${reviewCount==0}">
       <!--      수정 모달-->
-      <div class="modal fade modal-lg" id="addModal" tabindex="-1"
+      <div class="modal fade modal-lg" th:id="'addModal' + ${iterStat.index}" tabindex="-1"
            aria-labelledby="exampleModalLabel"
            aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -45,7 +45,7 @@
                     <div class="d-flex justify-content-between py-3">
                       <div class="d-flex align-items-center">
                         <div class="d-flex align-items-center fs-4">
-                          <input type="hidden" name="score">
+                          <input type="hidden" name="score" th:value="${review.score}">
                           <ul class="list-inline rating-list">
                             <li><i class="fa fa-star update-star"></i></li>
                             <li><i class="fa fa-star update-star"></i></li>
@@ -59,15 +59,24 @@
                   </div>
                   <div class="col-lg-12">
                     <div class="border-bottom rounded">
-                      <input type="text" name="reviewTitle"
+                      <input type="text" name="reviewTitle" th:value="${review.reviewTitle}"
                              class="form-control border-0 me-4" placeholder="리뷰 제목">
                     </div>
                   </div>
                   <div class="col-lg-12">
                     <div class="border-bottom rounded my-4">
                     <textarea class="form-control border-0" cols="30" rows="8" name="reviewContent"
-                              placeholder="리뷰 내용" spellcheck="false"></textarea>
+                              placeholder="리뷰 내용" spellcheck="false"
+                              th:text="${review.reviewContent}"></textarea>
                     </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <ul th:with="reviewId=${review?.reviewId}" class="d-flex"
+                        style="height: 10rem; width: 8rem;">
+                      <li th:each="img: ${reviewFiles?.get(reviewId)}" style="margin: 10px 10px 0 0">
+                        <img th:src="${img}" alt="no image" class="h-100 w-100" th:if="!${img.isBlank()}">
+                      </li>
+                    </ul>
                   </div>
                   <div class="col-lg-12">
                     <span>이미지 추가</span>
@@ -82,7 +91,7 @@
           </div>
         </div>
       </div>
-<!--      모달 끝-->
+      <!--      모달 끝-->
       <div class="comment_item">
         <div class="prod_area horizontal">
           <div class="prod_thumb_box size_xs">
@@ -107,7 +116,7 @@
               <div class="rating-container rating-sm">
                 <div class="rating-stars" th:with="score=${5 - review.score}" style="width: 100%;">
                   <span class="star me-3" th:text="${review.reviewTitle}" id="reviewTitle"></span>
-                    <span class="star">
+                  <span class="star">
                         <i class="fa-solid fa-star"
                            th:each="i : ${#numbers.sequence(1, review.score)}"></i>
                     </span>
@@ -126,7 +135,7 @@
               <span class="info_item">
 <!--                수정 버튼-->
                 <button class="btn_comment_util update-btn" type="button" data-bs-toggle="modal"
-                        data-bs-target="#addModal" th:attr="data-score=${review.score}, data-review-id=${review.reviewId}" onclick="updateStar(this); setUpdate(this)">
+                        th:data-bs-target="'#addModal'+${iterStat.index}" th:attr="data-score=${review.score}, data-review-id=${review.reviewId}" onclick="updateStar(this);">
                   <span class="text">수정</span>
                 </button>
               </span>
@@ -137,7 +146,8 @@
           <div class="comment_contents_inner">
             <div class="comment_view_wrap">
               <div class="comment_text_box">
-                <div class="comment_text" th:text="${review.reviewContent}" id="reviewContent"></div>
+                <div class="comment_text" th:text="${review.reviewContent}"
+                     id="reviewContent"></div>
               </div>
             </div>
           </div>
@@ -145,7 +155,8 @@
         <div class="comment_footer">
           <div class="comment_util_box">
             <div class="left_area">
-              <ul th:with="reviewId=${review?.reviewId}" class="d-flex" style="height: 10rem; width: 8rem;">
+              <ul th:with="reviewId=${review?.reviewId}" class="d-flex"
+                  style="height: 10rem; width: 8rem;">
                 <li th:each="img: ${reviewFiles?.get(reviewId)}" style="margin: 10px 10px 0 0">
                   <img th:src="${img}" alt="no image" class="h-100 w-100" th:if="!${img.isBlank()}">
                 </li>

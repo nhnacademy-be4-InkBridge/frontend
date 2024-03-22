@@ -37,7 +37,7 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
 
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
-    private static final String PATH = "/api/reviews";
+    private static final String PATH = "/api/auth/reviews";
     private static final String MEMBER_QUERY_PARAM = "memberId";
 
     public ReviewAdaptorImpl(RestTemplate restTemplate, GatewayProperties gatewayProperties) {
