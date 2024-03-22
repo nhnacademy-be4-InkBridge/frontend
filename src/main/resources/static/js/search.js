@@ -59,6 +59,18 @@ orderList.forEach((orderItem)=>{
     currentUrl.searchParams.set("page","0");
     currentUrl.searchParams.set("size",currentParams.get("size")||10);
     currentUrl.searchParams.set("sort",sortStr||"");
+
+  //   await fetch("/search", {
+  //     method: "GET",
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({bookId, amount}),
+  //   })
+  //   .then((response) => response.json)
+  // })
+
+
     window.location.href= currentUrl.href;
   })
 })
