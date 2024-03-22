@@ -7,6 +7,7 @@ import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
@@ -36,6 +38,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @author minm063
  * @version 2024/02/25
  */
+@Slf4j
 @Component
 public class BookAdaptorImpl implements BookAdaptor {
 
@@ -84,7 +87,7 @@ public class BookAdaptorImpl implements BookAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public BooksReadResponseDto getBooksByCategory(Long page, Long categoryId) {
+    public BooksByCategoryReadResponseDto getBooksByCategory(Long page, Long categoryId) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(MAIN_PATH)
@@ -96,7 +99,7 @@ public class BookAdaptorImpl implements BookAdaptor {
             .toUri();
 
         HttpHeaders httpHeaders = CommonUtils.createHeader();
-        ResponseEntity<BooksReadResponseDto> exchange = restTemplate.exchange(
+        ResponseEntity<BooksByCategoryReadResponseDto> exchange = restTemplate.exchange(
             uri,
             HttpMethod.GET,
             new HttpEntity<>(httpHeaders),
@@ -114,11 +117,12 @@ public class BookAdaptorImpl implements BookAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public BookReadResponseDto getBook(Long bookId) {
+    public BookReadResponseDto getBook(Long bookId, Long memberId) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path(MAIN_PATH)
             .path(BOOK_ID)
+            .queryParam("memberId", memberId)
             .encode()
             .build()
             .expand(bookId)

@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.service.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class IndexServiceImpl implements IndexService {
      * {@inheritDoc}
      */
     @Override
-    public BooksReadResponseDto getBooksByCategory(Long page, Long categoryId) {
+    public BooksByCategoryReadResponseDto getBooksByCategory(Long page, Long categoryId) {
         return bookAdaptor.getBooksByCategory(page, categoryId);
     }
 
@@ -41,7 +42,7 @@ public class IndexServiceImpl implements IndexService {
      * {@inheritDoc}
      */
     @Override
-    public BookReadResponseDto getBook(Long bookId) {
-        return bookAdaptor.getBook(bookId);
+    public BookReadResponseDto getBook(Long bookId, Long memberId) {
+        return bookAdaptor.getBook(bookId, memberId);
     }
 }

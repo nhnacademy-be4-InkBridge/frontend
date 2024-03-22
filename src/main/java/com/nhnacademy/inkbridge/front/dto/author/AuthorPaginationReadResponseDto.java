@@ -1,4 +1,4 @@
-package com.nhnacademy.inkbridge.front.dto.book;
+package com.nhnacademy.inkbridge.front.dto.author;
 
 import java.util.List;
 import lombok.Getter;

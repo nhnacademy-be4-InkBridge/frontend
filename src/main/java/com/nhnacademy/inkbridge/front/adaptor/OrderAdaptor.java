@@ -1,10 +1,15 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
 import com.nhnacademy.inkbridge.front.dto.OrderBooksIdResponseDto;
+import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
+import com.nhnacademy.inkbridge.front.dto.order.BookOrderViewResponseDto;
+import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderPaymentInfoReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 import java.util.List;
+import com.nhnacademy.inkbridge.front.dto.order.OrderReadResponseDto;
+import org.springframework.data.domain.Pageable;
 
 /**
  * class: OrderAdaptor.
@@ -37,4 +42,45 @@ public interface OrderAdaptor {
      * @return 도서 번호 목록
      */
     List<OrderBooksIdResponseDto> getOrderBooksIdByOrderCode(String orderCode);
+
+    /**
+     * 주문 목록 정보를 조회합니다.
+     *
+     * @param pageable 페이지 정보
+     * @return 주문 목록
+     */
+    PageRequestDto<OrderReadResponseDto> getOrderPages(Pageable pageable);
+
+    /**
+     * 주문 상세 내역 정보를 조회합니다.
+     *
+     * @param orderId 주문 번호
+     * @return 주문 상세 내역
+     */
+    BookOrderViewResponseDto getOrderInfo(Long orderId);
+
+    /**
+     * 주문 상태를 변경합니다.
+     *
+     * @param orderId 주문 번호
+     */
+    void updateOrderStatus(Long orderId);
+
+    /**
+     * 회원 주문 목록 정보를 조회합니다.
+     *
+     * @param pageable 페이지 정보
+     * @param memberId 회원 번호
+     * @return 주문 목록
+     */
+    PageRequestDto<OrderReadResponseDto> getMyOrderPages(Pageable pageable, Long memberId);
+
+    /**
+     * 회원 주문 상세 내역을 조회합니다.
+     *
+     * @param orderCode 주문 코드
+     * @param memberId 회원 번호
+     * @return 주문 상세 내역
+     */
+    BookOrderViewResponseDto getMyOrderInfo(String orderCode, Long memberId);
 }

@@ -1,0 +1,49 @@
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div id="layoutSidenav_nav" th:fragment="sidebarFragment">
+    <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+            <div class="nav">
+
+                <a class="nav-link" href="/mypage/members">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    개인 정보 수정
+                </a>
+                <a class="nav-link" href="/mypage/password"  sec:authorize="hasAnyRole('MEMBER')">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    비밀번호 변경
+                </a>
+                <a class="nav-link" href="/mypage/address">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    배송지
+                </a>
+                <a class="nav-link" href="/mypage/coupons">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    쿠폰 조회
+                </a>
+                <a class="nav-link" href="/mypage/orders">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    주문 조회
+                </a>
+                <a class="nav-link" href="/mypage/point">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    포인트 내역
+                </a>
+                <a class="nav-link" href="/mypage/wishlist">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    위시리스트
+                </a>
+                <a class="nav-link" href="/mypage/reviews">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    마이 리뷰
+                </a>
+                <a class="nav-link" href="/mypage/exit">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    회원 탈퇴
+                </a>
+            </div>
+        </div>
+    </nav>
+</div>
+</html>

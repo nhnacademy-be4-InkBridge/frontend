@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.dto.book;
 
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
+import com.nhnacademy.inkbridge.front.dto.author.AuthorPaginationReadResponseDto;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

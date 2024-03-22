@@ -2,9 +2,9 @@ package com.nhnacademy.inkbridge.front.dto.address;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * class: AddressCreateRequstDto.
@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
+@Setter
 public class AddressCreateRequestDto {
 
     @NotBlank
@@ -39,15 +40,4 @@ public class AddressCreateRequestDto {
     @Size(max = 11)
     private String receiverNumber;
 
-    @Builder
-    public AddressCreateRequestDto(String zipCode, String address, String alias,
-        String addressDetail,
-        String receiverName, String receiverNumber) {
-        this.zipCode = zipCode;
-        this.address = address;
-        this.alias = alias;
-        this.addressDetail = addressDetail;
-        this.receiverName = receiverName;
-        this.receiverNumber = receiverNumber;
-    }
 }

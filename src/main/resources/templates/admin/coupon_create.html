@@ -24,7 +24,7 @@
       var discountPriceInput = document.getElementById('discount-price');
       var label = document.querySelector('label[for="discount-price"]');
 
-      if (couponType === '0') {
+      if (couponType === '1') {
         discountPriceInput.placeholder = '할인율 입력';
         label.textContent = '할인율(%)';
       } else {
@@ -66,8 +66,11 @@
       var discountPrice = parseFloat(discountPriceInput.value);
       var maxDiscountPrice = parseFloat(maxDiscountPriceInput.value);
 
-      if (discountPrice > maxDiscountPrice) {
-        errorMessage.textContent = '할인가격은 최대할인금액보다 클 수 없습니다.';
+      if (discountPrice > maxDiscountPrice && couponType ==='2') {
+        errorMessage.textContent = '할인 가격은 최대 할인 금액보다 클 수 없습니다.';
+        return false;
+      } else if (couponType === '1' && discountPrice > 100) {
+        errorMessage.textContent = '100%를 넘을 수 없습니다.';
         return false;
       } else {
         errorMessage.textContent = '';
@@ -220,18 +223,14 @@
         <label>쿠폰타입(1. %, 2. 가격)</label>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="couponTypeId" id="coupon-type-id-0"
-                 value="0" checked>
+                 value="1" checked>
           <label class="form-check-label" for="coupon-type-id-0">% 쿠폰</label>
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="couponTypeId" id="coupon-type-id-1"
-                 value="1">
+                 value="2">
           <label class="form-check-label" for="coupon-type-id-1">가격 쿠폰</label>
         </div>
-      </div>
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="isBirth" name="isBirth" value="true">
-        <label class="form-check-label" for="isBirth">생일 여부</label>
       </div>
       <button type="submit" class="btn btn-submit">등록</button>
     </form>

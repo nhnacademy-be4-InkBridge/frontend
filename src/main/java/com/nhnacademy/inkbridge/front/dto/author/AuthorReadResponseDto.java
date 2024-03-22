@@ -1,6 +1,5 @@
-package com.nhnacademy.inkbridge.front.dto.book;
+package com.nhnacademy.inkbridge.front.dto.author;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,9 +10,9 @@ import lombok.NoArgsConstructor;
  * @version 2024/02/29
  */
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class AuthorReadResponseDto {
+
     private Long authorId;
     private String authorName;
 }

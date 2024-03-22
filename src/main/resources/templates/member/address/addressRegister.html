@@ -12,40 +12,40 @@
 <body>
 <div class="container my-5">
   <h2 class="mb-4">새 주소 등록</h2>
-
-  <!-- 주소 별칭, 받는 사람, 전화번호 입력 필드 -->
+<form id="addressForm" method="post" action="/mypage/address/register"><!-- 주소 별칭, 받는 사람, 전화번호 입력 필드 -->
   <div class="mb-3">
     <label for="alias" class="form-label">주소 별칭:</label>
-    <input type="text" class="form-control" id="alias" placeholder="예: 집, 회사" required maxlength="20">
+    <input type="text" class="form-control" id="alias" name="alias" placeholder="예: 집, 회사" required maxlength="20">
   </div>
   <div class="mb-3">
-    <label for="recipientName" class="form-label">받는 사람:</label>
-    <input type="text" class="form-control" id="recipientName" placeholder="받는 사람 이름" required maxlength="20">
+    <label for="receiverName" class="form-label">받는 사람:</label>
+    <input type="text" class="form-control" id="receiverName" name="receiverName" placeholder="받는 사람 이름" required maxlength="20">
   </div>
   <div class="mb-3">
-    <label for="phoneNumber" class="form-label">전화번호:</label>
-    <input type="tel" class="form-control" id="phoneNumber" placeholder="전화번호" required maxlength="11">
+    <label for="receiverNumber" class="form-label">전화번호:</label>
+    <input type="tel" class="form-control" id="receiverNumber" name="receiverNumber" placeholder="전화번호" required maxlength="11">
   </div>
 
   <!-- 우편번호 검색 필드 -->
   <div class="input-group mb-2">
-    <input type="text" class="form-control" id="zipCode" placeholder="우편번호" readonly>
+    <input type="text" class="form-control" id="zipCode" name="zipCode" placeholder="우편번호" readonly>
     <button class="btn btn-outline-secondary" type="button" id="btnZipCode">
       우편번호 찾기
     </button>
   </div>
   <div class="mb-3">
-    <input type="text" class="form-control" id="address" placeholder="도로명주소" readonly>
+    <input type="text" class="form-control" id="address" name="address" placeholder="도로명주소" readonly>
   </div>
   <div class="mb-3">
-    <input type="text" class="form-control" id="detailAddress" placeholder="상세주소" required maxlength="200">
+    <input type="text" class="form-control" id="addressDetail" name="addressDetail" placeholder="상세주소" required maxlength="200">
   </div>
 
   <!-- 확인 및 취소 버튼 -->
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
     <button class="btn btn-primary" type="button" onclick="submitAddress()">확인</button>
     <button class="btn btn-secondary" type="button" onclick="cancelAddress()">취소</button>
-  </div>
+  </div></form>
+
 </div>
 
 <!-- Daum 우편번호 스크립트 -->
@@ -86,29 +86,8 @@
   document.getElementById('btnZipCode').addEventListener('click', execDaumPostcode);
 
   function submitAddress() {
-    var addressData = {
-      alias: $('#alias').val(),
-      recipientName: $('#recipientName').val(),
-      phoneNumber: $('#phoneNumber').val(),
-      zipCode: $('#zipCode').val(),
-      address: $('#address').val(),
-      detailAddress: $('#detailAddress').val()
-    };
-
-    $.ajax({
-      url: '/mypage/address/register',
-      type: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify(addressData),
-      success: function(response) {
-        window.location.href = '/mypage/address'; // 성공 시 페이지 리다이렉션
-      },
-      error: function(xhr, status, error) {
-        console.error('Error registering address:', xhr.responseText);
-      }
-    });
+    document.getElementById("addressForm").submit();
   }
-
   function cancelAddress() {
     window.location.href = '/mypage/address'; // 취소 시 페이지 리다이렉션
   }

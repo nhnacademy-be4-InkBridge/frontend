@@ -56,8 +56,9 @@
                   <td th:text="${book?.bookId}"></td>
                   <td th:text="${book?.bookTitle}"></td>
                   <td>
-                    <span th:each="author, iterStat : ${authors[index.index].authorName}"><span
-                        th:text="${author}"></span><span th:if="${!iterStat.last}">, </span></span>
+                    <span th:each="author, iterStat2 : ${authors[index.index].authorName}">
+                      <span th:text="${author}"></span><span th:if="${!iterStat2.last}">, </span>
+                    </span>
                   </td>
                   <td th:text="${book?.publisherName}"></td>
                   <td th:text="${book?.statusName}"></td>
