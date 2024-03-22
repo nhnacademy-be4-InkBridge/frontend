@@ -8,10 +8,9 @@ import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.MEMBER_INFO;
 import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.REFRESH_COOKIE;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
 import com.nhnacademy.inkbridge.front.jwt.utils.JwtCookie;
-import com.nhnacademy.inkbridge.front.jwt.service.CustomUserDetailService;
-import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.utils.CookieUtils;
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +29,6 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
@@ -44,6 +42,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
     private final MemberAdaptor memberAdaptor;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final ObjectMapper objectMapper;
 
     /**
      * 모든 요청마다 사용자인지 아닌지 체크.
@@ -69,14 +68,14 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            if (isExpireTime(Objects.requireNonNull(refreshCookie).getValue())) {
+            if (isExpireTime(Objects.requireNonNull(refreshCookie).getValue(),response)){
                 log.error("jwt filter refresh token 만료");
                 goLogout(response);
                 filterChain.doFilter(request, response);
                 return;
             }
             // 재발급 로직
-            if (isExpireTime(Objects.requireNonNull(accessCookie).getValue())) {
+            if (isExpireTime(Objects.requireNonNull(accessCookie).getValue(),response)){
                 log.debug("jwt filter access token 재발급 시작 ->");
 
                 String accessValue = Objects.requireNonNull(accessCookie).getValue();
@@ -123,7 +122,8 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                                 Collectors.toList());
 
                 UsernamePasswordAuthenticationToken token =
-                        new UsernamePasswordAuthenticationToken(responseDto.getMemberId().toString(), "", authorities);
+                        new UsernamePasswordAuthenticationToken(responseDto.getMemberId().toString(),
+                                objectMapper.writeValueAsString(responseDto), authorities);
 
                 SecurityContextHolder.getContext().setAuthentication(token);
                 log.debug("jwt filter 컨텍스트 홀드 저장 완료 -> {}", SecurityContextHolder.getContext().getAuthentication());
@@ -146,8 +146,13 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
         return value.length() - (exp.length() + 1);
     }
 
-    private static boolean isExpireTime(String token) {
-        long expire = Long.parseLong(token.split("\\.")[3]);
+    private static boolean isExpireTime(String token, HttpServletResponse response) throws IOException {
+        long expire = System.currentTimeMillis();
+        try {
+            expire = Long.parseLong(token.split("\\.")[3]);
+        } catch (Exception e) {
+            goLogout(response);
+        }
 
         return expire < System.currentTimeMillis();
     }

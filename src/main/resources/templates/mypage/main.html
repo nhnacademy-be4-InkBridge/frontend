@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mypage_layout}">
+<th:block layout:fragment="css">
+    <link rel="stylesheet" href="/css/mypage.css">
+</th:block>
+<th:block layout:fragment="script">
+</th:block>
+
+
+<div layout:fragment="content" class="container">
+    <h1 th:text="${member.memberName} + '님의 마이페이지'"></h1>
+    <div class="card">
+        <div class="card-body">
+            <div class="info-item">
+                <label for="name">이름:</label>
+                <span id="name" class="ms-2" th:text="${member.memberName}"></span>
+            </div>
+            <div class="info-item">
+                <label for="email">이메일:</label>
+                <span id="email" class="ms-2" th:text="${member.email}"></span>
+            </div>
+            <div class="info-item">
+                <label for="phone">번호:</label>
+                <span id="phone" class="ms-2" th:text="${member.phoneNumber}"></span>
+            </div>
+            <div class="info-item">
+                <label for="birthday">생일:</label>
+                <span id="birthday" class="ms-2" th:text="${member.birthday}"></span>
+            </div>
+            <div class="info-item">
+                <label for="points">포인트:</label>
+                <span id="points" class="ms-2" th:text="${member.memberPoint}"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>
