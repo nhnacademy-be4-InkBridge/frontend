@@ -1,17 +1,26 @@
 package com.nhnacademy.inkbridge.front.service.impl;
 
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.getMemberId;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.inkbridge.front.adaptor.PayAdaptor;
 import com.nhnacademy.inkbridge.front.adaptor.PaymentCompanyAdaptor;
+import com.nhnacademy.inkbridge.front.dto.OrderBooksIdResponseDto;
 import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmRequestDto;
 import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmResponseDto;
 import com.nhnacademy.inkbridge.front.dto.pay.PayCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.pay.TossConfirmResponseDto;
 import com.nhnacademy.inkbridge.front.exception.PaymentConfirmResponseReadFailedException;
 import com.nhnacademy.inkbridge.front.factory.PaymentCompanyAdaptorFactory;
+import com.nhnacademy.inkbridge.front.service.BookService;
+import com.nhnacademy.inkbridge.front.service.CartService;
+import com.nhnacademy.inkbridge.front.service.OrderService;
 import com.nhnacademy.inkbridge.front.service.PayService;
+import com.nhnacademy.inkbridge.front.utils.CookieUtils;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,6 +40,33 @@ public class PayServiceImpl implements PayService {
     private final PaymentCompanyAdaptorFactory paymentCompanyAdaptorFactory;
     private final PayAdaptor payAdaptor;
     private final ObjectMapper objectMapper;
+    private final OrderService orderService;
+    private final CartService cartService;
+    private final BookService bookService;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param requestDto 결제 승인 정보
+     * @param provider 결제 회사
+     */
+    @Override
+    public void doPayment(PayConfirmRequestDto requestDto, String provider) {
+
+        PayConfirmResponseDto responseDto = doConfirm(requestDto, provider);
+        registerPay(responseDto);
+
+        String memberId = Objects.isNull(getMemberId()) ? CookieUtils.getCookie("cart").getValue()
+            : getMemberId().toString();
+
+        if (Objects.nonNull(memberId)) {
+            List<OrderBooksIdResponseDto> bookIdResponseDtoList =
+                orderService.getOrderBookIds(requestDto.getOrderId());
+
+            bookIdResponseDtoList.forEach(
+                book -> cartService.deleteCartBook(book.getBookId().toString(), memberId));
+        }
+    }
 
     /**
      * {@inheritDoc}
@@ -68,7 +104,7 @@ public class PayServiceImpl implements PayService {
      * @param responseDto 결제 정보
      */
     @Override
-    public void doPayment(PayConfirmResponseDto responseDto) {
+    public void registerPay(PayConfirmResponseDto responseDto) {
 
         PayCreateRequestDto payCreateRequestDto = new PayCreateRequestDto(responseDto);
         log.debug("payCreateRequestDto {}", payCreateRequestDto);
