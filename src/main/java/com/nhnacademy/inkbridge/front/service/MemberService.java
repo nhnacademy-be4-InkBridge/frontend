@@ -4,6 +4,8 @@ import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberUpdateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 
@@ -55,4 +57,18 @@ public interface MemberService {
      * @return 중복여부
      */
     ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto);
+
+    /**
+     * 회원 정보를 가져옵는 메서드.
+     *
+     * @return 회원 정보
+     */
+    MemberInfoResponseDto getMemberInfo();
+
+    /**
+     * 회원 정보를 업데이트하는 메서드.
+     *
+     * @param memberUpdateRequestDto 업데이트할 회원 정보
+     */
+    void updateMember(MemberUpdateRequestDto memberUpdateRequestDto,Long memberId);
 }

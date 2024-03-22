@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.jwt.filter.CustomJwtAuthenticationFilter;
 import com.nhnacademy.inkbridge.front.jwt.filter.CustomLoginAuthenticationFilter;
@@ -41,6 +42,7 @@ public class SecurityConfig {
     private final RedisTemplate<String, Object> redisTemplate;
     private final CustomOAuthUserService customOAuthUserService;
     private final CustomOAuthSuccessHandler customOAuthSuccessHandler;
+    private final ObjectMapper objectMapper;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -50,6 +52,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/", "/login", "/signup").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/mypage/password/**").hasRole("MEMBER")
                 .antMatchers("/mypage/**").hasAnyRole("MEMBER","SOCIAL")
                 .anyRequest().permitAll();
         http
@@ -109,7 +112,7 @@ public class SecurityConfig {
      */
     @Bean
     public CustomJwtAuthenticationFilter customJwtAuthenticationFilter() {
-        return new CustomJwtAuthenticationFilter(memberAdaptor, redisTemplate);
+        return new CustomJwtAuthenticationFilter(memberAdaptor, redisTemplate,objectMapper);
     }
 
     /**

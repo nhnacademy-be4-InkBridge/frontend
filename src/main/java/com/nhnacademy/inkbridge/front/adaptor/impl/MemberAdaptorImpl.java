@@ -11,6 +11,7 @@ import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import lombok.RequiredArgsConstructor;
@@ -100,7 +101,9 @@ public class MemberAdaptorImpl implements MemberAdaptor {
             Void.class
         );
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void signupWithOAuth(MemberSignupOAuthRequestDto memberSignupOAuthRequestDto) {
         log.debug("signup oauth start ->");
@@ -111,7 +114,9 @@ public class MemberAdaptorImpl implements MemberAdaptor {
             Void.class
         );
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void logout(String access, String refresh) {
         HttpHeaders header = createHeader();
@@ -126,7 +131,9 @@ public class MemberAdaptorImpl implements MemberAdaptor {
         );
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResponseEntity<Void> doLogin(String id, String password) {
 
@@ -163,6 +170,9 @@ public class MemberAdaptorImpl implements MemberAdaptor {
             });
         return responseEntity.getBody();
     }
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto) {
         return restTemplate.exchange(
@@ -170,6 +180,19 @@ public class MemberAdaptorImpl implements MemberAdaptor {
                 HttpMethod.POST,
                 new HttpEntity<>(memberEmailRequestDto, createHeader()),
                 Boolean.class
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateMember(MemberUpdateRequestDto memberUpdateRequestDto,Long memberId) {
+        restTemplate.exchange(
+                gatewayProperties.getUrl() + "/api/mypage/members/"+memberId,
+                HttpMethod.PUT,
+                new HttpEntity<>(memberUpdateRequestDto, createHeader()),
+                Void.class
         );
     }
 }
