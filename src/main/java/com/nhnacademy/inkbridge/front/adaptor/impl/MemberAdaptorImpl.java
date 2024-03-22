@@ -4,11 +4,13 @@ import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.ACCESS_HEADER;
 import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.BEARER_PREFIX;
 import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.REFRESH_HEADER;
 import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.getMemberId;
 
 import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberPasswordRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberUpdateRequestDto;
@@ -195,4 +197,28 @@ public class MemberAdaptorImpl implements MemberAdaptor {
                 Void.class
         );
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseEntity<Boolean> updatePassword(MemberPasswordRequestDto memberPasswordRequestDto) {
+        Long memberId = getMemberId();
+        return restTemplate.exchange(
+                gatewayProperties.getUrl() + "/api/mypage/members/"+memberId+"/password",
+                HttpMethod.POST,
+                new HttpEntity<>(memberPasswordRequestDto, createHeader()),
+                Boolean.class
+        );
+    }
+
+    @Override
+    public String getPassword() {
+        return restTemplate.exchange(
+                gatewayProperties.getUrl() + "/api/mypage/members/password",
+                HttpMethod.GET,
+                new HttpEntity<>(createHeader()),
+                String.class
+        ).getBody();
+    }
+
 }

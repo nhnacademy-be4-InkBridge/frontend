@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ErrorController {
 
     /**
-     * 에러 페이지를 조회하는 메서드입니다.
+     * 404 에러 페이지를 조회하는 메서드입니다.
      *
      * @return html
      */
-    @GetMapping("/error")
-    public String goError() {
-        return "error";
+    @GetMapping("/404")
+    public String notFound() {
+        return "error/404";
     }
 }
