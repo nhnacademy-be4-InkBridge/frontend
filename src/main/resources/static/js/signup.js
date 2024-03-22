@@ -2,27 +2,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // 폼 제출 전 필드 검증
-    var submitButton = document.getElementById("submitButton");
-    var signupForm = document.getElementById("signupForm");
+    const submitButton = document.getElementById("submitButton");
+    const signupForm = document.getElementById("signupForm");
 
 
     // 각각의 필드 유효성 검증 여부를 저장할 변수
-    var isEmailValid = false;
-    var isPasswordValid = false;
-    var isPhoneNumberValid = false;
-    var isDooraySendValid = false;
+    let isEmailValid = false;
+    let isPasswordValid = false;
+    let isPhoneNumberValid = false;
+    let isDooraySendValid = false;
 
     // 이메일 중복 확인 버튼 클릭 시 이벤트 처리
-    var checkDuplicateButton = document.getElementById("checkDuplicate");
+    let checkDuplicateButton = document.getElementById("checkDuplicate");
     checkDuplicateButton.addEventListener("click", function () {
         emailCheck();
     });
 
     async function emailCheck() {
-        var emailInput = document.getElementById("email");
-        var email = emailInput.value.trim();
+        let emailInput = document.getElementById("email");
+        let email = emailInput.value.trim();
 
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             alert("올바른 이메일 주소를 입력하세요.");
             emailInput.focus(); // 이메일 입력란에 포커스를 맞춤
@@ -60,12 +60,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    var phoneNumberInput = document.getElementById("phoneNumber");
-    var phoneNumberFeedback = document.getElementById("phoneNumberFeedback");
+    let phoneNumberInput = document.getElementById("phoneNumber");
+    let phoneNumberFeedback = document.getElementById("phoneNumberFeedback");
 
     phoneNumberInput.addEventListener("input", function () {
-        var phoneNumber = phoneNumberInput.value.trim();
-        var phoneNumberRegex = /^010\d{8}$/;
+        let phoneNumber = phoneNumberInput.value.trim();
+        let phoneNumberRegex = /^010\d{8}$/;
 
         if (!phoneNumberRegex.test(phoneNumber)) {
             phoneNumberInput.classList.add("is-invalid");
@@ -81,12 +81,12 @@ document.addEventListener("DOMContentLoaded", function () {
     submitButton.addEventListener("click", function (event) {
         event.preventDefault();
 
-        var email = document.getElementById("email").value;
-        var password = document.getElementById("inputValid1").value;
-        var confirmPassword = document.getElementById("inputInvalid2").value;
-        var memberName = document.getElementById("memberName").value;
-        var birthday = document.getElementById("birthday").value;
-        var phoneNumber = document.getElementById("phoneNumber").value;
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("inputValid1").value;
+        let confirmPassword = document.getElementById("inputInvalid2").value;
+        let memberName = document.getElementById("memberName").value;
+        let birthday = document.getElementById("birthday").value;
+        let phoneNumber = document.getElementById("phoneNumber").value;
 
 
         if (email === "" || password === "" || confirmPassword === "" || memberName === "" || birthday === "" || phoneNumber === "") {
@@ -102,14 +102,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 비밀번호 유효성 검사
-    var passwordInput = document.getElementById("inputValid1");
-    var confirmPasswordInput = document.getElementById("inputInvalid2");
-    var tooltip = document.querySelector(".invalid-tooltip");
-    var feedbackMessage = document.querySelector(".invalid-feedback");
+    let passwordInput = document.getElementById("inputValid1");
+    let confirmPasswordInput = document.getElementById("inputInvalid2");
+    let tooltip = document.querySelector(".invalid-tooltip");
+    let feedbackMessage = document.querySelector(".invalid-feedback");
 
     passwordInput.addEventListener("input", function () {
-        var password = passwordInput.value.trim();
-        var passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,20}$/;
+        let password = passwordInput.value.trim();
+        let passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,20}$/;
 
         if (!passwordRegex.test(password)) {
             tooltip.style.display = "block";
@@ -129,8 +129,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     confirmPasswordInput.addEventListener("input", function () {
-        var password = passwordInput.value.trim();
-        var confirmPassword = confirmPasswordInput.value.trim();
+        let password = passwordInput.value.trim();
+        let confirmPassword = confirmPasswordInput.value.trim();
 
         if (password !== confirmPassword) {
             feedbackMessage.style.display = "block";
@@ -149,16 +149,16 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    var birthday = document.getElementById("birthday");
+    let birthday = document.getElementById("birthday");
 
-    var today = new Date();
+    let today = new Date();
 
     birthday.setAttribute("max", today.toISOString().split("T")[0]);
 
 
-    var sendVerificationCodeButton = document.getElementById("sendVerificationCode");
-    var confirmVerificationCodeButton = document.getElementById("confirmVerificationCode");
-    var checkDooraySend = false;
+    let sendVerificationCodeButton = document.getElementById("sendVerificationCode");
+    let confirmVerificationCodeButton = document.getElementById("confirmVerificationCode");
+    let checkDooraySend = false;
 
     // 전송 버튼 클릭 시
     sendVerificationCodeButton.addEventListener("click", function () {
@@ -180,8 +180,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 인증번호 확인 버튼 클릭 시
     confirmVerificationCodeButton.addEventListener("click", function () {
-        var confirmCodeInput = document.getElementById("verificationCode")
-        var confirmCode = confirmCodeInput.value.trim();
+        let confirmCodeInput = document.getElementById("verificationCode")
+        let confirmCode = confirmCodeInput.value.trim();
         if (certificationMessage === confirmCode) {
             isDooraySendValid = true;
             checkDooraySend = true;

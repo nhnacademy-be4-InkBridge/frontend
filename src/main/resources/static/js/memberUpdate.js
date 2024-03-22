@@ -1,40 +1,39 @@
 let isEmailValid = false;
 let isPhoneNumberValid = false;
 document.addEventListener("DOMContentLoaded", function () {
-
-
-    // 폼 제출 전 필드 검증
+// 폼 제출 전 필드 검증
     const submitButton = document.getElementById("updateButton");
-    const signupForm = document.getElementById("updateForm");
-
+    const updateForm = document.getElementById("updateForm");
 
     submitButton.addEventListener("click", function (event) {
         event.preventDefault();
 
         let email = document.getElementById("email").value;
-        let memberName = document.getElementById("memberName").value;
-        let birthday = document.getElementById("birthday").value;
-        let phoneNumber = document.getElementById("phoneNumber").value;
+        let memberName = document.getElementById("name").value;
+        let phoneNumber = document.getElementById("phone").value;
+        const hiddenValue = document.getElementById("email");
+        const hidden = hiddenValue.value.trim();
+        const hiddenPhone = document.getElementById("hiddenPhone").value;
+        if (phoneNumber === hiddenPhone) {
+            isPhoneNumberValid = true;
+        }
+        if (email === hidden) {
+            isEmailValid = true;
+        }
 
-        if (email === "" || memberName === "" || birthday === "" || phoneNumber === "") {
+        if (email === "" || memberName === "" || phoneNumber === "") {
             alert("모든 필드를 채워주세요.");
             return;
         }
         if (isEmailValid && isPhoneNumberValid) {
-            signupForm.submit();
-        }else{
-            alert("입력한 정보를 확인하세요.");
+            updateForm.submit();
+        } else {
+            alert("정보를 입력해 주세요.");
         }
 
     });
 
-    let birthday = document.getElementById("birthday");
-
-    let today = new Date();
-
-    birthday.setAttribute("max", today.toISOString().split("T")[0]);
-
-    const phoneNumberInput = document.getElementById("phoneNumber");
+    const phoneNumberInput = document.getElementById("phone");
     const phoneNumberFeedback = document.getElementById("phoneNumberFeedback");
 
     phoneNumberInput.addEventListener("input", function () {
@@ -52,13 +51,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+
 });
 
-
 async function emailCheck() {
-
-    let emailInput = document.getElementById("email");
+    const emailInput = document.getElementById("email");
     let email = emailInput.value.trim();
+
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("올바른 이메일 주소를 입력하세요.");
+        emailInput.focus(); // 이메일 입력란에 포커스를 맞춤
+        isEmailValid = false;
+        return;
+    }
+
     const requestData = {
         email: email
     };

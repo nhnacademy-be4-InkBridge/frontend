@@ -7,6 +7,7 @@ import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.HEADER_UUID;
 import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.MEMBER_INFO;
 import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.REFRESH_COOKIE;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
 import com.nhnacademy.inkbridge.front.jwt.utils.JwtCookie;
@@ -41,6 +42,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
     private final MemberAdaptor memberAdaptor;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final ObjectMapper objectMapper;
 
     /**
      * 모든 요청마다 사용자인지 아닌지 체크.
@@ -120,7 +122,8 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
                                 Collectors.toList());
 
                 UsernamePasswordAuthenticationToken token =
-                        new UsernamePasswordAuthenticationToken(responseDto.getMemberId().toString(), "", authorities);
+                        new UsernamePasswordAuthenticationToken(responseDto.getMemberId().toString(),
+                                objectMapper.writeValueAsString(responseDto), authorities);
 
                 SecurityContextHolder.getContext().setAuthentication(token);
                 log.debug("jwt filter 컨텍스트 홀드 저장 완료 -> {}", SecurityContextHolder.getContext().getAuthentication());

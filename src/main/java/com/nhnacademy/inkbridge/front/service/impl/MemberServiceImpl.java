@@ -12,6 +12,8 @@ import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberUpdateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
 import com.nhnacademy.inkbridge.front.exception.UnAuthorizedException;
 import com.nhnacademy.inkbridge.front.service.MemberService;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
@@ -153,5 +155,30 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto) {
         return memberAdaptor.isDuplicatedEmail(memberEmailRequestDto);
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MemberInfoResponseDto getMemberInfo() {
+        Cookie access = CookieUtils.getCookie(ACCESS_COOKIE.getName());
+        if (Objects.isNull(access)) {
+            throw new UnAuthorizedException();
+        }
+        String value = access.getValue();
+        String expired = value.split("\\.")[3];
+        int expiredLength = value.length() - (expired.length() + 1);
+
+        String token = access.getValue().substring(0, expiredLength);
+
+        return memberAdaptor.getMemberInfoByToken(token);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateMember(MemberUpdateRequestDto memberUpdateRequestDto,Long memberId) {
+        memberAdaptor.updateMember(memberUpdateRequestDto,memberId);
     }
 }
