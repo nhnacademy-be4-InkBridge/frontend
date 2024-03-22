@@ -3,8 +3,10 @@ package com.nhnacademy.inkbridge.front.controller;
 import com.nhn.dooray.client.DoorayHook;
 import com.nhnacademy.inkbridge.front.config.DoorayConfig;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberPasswordRequestDto;
 import com.nhnacademy.inkbridge.front.service.MemberService;
 import java.security.SecureRandom;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +36,11 @@ public class MemberRestController {
     @PostMapping("/checkEmail")
     public Boolean isDuplicatedEmail(@RequestBody MemberEmailRequestDto memberEmailRequestDto) {
         return memberService.isDuplicatedEmail(memberEmailRequestDto).getBody();
+    }
+
+    @PostMapping("/updatePassword")
+    public Boolean updatePassword(@RequestBody @Valid MemberPasswordRequestDto memberPasswordRequestDto) {
+        return memberService.updatePassword(memberPasswordRequestDto);
     }
 
     /**

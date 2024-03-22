@@ -1,6 +1,12 @@
 let isEmailValid = false;
 let isPhoneNumberValid = false;
+let hiddenEmail= "";
+let hiddenPhone = "";
+const trueValue = true;
 document.addEventListener("DOMContentLoaded", function () {
+    hiddenEmail = document.getElementById("hiddenEmail").value;
+    hiddenPhone = document.getElementById("hiddenPhone").value;
+
 // 폼 제출 전 필드 검증
     const submitButton = document.getElementById("updateButton");
     const updateForm = document.getElementById("updateForm");
@@ -8,16 +14,13 @@ document.addEventListener("DOMContentLoaded", function () {
     submitButton.addEventListener("click", function (event) {
         event.preventDefault();
 
-        let email = document.getElementById("email").value;
-        let memberName = document.getElementById("name").value;
-        let phoneNumber = document.getElementById("phone").value;
-        const hiddenValue = document.getElementById("email");
-        const hidden = hiddenValue.value.trim();
-        const hiddenPhone = document.getElementById("hiddenPhone").value;
+        let email = document.getElementById("email").value.trim();
+        let memberName = document.getElementById("name").value.trim();
+        let phoneNumber = document.getElementById("phone").value.trim();
         if (phoneNumber === hiddenPhone) {
             isPhoneNumberValid = true;
         }
-        if (email === hidden) {
+        if (email === hiddenEmail) {
             isEmailValid = true;
         }
 
@@ -25,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("모든 필드를 채워주세요.");
             return;
         }
-        if (isEmailValid && isPhoneNumberValid) {
+        if (isEmailValid && isPhoneNumberValid && trueValue) {
             updateForm.submit();
         } else {
             alert("정보를 입력해 주세요.");
@@ -57,6 +60,11 @@ document.addEventListener("DOMContentLoaded", function () {
 async function emailCheck() {
     const emailInput = document.getElementById("email");
     let email = emailInput.value.trim();
+    if (email === hiddenEmail) {
+        isEmailValid = true;
+        alert("현재 사용중인 이메일입니다.");
+        return;
+    }
 
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
