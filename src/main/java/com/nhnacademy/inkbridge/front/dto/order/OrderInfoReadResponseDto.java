@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderInfoReadResponseDto {
 
-    private Long orderId;
     private String orderCode;
     private String orderName;
     private String receiverName;
