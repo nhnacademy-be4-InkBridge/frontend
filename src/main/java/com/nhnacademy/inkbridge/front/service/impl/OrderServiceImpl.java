@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.service.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.OrderAdaptor;
+import com.nhnacademy.inkbridge.front.dto.OrderBooksIdResponseDto;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.order.BookOrderViewResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderBookInfoReadResponseDto;
@@ -57,6 +58,12 @@ public class OrderServiceImpl implements OrderService {
         return orderAdaptor.getOrderPaymentInfo(orderCode);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param bookInfo 도서 수량 정보
+     * @return 도서 구매 정보
+     */
     @Override
     public List<OrderBookReadResponseDto> getOrderBooks(
         Set<OrderBookInfoReadResponseDto> bookInfo) {
@@ -75,6 +82,17 @@ public class OrderServiceImpl implements OrderService {
                 .amount(getAmountForBook(bookInfo, book.getBookId().toString()))
                 .build())
             .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param orderCode 주문
+     * @return 도서 번호 목록
+     */
+    @Override
+    public List<OrderBooksIdResponseDto> getOrderBookIds(String orderCode) {
+        return orderAdaptor.getOrderBooksIdByOrderCode(orderCode);
     }
 
     /**

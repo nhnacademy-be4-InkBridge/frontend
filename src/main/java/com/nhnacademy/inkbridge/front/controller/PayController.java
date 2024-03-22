@@ -1,11 +1,11 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.getMemberId;
+
 import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmRequestDto;
-import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmResponseDto;
 import com.nhnacademy.inkbridge.front.property.TossProperties;
 import com.nhnacademy.inkbridge.front.service.OrderService;
 import com.nhnacademy.inkbridge.front.service.PayService;
-import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -39,7 +39,7 @@ public class PayController {
      */
     @GetMapping
     public String payView(Model model, @RequestParam("order-code") String orderCode) {
-        Long memberId = CommonUtils.getMemberId();
+        Long memberId = getMemberId();
 
         model.addAttribute("payInfo", orderService.getOrderPaymentInfo(orderCode));
         model.addAttribute("memberId", memberId);
@@ -56,10 +56,7 @@ public class PayController {
      */
     @GetMapping("/success")
     public String paymentRequest(@ModelAttribute PayConfirmRequestDto requestDto) {
-        log.debug("start pay success ->");
-        PayConfirmResponseDto payConfirmResponseDto = payService.doConfirm(requestDto, "toss");
-        log.debug("payConfirmResponseDto -> {}", payConfirmResponseDto);
-        payService.doPayment(payConfirmResponseDto);
+        payService.doPayment(requestDto, "toss");
 
         return "order/pay_success";
     }

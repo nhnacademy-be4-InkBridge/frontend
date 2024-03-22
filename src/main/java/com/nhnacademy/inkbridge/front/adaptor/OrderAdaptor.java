@@ -1,10 +1,13 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
+import com.nhnacademy.inkbridge.front.dto.OrderBooksIdResponseDto;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.order.BookOrderViewResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderPaymentInfoReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
+import java.util.List;
 import com.nhnacademy.inkbridge.front.dto.order.OrderReadResponseDto;
 import org.springframework.data.domain.Pageable;
 
@@ -31,6 +34,14 @@ public interface OrderAdaptor {
      * @return 주문 결제 정보
      */
     OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderCode);
+
+    /**
+     * 주문한 도서 번호를 조회합니다.
+     *
+     * @param orderCode 주문 코드
+     * @return 도서 번호 목록
+     */
+    List<OrderBooksIdResponseDto> getOrderBooksIdByOrderCode(String orderCode);
 
     /**
      * 주문 목록 정보를 조회합니다.

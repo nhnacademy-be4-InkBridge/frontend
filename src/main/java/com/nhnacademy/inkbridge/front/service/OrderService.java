@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.service;
 
+import com.nhnacademy.inkbridge.front.dto.OrderBooksIdResponseDto;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.order.BookOrderViewResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderBookInfoReadResponseDto;
@@ -37,11 +38,25 @@ public interface OrderService {
     OrderPaymentInfoReadResponseDto getOrderPaymentInfo(String orderCode);
 
     /**
+     * 도서 구매 정보를 조회합니다.
+     *
+     * @param bookInfo 도서 수량 정보
+     * @return 도서 구매 정보
+     */
+    /**
      * 주문할 도서 정보를 조회합니다.
      * @param bookInfo 도서 번호 및 수량
      * @return 주문 도서 정보
      */
     List<OrderBookReadResponseDto> getOrderBooks(Set<OrderBookInfoReadResponseDto> bookInfo);
+
+    /**
+     * 주문한 도서 번호를 조회합니다.
+     *
+     * @param orderCode 주문
+     * @return 도서 번호 목록
+     */
+    List<OrderBooksIdResponseDto> getOrderBookIds(String orderCode);
 
     /**
      * 주문 내역 정보를 조회합니다.
