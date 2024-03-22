@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.controller;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.search.BookSearchResponseDto;
 import com.nhnacademy.inkbridge.front.service.SearchService;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,18 +28,23 @@ public class SearchController {
 
     @GetMapping("search")
     public String searchByText(@RequestParam String text,
-        @PageableDefault(size = 10) Pageable pageable, Model model) {
+        @PageableDefault(size = 10) Pageable pageable, Model model, HttpServletRequest request) {
         PageRequestDto<BookSearchResponseDto> pageableBooks = searchService.searchByText(text,
             pageable);
+
+        String sort = pageable.getSort().toString();
+        sort = "UNSORTED".equals(sort)?"":sort.split(": ")[1];
         model.addAttribute("books", pageableBooks);
         model.addAttribute("text", text);
+        model.addAttribute("sort",sort);
         model.addAttribute("count", pageableBooks.getTotalElements());
         model.addAttribute("isSearch", true);
         return "search/search";
     }
 
     @GetMapping("/{field}")
-    public String searchByAll(@PathVariable String field, Pageable pageable, Model model) {
+    public String searchByAll(@PathVariable String field, @PageableDefault(size = 10) Pageable pageable, Model model,
+        HttpServletRequest request) {
         if (field.equals("popular-books")) {
             field = "view";
         } else if (field.equals("new-books")) {
@@ -48,6 +54,7 @@ public class SearchController {
         }
         PageRequestDto<BookSearchResponseDto> pageableBooks = searchService.searchByAll(field,
             pageable);
+        model.addAttribute("currentURI",request.getRequestURI());
         model.addAttribute("books", pageableBooks);
         model.addAttribute("isSearch", false);
         return "search/search";

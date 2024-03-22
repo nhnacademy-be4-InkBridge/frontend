@@ -40,7 +40,7 @@
             </select>
           </div>
           <div class="search-book-select-container">
-            <select class="search-book-select" name="" id="quantity-select">
+            <select class="search-book-select" id="quantity-select" >
               <option value="10">10개씩 보기</option>
               <option value="20">20개씩 보기</option>
               <option value="50">50개씩 보기</option>
@@ -127,25 +127,44 @@
         </div>
       </div>
     </div>
-    <nav aria-label="Page navigation" class="paging-container">
-      <ul class="pagination">
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">4</a></li>
-        <li class="page-item"><a class="page-link" href="#">5</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <th:block th:with="pageSize=${books!=null ? books.size : 0}">
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li th:if="${books?.number>= 10}" class="page-item">
+            <a class="page-link" th:if="${text}" th:href="@{${currentURI}(text=${text}, page=${((books?.number/10)*10 - 1)},size=${pageSize},sort=${sort})}"
+               aria-label="이전 10 페이지">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+            <a class="page-link" th:unless="${text}" th:href="@{${currentURI}(page=${((books?.number/10)*10 - 1)},size=${pageSize})}"
+               aria-label="이전 10 페이지">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <th:block
+              th:with="startPage=${(books?.number / 10) * 10}, endPage=${(books?.totalPages == 0 ? 0 : (startPage + 9 < books?.totalPages ? startPage + 9 : books?.totalPages - 1))}">
+            <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
+              <li th:class="${pageNumber == books?.number ? 'page-item active' : 'page-item'}">
+                <a class="page-link" th:if="${text}" th:href="@{${currentURI}(text=${text},page=${pageNumber}, size=${pageSize},sort=${sort})}"
+                >[[${pageNumber + 1}]]</a>
+                <a class="page-link" th:unless="${text}" th:href="@{${currentURI}(page=${pageNumber}, size=${pageSize})}"
+                >[[${pageNumber + 1}]]</a>
+              </li>
+            </th:block>
+          </th:block>
+          <li th:if="${((books?.number/10)*10 + 10) < books?.totalPages}"
+              class="page-item">
+            <a class="page-link" th:if="${text}" th:href="@{${currentURI}(text=${text},page=${((books?.number/10)*10 + 10)}, size=${pageSize},sort=${sort})}"
+               aria-label="Next 10 Pages">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+            <a class="page-link" th:unless="${text}" th:href="@{${currentURI}(page=${((books?.number/10)*10 + 10)}, size=${pageSize})}"
+               aria-label="Next 10 Pages">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </th:block>
   </section>
 
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

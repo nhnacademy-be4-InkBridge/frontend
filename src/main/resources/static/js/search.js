@@ -47,30 +47,39 @@ function changeQuantity(amount, quantityDisplay) {
 const setCookie = (bookId, amount) => {
   let cookies = {bookId, amount};
   let existingCookie = [cookies];
-  document.cookie = `info=${encodeURIComponent(JSON.stringify(existingCookie))}; path=/;`;
+  document.cookie = `info=${encodeURIComponent(
+      JSON.stringify(existingCookie))}; path=/;`;
 };
 
 const orderList = document.querySelectorAll(".search-book-order-item");
-orderList.forEach((orderItem)=>{
-  orderItem.addEventListener("click",()=>{
-    const sortStr=orderItem.getAttribute("data-name");
+orderList.forEach((orderItem) => {
+  orderItem.addEventListener("click", () => {
+    const sortStr = orderItem.getAttribute("data-name");
     const currentUrl = new URL(window.location.href);
     const currentParams = currentUrl.searchParams;
-    currentUrl.searchParams.set("page","0");
-    currentUrl.searchParams.set("size",currentParams.get("size")||10);
-    currentUrl.searchParams.set("sort",sortStr||"");
+    currentUrl.searchParams.set("page", "0");
+    currentUrl.searchParams.set("size", currentParams.get("size") || 10);
+    currentUrl.searchParams.set("sort", sortStr || "");
 
-  //   await fetch("/search", {
-  //     method: "GET",
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({bookId, amount}),
-  //   })
-  //   .then((response) => response.json)
-  // })
-
-
-    window.location.href= currentUrl.href;
+    window.location.href = currentUrl.href;
   })
+})
+
+const orderSelect = document.querySelector(".search-book-select");
+orderSelect.addEventListener("change", (e) => {
+  console.log(e.target.value)
+  console.log(location.href);
+  const currentUrl = new URL(location.href);
+  currentUrl.searchParams.set("size", e.target.value);
+  location.href = currentUrl.href;
+})
+
+document.addEventListener("DOMContentLoaded", () => {
+  const currentUrl = new URL(location.href);
+  const value =currentUrl.searchParams.get("size");
+  for(let i=0; i<orderSelect.options.length;i++){
+    if(orderSelect.options[i].value===value){
+      orderSelect.options[i].selected=true;
+    }
+  }
 })
