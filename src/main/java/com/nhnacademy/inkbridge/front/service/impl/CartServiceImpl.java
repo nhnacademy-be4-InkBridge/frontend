@@ -89,15 +89,23 @@ public class CartServiceImpl implements CartService {
         if (!bookNotInRedis.isEmpty()) {
             List<CartBookReadResponseDto> cartBookInfo = getCartBookInfo(bookNotInRedis);
             cartBookInfo.forEach(
-                cartBookReadResponseDto -> book.put(
-                    String.valueOf(cartBookReadResponseDto.getBookId()),
-                    BookRedisReadResponseDto.builder().bookTitle(
+                cartBookReadResponseDto -> {
+                    BookRedisReadResponseDto dto = BookRedisReadResponseDto.builder().bookTitle(
                             cartBookReadResponseDto.getBookTitle()).thumbnailUrl(
                             cartBookReadResponseDto.getThumbnail()).price(
                             cartBookReadResponseDto.getPrice()).regularPrice(
                             cartBookReadResponseDto.getRegularPrice()).discountRatio(
                             cartBookReadResponseDto.getDiscountRatio())
-                        .build()));
+                        .build();
+                    try {
+                        redisTemplateForBook.opsForValue()
+                            .set(String.valueOf(cartBookReadResponseDto.getBookId()),
+                                objectMapper.writeValueAsString(dto));
+                    } catch (JsonProcessingException e) {
+                        log.error("error: {}", e.getMessage());
+                    }
+                    book.put(String.valueOf(cartBookReadResponseDto.getBookId()), dto);
+                });
         }
 
         return book;
