@@ -80,4 +80,11 @@ public interface MemberService {
      * @return 성공 여부
      */
     Boolean updatePassword(MemberPasswordRequestDto memberPasswordRequestDto);
+
+    /**
+     * 회원 탈퇴하는 메서드.
+     *
+     * @param memberId 회원 아이디
+     */
+    void deleteMember(Long memberId);
 }
