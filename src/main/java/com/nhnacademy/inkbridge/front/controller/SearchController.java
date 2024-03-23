@@ -5,6 +5,7 @@ import com.nhnacademy.inkbridge.front.dto.search.BookSearchResponseDto;
 import com.nhnacademy.inkbridge.front.service.SearchService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ public class SearchController {
 
     @GetMapping("search")
     public String searchByText(@RequestParam String text,
-        @PageableDefault(size = 10) Pageable pageable, Model model, HttpServletRequest request) {
+        @PageableDefault(size = 10) Pageable pageable, Model model) {
         PageRequestDto<BookSearchResponseDto> pageableBooks = searchService.searchByText(text,
             pageable);
 
@@ -57,6 +58,17 @@ public class SearchController {
         model.addAttribute("currentURI",request.getRequestURI());
         model.addAttribute("books", pageableBooks);
         model.addAttribute("isSearch", false);
+        return "search/search";
+    }
+
+    @GetMapping("/categories/{category}/books")
+    public String booksByCategory(Model model, @PathVariable String category, @PageableDefault(size = 10)Pageable pageable){
+        PageRequestDto<BookSearchResponseDto> pageableBooks = searchService.readByCategory(category,pageable);
+        String sort = pageable.getSort().toString();
+        sort = "UNSORTED".equals(sort)?"":sort.split(": ")[1];
+        model.addAttribute("books", pageableBooks);
+        model.addAttribute("sort",sort);
+        model.addAttribute("isCategory", true);
         return "search/search";
     }
 }

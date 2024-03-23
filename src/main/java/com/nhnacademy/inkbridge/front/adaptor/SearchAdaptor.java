@@ -29,4 +29,13 @@ public interface SearchAdaptor {
      * @return - 도서 집합
      */
     PageRequestDto<BookSearchResponseDto> searchByAll(String field, Pageable pageable);
+
+    /**
+     * 카테고리에 속한 책을 찾는 메서드입니다.
+     *
+     * @param category 카테고리명
+     * @param pageable 페이지 기준
+     * @return - 도서 집합
+     */
+    PageRequestDto<BookSearchResponseDto> readByCategory(String category, Pageable pageable);
 }

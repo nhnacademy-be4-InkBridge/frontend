@@ -21,13 +21,29 @@ public class SearchServiceImpl implements SearchService {
 
     private final SearchAdaptor searchAdaptor;
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PageRequestDto<BookSearchResponseDto> searchByText(String text, Pageable pageable) {
         return searchAdaptor.searchByText(text, pageable);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PageRequestDto<BookSearchResponseDto> searchByAll(String field, Pageable pageable) {
         return searchAdaptor.searchByAll(field, pageable);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PageRequestDto<BookSearchResponseDto> readByCategory(String category,
+        Pageable pageable) {
+        return searchAdaptor.readByCategory(category, pageable);
     }
 }

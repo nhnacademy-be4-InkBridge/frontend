@@ -35,4 +35,5 @@ public class BookSearchResponseDto {
     private String fileUrl;
     private List<AuthorBySearch> authors;
     private List<TagBySearch> tags;
+    private List<CategoryBySearch> categories;
 }

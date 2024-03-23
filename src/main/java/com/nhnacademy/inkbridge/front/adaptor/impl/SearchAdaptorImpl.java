@@ -94,4 +94,38 @@ public class SearchAdaptorImpl implements SearchAdaptor {
 
         return responseEntity.getBody();
     }
+
+    @Override
+    public PageRequestDto<BookSearchResponseDto> readByCategory(String category,
+        Pageable pageable) {
+        HttpHeaders httpHeaders = CommonUtils.createHeader();
+        String sortStr = String.join(",", pageable.getSort().toString().split(": "));
+        if (pageable.getSort() == Sort.unsorted()) {
+            sortStr = "view,desc";
+        }
+
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .path("api/categories/{category}/books")
+            .queryParam("page", pageable.getPageNumber())
+            .queryParam("size", pageable.getPageSize())
+            .queryParam("sort", sortStr)
+            .encode()
+            .build()
+            .expand(category)
+            .toUri();
+        System.out.println("after uri");
+        RequestEntity<Void> requestEntity = RequestEntity
+            .get(uri)
+            .headers(httpHeaders)
+            .build();
+        System.out.println("----------");
+        System.out.println(category);
+        ResponseEntity<PageRequestDto<BookSearchResponseDto>> responseEntity = restTemplate.exchange(
+            requestEntity,
+            new ParameterizedTypeReference<>() {
+            });
+
+        return responseEntity.getBody();
+    }
 }
