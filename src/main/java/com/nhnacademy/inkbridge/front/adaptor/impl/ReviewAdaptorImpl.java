@@ -37,7 +37,8 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
 
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
-    private static final String PATH = "/api/auth/reviews";
+    private static final String AUTH_PATH = "/api/auth/reviews";
+    private static final String PATH = "/api/reviews";
     private static final String MEMBER_QUERY_PARAM = "memberId";
 
     public ReviewAdaptorImpl(RestTemplate restTemplate, GatewayProperties gatewayProperties) {
@@ -52,7 +53,7 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
     public ReviewMemberReadResponseDto getReviews(Long memberId, Long size, Long page) {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
-            .path(PATH)
+            .path(AUTH_PATH)
             .queryParam(MEMBER_QUERY_PARAM, memberId)
             .queryParam("size", size)
             .queryParam("page", page)
@@ -100,7 +101,7 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
         Long memberId, ReviewCreateRequestDto reviewCreateRequestDto) throws IOException {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
-            .path(PATH)
+            .path(AUTH_PATH)
             .queryParam(MEMBER_QUERY_PARAM, memberId)
             .encode()
             .build()
@@ -134,7 +135,7 @@ public class ReviewAdaptorImpl implements ReviewAdaptor {
         throws IOException {
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
-            .path(PATH)
+            .path(AUTH_PATH)
             .path("/{reviewId}")
             .queryParam(MEMBER_QUERY_PARAM, memberId)
             .encode()
