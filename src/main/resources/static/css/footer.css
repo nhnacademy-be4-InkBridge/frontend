@@ -1,76 +1,75 @@
-a{
+a {
     text-decoration: none;
-    color:black;
+    color: black;
 }
 
-img{
+.footer-main-left > img {
     object-fit: cover;
-    width:15rem;
+    width: 15rem;
 }
 
-h1{
-    color:#363f57;
-    font-size :1.5rem;
+h1 {
+    color: #363f57;
+    font-size: 1.5rem;
 }
 
-h3{
-    color:#717890;
-    font-size:1rem;
+h3 {
+    color: #717890;
+    font-size: 1rem;
     text-transform: capitalize;
 }
 
 .footer {
+    max-height: 260px;
+}
+
+
+.line {
+    border: 2px solid #d5d5d5;
+    width:100vw;
+}
+
+.footer-main {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    gap:2rem;
-    border-top:5px solid black;
-    /*background-color: #f7f7f7;*/
-    background-color: #fff;
-    margin-top:3rem;
+    width:1300px;
+    box-sizing: border-box;
+    margin:auto;
+    padding-top: 2rem;
 }
 
-.footer-main{
-    width:50%;
+.footer-main-left {
+    width: 40%;
     display: flex;
-    padding: 3rem 3rem 0;
-}
-
-.footer-main-left{
-    width:40%;
-    display:flex;
     align-items: center;
-    font-size:5rem;
-    color:#717890;
+    font-size: 5rem;
+    color: #717890;
 }
 
-.footer-main-left > span{
+.footer-main-left > span {
     font-family: "Bigelow Rules", serif;
 }
 
-.footer-main-right{
-    display:flex;
+.footer-main-right {
+    display: flex;
     justify-content: right;
-    gap:8rem;
-    width:60%;
+    gap: 8rem;
+    width: 60%;
 }
 
-.footer-main-right > div> div{
-    display:flex;
-    flex-direction:column;
-    gap:0.5rem;
-}
-
-
-.footer-main-right > div>h1{
-    margin-bottom: 2rem;
+.footer-main-right > div > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 
-.footer-bottom{
-    text-align:center;
-    color:#717890;
-    margin-bottom:1rem;
+.footer-main-right > div > h1 {
+    margin-bottom: 1.5rem;
+}
+
+
+.footer-bottom {
+    text-align: center;
+    color: #717890;
+    margin-bottom: 0.8rem;
 }

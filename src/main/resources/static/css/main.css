@@ -1,0 +1,150 @@
+.index-main {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 5rem;
+}
+
+.books-container {
+    /*width:80%;*/
+    margin:auto;
+    /*overflow: hidden;*/
+}
+
+.books-header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.books-header > span {
+    /*font-family: Roboto;*/
+}
+
+.books-header > span:first-child {
+    font-weight: 700;
+    font-size: 30px;
+    margin-left:80px;
+}
+
+.books-header > span:last-child {
+    font-size: 15px;
+}
+
+.books-header > span:last-child:hover {
+    cursor:pointer;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.book-move-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.book-move-btn {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    background-size: 44px 44px;
+    width: 44px;
+    height: 44px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-move-btn:hover {
+    cursor: pointer;
+}
+
+.carousel-container {
+    width: 1080px;
+    overflow: hidden;
+
+}
+
+.book-info-container {
+    display: flex;
+    width: 1080px;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.5s;
+}
+
+.book-info {
+    min-width: 230px;
+    width: 230px;
+    height: 500px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin-right: 40px;
+}
+
+.book-info-image-container {
+    width: 100%;
+    font-size: 10px;
+    height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.book-info-image {
+    background-size: contain;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, .1), 0 0 2px rgba(0, 0, 0, .2);
+}
+
+.book-info-contents {
+}
+
+.book-info-contents > .book-info-title {
+    font-size: 1.2rem;
+    margin: 0.5rem 0.3rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
+    width: 100%;
+}
+
+.book-info-contents > .book-info-title:hover{
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.book-info-contents > div:nth-child(2) > span {
+}
+
+.book-info-content {
+    margin: 0.5rem 0.3rem 0;
+}
+
+
+.book-info-content > span {
+    font-size: 0.8rem;
+}
+
+.book-info-author::after {
+    content: " | ";
+}
+
+.book-info-discount-rate {
+    color: dodgerblue;
+    font-weight: bold;
+}
+
+.book-info-discount-price {
+    font-weight: bold;
+}
+
+.book-info-original-price {
+    text-decoration: line-through;
+    color: #595959;
+}
