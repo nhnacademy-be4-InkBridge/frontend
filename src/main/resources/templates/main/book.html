@@ -230,7 +230,7 @@
               <div class="btn btn-primary"
                    th:if="${(reviewNumber.count>reviews.size) and reviewNumber.count>0}"
                    onclick="loadReview(this)"
-                   th:attr="data-page-number=${reviews.number}, data-page-size=${reviews.size}, data-total-page=${reviews.totalPages}">
+                   th:attr="data-page-number=${reviews.number}, data-page-size=${reviews.size}, data-total-page=${reviewNumber.count}">
                 더보기
               </div>
 

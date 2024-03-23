@@ -105,7 +105,7 @@ function loadReview(element) {
   var bookId = document.getElementById('bookId').value/* 여기에 책 ID */;
   element.setAttribute('data-page-number', nextPageNumber);
 
-  if (totalPage - 1 <= nextPageNumber) {
+  if (totalPage <= (nextPageNumber + 1) * pageSize) {
     element.style.display = 'none';
   }
   // AJAX 요청 보내기
