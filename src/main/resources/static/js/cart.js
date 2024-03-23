@@ -1,6 +1,5 @@
+// 주문하기 눌렀을 때
 document.getElementById('order').addEventListener('click', function (event) {
-  const replaceNotInt = /^-?\d+$/;
-
 
   const checkboxes = document.querySelectorAll(
       'input[type="checkbox"]:checked');
@@ -14,33 +13,61 @@ document.getElementById('order').addEventListener('click', function (event) {
     let row = checkbox.closest('tr');
     const amount = row.querySelector('input[name="amount"]').value;
 
-    if (!amount.match(replaceNotInt)) {
+    if (amountValidCheck(amount, row)) {
       event.preventDefault();
-      console.log('amount: ' + row.querySelector('input[name="amount"]').value);
-      alert('숫자만 입력 가능합니다.: '+ amount);
-      row.querySelector('input[name="amount"]').value =  1;
-      setTotalPrice();
-      return;
-    }
-    if (parseInt(amount, 10) < 1) {
-      event.preventDefault();
-      alert('최소 한 개 이상의 수량을 담아야 합니다.');
-      row.querySelector('input[name="amount"]').value = 1;
-      setTotalPrice();
-      return;
     }
 
     let cookie = {
       bookId: row.querySelector('#bookId').value,
       amount: amount,
     };
-    console.log(cookie);
     existingCookie.push(cookie);
   });
   document.cookie = 'info=' + encodeURIComponent(JSON.stringify(existingCookie))
       + '; path=/;';
 
 });
+
+// 수량 변동 시
+document.querySelectorAll('input[name="amount"]').forEach(function (input) {
+  input.addEventListener('input', function () {
+    let row = input.closest('tr');
+
+    const bookId = row.querySelector('#bookId').value;
+
+    if (amountValidCheck(input.value, row)) {
+      return;
+    }
+
+    fetch('/cart/book/' + bookId + '?amount=' + input.value, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      if (!response.ok) {
+        alert('error');
+      }
+    });
+  setTotalPrice();
+  });
+});
+
+function amountValidCheck(amount, row) {
+  const replaceNotInt = /^-?\d+$/;
+
+  if (!amount.match(replaceNotInt)) {
+    alert('숫자만 입력 가능합니다.');
+    row.querySelector('input[name="amount"]').value =  1;
+    setTotalPrice();
+  }
+  if (parseInt(amount, 10) < 1) {
+    alert('최소 한 개 이상의 수량을 담아야 합니다.');
+    row.querySelector('input[name="amount"]').value = 1;
+    setTotalPrice();
+  }
+  return false;
+}
 
 document.querySelectorAll('.quantity button').forEach(function (button) {
   button.addEventListener('click', function () {
@@ -50,9 +77,9 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
     // price
     var price = parseInt(
         this.parentElement.parentElement.parentElement.parentElement.querySelector(
-            '#price').textContent);
+            '#price').textContent.replaceAll(',', ''));
     var totalPrice = parseInt(
-        document.getElementById('totalPrice').textContent);
+        document.getElementById('totalPrice').textContent.replaceAll(',', ''));
 
     if (this.classList.contains('btn-plus')) {
         newVal = oldValue + 1;
@@ -61,8 +88,8 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
       newVal = oldValue > 1 ? oldValue - 1 : 1;
       totalPrice = newVal > 1 ? totalPrice - price : totalPrice;
     }
-    this.parentElement.parentElement.querySelector('input').value = newVal;
-    document.getElementById('totalPrice').textContent = totalPrice;
+    this.parentElement.parentElement.querySelector('input').value = newVal; // amount
+    document.getElementById('totalPrice').textContent = totalPrice.toLocaleString('en-US');
     const bookId = this.parentElement.parentElement.parentElement.parentElement.querySelector(
         '#bookId').value;
     fetch('/cart/book/' + bookId + '?amount=' + newVal, {
@@ -86,9 +113,6 @@ function setTotalPrice() {
     let amountValue = element.parentElement.parentElement.querySelector(
         'input[name="amount"]').value;
     totalPrice += parseInt(element.textContent.replaceAll(',', '')) * amountValue;
-
-    console.log('amount: ' + amountValue);
-    console.log('total: ' + parseInt(element.textContent));
   });
   document.getElementById('totalPrice').textContent = totalPrice.toLocaleString('en-US');
 }
