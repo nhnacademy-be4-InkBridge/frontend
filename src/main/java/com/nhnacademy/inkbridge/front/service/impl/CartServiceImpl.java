@@ -7,7 +7,6 @@ import com.nhnacademy.inkbridge.front.dto.book.BookRedisReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartRedisCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.CartService;
-import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -58,6 +57,9 @@ public class CartServiceImpl implements CartService {
         return hashOperations.entries(memberId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, BookRedisReadResponseDto> getBookInfo(ArrayList<String> keys) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -77,7 +79,7 @@ public class CartServiceImpl implements CartService {
                         (String) rawValue, BookRedisReadResponseDto.class);
                     book.put(key, value);
                 } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
+                    log.error("error: {}", e.getMessage());
                 }
             } else {
                 bookNotInRedis.add(keys.get(i));
@@ -144,8 +146,7 @@ public class CartServiceImpl implements CartService {
      * {@inheritDoc}
      */
     @Override
-    public void updateCartBook(String bookId, String amount) {
-        String memberId = String.valueOf(CommonUtils.getMemberId());
+    public void updateCartBook(String memberId, String bookId, String amount) {
         redisTemplate.opsForHash().put(memberId, bookId, amount);
     }
 }
