@@ -4,6 +4,8 @@ items.forEach((item) => {
   const quantityButtons = item.querySelectorAll(
       ".search-book-quantity-btn");
   const quantityDisplay = item.querySelector(".search-book-quantity");
+  const buyButton = item.querySelector(".search-book-buy");
+  const cartButton = item.querySelector(".search-book-cart");
 
   quantityButtons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -12,12 +14,32 @@ items.forEach((item) => {
     })
   })
 
-  item.addEventListener("click",()=>{
-    const bookId = item.querySelector(".search-book-info-title").getAttribute("data-bookId");
+  buyButton.addEventListener("click", () => {
+    const bookId = item.querySelector(".search-book-info-title").getAttribute(
+        "data-bookId");
     const amount = item.querySelector(".search-book-quantity").innerText;
-    setCookie(bookId,amount);
+    setCookie(bookId, amount);
   });
 
+  cartButton.addEventListener("click", async (e) => {
+    const bookId = item.querySelector(".search-book-info-title").getAttribute(
+        "data-bookId");
+    const amount = item.querySelector(".search-book-quantity").innerText;
+
+    await fetch("/cart", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        bookId,
+        amount
+      }),
+    })
+    .then((response) => response.json)
+    .then((data) => console.log(data))
+
+  })
 })
 
 function changeQuantity(amount, quantityDisplay) {
@@ -27,7 +49,7 @@ function changeQuantity(amount, quantityDisplay) {
   quantityDisplay.textContent = quantity;
 }
 
-const setCookie = (bookId,amount) => {
+const setCookie = (bookId, amount) => {
   let cookies = {
     bookId: bookId,
     amount: amount
@@ -37,3 +59,4 @@ const setCookie = (bookId,amount) => {
   document.cookie = 'info=' + encodeURIComponent(JSON.stringify(existingCookie))
       + '; path=/;';
 };
+

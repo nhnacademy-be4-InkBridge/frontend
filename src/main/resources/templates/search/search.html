@@ -129,11 +129,11 @@
               <div class="search-book-quantity">1</div>
               <div class="search-book-quantity-btn">+</div>
             </div>
-            <div class="search-book-cart">
+            <div class="search-book-cart" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
               장바구니
             </div>
-            <div class="search-book-buy">
-              <a href="/orders">바로 구매</a>
+            <div class="search-book-buy" onclick="window.location.href='/orders';">
+              바로 구매
             </div>
             <div class="search-book-wish">
               찜하기
@@ -162,6 +162,27 @@
       </ul>
     </nav>
   </section>
-<script src="/js/search.js"></script>
+
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">장바구니</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body cart-body">
+          <p>상품이 장바구니에 담겼습니다.</p>
+          <p>장바구니로 이동하시겠습니까?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+          <button type="button" class="btn btn-primary" onclick="window.location.href='/cart';">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/search.js"></script>
 </div>
+
 </html>

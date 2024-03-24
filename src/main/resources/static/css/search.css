@@ -371,3 +371,15 @@ a {
     display:flex;
     justify-content: center;
 }
+
+.cart-body{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-body > p:first-child{
+    font-weight: bold;
+    font-size: 1.2rem;
+}
