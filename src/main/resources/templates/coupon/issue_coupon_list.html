@@ -23,6 +23,7 @@
 </head>
 <body>
 <th:block layout:fragment="css">
+  <link href="/css/coupon.css" rel="stylesheet">
 </th:block>
 <th:block layout:fragment="script">
 </th:block>
@@ -31,23 +32,22 @@
   <h3 style="margin-bottom: 20px; font-weight: bold;">쿠폰 발급 페이지</h3>
   <div class="row justify-content-center">
     <div class="col-md-4 mb-3" th:each="coupon : ${page.content}">
-      <div class="card" style="max-width: 540px;">
-        <div class="card-body">
-          <h5 class="card-text" th:text="${coupon.couponName}">0월 생일 쿠폰</h5>
-          <p class="card-text" th:text="${coupon.minPrice + '원 이상 구매시'}">1만원 이상 구매시</p>
-          <p class="card-text" th:if="${coupon.getCouponTypeId() == 1}"
-             th:text="${coupon.discountPrice + '% 할인'}">30% 할인</p>
-          <p class="card-text" th:if="${coupon.getCouponTypeId() == 2}"
+      <div style="display: flex; justify-content: space-between;">
+        <div
+            style="border: 1px solid #ccc; padding: 10px; flex: 1; height: 200px; overflow: hidden;">
+          <h5 th:text="${coupon.couponName}">0월 생일 쿠폰</h5>
+          <p th:text="${coupon.minPrice + '원 이상 구매시'}">1만원 이상 구매시</p>
+          <p th:if="${coupon.getCouponTypeId() == 1}"
+             th:text="${coupon.discountPrice + '% 할인'+'(최대 ' + coupon.maxDiscountPrice + '원 할인)'}">
+            30% 할인</p>
+          <p th:if="${coupon.getCouponTypeId() == 2}"
              th:text="${coupon.discountPrice + '원 할인'}">2000원 할인</p>
-          <p class="card-text"
-             th:utext="${coupon.maxDiscountPrice != null ? '(최대 ' + coupon.maxDiscountPrice + '원 할인)' : '&nbsp;'}">
-            2000원</p>
-          <p class="card-text"
-             th:text="${coupon.basicIssuedDate + ' ~ ' + coupon.basicExpiredDate}+' 동안 발급 가능'">
-            20xx.01.01 ~ 20xx.01.02</p>
-          <p class="card-text" th:text="${'발급시'+coupon.validity + '일동안 사용 가능'}">7일</p>
+          <p th:text="${'사용기간'+coupon.validity + '일'}">7일</p>
+        </div>
+        <div style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center;">
           <form method="post" th:action="@{'/coupons/issue?coupon_id=' + ${coupon.couponId}}">
-            <button class="btn btn-primary" type="submit">발급</button>
+            <input alt="발급" height="50" src="/assets/img/download-button.png" type="image"
+                   width="50">
           </form>
         </div>
       </div>

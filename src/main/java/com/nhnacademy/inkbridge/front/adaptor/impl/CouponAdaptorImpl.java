@@ -7,7 +7,6 @@ import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.OrderCouponReadResponseDto;
-import com.nhnacademy.inkbridge.front.exception.MemberNotFoundException;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.net.URI;
 import java.util.List;
@@ -15,9 +14,11 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -62,7 +63,7 @@ public class CouponAdaptorImpl implements CouponAdaptor {
                 new ParameterizedTypeReference<PageRequestDto<CouponReadResponseDto>>() {
                 });
         if (!exchange.getStatusCode().is2xxSuccessful()) {
-            throw new RuntimeException("Failed to retrieve coupons");
+            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return exchange.getBody();
@@ -118,13 +119,17 @@ public class CouponAdaptorImpl implements CouponAdaptor {
             gatewayProperties.getUrl(), memberId, couponId);
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
         try {
-            ResponseEntity<String> exchange =
+            System.out.println("testtest");
+
+            ResponseEntity<Object> exchange =
                 restTemplate.exchange(url,
                     HttpMethod.POST, httpEntity,
                     new ParameterizedTypeReference<>() {
                     });
-        } catch (Exception e) {
-            //todo advice 처리하기
+            System.out.println("testt");
+            System.out.println(exchange.getStatusCode());
+        } catch (RestClientException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -136,14 +141,11 @@ public class CouponAdaptorImpl implements CouponAdaptor {
             gatewayProperties.getUrl(), memberId, couponStatusId, page, size);
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
         ResponseEntity<PageRequestDto<CouponReadResponseDto>> exchange;
-        try {
-            exchange = restTemplate.exchange(url,
-                HttpMethod.GET, httpEntity,
-                new ParameterizedTypeReference<PageRequestDto<CouponReadResponseDto>>() {
-                });
-        } catch (HttpClientErrorException e) {
-            throw new MemberNotFoundException();
-        }
+        exchange = restTemplate.exchange(url,
+            HttpMethod.GET, httpEntity,
+            new ParameterizedTypeReference<>() {
+            });
+
         return exchange.getBody();
     }
 

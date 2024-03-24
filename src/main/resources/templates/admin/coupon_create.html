@@ -15,7 +15,7 @@
 </head>
 <body>
 <th:block layout:fragment="css">
-  <link rel="stylesheet" href="/css/coupon_form.css">
+  <link rel="stylesheet " href="/css/coupon_form.css">
 </th:block>
 <th:block layout:fragment="script">
   <script>
@@ -62,11 +62,12 @@
       var discountPriceInput = document.getElementById('discount-price');
       var maxDiscountPriceInput = document.getElementById('max-discount-price');
       var errorMessage = document.getElementById('discount-price-error');
+      var couponType = document.getElementsByClassName('couponTypeId');
 
       var discountPrice = parseFloat(discountPriceInput.value);
       var maxDiscountPrice = parseFloat(maxDiscountPriceInput.value);
 
-      if (discountPrice > maxDiscountPrice && couponType ==='2') {
+      if (discountPrice > maxDiscountPrice && couponType === '2') {
         errorMessage.textContent = '할인 가격은 최대 할인 금액보다 클 수 없습니다.';
         return false;
       } else if (couponType === '1' && discountPrice > 100) {
@@ -81,10 +82,11 @@
     // 발급시작일 < 오늘 경고
     function validateIssuedDate() {
       var issuedDateInput = document.getElementById('basic-issued-date');
-      var today = new Date();
-      var issuedDate = new Date(issuedDateInput.value);
+      var today = new Date().setHours(0, 0, 0, 0); // 오늘 날짜의 00:00:00으로 설정
+      var issuedDate = new Date(issuedDateInput.value).setHours(0, 0, 0, 0); // 입력된 날짜의 00:00:00으로 설정
       var errorMessage = document.getElementById('issued-date-error');
-      console.log('발급시작일:', issuedDate); // 여기에 발급시작일과 관련된 로그 추가
+      console.log('발급시작일:', new Date(issuedDate)); // 발급시작일 로그 추가
+
 
       if (issuedDate < today) {
         errorMessage.textContent = '발급시작일은 오늘 날짜 이후여야 합니다.';
