@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.dto.cart;
 
 import java.math.BigDecimal;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * class: CartBookReadResponseDto.
@@ -10,6 +11,7 @@ import lombok.Getter;
  * @version 2024/03/10
  */
 @Getter
+@NoArgsConstructor
 public class CartBookReadResponseDto {
 
     private Long bookId;
@@ -20,5 +22,4 @@ public class CartBookReadResponseDto {
     private Integer stock;
     private Boolean isPackagable;
     private String thumbnail;
-
 }

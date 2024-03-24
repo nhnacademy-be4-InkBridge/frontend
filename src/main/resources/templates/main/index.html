@@ -78,7 +78,8 @@
     </div>
     <div class="container">
       <div class="section-intro pb-60px">
-        <h2>전체 상품 목록</h2>
+        <h2 th:if="${parentCategories==null}">전체 상품 목록</h2>
+        <h2 th:unless="${parentCategories!=null}" th:text="${category}" th:each="category: ${parentCategories}"></h2>
       </div>
       <div class="row">
         <div class="col-md-6 col-lg-4 col-xl-3" th:each="book, iterStat: ${books.getContent()}"

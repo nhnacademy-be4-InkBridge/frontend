@@ -1,0 +1,24 @@
+.order-table, .order-detail-table {
+  line-height: 2em;
+}
+
+table tr {
+  text-align: center;
+}
+
+.order-table td {
+  text-align: left;
+}
+
+.order-detail-table {
+  text-align: center;
+}
+
+img {
+  width: 8em;
+  height: 8em;
+}
+
+.book-title {
+  font-size: 15pt;
+}

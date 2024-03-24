@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}" lang="ko">
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+  <link href="/css/categories.css" rel="stylesheet">
+</th:block>
+<th:block layout:fragment="script">
+  <script type="text/javascript" async=""
+          src="https://www.googletagmanager.com/gtag/js?id=UA-38417733-17&amp;l=dataLayer&amp;cx=c"></script>
+  <script id="ga-gtag" async=""
+          src="https://www.googletagmanager.com/gtag/js?id=G-PZXV45BPZN"></script>
+</th:block>
+
+<div layout:fragment="content" id="layoutSidenav_content">
+
+  <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">작가 추가</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <form method="post" action="/admin/authors" enctype="multipart/form-data">
+          <div class="modal-body">
+            <div class="row g-4 p-4 card">
+              <div class="col-lg-auto">
+                <div class="border-bottom rounded">
+                  <input type="text" class="form-control border-0 me-4" placeholder="작가 이름"
+                         maxlength="20" name="authorName">
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="border-bottom rounded my-4">
+                    <textarea class="form-control border-0" cols="30" rows="8" minlength="0" name="authorIntroduce"
+                              maxlength="1000" placeholder="작가 설명" spellcheck="false"></textarea>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label for="image" class="label-input100">이미지 추가</label>
+                <input id="image" name="image" type="file" accept=".jpg, .png, .jpeg" multiple>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">작가 등록</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid px-4">
+    <h1 class="mt-4">작가 목록</h1>
+    <ol class="breadcrumb mb-4">
+      <li class="breadcrumb-item"><a href="/">메인 페이지</a></li>
+      <li class="breadcrumb-item active">작가</li>
+    </ol>
+    <div class="category_container">
+      <div class="d-flex justify-content-end gap-2 mb-2">
+        <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                data-bs-target="#addModal">작가 추가하기
+        </button>
+      </div>
+      <!--      작가 목록-->
+      <div class="bundle-item" th:each="author : ${authors.content}">
+        <div class="category parent_category bg-secondary bg-opacity-25 d-flex">
+          <div class="arrow px-1 d-flex flex-column align-items-center justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 class="bi bi-chevron-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                    d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+            </svg>
+          </div>
+          <div class="item_order d-flex justify-content-between flex-grow-1">
+            <div class="d-none " th:text="${author.authorId}"></div>
+            <span class="d-flex align-items-center"
+                  th:text="${author.authorName}"></span>
+          </div>
+        </div>
+        <div class="children_category hidden">
+          <div class=" bg-secondary bg-opacity-25 d-flex ms-5">
+            <div class="item_order d-flex justify-content-between flex-grow-1"
+                 style="height: 15rem;">
+              <div class="d-none " th:text="${author.authorId}"></div>
+              <form th:action="@{'/admin/authors/' + ${author.authorId}}" method="post"
+                    enctype="multipart/form-data">
+                <div class="row g-5 align-items-center">
+                  <div class="col-lg-6">
+                    <img th:src="${author.fileUrl}" alt="no image"
+                         style="width: 10rem; height: auto;">
+                  </div>
+                  <div class="col-lg-6 pt-3">
+                    <p class="mb-4">
+                      <label for="newAuthorName">작가 이름: </label>
+                      <input type="text" id="newAuthorName" th:value="${author.authorName}"
+                             name="authorName">
+                    </p>
+                    <p class="mb-4">
+                      <label for="newAuthorIntroduce">작가 설명: </label>
+                      <input type="text" id="newAuthorIntroduce" class="block"
+                             th:value="${author.authorIntroduce}" name="authorIntroduce">
+                    </p>
+                    <p class="mb-4">
+                      <label for="newFileUrl">새 썸네일: </label>
+                      <input type="file" id="newFileUrl" name="image">
+                    </p>
+                    <button type="submit" class="btn btn-secondary">수정</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="datatable-bottom">
+      <th:block th:with="pageSize=${authors!=null ? authors.size : 0}">
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            <li th:if="${authors?.number>= 10}" class="page-item">
+              <a class="page-link"
+                 th:href="@{'/admin/authors?page=' + ${((authors?.number/10)*10 - 1)} + '&size=' + ${pageSize}}"
+                 aria-label="이전 10 페이지">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <th:block
+                th:with="startPage=${(authors?.number / 10) * 10}, endPage=${(authors?.totalPages == 0 ? 0 : (startPage + 9 < authors?.totalPages ? startPage + 9 : authors?.totalPages - 1))}">
+              <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
+                <li th:class="${pageNumber == authors?.number ? 'page-item active' : 'page-item'}">
+                  <a class="page-link"
+                     th:href="@{'/admin/authors?page=' + ${pageNumber} + '&size=' + ${pageSize}}">[[${pageNumber
+                    + 1}]]</a>
+                </li>
+              </th:block>
+            </th:block>
+            <li th:if="${((authors?.number/10)*10 + 10) < authors?.totalPages}"
+                class="page-item">
+              <a class="page-link"
+                 th:href="@{'/admin/authors?page=' + ${((authors?.number/10)*10 + 10)} + '&size=' + ${pageSize}}"
+                 aria-label="Next 10 Pages">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </th:block>
+      <div style="margin-bottom: 50px;"></div>
+    </div>
+
+  </div>
+  <script src="/js/categories.js"></script>
+</div>
+</html>

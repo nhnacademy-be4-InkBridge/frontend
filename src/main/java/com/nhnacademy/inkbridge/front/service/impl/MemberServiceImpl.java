@@ -8,9 +8,13 @@ import static com.nhnacademy.inkbridge.front.jwt.utils.JwtEnums.REFRESH_COOKIE;
 import com.nhnacademy.inkbridge.front.adaptor.CartAdaptor;
 import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.dto.cart.CartCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberPasswordRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberUpdateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
 import com.nhnacademy.inkbridge.front.exception.UnAuthorizedException;
 import com.nhnacademy.inkbridge.front.service.MemberService;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
@@ -48,6 +52,9 @@ public class MemberServiceImpl implements MemberService {
     private final MemberAdaptor memberAdaptor;
     private final CartAdaptor cartAdaptor;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void signup(MemberSignupRequestDto memberSignupRequestDto) {
         String password = memberSignupRequestDto.getPassword();
@@ -64,6 +71,9 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void signupWithOAuth(MemberSignupOAuthRequestDto memberSignupOAuthRequestDto) {
         log.debug("signup service start ->");
@@ -77,10 +87,13 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void logout(HttpServletResponse response) {
         if ("anonymousUser".equals(
-            SecurityContextHolder.getContext().getAuthentication().getPrincipal())) {
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal())) {
             return;
         }
 
@@ -104,7 +117,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         String uuid = Objects.requireNonNull(CookieUtils.getCookie(HEADER_UUID.getName()))
-            .getValue();
+                .getValue();
         redisTemplate.opsForHash().delete(uuid, MEMBER_INFO.getName());
 
         CookieUtils.deleteCookie(response, ACCESS_COOKIE.getName());
@@ -117,10 +130,10 @@ public class MemberServiceImpl implements MemberService {
 
         List<CartCreateRequestDto> cart = new ArrayList<>();
         entries.forEach(
-            (key, value) -> cart.add(
-                CartCreateRequestDto.builder().memberId(CommonUtils.getMemberId())
-                    .bookId(Long.parseLong(key))
-                    .amount(Integer.parseInt(value)).build()));
+                (key, value) -> cart.add(
+                        CartCreateRequestDto.builder().memberId(CommonUtils.getMemberId())
+                                .bookId(Long.parseLong(key))
+                                .amount(Integer.parseInt(value)).build()));
 
         cartAdaptor.saveCart(cart);
         hashOperations.keys(memberId).forEach(field -> hashOperations.delete(memberId, field));
@@ -128,13 +141,75 @@ public class MemberServiceImpl implements MemberService {
         SecurityContextHolder.clearContext();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResponseEntity<Void> doLogin(String email, String password) {
         return memberAdaptor.doLogin(email, password);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MemberPointReadResponseDto getPoint() {
+        return memberAdaptor.getPoint();
+    }
+
     @Override
     public ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto) {
         return memberAdaptor.isDuplicatedEmail(memberEmailRequestDto);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MemberInfoResponseDto getMemberInfo() {
+        Cookie access = CookieUtils.getCookie(ACCESS_COOKIE.getName());
+        if (Objects.isNull(access)) {
+            throw new UnAuthorizedException();
+        }
+        String value = access.getValue();
+        String expired = value.split("\\.")[3];
+        int expiredLength = value.length() - (expired.length() + 1);
+
+        String token = access.getValue().substring(0, expiredLength);
+
+        return memberAdaptor.getMemberInfoByToken(token);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateMember(MemberUpdateRequestDto memberUpdateRequestDto, Long memberId) {
+        memberAdaptor.updateMember(memberUpdateRequestDto, memberId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean updatePassword(MemberPasswordRequestDto memberPasswordRequestDto) {
+
+        String originPassword = memberAdaptor.getPassword();
+        if (!passwordEncoder.matches(memberPasswordRequestDto.getPassword(), originPassword)) {
+            return Boolean.FALSE;
+        }
+
+        String digestNewPassword = passwordEncoder.encode(memberPasswordRequestDto.getNewPassword());
+        memberPasswordRequestDto.setEncodeNewPassword(digestNewPassword);
+
+        return memberAdaptor.updatePassword(memberPasswordRequestDto).getBody();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteMember(Long memberId) {
+        memberAdaptor.deleteMember(memberId);
     }
 }

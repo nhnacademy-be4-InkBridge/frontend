@@ -32,11 +32,11 @@ public class ExceptionAdvice {
 
     @ExceptionHandler({HttpClientErrorException.NotFound.class, HttpServerErrorException.class})
     public String goError() {
-        return "redirect:/error";
+        return "redirect:/404";
     }
 
     @ExceptionHandler(Exception.class)
     public String goCommonError() {
-        return "redirect:/error";
+        return "redirect:/404";
     }
 }
