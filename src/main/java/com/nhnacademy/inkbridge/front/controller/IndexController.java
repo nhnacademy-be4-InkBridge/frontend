@@ -3,21 +3,24 @@ package com.nhnacademy.inkbridge.front.controller;
 
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewBookReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.search.BookSearchResponseDto;
 import com.nhnacademy.inkbridge.front.service.CategoryService;
 import com.nhnacademy.inkbridge.front.service.IndexService;
 import com.nhnacademy.inkbridge.front.service.ReviewService;
+import com.nhnacademy.inkbridge.front.service.SearchService;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.util.List;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -30,37 +33,47 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @modificationReason - index 메서드 수정, bookDetail 메서드 추가
  */
 @Controller
+@RequestMapping("/")
 @Slf4j
 public class IndexController {
 
     private final IndexService indexService;
     private final CategoryService categoryService;
     private final ReviewService reviewService;
+    private final SearchService searchService;
     private static final Long NOT_MEMBER = 0L;
 
     public IndexController(IndexService indexService, CategoryService categoryService,
-        ReviewService reviewService) {
+        ReviewService reviewService, SearchService searchService) {
         this.indexService = indexService;
         this.categoryService = categoryService;
         this.reviewService = reviewService;
+        this.searchService = searchService;
     }
 
+
     /**
-     * 메인 페이지를 조회하는 메서드입니다.
+     * 메인페이지 로드하는 메소드입니다.
      *
-     * @param model Model
-     * @param page  Long
-     * @return html
+     * @param model 페이지에 넘겨줄 데이터들
+     * @return 인덱스 페이지
      */
     @GetMapping
-    public String index(Model model, @RequestParam(defaultValue = "0") Long page) {
-        BooksReadResponseDto books = indexService.getBooks(page);
-        model.addAttribute("books", books.getBooksPaginationReadResponseDtos());
-        model.addAttribute("authors", books.getAuthorPaginationReadResponseDto());
-        log.info("context -> {}", SecurityContextHolder.getContext().getAuthentication());
+    public String index(Model model) {
+        List<BookSearchResponseDto> hotBooks = searchService.searchByAll("view",
+            PageRequest.of(0, 8, Sort.by("view").descending())).getContent();
+        List<BookSearchResponseDto> latestBooks = searchService.searchByAll("publicatedAt",
+            PageRequest.of(0, 8, Sort.by("publicatedAt").ascending())).getContent();
+        List<BookSearchResponseDto> discountedBooks = searchService.searchByAll("discountRatio",
+            PageRequest.of(0, 8, Sort.by("discountRatio").descending())).getContent();
+        List<BookSearchResponseDto> ratingBooks = searchService.searchByAll("score",
+            PageRequest.of(0, 8, Sort.by("score").descending())).getContent();
 
-        List<ParentCategoryReadResponseDto> parentCategories = categoryService.readCategory();
-        model.addAttribute("parentCategories", parentCategories);
+        model.addAttribute("hotBooks", hotBooks);
+        model.addAttribute("latestBooks", latestBooks);
+        model.addAttribute("discountedBooks", discountedBooks);
+        model.addAttribute("ratingBooks", ratingBooks);
+
         return "main/index";
     }
 

@@ -1,0 +1,389 @@
+a {
+    text-decoration: none;
+    color: #595959;
+}
+
+/*검색결과 : 검색어, 개수*/
+.search-title-container {
+    padding: 2rem 0.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.search-title-keyword {
+    color: dodgerblue;
+}
+
+
+/* 연관 검색어 */
+.search-sub-title-container {
+    color: #595959;
+    /*border-bottom: 1px solid rgb(187 192 198);*/
+    padding-bottom: 1rem;
+    margin-bottom: 3rem;
+}
+
+.search-sub-title {
+    margin-bottom: 0.6rem;
+}
+
+.search-sub-title-list {
+    display: flex;
+    gap: 1rem;
+    padding-left: 0;
+}
+
+.search-sub-title-item {
+    background-color: #f7f7f7;
+    padding: 7px 16px 8px;
+    border: 1px solid #f7f7f7;
+    border-radius: 20px;
+}
+
+/* 개수, 정렬 방식*/
+.search-book-main {
+
+}
+
+
+/*개수*/
+.search-book-count {
+    font-size: 1rem;
+    font-weight: bold;
+    border-bottom: 1px solid rgb(187 192 198);
+    padding: 1rem 0;
+}
+
+.search-book-count > span {
+    color: dodgerblue;
+}
+
+/*정렬 방식*/
+.search-book-option-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgb(187 192 198);
+}
+
+.classify-book-option-container{
+    display:flex;
+    justify-content: end;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgb(187 192 198);
+}
+
+.search-book-order-list {
+    display: flex;
+    gap: 1rem;
+    padding-left: 0;
+    margin: 0;
+}
+
+.search-book-order-item {
+    color: #595959;
+}
+
+.search-book-order-item:hover {
+    cursor: pointer;
+    color: dodgerblue;
+}
+
+.search-book-order-item-click {
+    color: dodgerblue;
+    font-weight: bold;
+}
+
+.search-book-selects-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.search-book-select-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-book-type-container {
+    display: flex;
+}
+
+.search-book-type {
+    border: 1px solid #ccc;
+    padding: 0.3rem 0.6rem;
+}
+
+.search-book-type:first-child {
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+}
+
+.search-book-type:last-child {
+    border-radius: 0 6px 6px 0;
+}
+
+/*상품*/
+.search-book-container {
+
+}
+
+.search-book-info-list {
+    padding: 2rem 4rem;
+}
+
+.search-book-item {
+    display: flex;
+    height: 270px;
+}
+
+.search-book-item:not(:last-child){
+    border-bottom: 1px solid rgb(237, 237, 237);
+}
+
+.search-book-image-container {
+    width: 15%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-book-image-container > a{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    height:100%;
+}
+
+.search-book-image {
+    max-height: 100%;
+    width: 100%;
+    margin-left: 1px;
+    border: 1px solid #eaeaea;
+    object-fit: contain;
+}
+
+.search-book-image:hover {
+    cursor: pointer;
+}
+
+.search-book-info-container {
+    flex-grow: 1;
+    padding: 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.search-book-info-title {
+    margin-bottom: 0.4rem;
+}
+
+.search-book-info-title:hover {
+    text-decoration: underline;
+}
+
+.search-book-info-title > a {
+    font-weight: bold;
+    color: black;
+    font-size: 1.2rem;
+}
+
+.search-book-info-author-container {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+
+.search-book-info-author > a:not(:last-child)::after {
+    content: ", ";
+}
+
+.search-book-info-author > a {
+    color: black;
+}
+
+.search-book-info-author > a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.search-book-info-author-container > div:last-child {
+    color: #595959;
+}
+
+
+.search-book-info-publish-container {
+    display: flex;
+    font-size: 0.9rem;
+}
+
+.search-book-info-publisher > a {
+    height: 100%;
+    color: black;
+}
+
+.search-book-info-publisher > a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.search-book-info-publish-date {
+
+}
+
+.search-book-info-publish-date::before {
+    content: "|";
+    margin: 0 0.2rem;
+}
+
+
+.search-book-button-container {
+    width: 20%;
+}
+
+.search-book-info-discount-rate {
+    color: dodgerblue;
+    font-weight: bold;
+}
+
+.search-book-info-discount-price {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.search-book-info-original-price {
+    text-decoration: line-through;
+    font-size: 0.8rem;
+    color: #595959;
+}
+
+.search-book-info-review-container {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-book-info-review-star {
+    position: relative;
+    top: 0.05rem;
+    color: dodgerblue;
+    font-size: 0.9rem;
+
+}
+
+.search-book-info-review-rate {
+    font-weight: bold;
+}
+
+.search-book-info-tag-container {
+    display: flex;
+    gap: 0.5rem;
+    padding-left: 0;
+    margin-top: 1.5rem;
+}
+
+.search-book-info-tag {
+    background-color: #f7f7f7;
+    padding: 4px 12px 5px;
+    border: 1px solid #f7f7f7;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.search-book-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.search-book-quantity-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.search-book-quantity-container > div {
+    padding: 7px 16px 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.search-book-quantity-container > div:first-child{
+    border-radius: 6px 0 0 6px;
+}
+
+.search-book-quantity-container > div:first-child:hover {
+    cursor: pointer;
+    background-color: #f7f7f7;
+}
+
+.search-book-quantity-container > div:last-child{
+    border-radius: 0 6px 6px 0;
+}
+
+.search-book-quantity-container > div:last-child:hover {
+    cursor: pointer;
+    background-color: #f7f7f7;
+}
+
+.search-book-quantity-container > div:not(:first-child) {
+    border-left: none;
+}
+
+.search-book-button-container > div:not(:first-child) {
+    /*padding: 0.5rem 1.5rem;*/
+    height: 42px;
+
+    border-radius: 0.5rem;
+    text-align: center;
+    width:140px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-book-button-container > div:not(:first-child):hover {
+    cursor:pointer;
+}
+
+.search-book-cart {
+    background-color: #3282B8;
+    border: 1px solid #3282B8;
+    color: white;
+}
+
+.search-book-buy {
+    background-color: white;
+    border: 1px solid #3282B8;
+    color: #3282B8;
+}
+
+.search-book-wish {
+    background-color: #00A2C9;
+    border: 1px solid #00A2C9;
+    color: #f7f7f7;
+}
+
+.paging-container{
+    display:flex;
+    justify-content: center;
+}
+
+.cart-body{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-body > p:first-child{
+    font-weight: bold;
+    font-size: 1.2rem;
+}
