@@ -95,6 +95,9 @@ public class SearchAdaptorImpl implements SearchAdaptor {
         return responseEntity.getBody();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PageRequestDto<BookSearchResponseDto> readByCategory(String category,
         Pageable pageable) {
@@ -114,13 +117,11 @@ public class SearchAdaptorImpl implements SearchAdaptor {
             .build()
             .expand(category)
             .toUri();
-        System.out.println("after uri");
         RequestEntity<Void> requestEntity = RequestEntity
             .get(uri)
             .headers(httpHeaders)
             .build();
-        System.out.println("----------");
-        System.out.println(category);
+
         ResponseEntity<PageRequestDto<BookSearchResponseDto>> responseEntity = restTemplate.exchange(
             requestEntity,
             new ParameterizedTypeReference<>() {

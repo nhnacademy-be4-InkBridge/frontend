@@ -12,10 +12,7 @@ import lombok.NoArgsConstructor;
  */
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class TagBySearch {
-
     private Long tagId;
     private String tagName;
 }

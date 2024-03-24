@@ -27,6 +27,13 @@ public class SearchController {
 
     private final SearchService searchService;
 
+    /**
+     * 키워드로 검색하는 메소드
+     * @param text 키워드
+     * @param pageable 페이징처리
+     * @param model 모델
+     * @return 경로
+     */
     @GetMapping("search")
     public String searchByText(@RequestParam String text,
         @PageableDefault(size = 10) Pageable pageable, Model model) {
@@ -43,6 +50,14 @@ public class SearchController {
         return "search/search";
     }
 
+    /**
+     *  필드에 해당하는 도서 조회하는 메소드
+     * @param field 필드명
+     * @param pageable 페이징처리
+     * @param model 모델
+     * @param request request
+     * @return 경로
+     */
     @GetMapping("/{field}")
     public String searchByAll(@PathVariable String field, @PageableDefault(size = 10) Pageable pageable, Model model,
         HttpServletRequest request) {
@@ -61,6 +76,13 @@ public class SearchController {
         return "search/search";
     }
 
+    /**
+     * 카테고리명으로 도서 조회하는 메소드
+     * @param model 모델
+     * @param category 카테고리명
+     * @param pageable 페이징 처리
+     * @return 경로
+     */
     @GetMapping("/categories/{category}/books")
     public String booksByCategory(Model model, @PathVariable String category, @PageableDefault(size = 10)Pageable pageable){
         PageRequestDto<BookSearchResponseDto> pageableBooks = searchService.readByCategory(category,pageable);

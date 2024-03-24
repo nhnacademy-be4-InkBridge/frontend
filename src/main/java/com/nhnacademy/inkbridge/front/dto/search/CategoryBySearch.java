@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
  */
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class CategoryBySearch {
 
     private Long categoryId;
