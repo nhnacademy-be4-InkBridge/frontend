@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mypage_layout}">
+<th:block layout:fragment="css">
+    <link rel="stylesheet" href="/css/delete.css">
+</th:block>
+<th:block layout:fragment="script">
+</th:block>
+
+
+<div layout:fragment="content" class="container">
+    <h1>회원 탈퇴 동의서</h1>
+
+    <p>아래 내용을 읽고 동의하신 후에 탈퇴 버튼을 클릭해주세요.</p>
+
+    <h2>약관 내용</h2>
+    <p>1. 본 동의서는 회원 탈퇴에 대한 동의서입니다.</p>
+    <p>2. 탈퇴를 진행할 시에는 해당 계정의 모든 정보가 삭제됩니다.</p>
+    <p>3. 삭제된 정보는 복구할 수 없으며, 복구를 원할 경우 새로운 회원 가입 절차를 진행해야 합니다.</p>
+
+    <h2>동의</h2>
+    <p>위 약관 내용을 모두 읽었으며, 이에 동의합니다.</p>
+
+    <form id="deleteForm" action="/mypage/delete" method="post">
+        <input type="checkbox" id="agreement" required>
+        <label for="agreement">위 내용에 동의합니다.</label><br>
+        <button type="submit">동의하고 탈퇴하기</button>
+    </form>
+</div>
+
+</html>

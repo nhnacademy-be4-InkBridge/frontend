@@ -110,4 +110,11 @@ public interface MemberAdaptor {
      * @return 패스워드
      */
     String getPassword();
+
+    /**
+     * 회원 탈퇴하는 메서드.
+     *
+     * @param memberId 회원 아이디
+     */
+    void deleteMember(Long memberId);
 }
