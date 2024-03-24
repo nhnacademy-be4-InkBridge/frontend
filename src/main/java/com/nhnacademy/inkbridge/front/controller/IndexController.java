@@ -2,7 +2,7 @@ package com.nhnacademy.inkbridge.front.controller;
 
 
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.review.ReviewBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.search.BookSearchResponseDto;
@@ -19,7 +19,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -113,7 +112,8 @@ public class IndexController {
     @GetMapping("/books/{categoryId}")
     public String indexByCategory(Model model, @PathVariable Long categoryId,
         @RequestParam(defaultValue = "0") Long page) {
-        BooksReadResponseDto booksByCategory = indexService.getBooksByCategory(page, categoryId);
+        BooksByCategoryReadResponseDto booksByCategory = indexService.getBooksByCategory(page,
+            categoryId);
         model.addAttribute("books", booksByCategory.getBooksPaginationReadResponseDtos());
         model.addAttribute("authors", booksByCategory.getAuthorPaginationReadResponseDto());
         model.addAttribute("category", booksByCategory.getCategoryNameReadResponseDto());
