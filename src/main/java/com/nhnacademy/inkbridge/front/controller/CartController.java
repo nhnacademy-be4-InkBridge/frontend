@@ -120,7 +120,8 @@ public class CartController {
     public ResponseEntity<HttpStatus> updateCartBook(@PathVariable String bookId,
         @RequestParam(value = "amount") String amount, HttpServletRequest request) {
         Long id = CommonUtils.getMemberId();
-        String memberId = Objects.nonNull(id) ? String.valueOf(id) : checkCookie(request.getCookies());
+        String memberId =
+            Objects.nonNull(id) ? String.valueOf(id) : checkCookie(request.getCookies());
 
         cartService.updateCartBook(memberId, bookId, amount);
         return new ResponseEntity<>(HttpStatus.OK);

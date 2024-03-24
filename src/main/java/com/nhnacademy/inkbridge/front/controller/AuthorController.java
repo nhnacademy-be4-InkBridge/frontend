@@ -49,7 +49,7 @@ public class AuthorController {
         AuthorInfoReadResponseDto authors = authorService.getAuthor(authorId, page, size);
         model.addAttribute("authorInfo", authors);
 
-        return "member/author";
+        return "main/author";
     }
 
     /**
@@ -82,8 +82,8 @@ public class AuthorController {
         @Valid @ModelAttribute AuthorCreateUpdateRequestDto authorCreateUpdateRequestDto,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            log.debug("error: {}", bindingResult.getFieldError().getDefaultMessage());
-            throw new ValidationException(bindingResult.getFieldError().getDefaultMessage());
+            log.debug("error: {}", bindingResult.getFieldErrors().get(0).getDefaultMessage());
+            throw new ValidationException(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
         authorService.createAuthor(authorFile, authorCreateUpdateRequestDto);
         return "redirect:/admin/authors";
@@ -104,8 +104,8 @@ public class AuthorController {
         @Valid @ModelAttribute AuthorCreateUpdateRequestDto authorCreateUpdateRequestDto,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            log.debug("error: {}", bindingResult.getFieldError().getDefaultMessage());
-            throw new ValidationException(bindingResult.getFieldError().getDefaultMessage());
+            log.debug("error: {}", bindingResult.getFieldErrors().get(0).getDefaultMessage());
+            throw new ValidationException(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
         authorService.updateAuthor(authorFile, authorCreateUpdateRequestDto, authorId);
         return "redirect:/admin/authors";

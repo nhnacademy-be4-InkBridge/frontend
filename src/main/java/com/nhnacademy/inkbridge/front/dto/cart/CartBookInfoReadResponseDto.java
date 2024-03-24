@@ -18,7 +18,8 @@ public class CartBookInfoReadResponseDto {
     private final Map<String, String> bookId;
 
     @Builder
-    public CartBookInfoReadResponseDto(List<CartBookReadResponseDto> bookInfo, Map<String, String> bookId) {
+    public CartBookInfoReadResponseDto(List<CartBookReadResponseDto> bookInfo,
+        Map<String, String> bookId) {
         this.bookInfo = bookInfo;
         this.bookId = bookId;
     }

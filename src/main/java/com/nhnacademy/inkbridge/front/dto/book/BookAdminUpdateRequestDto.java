@@ -48,8 +48,9 @@ public class BookAdminUpdateRequestDto {
     @Builder
     public BookAdminUpdateRequestDto(String bookTitle, String bookIndex, String description,
         LocalDate publicatedAt, String isbn, Long regularPrice, Long price,
-        BigDecimal discountRatio, Integer stock, Boolean isPackagable, Long statusId, Long publisherId,
-        List<Long> authorIdList, List<Long> tags, Set<Long> categories, List<Long> fileIdList) {
+        BigDecimal discountRatio, Integer stock, Boolean isPackagable, Long statusId,
+        Long publisherId, List<Long> authorIdList, List<Long> tags, Set<Long> categories,
+        List<Long> fileIdList) {
         this.bookTitle = bookTitle;
         this.bookIndex = bookIndex;
         this.description = description;
