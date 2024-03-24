@@ -52,6 +52,7 @@ const setCookie = (bookId, amount) => {
 };
 
 const orderList = document.querySelectorAll(".search-book-order-item");
+
 orderList.forEach((orderItem) => {
   orderItem.addEventListener("click", () => {
     const sortStr = orderItem.getAttribute("data-name");
@@ -60,7 +61,7 @@ orderList.forEach((orderItem) => {
     currentUrl.searchParams.set("page", "0");
     currentUrl.searchParams.set("size", currentParams.get("size") || 10);
     currentUrl.searchParams.set("sort", sortStr || "");
-
+    clickedOrderButton=orderItem;
     window.location.href = currentUrl.href;
   })
 })
@@ -69,9 +70,10 @@ const orderSelect = document.querySelector(".view-select");
 orderSelect.addEventListener("change", (e) => {
   const currentUrl = new URL(location.href);
   currentUrl.searchParams.set("size", e.target.value);
-  console.log(e.target)
   location.href = currentUrl.href;
 })
+
+const searchBookOrderItems = document.querySelectorAll(".search-book-order-item");
 
 document.addEventListener("DOMContentLoaded", () => {
   const currentUrl = new URL(location.href);
