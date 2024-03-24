@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.controller;
 import static com.nhnacademy.inkbridge.front.utils.CommonUtils.getMemberId;
 
 import com.nhnacademy.inkbridge.front.service.CouponService;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,18 +33,17 @@ public class CouponController {
     @GetMapping
     public String issueCouponsView(@RequestParam(name = "page", defaultValue = "0") Integer page,
         @RequestParam(name = "size", defaultValue = "30") Integer size, Model model) {
-        String memberId = getMemberId().toString();
-        System.out.println("memberid: " + memberId);
         model.addAttribute("page", couponService.getCoupons(page, size));
 
         return "coupon/issue_coupon_list";
     }
 
     @PostMapping("/issue")
-    public String issueCoupon(@RequestParam("coupon_id") String couponId) {
+    public String issueCoupon(@RequestParam("coupon_id") String couponId,
+        HttpServletResponse httpServletResponse) {
+        System.out.println("test");
         String memberId = getMemberId().toString();
-        System.out.println("memberId: " + memberId);
-        couponService.issueCoupon(memberId, couponId);
+        couponService.issueCoupon(memberId, couponId, httpServletResponse);
         return "redirect:/coupons";
     }
 

@@ -6,10 +6,15 @@ import com.nhnacademy.inkbridge.front.adaptor.CouponAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.MemberCouponReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.OrderCouponReadResponseDto;
+import com.nhnacademy.inkbridge.front.exception.NotFoundException;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,8 +22,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -43,6 +48,25 @@ public class CouponAdaptorImpl implements CouponAdaptor {
     public CouponAdaptorImpl(RestTemplate restTemplate, GatewayProperties gatewayProperties) {
         this.restTemplate = restTemplate;
         this.gatewayProperties = gatewayProperties;
+    }
+
+    private static PrintWriter getPrintWriter(HttpServletResponse httpServletResponse,
+        HttpStatus statusCode) throws IOException {
+        PrintWriter out = httpServletResponse.getWriter();
+        out.println("<script language='javascript'>");
+
+        if (statusCode == HttpStatus.CREATED) {
+            out.println("alert('성공적으로 쿠폰이 발급되었습니다.')");
+        } else if (statusCode == HttpStatus.CONFLICT) {
+            out.println("alert('이미 발급된 쿠폰입니다.')");
+
+        } else {
+            throw new NotFoundException("접근제한");
+        }
+        out.println("window.location.href = '/coupons';");
+        out.println("</script>");
+
+        return out;
     }
 
     /**
@@ -113,34 +137,38 @@ public class CouponAdaptorImpl implements CouponAdaptor {
     }
 
     @Override
-    public void issueCoupon(String memberId, String couponId) {
+    public void issueCoupon(String memberId, String couponId,
+        HttpServletResponse httpServletResponse) throws IOException {
+
         HttpHeaders httpHeaders = createHeader();
         String url = String.format("%s/api/auth/members/%s/coupons/%s",
             gatewayProperties.getUrl(), memberId, couponId);
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
+        httpServletResponse.setContentType("text/html; charset=UTF-8");
+        PrintWriter out;
         try {
-            System.out.println("testtest");
 
-            ResponseEntity<Object> exchange =
-                restTemplate.exchange(url,
-                    HttpMethod.POST, httpEntity,
-                    new ParameterizedTypeReference<>() {
-                    });
-            System.out.println("testt");
-            System.out.println(exchange.getStatusCode());
-        } catch (RestClientException e) {
-            System.out.println(e.getMessage());
+            HttpStatus statusCode = restTemplate.exchange(url,
+                HttpMethod.POST, httpEntity,
+                new ParameterizedTypeReference<>() {
+                }).getStatusCode();
+            out = getPrintWriter(httpServletResponse, statusCode);
+        } catch (HttpClientErrorException httpClientErrorException) {
+            out = getPrintWriter(httpServletResponse, HttpStatus.CONFLICT);
         }
+        out.flush();
     }
 
     @Override
-    public PageRequestDto<CouponReadResponseDto> getIssuedCoupon(String memberId,
-        Integer couponStatusId, Integer page, Integer size) {
+    public PageRequestDto<MemberCouponReadResponseDto> getIssuedCoupon(String memberId,
+        String status, Integer page, Integer size) {
         HttpHeaders httpHeaders = createHeader();
-        String url = String.format("%s/api/auth/members/%s?coupon-status-id=%d&page=%d&size=%d",
-            gatewayProperties.getUrl(), memberId, couponStatusId, page, size);
+        System.out.println("test2");
+        String url = String.format(
+            "%s/api/auth/members/%s/coupons?status=%s&page=%d&size=%d",
+            gatewayProperties.getUrl(), memberId, status, page, size);
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<PageRequestDto<CouponReadResponseDto>> exchange;
+        ResponseEntity<PageRequestDto<MemberCouponReadResponseDto>> exchange;
         exchange = restTemplate.exchange(url,
             HttpMethod.GET, httpEntity,
             new ParameterizedTypeReference<>() {

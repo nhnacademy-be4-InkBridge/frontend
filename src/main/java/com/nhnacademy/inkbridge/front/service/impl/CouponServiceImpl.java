@@ -4,9 +4,13 @@ import com.nhnacademy.inkbridge.front.adaptor.CouponAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.MemberCouponReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.OrderCouponReadResponseDto;
+import com.nhnacademy.inkbridge.front.exception.NotFoundException;
 import com.nhnacademy.inkbridge.front.service.CouponService;
+import java.io.IOException;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 
 /**
@@ -59,15 +63,20 @@ public class CouponServiceImpl implements CouponService {
      * {@inheritDoc}
      */
     @Override
-    public void issueCoupon(String memberId, String couponId) {
-        couponAdaptor.issueCoupon(memberId, couponId);
+    public void issueCoupon(String memberId, String couponId,
+        HttpServletResponse httpServletResponse) {
+        try {
+            couponAdaptor.issueCoupon(memberId, couponId, httpServletResponse);
+        } catch (IOException e) {
+            throw new NotFoundException("접근차단");
+        }
     }
 
     @Override
-    public PageRequestDto<CouponReadResponseDto> getIssuedCoupon(String memberId,
-        Integer couponStatusId,
+    public PageRequestDto<MemberCouponReadResponseDto> getIssuedCoupon(String memberId,
+        String status,
         Integer page, Integer size) {
-        return couponAdaptor.getIssuedCoupon(memberId, couponStatusId, page, size);
+        return couponAdaptor.getIssuedCoupon(memberId, status, page, size);
     }
 
     @Override
