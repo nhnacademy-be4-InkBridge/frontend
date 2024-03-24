@@ -80,32 +80,39 @@ document.querySelectorAll('.quantity button').forEach(function (button) {
             '#price').textContent.replaceAll(',', ''));
     var totalPrice = parseInt(
         document.getElementById('totalPrice').textContent.replaceAll(',', ''));
+    const bookId = this.parentElement.parentElement.parentElement.parentElement.querySelector(
+        '#bookId').value;
 
     if (this.classList.contains('btn-plus')) {
         newVal = oldValue + 1;
         totalPrice = totalPrice + price;
+        update(bookId, newVal);
     } else {
-      newVal = oldValue > 1 ? oldValue - 1 : 1;
-      totalPrice = newVal > 1 ? totalPrice - price : totalPrice;
+      if (oldValue > 1) {
+        newVal = oldValue - 1;
+        totalPrice =totalPrice - price;
+        update(bookId, newVal);
+      }
     }
     this.parentElement.parentElement.querySelector('input').value = newVal; // amount
     document.getElementById('totalPrice').textContent = totalPrice.toLocaleString('en-US');
-    const bookId = this.parentElement.parentElement.parentElement.parentElement.querySelector(
-        '#bookId').value;
-    fetch('/cart/book/' + bookId + '?amount=' + newVal, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(response => {
-      if (!response.ok) {
-        alert('error');
-      }
-    });
   });
 });
 
-window.onload = setTotalPrice();
+function update(bookId, amount) {
+  fetch('/cart/book/' + bookId + '?amount=' + amount, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(response => {
+    if (!response.ok) {
+      alert('error');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', setTotalPrice);
 
 function setTotalPrice() {
   let totalPrice = 0;
