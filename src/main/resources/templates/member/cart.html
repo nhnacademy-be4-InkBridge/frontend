@@ -41,7 +41,7 @@
               </div>
             </th>
             <td>
-              <input type="hidden" id="cartId" th:value="${info.key}">
+              <input type="hidden" id="bookId" th:value="${info.key}">
               <a class="mb-0 mt-4 hide-href" th:text="${info.value.bookTitle}"
                  th:href="@{/book(id=${info.key})}"
                  id="bookTitle"></a>

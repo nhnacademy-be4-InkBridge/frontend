@@ -7,7 +7,6 @@ import com.nhnacademy.inkbridge.front.dto.book.BookRedisReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartRedisCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.CartService;
-import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -58,6 +57,9 @@ public class CartServiceImpl implements CartService {
         return hashOperations.entries(memberId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, BookRedisReadResponseDto> getBookInfo(ArrayList<String> keys) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -77,7 +79,7 @@ public class CartServiceImpl implements CartService {
                         (String) rawValue, BookRedisReadResponseDto.class);
                     book.put(key, value);
                 } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
+                    log.error("error: {}", e.getMessage());
                 }
             } else {
                 bookNotInRedis.add(keys.get(i));
@@ -87,15 +89,23 @@ public class CartServiceImpl implements CartService {
         if (!bookNotInRedis.isEmpty()) {
             List<CartBookReadResponseDto> cartBookInfo = getCartBookInfo(bookNotInRedis);
             cartBookInfo.forEach(
-                cartBookReadResponseDto -> book.put(
-                    String.valueOf(cartBookReadResponseDto.getBookId()),
-                    BookRedisReadResponseDto.builder().bookTitle(
+                cartBookReadResponseDto -> {
+                    BookRedisReadResponseDto dto = BookRedisReadResponseDto.builder().bookTitle(
                             cartBookReadResponseDto.getBookTitle()).thumbnailUrl(
                             cartBookReadResponseDto.getThumbnail()).price(
                             cartBookReadResponseDto.getPrice()).regularPrice(
                             cartBookReadResponseDto.getRegularPrice()).discountRatio(
                             cartBookReadResponseDto.getDiscountRatio())
-                        .build()));
+                        .build();
+                    try {
+                        redisTemplateForBook.opsForValue()
+                            .set(String.valueOf(cartBookReadResponseDto.getBookId()),
+                                objectMapper.writeValueAsString(dto));
+                    } catch (JsonProcessingException e) {
+                        log.error("error: {}", e.getMessage());
+                    }
+                    book.put(String.valueOf(cartBookReadResponseDto.getBookId()), dto);
+                });
         }
 
         return book;
@@ -144,8 +154,7 @@ public class CartServiceImpl implements CartService {
      * {@inheritDoc}
      */
     @Override
-    public void updateCartBook(String bookId, String amount) {
-        String memberId = String.valueOf(CommonUtils.getMemberId());
+    public void updateCartBook(String memberId, String bookId, String amount) {
         redisTemplate.opsForHash().put(memberId, bookId, amount);
     }
 }
