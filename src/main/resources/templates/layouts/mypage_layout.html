@@ -28,8 +28,8 @@
 
 </head>
 <body>
-<th:block th:replace="fragments/header :: headerFragment"></th:block>
 <div>
+    <th:block th:replace="fragments/header :: headerFragment"></th:block>
     <div id="layoutSidenav">
         <th:block th:replace="fragments/mypage_sidebar :: sidebarFragment"></th:block>
         <th:block layout:fragment="content"></th:block>
