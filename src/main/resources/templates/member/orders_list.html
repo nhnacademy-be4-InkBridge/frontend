@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/main_layout}">
+      layout:decorate="~{layouts/mypage_layout}">
 
 <!-- index.html 고유 CSS 추가 -->
 <th:block layout:fragment="css">
@@ -44,7 +44,7 @@
         <ul class="pagination">
           <li th:if="${orderList.number>= 10}" class="page-item">
             <a class="page-link"
-               th:href="@{'/admin/orders?page=' + ${((orderList.number/10)*10 - 1)}}"
+               th:href="@{'/mypage/orders?page=' + ${((orderList.number/10)*10 - 1)}}"
                aria-label="이전 10 페이지">
               <span aria-hidden="true">&laquo;</span>
             </a>
@@ -54,14 +54,14 @@
             <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
               <li th:class="${pageNumber == orderList.number ? 'page-item active' : 'page-item'}">
                 <a class="page-link"
-                   th:href="@{'/admin/orders?page=' + ${pageNumber}}">[[${pageNumber
+                   th:href="@{'/mypage/orders?page=' + ${pageNumber}}">[[${pageNumber
                   + 1}]]</a>
               </li>
             </th:block>
           </th:block>
           <li th:if="${((orderList.number/10)*10 + 10) < orderList.totalPages}" class="page-item">
             <a class="page-link"
-               th:href="@{'/admin/coupons?page=' + ${((orderList.number/10)*10 + 10)}}"
+               th:href="@{'/mypage/coupons?page=' + ${((orderList.number/10)*10 + 10)}}"
                aria-label="Next 10 Pages">
               <span aria-hidden="true">&raquo;</span>
             </a>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mypage_layout}">
+<head>
+  <title>포인트 내역</title>
+</head>
+<body>
+<th:block layout:fragment="css">
+  <!-- 여기에 필요한 CSS 추가 -->
+  <link href="/css/categories.css" rel="stylesheet">
+</th:block>
+<th:block layout:fragment="script">
+  <!-- 여기에 필요한 스크립트 추가 -->
+  <script src="/js/scripts.js"></script>
+</th:block>
+
+<div layout:fragment="content">
+  <div class="container mt-5">
+    <h2>포인트 내역</h2>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>사유</th>
+        <th>포인트</th>
+        <th>적립일시</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="pointHistory : ${pointHistoryList}">
+        <td th:text="${pointHistory.reason}"></td>
+        <td th:text="${pointHistory.point}"></td>
+        <td th:text="${#temporals.format(pointHistory.accruedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>
