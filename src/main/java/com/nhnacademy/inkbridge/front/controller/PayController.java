@@ -2,16 +2,20 @@ package com.nhnacademy.inkbridge.front.controller;
 
 import static com.nhnacademy.inkbridge.front.utils.CommonUtils.getMemberId;
 
+import com.nhnacademy.inkbridge.front.dto.pay.PayCancelInfoDto;
 import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmRequestDto;
 import com.nhnacademy.inkbridge.front.property.TossProperties;
 import com.nhnacademy.inkbridge.front.service.OrderService;
 import com.nhnacademy.inkbridge.front.service.PayService;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -47,6 +51,21 @@ public class PayController {
         model.addAttribute("clientKey", clientKey);
 
         return "order/pays";
+    }
+
+    /**
+     * 결제를 취소합니다.
+     * <p>
+     * 주문 상세 내역 페이지
+     */
+    @PutMapping("/{paymentKey}")
+    public String cancelPay(@ModelAttribute PayCancelInfoDto requestDto,
+        @PathVariable("paymentKey") String paymentKey, @RequestParam("provider") String provider, @RequestParam("order-code") String orderCode) {
+
+        payService.doCancel(paymentKey, requestDto, provider);
+
+        return Objects.nonNull(getMemberId()) ? "redirect:/mypage/orders/"
+            + orderCode : "redirect:/anonymous-orders/" + orderCode;
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
+import com.nhnacademy.inkbridge.front.dto.pay.PayCancelRequestDto;
 import com.nhnacademy.inkbridge.front.dto.pay.PayCreateRequestDto;
 
 /**
@@ -16,4 +17,11 @@ public interface PayAdaptor {
      * @param payCreateRequestDto 결제 정보
      */
     void doPay(PayCreateRequestDto payCreateRequestDto);
+
+    /**
+     * 결제를 Backend 서버로 요청합니다.
+     *
+     * @param payCancelRequestDto 취소 정보
+     */
+    void cancelPay(PayCancelRequestDto payCancelRequestDto);
 }

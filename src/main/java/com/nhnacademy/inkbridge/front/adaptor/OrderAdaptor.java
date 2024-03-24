@@ -6,9 +6,8 @@ import com.nhnacademy.inkbridge.front.dto.order.BookOrderViewResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderPaymentInfoReadResponseDto;
-import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
-import java.util.List;
 import com.nhnacademy.inkbridge.front.dto.order.OrderReadResponseDto;
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -83,4 +82,6 @@ public interface OrderAdaptor {
      * @return 주문 상세 내역
      */
     BookOrderViewResponseDto getMyOrderInfo(String orderCode, Long memberId);
+
+    BookOrderViewResponseDto getOrderInfoByOrderCode(String orderCode);
 }

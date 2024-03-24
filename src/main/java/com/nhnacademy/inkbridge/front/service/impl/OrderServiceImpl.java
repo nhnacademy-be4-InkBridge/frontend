@@ -178,6 +178,11 @@ public class OrderServiceImpl implements OrderService {
         return orderAdaptor.getMyOrderInfo(orderCode, memberId);
     }
 
+    @Override
+    public BookOrderViewResponseDto getOrderInfoByOrderCode(String orderCode) {
+        return orderAdaptor.getOrderInfoByOrderCode(orderCode);
+    }
+
     /**
      * 도서 정보에서 bookId에 맞는 amount를 찾는 메소드입니다.
      *
