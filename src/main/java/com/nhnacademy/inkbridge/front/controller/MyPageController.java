@@ -6,6 +6,7 @@ import com.nhnacademy.inkbridge.front.dto.member.request.MemberUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.response.MemberInfoResponseDto;
 import com.nhnacademy.inkbridge.front.service.CouponService;
 import com.nhnacademy.inkbridge.front.service.MemberService;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,5 +74,16 @@ public class MyPageController {
     public String memberUpdatePasswordRequest() {
 
         return "mypage/password";
+    }
+
+    @GetMapping("/delete")
+    public String memberExitRequest() {
+        return "mypage/delete";
+    }
+    @PostMapping("/delete")
+    public String memberDeleteRequest(HttpServletResponse response) {
+        Long memberId = getMemberId();
+        memberService.deleteMember(memberId);
+        return "redirect:/logout";
     }
 }

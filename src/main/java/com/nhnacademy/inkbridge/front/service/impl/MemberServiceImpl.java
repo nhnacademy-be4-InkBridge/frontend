@@ -10,6 +10,7 @@ import com.nhnacademy.inkbridge.front.adaptor.MemberAdaptor;
 import com.nhnacademy.inkbridge.front.dto.cart.CartCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberPasswordRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberUpdateRequestDto;
@@ -69,6 +70,7 @@ public class MemberServiceImpl implements MemberService {
             }
         }
     }
+
     /**
      * {@inheritDoc}
      */
@@ -84,13 +86,14 @@ public class MemberServiceImpl implements MemberService {
             }
         }
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void logout(HttpServletResponse response) {
         if ("anonymousUser".equals(
-            SecurityContextHolder.getContext().getAuthentication().getPrincipal())) {
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal())) {
             return;
         }
 
@@ -114,7 +117,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         String uuid = Objects.requireNonNull(CookieUtils.getCookie(HEADER_UUID.getName()))
-            .getValue();
+                .getValue();
         redisTemplate.opsForHash().delete(uuid, MEMBER_INFO.getName());
 
         CookieUtils.deleteCookie(response, ACCESS_COOKIE.getName());
@@ -127,16 +130,17 @@ public class MemberServiceImpl implements MemberService {
 
         List<CartCreateRequestDto> cart = new ArrayList<>();
         entries.forEach(
-            (key, value) -> cart.add(
-                CartCreateRequestDto.builder().memberId(CommonUtils.getMemberId())
-                    .bookId(Long.parseLong(key))
-                    .amount(Integer.parseInt(value)).build()));
+                (key, value) -> cart.add(
+                        CartCreateRequestDto.builder().memberId(CommonUtils.getMemberId())
+                                .bookId(Long.parseLong(key))
+                                .amount(Integer.parseInt(value)).build()));
 
         cartAdaptor.saveCart(cart);
         hashOperations.keys(memberId).forEach(field -> hashOperations.delete(memberId, field));
 
         SecurityContextHolder.clearContext();
     }
+
     /**
      * {@inheritDoc}
      */
@@ -144,6 +148,7 @@ public class MemberServiceImpl implements MemberService {
     public ResponseEntity<Void> doLogin(String email, String password) {
         return memberAdaptor.doLogin(email, password);
     }
+
     /**
      * {@inheritDoc}
      */
@@ -156,6 +161,7 @@ public class MemberServiceImpl implements MemberService {
     public ResponseEntity<Boolean> isDuplicatedEmail(MemberEmailRequestDto memberEmailRequestDto) {
         return memberAdaptor.isDuplicatedEmail(memberEmailRequestDto);
     }
+
     /**
      * {@inheritDoc}
      */
@@ -178,7 +184,32 @@ public class MemberServiceImpl implements MemberService {
      * {@inheritDoc}
      */
     @Override
-    public void updateMember(MemberUpdateRequestDto memberUpdateRequestDto,Long memberId) {
-        memberAdaptor.updateMember(memberUpdateRequestDto,memberId);
+    public void updateMember(MemberUpdateRequestDto memberUpdateRequestDto, Long memberId) {
+        memberAdaptor.updateMember(memberUpdateRequestDto, memberId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean updatePassword(MemberPasswordRequestDto memberPasswordRequestDto) {
+
+        String originPassword = memberAdaptor.getPassword();
+        if (!passwordEncoder.matches(memberPasswordRequestDto.getPassword(), originPassword)) {
+            return Boolean.FALSE;
+        }
+
+        String digestNewPassword = passwordEncoder.encode(memberPasswordRequestDto.getNewPassword());
+        memberPasswordRequestDto.setEncodeNewPassword(digestNewPassword);
+
+        return memberAdaptor.updatePassword(memberPasswordRequestDto).getBody();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteMember(Long memberId) {
+        memberAdaptor.deleteMember(memberId);
     }
 }

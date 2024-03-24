@@ -78,7 +78,7 @@ public class AuthorController {
      * @return html
      */
     @PostMapping("/admin/authors")
-    public String createAuthor(@RequestParam("authorFile") MultipartFile authorFile,
+    public String createAuthor(@RequestParam("image") MultipartFile authorFile,
         @Valid @ModelAttribute AuthorCreateUpdateRequestDto authorCreateUpdateRequestDto,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -100,7 +100,7 @@ public class AuthorController {
      */
     @PostMapping("/admin/authors/{authorId}")
     public String updateAuthor(@PathVariable Long authorId,
-        @RequestParam("authorFile") MultipartFile authorFile,
+        @RequestParam("image") MultipartFile authorFile,
         @Valid @ModelAttribute AuthorCreateUpdateRequestDto authorCreateUpdateRequestDto,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

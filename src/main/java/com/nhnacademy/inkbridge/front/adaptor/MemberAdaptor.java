@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.adaptor;
 import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberLoginRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberPasswordRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberUpdateRequestDto;
@@ -94,4 +95,26 @@ public interface MemberAdaptor {
      * @param memberUpdateRequestDto 수정할 정보
      */
     void updateMember(MemberUpdateRequestDto memberUpdateRequestDto,Long memberId);
+
+    /**
+     * 패스워드를 업데이트하는 메서드.
+     *
+     * @param memberPasswordRequestDto 패스워드
+     * @return 성공여부
+     */
+    ResponseEntity<Boolean> updatePassword(MemberPasswordRequestDto memberPasswordRequestDto);
+
+    /**
+     * 디비에서 해당 멤버 패스워드 가져옵니다.
+     *
+     * @return 패스워드
+     */
+    String getPassword();
+
+    /**
+     * 회원 탈퇴하는 메서드.
+     *
+     * @param memberId 회원 아이디
+     */
+    void deleteMember(Long memberId);
 }

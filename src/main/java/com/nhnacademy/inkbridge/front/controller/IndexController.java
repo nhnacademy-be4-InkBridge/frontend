@@ -5,12 +5,13 @@ import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.review.ReviewBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.CategoryService;
 import com.nhnacademy.inkbridge.front.service.IndexService;
+import com.nhnacademy.inkbridge.front.service.ReviewService;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.util.List;
 import java.util.Objects;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -29,13 +30,20 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @modificationReason - index 메서드 수정, bookDetail 메서드 추가
  */
 @Controller
-@RequiredArgsConstructor
 @Slf4j
 public class IndexController {
 
     private final IndexService indexService;
     private final CategoryService categoryService;
+    private final ReviewService reviewService;
     private static final Long NOT_MEMBER = 0L;
+
+    public IndexController(IndexService indexService, CategoryService categoryService,
+        ReviewService reviewService) {
+        this.indexService = indexService;
+        this.categoryService = categoryService;
+        this.reviewService = reviewService;
+    }
 
     /**
      * 메인 페이지를 조회하는 메서드입니다.
@@ -53,7 +61,7 @@ public class IndexController {
 
         List<ParentCategoryReadResponseDto> parentCategories = categoryService.readCategory();
         model.addAttribute("parentCategories", parentCategories);
-        return "member/index";
+        return "main/index";
     }
 
     /**
@@ -67,10 +75,17 @@ public class IndexController {
     public String bookDetail(Model model, @RequestParam(name = "id") Long bookId) {
         Long memberId = CommonUtils.getMemberId();
         memberId = Objects.equals(null, memberId) ? NOT_MEMBER : memberId;
+
         BookReadResponseDto book = indexService.getBook(bookId, memberId);
+        ReviewBookReadResponseDto reviews = reviewService.getReviewsByBookId(bookId);
+
         model.addAttribute("bookId", bookId);
-        model.addAttribute("book", book);
-        return "member/book";
+        model.addAttribute("book", book.getBookDetailReadResponseDto());
+        model.addAttribute("reviews", reviews.getReviewDetailReadResponseDtos());
+        model.addAttribute("reviewFiles", reviews.getReviewFiles());
+        model.addAttribute("reviewNumber", book.getReviewAverageReadResponseDto());
+
+        return "main/book";
     }
 
     /**
@@ -93,6 +108,6 @@ public class IndexController {
         List<ParentCategoryReadResponseDto> parentCategories = categoryService.readCategory();
         model.addAttribute("parentCategories", parentCategories);
 
-        return "member/index";
+        return "main/index";
     }
 }

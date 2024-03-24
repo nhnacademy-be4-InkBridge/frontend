@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.service;
 
 import com.nhnacademy.inkbridge.front.dto.member.MemberPointReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberEmailRequestDto;
+import com.nhnacademy.inkbridge.front.dto.member.request.MemberPasswordRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupOAuthRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberSignupRequestDto;
 import com.nhnacademy.inkbridge.front.dto.member.request.MemberUpdateRequestDto;
@@ -71,4 +72,19 @@ public interface MemberService {
      * @param memberUpdateRequestDto 업데이트할 회원 정보
      */
     void updateMember(MemberUpdateRequestDto memberUpdateRequestDto,Long memberId);
+
+    /**
+     * 회원의 비밀번호를 변경하는 메서드.
+     *
+     * @param memberPasswordRequestDto 기존 비밀번호와 새로운 비밀번호
+     * @return 성공 여부
+     */
+    Boolean updatePassword(MemberPasswordRequestDto memberPasswordRequestDto);
+
+    /**
+     * 회원 탈퇴하는 메서드.
+     *
+     * @param memberId 회원 아이디
+     */
+    void deleteMember(Long memberId);
 }

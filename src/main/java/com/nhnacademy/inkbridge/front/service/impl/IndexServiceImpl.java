@@ -1,10 +1,18 @@
 package com.nhnacademy.inkbridge.front.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.inkbridge.front.adaptor.BookAdaptor;
+import com.nhnacademy.inkbridge.front.dto.book.BookDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookRedisReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
+import java.util.Objects;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,9 +25,13 @@ import org.springframework.stereotype.Service;
 public class IndexServiceImpl implements IndexService {
 
     private final BookAdaptor bookAdaptor;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    public IndexServiceImpl(BookAdaptor bookAdaptor) {
+
+    public IndexServiceImpl(BookAdaptor bookAdaptor,
+        @Qualifier(value = "redisTemplateForBook") RedisTemplate<String, Object> redisTemplate) {
         this.bookAdaptor = bookAdaptor;
+        this.redisTemplate = redisTemplate;
     }
 
     /**
@@ -43,6 +55,30 @@ public class IndexServiceImpl implements IndexService {
      */
     @Override
     public BookReadResponseDto getBook(Long bookId, Long memberId) {
-        return bookAdaptor.getBook(bookId, memberId);
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        BookReadResponseDto book = bookAdaptor.getBook(bookId, memberId);
+        BookDetailReadResponseDto bookDetail = book.getBookDetailReadResponseDto();
+
+        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+
+        if (Objects.isNull(valueOperations.get(String.valueOf(bookId)))) {
+            // 존재하지 않으면 레디스에 도서 정보 저장
+            try {
+                redisTemplate.opsForValue()
+                    .set(String.valueOf(bookId), objectMapper.writeValueAsString(
+                        BookRedisReadResponseDto.builder().bookTitle(bookDetail.getBookTitle())
+                            .thumbnailUrl(bookDetail.getThumbnail()).price(
+                                bookDetail.getPrice()).regularPrice(bookDetail.getRegularPrice())
+                            .discountRatio(bookDetail.getDiscountRatio()).build()));
+                redisTemplate.opsForValue()
+                    .set(bookId + "view", bookDetail.getView());
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        valueOperations.increment(bookId + "view", 1);
+
+        return book;
     }
 }

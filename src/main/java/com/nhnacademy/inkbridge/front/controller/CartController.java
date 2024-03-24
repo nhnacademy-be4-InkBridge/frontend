@@ -1,10 +1,10 @@
 package com.nhnacademy.inkbridge.front.controller;
 
-import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.book.BookRedisReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartRedisCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.CartService;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -56,11 +56,11 @@ public class CartController {
             memberId = checkCookie(request.getCookies());
         }
 
-        Map<String, String> cart = cartService.getCartRedis(memberId);
-        List<CartBookReadResponseDto> cartBookInfo = cartService.getCartBookInfo(cart.keySet());
-
-        model.addAttribute("bookIds", cart);
-        model.addAttribute("info", cartBookInfo);
+        Map<String, Long> cartInfo = cartService.getCartRedis(memberId);
+        Map<String, BookRedisReadResponseDto> bookInfo = cartService.getBookInfo(
+            new ArrayList<>(cartInfo.keySet()));
+        model.addAttribute("cartInfo", cartInfo);
+        model.addAttribute("bookInfo", bookInfo);
         return "member/cart";
     }
 
@@ -86,6 +86,7 @@ public class CartController {
         } else {
             cartService.createCartForMember(cartRedisCreateRequestDto, memberId);
         }
+
         return "redirect:/cart";
     }
 
@@ -117,11 +118,20 @@ public class CartController {
     @PostMapping("/book/{bookId}")
     @ResponseBody
     public ResponseEntity<HttpStatus> updateCartBook(@PathVariable String bookId,
-        @RequestParam String amount) {
-        cartService.updateCartBook(bookId, amount);
+        @RequestParam(value = "amount") String amount, HttpServletRequest request) {
+        Long id = CommonUtils.getMemberId();
+        String memberId = Objects.nonNull(id) ? String.valueOf(id) : checkCookie(request.getCookies());
+
+        cartService.updateCartBook(memberId, bookId, amount);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * 쿠키 중 "cart" 이름을 가진 쿠키가 있는지 검사하는 메서드입니다.
+     *
+     * @param cookies Cookie[]
+     * @return memberId
+     */
     private String checkCookie(Cookie[] cookies) {
         String memberId = String.valueOf(UUID.randomUUID());
         if (cookies != null) {

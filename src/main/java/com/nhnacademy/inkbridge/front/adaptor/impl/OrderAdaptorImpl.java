@@ -3,6 +3,7 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
 
 import com.nhnacademy.inkbridge.front.adaptor.OrderAdaptor;
+import com.nhnacademy.inkbridge.front.dto.OrderBooksIdResponseDto;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.order.BookOrderViewResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateResponseDto;
@@ -11,6 +12,7 @@ import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderReadResponseDto;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -74,6 +76,34 @@ public class OrderAdaptorImpl implements OrderAdaptor {
             .toUri();
 
         ResponseEntity<OrderPaymentInfoReadResponseDto> exchange = restTemplate.exchange(
+            uri,
+            HttpMethod.GET,
+            entity,
+            new ParameterizedTypeReference<>() {
+            });
+
+        return exchange.getBody();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param orderCode 주문 코드
+     * @return 도서 번호 목록
+     */
+    @Override
+    public List<OrderBooksIdResponseDto> getOrderBooksIdByOrderCode(String orderCode) {
+        HttpEntity<Void> entity = new HttpEntity<>(createHeader());
+
+        URI uri = UriComponentsBuilder
+            .fromUriString(gatewayProperties.getUrl())
+            .encode()
+            .path("/api/orders/{orderCode}/books")
+            .build()
+            .expand(orderCode)
+            .toUri();
+
+        ResponseEntity<List<OrderBooksIdResponseDto>> exchange = restTemplate.exchange(
             uri,
             HttpMethod.GET,
             entity,

@@ -18,7 +18,7 @@ public class AuthorCreateUpdateRequestDto {
     private final String authorName;
 
     @NotBlank
-    @Size(max = 100)
+    @Size(max = 1000)
     private final String authorIntroduce;
 
     public AuthorCreateUpdateRequestDto(String authorName, String authorIntroduce) {

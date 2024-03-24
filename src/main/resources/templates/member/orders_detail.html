@@ -7,9 +7,10 @@
 <!-- index.html 고유 CSS 추가 -->
 <th:block layout:fragment="css">
   <link rel="stylesheet" href="/css/member_order_detail.css">
+  <link rel="stylesheet" href="/css/review.css">
 </th:block>
-
 <th:block layout:fragment="script">
+  <script src="/js/review.js"></script>
 </th:block>
 
 <div layout:fragment="content" id="layoutSidenav_content">
@@ -86,6 +87,7 @@
           <col style="width: 16%">
           <col style="width: 16%">
           <col style="width: 14%">
+          <col style="width: 16%">
         </colgroup>
         <tr>
           <th>#</th>
@@ -95,17 +97,86 @@
           <th>쿠폰 할인</th>
           <th>포장지</th>
           <th>주문 상태</th>
+          <th>리뷰 작성</th>
         </tr>
         <tr th:each="orderDetail, stat : ${order.orderDetailInfoList}">
           <td><img th:src="${orderDetail.thumbnailUrl}"></td>
-          <td class="book-title" th:text="${orderDetail.bookTitle}"></td>
+          <td class="book-title" th:text="${orderDetail.bookTitle}">
+            <input type="hidden" name="bookId">
+          </td>
           <td th:text="${orderDetail.amount} + ' 개'"></td>
           <td th:text="${#numbers.formatInteger(orderDetail.bookPrice * orderDetail.amount + orderDetail.wrappingPrice, 1, 'COMMA')} + ' 원'"></td>
           <td th:text="${#numbers.formatInteger(couponDiscountList[stat.index], 1, 'COMMA')} + ' 원'"></td>
           <td th:text="${orderDetail.wrappingName eq null ? '-' : orderDetail.wrappingName}"></td>
           <td th:text="${orderDetail.orderStatus}"></td>
+          <td>
+            <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                    th:if="${orderDetail.orderStatus.equals('결제완료')}"
+                    onclick="updateStarOnCreate(this);"
+                    th:attr="data-book-id=${orderDetail.bookId}, data-order-detail=${orderDetail.orderDetailId}"
+                    th:data-bs-target="'#addModal'+${stat.index}">리뷰 작성하기
+            </button>
+            <!--      리뷰 작성 모달-->
+            <div class="modal fade modal-lg" th:id="'addModal' + ${stat.index}" tabindex="-1"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">리뷰 작성하기</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                  </div>
+                  <form action="/mypage/reviews" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                      <div class="row g-4 p-4">
+                        <div class="col-lg-12">
+                          <div class="d-flex justify-content-between py-3">
+                            <div class="d-flex align-items-center">
+                              <div class="d-flex align-items-center fs-4">
+                                <input type="hidden" name="score" th:id="'score'+${orderDetail.bookId}">
+                                <ul class="list-inline rating-list">
+                                  <li><i class="fa fa-star update-star"></i></li>
+                                  <li><i class="fa fa-star update-star"></i></li>
+                                  <li><i class="fa fa-star update-star"></i></li>
+                                  <li><i class="fa fa-star update-star"></i></li>
+                                  <li><i class="fa fa-star update-star"></i></li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="border-bottom rounded">
+                            <input type="hidden" name="bookId" th:value="${orderDetail.bookId}">
+                            <input type="hidden" name="orderDetailId" th:value="${orderDetail.orderDetailId}">
+                            <input type="text" name="reviewTitle"
+                                   class="form-control border-0 me-4" placeholder="리뷰 제목">
+                          </div>
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="border-bottom rounded my-4">
+                    <textarea class="form-control border-0" cols="30" rows="8" name="reviewContent"
+                              placeholder="리뷰 내용" spellcheck="false"></textarea>
+                          </div>
+                        </div>
+                        <div class="col-lg-12">
+                          <span>이미지 추가</span>
+                          <input name="image" type="file" accept=".jpg, .png, .jpeg" multiple>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                          리뷰 남기기
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </td>
         </tr>
       </table>
+
 
       <h4 class="fst-normal ms-3 me-4 my-5 mb-3">결제 정보</h4>
       <th:block th:if="${order.payInfo} != null">
