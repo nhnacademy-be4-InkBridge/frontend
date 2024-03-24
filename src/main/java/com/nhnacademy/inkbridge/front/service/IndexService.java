@@ -3,7 +3,6 @@ package com.nhnacademy.inkbridge.front.service;
 import com.nhnacademy.inkbridge.front.dto.book.BookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
-import java.util.Map;
 
 /**
  * class: IndexService.
@@ -37,12 +36,4 @@ public interface IndexService {
      * @return BookReadResponseDto
      */
     BookReadResponseDto getBook(Long bookId, Long memberId);
-
-
-    /**
-     * 레디스에서 도서 조회수를 조회하는 메서드입니다.
-     *
-     * @return 도서 아이디: 조회수 map
-     */
-    Map<Long, Long> getView();
 }

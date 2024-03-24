@@ -9,16 +9,10 @@ import com.nhnacademy.inkbridge.front.dto.book.BookRedisReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
@@ -93,42 +87,5 @@ public class IndexServiceImpl implements IndexService {
         valueOperations.increment(VIEW_NAME_PATTERN + bookId, 1);
 
         return book;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<Long, Long> getView() {
-        redisTemplate.keys(VIEW_NAME_PATTERN + "*");
-        Map<Long, Long> bookViews = new HashMap<>();
-        try {
-            ScanOptions scanOptions = ScanOptions.scanOptions().match(VIEW_NAME_PATTERN + "*")
-                .count(100)
-                .build();
-            Cursor<byte[]> cursor = redisTemplate.getConnectionFactory().getConnection()
-                .scan(scanOptions);
-
-            List<String> keys = new ArrayList<>();
-
-            while (cursor.hasNext()) {
-                byte[] keyBytes = cursor.next();
-                keys.add(new String(keyBytes));
-            }
-
-            List<Object> values = redisTemplate.opsForValue().multiGet(keys);
-            for (int i = 0; i < keys.size(); i++) {
-                String key = keys.get(i);
-
-                bookViews.put(Long.parseLong(key.substring(5)), Long.parseLong(
-                    String.valueOf(values.get(i))));
-            }
-            redisTemplate.delete(keys);
-            cursor.close();
-        } catch (NullPointerException e) {
-            log.error("error {}", e.getMessage());
-        }
-        return bookViews;
     }
 }
