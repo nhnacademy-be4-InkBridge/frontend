@@ -1,15 +1,89 @@
+
+
 .index-main {
+    /*width: 100vw;*/
     margin: auto;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    /*width: 100%;*/
     gap: 5rem;
+    margin-top:10rem;
+}
+
+.intro-container{
+    margin-top:4rem;
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+    text-align:center;
+    animation: fadeInUp 2s;
+}
+
+.intro-title{
+    font-size:4rem;
+    font-weight: bold;
+    line-height: 130%;
+}
+
+.intro-content{
+    font-size:1.5rem;
+    color: #555;
+}
+
+@keyframes fadeInUp{
+    0%{
+        opacity:0;
+        transform: translate3d(0,40%,0);
+    }
+    to{
+        opacity: 1;
+        transform : translateZ(0);
+    }
+}
+
+
+
+.slides-container{
+    width:100vw;
+    overflow: hidden;
+}
+
+.slides > div{
+    display: flex;
+}
+
+.slides img{
+
+}
+
+.slide1{
+    animation:slide-right 60s linear infinite;
+}
+
+.slide2{
+    animation:slide-left 60s linear infinite;
+}
+
+@keyframes slide-right{
+    0%{
+        transform : translateX(0);
+    }
+    100%{
+        transform : translate(-100%);
+    }
+}
+
+@keyframes slide-left{
+    0%{
+        transform : translateX(-100%);
+    }
+    100%{
+        transform : translateX(0);
+    }
 }
 
 .books-container {
-    /*width:80%;*/
-    margin:auto;
-    /*overflow: hidden;*/
+    margin: auto auto 5rem;
 }
 
 .books-header {
@@ -26,7 +100,7 @@
 .books-header > span:first-child {
     font-weight: 700;
     font-size: 30px;
-    margin-left:80px;
+    margin-left: 80px;
 }
 
 .books-header > span:last-child {
@@ -34,7 +108,7 @@
 }
 
 .books-header > span:last-child:hover {
-    cursor:pointer;
+    cursor: pointer;
     font-weight: bold;
     text-decoration: underline;
 }
@@ -99,6 +173,12 @@
     max-height: 100%;
     border-radius: 0 10px 10px 0;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, .1), 0 0 2px rgba(0, 0, 0, .2);
+    transition: all 0.2s;
+}
+
+.book-info-image:hover {
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
 }
 
 .book-info-contents {
@@ -114,7 +194,7 @@
     width: 100%;
 }
 
-.book-info-contents > .book-info-title:hover{
+.book-info-contents > .book-info-title:hover {
     text-decoration: underline;
     font-weight: bold;
 }
@@ -147,4 +227,92 @@
 .book-info-original-price {
     text-decoration: line-through;
     color: #595959;
+}
+
+
+/* CARDS */
+
+.cards {
+    display: flex;
+    margin: auto;
+}
+
+.main-card {
+    margin: 20px;
+    padding: 20px;
+    width: 500px;
+    min-height: 280px;
+    display: grid;
+    grid-template-rows: 20px 50px 1fr 50px;
+    border-radius: 10px;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s;
+    overflow: hidden;
+    position: relative;
+}
+
+.main-card:hover {
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+    transform: scale(1.01);
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 요소에 맞게 조정되도록 설정 */
+    z-index: -1; /* 다른 요소 위에 겹쳐지도록 설정 */
+}
+
+.card__link {
+    position: relative;
+    text-decoration: none;
+    color: white;
+}
+
+.card__link::after {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    content: "";
+    width: 0%;
+    height: 3px;
+    transition: all 0.5s;
+}
+
+.card__link:hover::after {
+    width: 100%;
+}
+
+.card__title {
+    grid-row: 3/4;
+    font-weight: 400;
+    color: white;
+    text-align: center;
+    text-shadow: 0px 0px 20px #050505;
+}
+
+.card__apply {
+    width: 40%;
+    grid-row: 4/5;
+    align-self: center;
+    background-color: rgba(0, 0, 0);
+    padding: 5px 10px; /* 텍스트 주변 여백 추가 */
+    border-radius: 5px;
+    margin: 0;
+    box-shadow: 0px 0px 20px 20px rgb(3 2 2);
+    transition: all 0.2s;
+}
+
+.card__apply:hover {
+    background-color: rgba(0, 0, 0);
+    box-shadow: 0px 0px 20px 20px rgb(3 2 2);
+    transform: scale(1.03);
+    cursor:pointer;
+}
+
+.last-books-container{
+    margin-bottom: 8rem;
 }

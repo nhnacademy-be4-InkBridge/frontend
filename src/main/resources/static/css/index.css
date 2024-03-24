@@ -9,7 +9,7 @@ body{
 body >div{
     min-height: 100vh;
     height: 100%;
-    /*width:70%;*/
+    width:100vw;
     display:flex;
     flex-direction: column;
     justify-content: space-between;;
@@ -17,7 +17,6 @@ body >div{
 
 body > div > *:nth-child(2){
     height:100%;
-
 }
 
 

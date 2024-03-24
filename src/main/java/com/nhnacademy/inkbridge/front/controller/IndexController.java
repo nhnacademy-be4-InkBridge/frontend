@@ -35,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 @RequestMapping("/")
-@RequiredArgsConstructor
 @Slf4j
 public class IndexController {
 

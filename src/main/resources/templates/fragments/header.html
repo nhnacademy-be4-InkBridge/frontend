@@ -54,43 +54,36 @@
     });
   </script>
 
-  <header>
-    <div class="header-top">
-      <div class="header-contact">
-        <div class="header-contact-link">
-          <a href="https://github.com/nhnacademy-be4-InkBridge" class="a-tag">
-            <i class="bi bi-github"></i>
-          </a>
-        </div>
-        <div class="header-contact-link">
-        </div>
-        <div class="header-contact-link">
-        </div>
-      </div>
-      <div class="header-login">
-        <div sec:authorize="hasRole('ADMIN')">
-          관리자
-        </div>
-        <div sec:authorize="hasAnyRole('MEMBER','SOCIAL')">
-          회원
-        </div>
-        <div class="header-login-item" sec:authorize="isAuthenticated()">
-          <a class="header-login-link a-tag" href="/logout">로그아웃</a>
-        </div>
-        <div class="header-login-item" sec:authorize="isAnonymous()">
-          <div class="header-login-link" data-bs-toggle="modal"
-             data-bs-target="#ModalForm">로그인</div>
-        </div>
-        <div class="header-login-item" sec:authorize="isAnonymous()">
-          <a class="header-login-link a-tag" href="/signup">회원가입</a>
-        </div>
-      </div>
-    </div>
+  <header class="header">
+    <img src="/assets/img/bookbook.png" alt="" class="header-bg-image">
+
+    <!--    <div class="header-top">-->
+    <!--      <div class="header-contact">-->
+    <!--      </div>-->
+    <!--      <div class="header-login">-->
+    <!--        <div sec:authorize="hasRole('ADMIN')">-->
+    <!--          관리자-->
+    <!--        </div>-->
+    <!--        <div sec:authorize="hasAnyRole('MEMBER','SOCIAL')">-->
+    <!--          회원-->
+    <!--        </div>-->
+    <!--        <div class="header-login-item" sec:authorize="isAuthenticated()">-->
+    <!--          <a class="header-login-link a-tag" href="/logout">로그아웃</a>-->
+    <!--        </div>-->
+    <!--        <div class="header-login-item" sec:authorize="isAnonymous()">-->
+    <!--          <div class="header-login-link" data-bs-toggle="modal"-->
+    <!--             data-bs-target="#ModalForm">로그인</div>-->
+    <!--        </div>-->
+    <!--        <div class="header-login-item" sec:authorize="isAnonymous()">-->
+    <!--          <a class="header-login-link a-tag" href="/signup">회원가입</a>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
     <div class="header-main">
       <div class="header-main-container">
-        <div class="header-logo gugi-regular">
+        <div class="header-logo">
           <a href="/" class="a-tag">
-          inkBridge
+            <img class="logo-img" src="/assets/img/logo1.png" alt="">
           </a>
         </div>
         <div class="header-search-container">
@@ -101,22 +94,70 @@
             </button>
           </form>
         </div>
+        <div class="visible-info">
+          <div class="header-login">
+            <div sec:authorize="hasRole('ADMIN')">
+              관리자
+            </div>
+            <div sec:authorize="hasAnyRole('MEMBER','SOCIAL')">
+              회원
+            </div>
+            <div class="header-login-item" sec:authorize="isAuthenticated()">
+              <button type="button" class="btn btn-outline-secondary"
+                      onclick="location.href='/logout'">로그아웃
+              </button>
+            </div>
+            <div class="header-login-item" sec:authorize="isAnonymous()">
+              <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
+                      data-bs-target="#ModalForm">로그인
+              </button>
+            </div>
+            <div class="header-login-item" sec:authorize="isAnonymous()">
+              <button type="button" class="btn btn-outline-primary"
+                      onclick="location.href = '/signup'">회원가입
+              </button>
+            </div>
+          </div>
+        </div>
         <div class="header-user-actions">
-          <div class="action-btn" sec:authorize="hasRole('ADMIN')">
-            <a href="/admin" class="a-tag">
-              <i class="fa-regular fa-user"></i>
-            </a>
+<!--          <div class="action-btn" sec:authorize="isAuthenticated()">-->
+            <div class="action-btn" sec:authorize="hasAnyRole('MEMBER','SOCIAL')" onclick="location.href='/mypage'">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="action-btn" sec:authorize="hasRole('ADMIN')" onclick="location.href='/admin'">
+              <i class="fa-solid fa-user-gear"></i>
+            </div>
+
+            <!--            <ul class="action-btn-menu menu-hidden">-->
+            <!--              <li sec:authorize="hasAnyRole('MEMBER','SOCIAL')">-->
+            <!--                <a href="/mypage"></a>-->
+            <!--                마이페이지-->
+            <!--              </li>-->
+            <!--              <li sec:authorize="hasRole('ADMIN')">-->
+            <!--                <a href="/admin">-->
+            <!--                  관리자페이지-->
+            <!--                </a>-->
+            <!--              </li>-->
+            <!--              <li>-->
+            <!--                <a href="/logout">로그아웃</a>-->
+            <!--              </li>-->
+            <!--            </ul>-->
+<!--          </div>-->
+          <div class="action-btn" sec:authorize="isAnonymous()" data-bs-toggle="modal"
+               data-bs-target="#ModalForm">
+            <i class="fa-regular fa-user"></i>
           </div>
-          <div class="action-btn" sec:authorize="hasAnyRole('MEMBER','SOCIAL')">
-            <a href="/mypage" class="a-tag">
-              <i class="fa-regular fa-user"></i>
-            </a>
-          </div>
-          <div class="action-btn" sec:authorize="isAnonymous()">
-            <a href="/login" class="a-tag" data-bs-toggle="modal" data-bs-target="#ModalForm">
-              <i class="fa-regular fa-user"></i>
-            </a>
-          </div>
+
+          <!--          <div class="action-btn" sec:authorize="hasRole('ADMIN')">-->
+          <!--            <a href="/admin" class="a-tag">-->
+          <!--              <i class="fa-regular fa-user"></i>-->
+          <!--            </a>-->
+          <!--          </div>-->
+          <!--          <div class="action-btn" sec:authorize="hasAnyRole('MEMBER','SOCIAL')">-->
+          <!--            <a href="/mypage" class="a-tag">-->
+          <!--              <i class="fa-regular fa-user"></i>-->
+          <!--            </a>-->
+          <!--          </div>-->
           <div class="action-btn">
             <a href="" class="a-tag">
               <i class="fa-regular fa-heart"></i>
@@ -137,18 +178,20 @@
         <li class="menu-category">
           <a href="/" class="a-tag menu-title">홈</a>
         </li>
-        <li class="menu-category">
+        <li class="menu-category header-category">
           <a href="" class="a-tag menu-title">카테고리</a>
           <div class="item-dropdown">
             <ul class="item-list" th:each="parentCategory:${parentCategories}">
               <li class="menu-title parent">
-                <a class="a-tag list-item" th:href="@{'/categories/' + ${parentCategory.getCategoryName()}+ '/books'}"
+                <a class="a-tag list-item"
+                   th:href="@{'/categories/' + ${parentCategory.getCategoryName()}+ '/books'}"
                    th:text="${parentCategory.getCategoryName()}">
                 </a>
               </li>
               <li class="list-item child"
                   th:each="childCategory:${parentCategory.getParentCategories()}">
-                <a class="a-tag list-item" th:href="@{'/categories/' + ${childCategory.getCategoryName()}+ '/books'}"
+                <a class="a-tag list-item"
+                   th:href="@{'/categories/' + ${childCategory.getCategoryName()}+ '/books'}"
                    th:text="${childCategory.getCategoryName()}"></a>
               </li>
             </ul>
@@ -169,5 +212,6 @@
       </ul>
     </nav>
   </header>
+  <script src="/js/header.js"></script>
 </div>
 </html>

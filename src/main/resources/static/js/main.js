@@ -19,3 +19,4 @@ booksContainers.forEach((booksContainer)=>{
     bookInfoContainer.style.transform = `translate3d(-${270*index}px,0,0)`;
   })
 })
+
