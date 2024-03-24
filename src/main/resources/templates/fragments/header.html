@@ -206,7 +206,7 @@
         <li class="menu-category">
           <a class="a-tag menu-title" href="/coupons">이벤트/쿠폰</a>
         </li>
-        <li class="menu-category">
+        <li class="menu-category" sec:authorize="isAnonymous()">
           <a class="a-tag menu-title" href="/anonymous-orders">비회원 주문 조회</a>
         </li>
       </ul>
