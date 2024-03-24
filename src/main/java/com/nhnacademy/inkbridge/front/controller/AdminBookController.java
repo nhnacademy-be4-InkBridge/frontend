@@ -1,6 +1,5 @@
 package com.nhnacademy.inkbridge.front.controller;
 
-import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;

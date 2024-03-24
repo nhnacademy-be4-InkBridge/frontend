@@ -11,6 +11,7 @@ import com.nhnacademy.inkbridge.front.service.IndexService;
 import com.nhnacademy.inkbridge.front.service.ReviewService;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * class: IndexController.
@@ -109,5 +111,16 @@ public class IndexController {
         model.addAttribute("parentCategories", parentCategories);
 
         return "main/index";
+    }
+
+    /**
+     * 레디스에 저장된 조회수 값을 반환하는 메서드입니다. 레디스에 저장된 value를 함께 삭제합니다.
+     *
+     * @return bookId: view
+     */
+    @GetMapping("/push")
+    @ResponseBody
+    public Map<Long, Long> pushToDatabase() {
+        return indexService.getView();
     }
 }
