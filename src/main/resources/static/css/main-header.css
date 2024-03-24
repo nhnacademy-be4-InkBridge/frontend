@@ -20,10 +20,15 @@ li{
 }
 
 .header{
-    max-width:1300px;
+    /*max-width:1300px;*/
     margin:auto;
     position:relative;
     /*overflow: hidden;*/
+}
+
+.header-main-container{
+    max-width: 1500px;
+    margin:auto;
 }
 
 .header-bg-image{
