@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"
-      layout:decorate="~{layouts/main_layout}"
+      layout:decorate="~{layouts/mypage_layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
   <style>
       #layoutSidenav_content {
           position: static !important; /* Flex 제거 */
@@ -66,8 +65,6 @@
       }
 
   </style>
-</head>
-<body>
 <th:block layout:fragment="css">
 </th:block>
 <th:block layout:fragment="script">
@@ -184,6 +181,5 @@
   </th:block>
   <div style="margin-bottom: 50px;"></div>
 </div>
-</body>
 </html>
 
