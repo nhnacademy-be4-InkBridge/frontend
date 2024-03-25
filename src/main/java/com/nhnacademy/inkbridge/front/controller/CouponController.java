@@ -1,7 +1,9 @@
 package com.nhnacademy.inkbridge.front.controller;
 
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.getMemberId;
+
 import com.nhnacademy.inkbridge.front.service.CouponService;
-import org.springframework.security.core.context.SecurityContextHolder;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,12 +39,12 @@ public class CouponController {
     }
 
     @PostMapping("/issue")
-    public String issueCoupon(@RequestParam("coupon_id") String couponId) {
-        String memberId = (String) SecurityContextHolder.getContext().getAuthentication()
-            .getPrincipal();
-        couponService.issueCoupon(memberId, couponId);
+    public String issueCoupon(@RequestParam("coupon_id") String couponId,
+        HttpServletResponse httpServletResponse) {
+        String memberId = getMemberId().toString();
+        couponService.issueCoupon(memberId, couponId, httpServletResponse);
         return "redirect:/coupons";
     }
 
-    
+
 }

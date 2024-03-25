@@ -1,10 +1,15 @@
 package com.nhnacademy.inkbridge.front.service;
 
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.BirthDayCouponCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.BookCouponCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.CategoryCouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.MemberCouponReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.OrderCouponReadResponseDto;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * class: CouponService.
@@ -26,13 +31,25 @@ public interface CouponService {
     PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId, Integer page,
         Integer size);
 
-    void createCoupon(CouponCreateRequestDto couponCreateRequestDto);
+    void createCoupon(CouponCreateRequestDto couponCreateRequestDto,
+        HttpServletResponse httpServletResponse);
 
     PageRequestDto<CouponReadResponseDto> getCoupons(Integer page, Integer size);
 
-    void issueCoupon(String memberId, String couponId);
+    void issueCoupon(String memberId, String couponId, HttpServletResponse httpServletResponse);
 
-    PageRequestDto<CouponReadResponseDto> getIssuedCoupon(String memberId, Integer couponStatusId,
+    PageRequestDto<MemberCouponReadResponseDto> getIssuedCoupon(String memberId,
+        String status,
         Integer page, Integer size);
+
     List<OrderCouponReadResponseDto> getOrderCoupons(Long memberId, List<String> bookIds);
+
+    void createCategoryCoupon(CategoryCouponCreateRequestDto categoryCouponCreateRequestDto,
+        HttpServletResponse httpServletResponse);
+
+    void createBookCoupon(BookCouponCreateRequestDto categoryCouponCreateRequestDto,
+        HttpServletResponse httpServletResponse);
+
+    void createBirthdayCoupon(BirthDayCouponCreateRequestDto birthDayCouponCreateRequestDto,
+        HttpServletResponse httpServletResponse);
 }

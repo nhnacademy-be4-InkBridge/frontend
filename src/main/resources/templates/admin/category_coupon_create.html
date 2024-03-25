@@ -32,7 +32,10 @@
         label.textContent = '할인금액';
       }
     }
-
+    function onCategorySelect(select) {
+      var categoryId = select.value;
+      document.getElementsByName('categoryId').value = categoryId;
+    }
     // 라디오 버튼의 변경 이벤트를 처리하는 함수
     function onRadioChange() {
       var selectedCouponType = document.querySelector('input[name="couponTypeId"]:checked').value;
@@ -171,8 +174,8 @@
 </th:block>
 <div layout:fragment="content" id="layoutSidenav_content" class="fixed-container">
   <div class="page-content">
-    <h2 class="title-h2">쿠폰 등록</h2>
-    <form id="coupon-form" class="wrapper-box" role="form" action="/admin/coupons/register" method="post">
+    <h2 class="title-h2">카테고리 쿠폰 등록</h2>
+    <form id="coupon-form" class="wrapper-box" role="form" action="/admin/coupons/category/register" method="post">
       <div class="form-group form-floating">
         <input name="couponName" type="text" class="form-control" id="name" placeholder="쿠폰이름"
                required>
@@ -234,6 +237,20 @@
           <label class="form-check-label" for="coupon-type-id-1">가격 쿠폰</label>
         </div>
       </div>
+      <select id="category" name="categoryId" class="form-control" required onchange="onCategorySelect(this.value)">
+        <option value="">카테고리 선택</option>
+        <!-- 부모 카테고리를 반복 -->
+        <th:block th:each="parent : ${categories}">
+          <!-- 부모 카테고리 옵션 -->
+          <option th:value="${parent.categoryId}" th:text="${parent.categoryName}"></option>
+          <!-- 자식 카테고리를 반복 -->
+          <th:block th:each="child : ${parent.parentCategories}">
+            <!-- 자식 카테고리 옵션 -->
+            <option th:value="${child.categoryId}" th:text="${child.categoryName}"></option>
+          </th:block>
+        </th:block>
+        <input type="hidden" name="categoryId" id="selected-category-id" value="">
+      </select>
       <button type="submit" class="btn btn-submit">등록</button>
     </form>
   </div>

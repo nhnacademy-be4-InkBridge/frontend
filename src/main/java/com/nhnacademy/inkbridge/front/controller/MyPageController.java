@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 @Slf4j
 public class MyPageController {
+
     private final CouponService couponService;
     private final MemberService memberService;
 
@@ -42,14 +43,14 @@ public class MyPageController {
 
     @GetMapping("/coupons")
     public String myIssuedCouponPage(
-            @RequestParam(name = "coupon-status-id", defaultValue = "1") Integer couponStatusId,
-            @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "size", defaultValue = "10") Integer size, Model model) {
+        @RequestParam(name = "status", defaultValue = "ACTIVE") String status,
+        @RequestParam(name = "page", defaultValue = "0") Integer page,
+        @RequestParam(name = "size", defaultValue = "10") Integer size, Model model) {
         String memberId = (String) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        model.addAttribute("couponStatusId", couponStatusId);
+            .getPrincipal();
+        model.addAttribute("status", status);
         model.addAttribute("page",
-                couponService.getIssuedCoupon(memberId, couponStatusId, page, size));
+            couponService.getIssuedCoupon(memberId, status, page, size));
         return "coupon/my_coupon_list";
     }
 
@@ -80,6 +81,7 @@ public class MyPageController {
     public String memberExitRequest() {
         return "mypage/delete";
     }
+
     @PostMapping("/delete")
     public String memberDeleteRequest(HttpServletResponse response) {
         Long memberId = getMemberId();
