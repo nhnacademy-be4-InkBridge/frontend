@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}">
+<head>
+  <style>
+      #layoutSidenav_content {
+          position: static !important; /* Flex 제거 */
+          display: block !important; /* Flex를 제거하고 블록 레벨로 설정 */
+      }
+      .error-message {
+          color: red;
+      }
+  </style>
+</head>
+<body>
+<th:block layout:fragment="css">
+  <link rel="stylesheet" href="/css/coupon_form.css">
+</th:block>
+<th:block layout:fragment="script">
+  <script>
+      // 쿠폰이름 입력란 비활성화 및 자동 입력
+      function disableAndAutoFillCouponName() {
+      var couponNameInput = document.getElementById('name');
+      couponNameInput.disabled = true;
+
+      var year = new Date().getFullYear(); // 현재 연도 가져오기
+      var month = document.getElementById('month').value; // 선택된 월 가져오기
+
+      // 쿠폰 이름 설정
+      couponNameInput.value = year + '년 ' + month + '월 생일쿠폰';
+    }
+    // 최대할인금액 입력란 비활성화
+    function disableMaxDiscountPrice() {
+      var maxDiscountPriceInput = document.getElementById('max-discount-price');
+      maxDiscountPriceInput.disabled = true;
+    }
+
+    // 할인금액 입력 시 최대할인금액 자동 설정
+    function setMaxDiscountPrice() {
+      var discountPriceInput = document.getElementById('discount-price');
+      var maxDiscountPriceInput = document.getElementById('max-discount-price');
+      var hiddenMaxDiscountPriceInput = document.getElementById('hidden-max-discount-price');
+
+      maxDiscountPriceInput.value = discountPriceInput.value;
+
+      // 쿠폰 이름 설정
+      hiddenMaxDiscountPriceInput.value = maxDiscountPriceInput.value;
+      }
+
+    // 할인금액은 최소주문가격보다 클 수 없도록 검증
+    function validateDiscountPrice() {
+      var minPriceInput = document.getElementById('min-price');
+      var discountPriceInput = document.getElementById('discount-price');
+      var errorMessage = document.getElementById('discount-price-error');
+      var minPrice = parseFloat(minPriceInput.value);
+      var discountPrice = parseFloat(discountPriceInput.value);
+
+      if (discountPrice > minPrice) {
+        errorMessage.textContent = '할인금액은 최소주문가격보다 클 수 없습니다.';
+        return false;
+      } else {
+        errorMessage.textContent = '';
+        return true;
+      }
+    }
+
+    // 월 선택이 올바른지 확인
+    function validateMonth() {
+      var monthInput = document.getElementById('month');
+      var errorMessage = document.getElementById('month-error');
+      var selectedMonth = parseInt(monthInput.value);
+
+      if (isNaN(selectedMonth) || selectedMonth < 1 || selectedMonth > 12) {
+        errorMessage.textContent = '올바른 월을 선택하세요.';
+        return false;
+      } else {
+        errorMessage.textContent = '';
+        return true;
+      }
+    }
+    function updateCouponName() {
+      var couponNameInput = document.getElementById('name');
+      var year = new Date().getFullYear(); // 현재 연도 가져오기
+      var month = document.getElementById('month').value; // 선택된 월 가져오기
+      var hiddenCouponNameInput = document.getElementById('hidden-coupon-name');
+
+      // 쿠폰 이름 설정
+      couponNameInput.value = year + '년 ' + month + '월 생일쿠폰';
+      hiddenCouponNameInput.value = couponNameInput.value;
+      }
+    // 전체 폼 유효성 검사
+    function validateForm() {
+      return (
+          validateDiscountPrice() &&
+          validateMonth()
+      );
+    }
+
+    // 페이지 로드 시 초기화
+    window.onload = function () {
+      disableMaxDiscountPrice(); // 최대할인금액 입력란 비활성화
+      disableAndAutoFillCouponName();
+      // 폼 제출 시 유효성 검사
+      document.getElementById('coupon-form').addEventListener('submit', function(event) {
+        if (!validateForm()) {
+          event.preventDefault(); // 폼 제출 중지
+        }
+      });
+      // 각 입력란의 변경 이벤트 리스너 등록
+      document.getElementById('month').addEventListener('input', function() {
+        validateMonth();
+        updateCouponName(); // 월이 변경되면 쿠폰 이름 업데이트
+      });
+
+      // 각 입력란의 변경 이벤트 리스너 등록
+      document.getElementById('discount-price').addEventListener('input', setMaxDiscountPrice);
+      document.getElementById('min-price').addEventListener('input', validateDiscountPrice);
+      document.getElementById('discount-price').addEventListener('input', validateDiscountPrice);
+      document.getElementById('month').addEventListener('input', validateMonth);
+      updateCouponName();
+    };
+  </script>
+</th:block>
+<div layout:fragment="content" id="layoutSidenav_content" class="fixed-container">
+  <div class="page-content">
+    <h2 class="title-h2">생일쿠폰 등록</h2>
+    <form id="coupon-form" class="wrapper-box" role="form" action="/admin/coupons/birthday/register" method="post">
+      <div class="form-group form-floating">
+        <input name="couponName" type="text" class="form-control" id="name" placeholder="쿠폰이름"
+               required>
+        <label for="name">쿠폰이름</label>
+        <input type="hidden" id="hidden-coupon-name" name="couponName">
+        <div id="coupon-name-error" class="error-message"></div>
+      </div>
+      <div class="form-group form-floating">
+        <input name="minPrice" type="number" class="form-control" id="min-price"
+               placeholder="최소주문가격" required min="0">
+        <label for="min-price">최소주문가격</label>
+      </div>
+      <div class="form-group form-floating">
+        <input name="maxDiscountPrice" type="number" class="form-control" id="max-discount-price"
+               placeholder="최대할인금액" min="0">
+        <label for="max-discount-price">최대할인금액</label>
+        <input type="hidden" id="hidden-max-discount-price" name="maxDiscountPrice">
+      </div>
+      <div class="form-group form-floating">
+        <input name="discountPrice" type="number" class="form-control" id="discount-price"
+               placeholder="할인금액" required min="0">
+        <label for="discount-price">할인금액</label>
+        <div id="discount-price-error" class="error-message"></div>
+      </div>
+      <div class="form-group">
+        <label for="month">월 선택</label>
+        <select name="month" id="month" class="form-control">
+          <option value="">월을 선택하세요</option>
+          <option value="1">1월</option>
+          <option value="2">2월</option>
+          <option value="3">3월</option>
+          <option value="4">4월</option>
+          <option value="5">5월</option>
+          <option value="6">6월</option>
+          <option value="7">7월</option>
+          <option value="8">8월</option>
+          <option value="9">9월</option>
+          <option value="10">10월</option>
+          <option value="11">11월</option>
+          <option value="12">12월</option>
+        </select>
+        <div id="month-error" class="error-message"></div>
+      </div>
+      <button type="submit" class="btn btn-submit">등록</button>
+    </form>
+  </div>
+</div>
+</div>
+</body>
+</html>

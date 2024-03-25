@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko"
-      layout:decorate="~{layouts/admin_layout}"
+      layout:decorate="~{layouts/main_layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
   <style>
       #layoutSidenav_content {
           position: static !important; /* Flex 제거 */
           display: block !important; /* Flex를 제거하고 블록 레벨로 설정 */
+      }
+
+      .fixed-container {
+          max-width: 1300px; /* 적절한 최대 너비 설정 */
+          overflow-x: auto; /* 가로로 넘치는 콘텐츠를 스크롤 가능하게 만듦 */
+          margin: 0 auto; /* 가운데 정렬을 위해 margin을 자동으로 설정 */
       }
 
       .table {
@@ -89,13 +95,12 @@
   <div class="d-flex justify-content-between align-items-center">
     <div>
       <a class="btn btn-primary"
-         th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=1'}">발급 중</a>
+         th:href="@{'/mypage/coupons?page=0'+'&size='+${page.size}+'&status=ACTIVE'}">사용 가능</a>
       <a class="btn btn-primary"
-         th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=2'}">삭제</a>
+         th:href="@{'/mypage/coupons?page=0'+'&size='+${page.size}+'&status=EXPIRED'}">만료된
+        쿠폰</a>
       <a class="btn btn-primary"
-         th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=3'}">만료</a>
-      <a class="btn btn-primary"
-         th:href="@{'/admin/coupons?page=0'+'&size='+${page.size}+'&coupon-status-id=4'}">대기</a>
+         th:href="@{'/mypage/coupons?page=0'+'&size='+${page.size}+'&status=USED'}">사용된 쿠폰</a>
     </div>
     <div class="dropdown">
       <button aria-expanded="false" aria-haspopup="true" class="btn btn-secondary dropdown-toggle"
@@ -104,36 +109,31 @@
       </button>
       <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
         <a class="dropdown-item"
-           th:href="@{'/admin/coupons?page=0&size=10&coupon-status-id='+${couponStatusId}}">10개</a>
+           th:href="@{'/mypage/coupons?page=0&size=10&status='+${status}}">10개</a>
         <a class="dropdown-item"
-           th:href="@{'/admin/coupons?page=0&size=20&coupon-status-id='+${couponStatusId}}">20개</a>
+           th:href="@{'/mypage/coupons?page=0&size=20&status='+${status}}">20개</a>
         <a class="dropdown-item"
-           th:href="@{'/admin/coupons?page=0&size=30&coupon-status-id='+${couponStatusId}}">30개</a>
+           th:href="@{'/mypage/coupons?page=0&size=30&status'+${status}}">30개</a>
       </div>
     </div>
   </div>
   <table class="table table-striped ">
     <thead class="table-light">
     <tr>
-      <th class="coupon-id">쿠폰 번호</th>
       <th class="coupon-name">쿠폰명</th>
       <th class="coupon-condition">사용 조건</th>
       <th class="discount-amount">할인 금액</th>
       <th class="max-amount">최대 금액</th>
-      <th class="issued-period">발급 기간</th>
-      <th class="validity-period">유효 기간</th>
-      <th class="management">관리</th>
+      <th class="validity-period">만료예정일</th>
     </tr>
     </thead>
     <tbody>
     <th:block th:if="${page.content.isEmpty()}">
       <tr>
-        <td colspan="8">NO DATA</td>
+        <td colspan="8">소유중인 쿠폰이 없습니다</td>
       </tr>
     </th:block>
     <tr th:each="coupon : ${page.content}">
-      <td><a th:href="@{'/admin/coupons/' + ${coupon.couponId}}" th:text="${coupon.couponId}">OOOOOOOO-OOOO-OOOO-OOOO-OOOOOOOOOOOO</a>
-      </td>
       <td th:text="${coupon.couponName}">0월 생일 쿠폰</td>
       <td th:text="${coupon.minPrice} + '원 이상 구매시'">1만원 이상 구매시</td>
       <td>
@@ -145,10 +145,9 @@
       <td th:text="${coupon.maxDiscountPrice != null ? '(최대 ' + coupon.maxDiscountPrice + '원 할인)' : '&nbsp'}">
         2000원
       </td>
-      <td th:text="${coupon.basicIssuedDate + ' ~ ' + coupon.basicExpiredDate}">20xx.01.01 ~
+      <td th:text="${coupon.getExpiredAt()}">20xx.01.01 ~
         20xx.01.02
       </td>
-      <td th:text="${coupon.validity}+ '일'">7일</td>
     </tr>
     </tbody>
   </table>
