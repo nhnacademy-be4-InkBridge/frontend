@@ -29,6 +29,7 @@
     let accumulationRatePolicy = [[${accumulationRatePolicy}]];
     let wrappingList = [[${wrappingList}]];
     let couponList = [[${couponList}]];
+    let userPoint = [[${userPoint}]];
   </script>
   <script src="/js/order.js"></script>
 </th:block>
@@ -91,16 +92,18 @@
           <div class="p-3 border rounded-3 mb-4">
             <h4 class="fw-normal">수취인 정보</h4>
             <div class="mb-2 float-end">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                       id="addressRadio1" value="option1" checked>
-                <label class="form-check-label" for="addressRadio1">새로 입력</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                       id="addressRadio2" value="option2">
-                <label class="form-check-label" for="addressRadio2">주소록 선택</label>
-              </div>
+              <th:block sec:authentication="isAuthenticated()">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                         id="addressRadio1" value="option1" checked>
+                  <label class="form-check-label" for="addressRadio1">새로 입력</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                         id="addressRadio2" value="option2">
+                  <label class="form-check-label" for="addressRadio2">주소록 선택</label>
+                </div>
+              </th:block>
             </div>
             <input type="text" class="form-control mb-2" id="receiverName" name="bookOrder.receiverName"
                    placeholder="이름">
@@ -201,9 +204,10 @@
                 <div class="col-auto">
                   <input id="using_point" name="usingPoint" type="text" class="form-control"
                          pattern="[0-9]+"
-                         style="text-align: right"
-                         onchange="calcPayAmount()">
+                         style="text-align: right">
+                  <button type="button" onchange="calcPayAmount()" class="btn btn-outline-success">적용</button>
                 </div>
+                <p th:text="'보유 포인트 : ' + ${#numbers.formatInteger(userPoint, 1, 'COMMA')} + ' P'"></p>
               </div>
             </div>
           </th:block>
