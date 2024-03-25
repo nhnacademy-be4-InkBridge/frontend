@@ -83,7 +83,7 @@ function calcPoint() {
   let chkStyle = /^[0-9]+$/;
   // 상품 금액을 넘어서는지 확인
   let sumTotalPrice = calcBookPrice();
-  if (sumTotalPrice < parseInt(point.value) || !chkStyle.test(point.value) || userPoint < parseInt(point.value)) {
+  if (sumTotalPrice < parseInt(point.value) || !chkStyle.test(point.value) || parseInt(userPoint.point) < parseInt(point.value)) {
     alert("포인트를 다시 입력해 주세요.");
     point.value = "0";
   }

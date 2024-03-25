@@ -167,7 +167,7 @@ public class MemberAdaptorImpl implements MemberAdaptor {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         ResponseEntity<MemberPointReadResponseDto> responseEntity = restTemplate.exchange(
-            gatewayProperties.getUrl() + "/api/mygage/points", HttpMethod.GET, entity,
+            gatewayProperties.getUrl() + "/api/mypage/points", HttpMethod.GET, entity,
             new ParameterizedTypeReference<>() {
             });
         return responseEntity.getBody();
