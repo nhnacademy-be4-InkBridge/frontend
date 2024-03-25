@@ -41,7 +41,6 @@ public class CouponController {
     @PostMapping("/issue")
     public String issueCoupon(@RequestParam("coupon_id") String couponId,
         HttpServletResponse httpServletResponse) {
-        System.out.println("test");
         String memberId = getMemberId().toString();
         couponService.issueCoupon(memberId, couponId, httpServletResponse);
         return "redirect:/coupons";

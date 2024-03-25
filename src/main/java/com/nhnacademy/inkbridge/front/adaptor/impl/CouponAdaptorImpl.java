@@ -4,6 +4,9 @@ import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
 
 import com.nhnacademy.inkbridge.front.adaptor.CouponAdaptor;
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.BirthDayCouponCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.BookCouponCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.CategoryCouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.MemberCouponReadResponseDto;
@@ -38,6 +41,13 @@ public class CouponAdaptorImpl implements CouponAdaptor {
 
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
+    private final String CREATE_ERROR = "쿠폰생성중 문제가 발생하였습니다";
+    private final String CREATE_OK = "쿠폰 생성 성공";
+    private final String ISSUE_OK = "발급 성공";
+    private final String ISSUE_ERROR = "이미 발급 된 쿠폰입니다";
+    private final String ISSUABLE_COUPON_URL = "/coupons";
+
+    private final String ADMIN_COUPON_URL = "/admin/coupons";
 
     /**
      * 쿠폰 어댑터에 필요한 컴포넌트들 호출.
@@ -51,19 +61,19 @@ public class CouponAdaptorImpl implements CouponAdaptor {
     }
 
     private static PrintWriter getPrintWriter(HttpServletResponse httpServletResponse,
-        HttpStatus statusCode) throws IOException {
+        HttpStatus statusCode, String msg, String url) throws IOException {
         PrintWriter out = httpServletResponse.getWriter();
         out.println("<script language='javascript'>");
 
         if (statusCode == HttpStatus.CREATED) {
-            out.println("alert('성공적으로 쿠폰이 발급되었습니다.')");
+            out.println("alert('" + msg + "')");
         } else if (statusCode == HttpStatus.CONFLICT) {
-            out.println("alert('이미 발급된 쿠폰입니다.')");
+            out.println("alert('" + msg + "')");
 
         } else {
             throw new NotFoundException("접근제한");
         }
-        out.println("window.location.href = '/coupons';");
+        out.println("window.location.href = '" + url + "';");
         out.println("</script>");
 
         return out;
@@ -97,21 +107,30 @@ public class CouponAdaptorImpl implements CouponAdaptor {
      * {@inheritDoc}
      */
     @Override
-    public void setCoupons(CouponCreateRequestDto couponCreateRequestDto) {
+    public void setCoupons(CouponCreateRequestDto couponCreateRequestDto,
+        HttpServletResponse httpServletResponse) throws IOException {
         HttpHeaders httpHeaders = createHeader();
 
         String url = gatewayProperties.getUrl() + "/api/admin/coupons";
         HttpEntity<CouponCreateRequestDto> httpEntity = new HttpEntity<>(couponCreateRequestDto,
             httpHeaders);
-        ResponseEntity exchange = restTemplate.exchange(
-            url,
-            HttpMethod.POST,
-            httpEntity,
-            void.class
-        );
-        if (!exchange.getStatusCode().is2xxSuccessful()) {
-            throw new RuntimeException("Failed to retrieve coupons");
+        httpServletResponse.setContentType("text/html; charset=UTF-8");
+        PrintWriter out;
+        try {
+            HttpStatus statusCode = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                httpEntity,
+                void.class
+            ).getStatusCode();
+            out = getPrintWriter(httpServletResponse, statusCode, CREATE_OK, ADMIN_COUPON_URL);
+
+        } catch (HttpClientErrorException httpClientErrorException) {
+            out = getPrintWriter(httpServletResponse, HttpStatus.CONFLICT, CREATE_ERROR,
+                ADMIN_COUPON_URL);
+
         }
+        out.flush();
     }
 
     /**
@@ -152,9 +171,12 @@ public class CouponAdaptorImpl implements CouponAdaptor {
                 HttpMethod.POST, httpEntity,
                 new ParameterizedTypeReference<>() {
                 }).getStatusCode();
-            out = getPrintWriter(httpServletResponse, statusCode);
+            out = getPrintWriter(httpServletResponse, statusCode, ISSUE_OK, ISSUABLE_COUPON_URL);
+
         } catch (HttpClientErrorException httpClientErrorException) {
-            out = getPrintWriter(httpServletResponse, HttpStatus.CONFLICT);
+            out = getPrintWriter(httpServletResponse, HttpStatus.CONFLICT, ISSUE_ERROR,
+                ISSUABLE_COUPON_URL);
+
         }
         out.flush();
     }
@@ -163,7 +185,6 @@ public class CouponAdaptorImpl implements CouponAdaptor {
     public PageRequestDto<MemberCouponReadResponseDto> getIssuedCoupon(String memberId,
         String status, Integer page, Integer size) {
         HttpHeaders httpHeaders = createHeader();
-        System.out.println("test2");
         String url = String.format(
             "%s/api/auth/members/%s/coupons?status=%s&page=%d&size=%d",
             gatewayProperties.getUrl(), memberId, status, page, size);
@@ -199,5 +220,90 @@ public class CouponAdaptorImpl implements CouponAdaptor {
         );
 
         return exchange.getBody();
+    }
+
+    @Override
+    public void setCategoryCoupon(CategoryCouponCreateRequestDto categoryCouponCreateRequestDto,
+        HttpServletResponse httpServletResponse)
+        throws IOException {
+        HttpHeaders httpHeaders = createHeader();
+
+        String url = gatewayProperties.getUrl() + "/api/admin/coupons/category-coupons";
+        HttpEntity<CategoryCouponCreateRequestDto> httpEntity = new HttpEntity<>(
+            categoryCouponCreateRequestDto,
+            httpHeaders);
+        httpServletResponse.setContentType("text/html; charset=UTF-8");
+        PrintWriter out;
+        try {
+            HttpStatus statusCode = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                httpEntity,
+                void.class
+            ).getStatusCode();
+            out = getPrintWriter(httpServletResponse, statusCode, CREATE_OK, ADMIN_COUPON_URL);
+
+        } catch (HttpClientErrorException httpClientErrorException) {
+            out = getPrintWriter(httpServletResponse, HttpStatus.CONFLICT, CREATE_ERROR,
+                ADMIN_COUPON_URL);
+
+        }
+        out.flush();
+    }
+
+    @Override
+    public void setBookCoupon(BookCouponCreateRequestDto bookCouponCreateRequestDto,
+        HttpServletResponse httpServletResponse) throws IOException {
+        HttpHeaders httpHeaders = createHeader();
+        String url = gatewayProperties.getUrl() + "/api/admin/coupons/book-coupons";
+        HttpEntity<BookCouponCreateRequestDto> httpEntity = new HttpEntity<>(
+            bookCouponCreateRequestDto,
+            httpHeaders);
+        httpServletResponse.setContentType("text/html; charset=UTF-8");
+        PrintWriter out;
+        try {
+            HttpStatus statusCode = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                httpEntity,
+                void.class
+            ).getStatusCode();
+            out = getPrintWriter(httpServletResponse, statusCode, CREATE_OK, ADMIN_COUPON_URL);
+
+        } catch (HttpClientErrorException httpClientErrorException) {
+            out = getPrintWriter(httpServletResponse, HttpStatus.CONFLICT, CREATE_ERROR,
+                ADMIN_COUPON_URL);
+
+        }
+        out.flush();
+    }
+
+    @Override
+    public void setBirthdayCoupon(BirthDayCouponCreateRequestDto birthDayCouponCreateRequestDto,
+        HttpServletResponse httpServletResponse)
+        throws IOException {
+        HttpHeaders httpHeaders = createHeader();
+
+        String url = gatewayProperties.getUrl() + "/api/admin/coupons/birthday-coupons";
+        HttpEntity<BirthDayCouponCreateRequestDto> httpEntity = new HttpEntity<>(
+            birthDayCouponCreateRequestDto,
+            httpHeaders);
+        httpServletResponse.setContentType("text/html; charset=UTF-8");
+        PrintWriter out;
+        try {
+            HttpStatus statusCode = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                httpEntity,
+                void.class
+            ).getStatusCode();
+            out = getPrintWriter(httpServletResponse, statusCode, CREATE_OK, ADMIN_COUPON_URL);
+
+        } catch (HttpClientErrorException httpClientErrorException) {
+            out = getPrintWriter(httpServletResponse, HttpStatus.CONFLICT, CREATE_ERROR,
+                ADMIN_COUPON_URL);
+
+        }
+        out.flush();
     }
 }

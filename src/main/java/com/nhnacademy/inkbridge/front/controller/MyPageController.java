@@ -46,7 +46,6 @@ public class MyPageController {
         @RequestParam(name = "status", defaultValue = "ACTIVE") String status,
         @RequestParam(name = "page", defaultValue = "0") Integer page,
         @RequestParam(name = "size", defaultValue = "10") Integer size, Model model) {
-        System.out.println("test1");
         String memberId = (String) SecurityContextHolder.getContext().getAuthentication()
             .getPrincipal();
         model.addAttribute("status", status);
