@@ -104,7 +104,7 @@
             </div>
             <ul class="search-book-info-tag-container">
               <li th:if="${tag.getTagName()!= null}" class="search-book-info-tag" th:each="tag:${book.getTags()}">
-                <a href="" th:text="'#'+${tag.getTagName()}"></a>
+                <a th:href="@{/search(text=${tag.getTagName()})}" th:text="'#'+${tag.getTagName()}"></a>
               </li>
             </ul>
           </div>

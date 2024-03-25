@@ -41,7 +41,7 @@ public class SearchAdaptorImpl implements SearchAdaptor {
         HttpHeaders httpHeaders = CommonUtils.createHeader();
         String sortStr = String.join(",", pageable.getSort().toString().split(": "));
         if (pageable.getSort() == Sort.unsorted()) {
-            sortStr = "view,desc";
+            sortStr = "";
         }
 
         URI uri = UriComponentsBuilder

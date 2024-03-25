@@ -39,7 +39,6 @@ public class SearchController {
         @PageableDefault(size = 10) Pageable pageable, Model model) {
         PageRequestDto<BookSearchResponseDto> pageableBooks = searchService.searchByText(text,
             pageable);
-
         String sort = pageable.getSort().toString();
         sort = "UNSORTED".equals(sort)?"":sort.split(": ")[1];
         model.addAttribute("books", pageableBooks);
