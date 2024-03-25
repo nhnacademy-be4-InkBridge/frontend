@@ -241,7 +241,7 @@ public class OrderAdaptorImpl implements OrderAdaptor {
         HttpEntity<Void> entity = new HttpEntity<>(createHeader());
 
         ResponseEntity<BookOrderViewResponseDto> exchange = restTemplate.exchange(
-            gatewayProperties.getUrl() + "/api/members/{memberId}/orders/{orderCode}",
+            gatewayProperties.getUrl() + "/api/auth/members/{memberId}/orders/{orderCode}",
             HttpMethod.GET,
             entity,
             new ParameterizedTypeReference<>() {
