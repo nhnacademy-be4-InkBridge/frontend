@@ -137,7 +137,7 @@
           <th>리뷰 작성</th>
         </tr>
         <tr th:each="orderDetail, stat : ${order.orderDetailInfoList}">
-          <td><img th:src="${orderDetail.thumbnailUrl}"></td>
+          <td><img th:src="${orderDetail.thumbnailUrl}" alt="no image"></td>
           <td class="book-title" th:text="${orderDetail.bookTitle}">
             <input type="hidden" name="bookId">
           </td>
@@ -148,7 +148,7 @@
           <td th:text="${orderDetail.orderStatus}"></td>
           <td>
             <button type="button" class="btn btn-light" data-bs-toggle="modal"
-                    th:if="${orderDetail.orderStatus.equals('결제완료')}"
+                    th:if="${orderDetail.orderStatus.equals('DONE')}"
                     onclick="updateStarOnCreate(this);"
                     th:attr="data-book-id=${orderDetail.bookId}, data-order-detail=${orderDetail.orderDetailId}"
                     th:data-bs-target="'#addModal'+${stat.index}">리뷰 작성하기

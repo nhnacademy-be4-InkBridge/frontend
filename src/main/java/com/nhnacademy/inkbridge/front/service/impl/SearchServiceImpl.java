@@ -5,6 +5,8 @@ import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.search.BookSearchResponseDto;
 import com.nhnacademy.inkbridge.front.service.SearchService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
  * @version 2024/03/15
  */
 
+@EnableCaching
 @Service
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
@@ -34,6 +37,7 @@ public class SearchServiceImpl implements SearchService {
      * {@inheritDoc}
      */
     @Override
+    @Cacheable(value = "Book", key = "#p0", cacheManager = "cacheManager")
     public PageRequestDto<BookSearchResponseDto> searchByAll(String field, Pageable pageable) {
         return searchAdaptor.searchByAll(field, pageable);
     }
