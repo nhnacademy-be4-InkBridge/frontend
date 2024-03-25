@@ -231,7 +231,7 @@ li{
 
 .item-dropdown{
     position: absolute;
-    top: 100%;
+    top: 85%;
     left: 0;
     margin:auto;
     background: hsl(0, 100%, 100%);
