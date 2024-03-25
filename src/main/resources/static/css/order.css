@@ -25,7 +25,3 @@
 .input-group-append {
   cursor: pointer;
 }
-
-input:invalid {
-  border: 1px solid red;
-}

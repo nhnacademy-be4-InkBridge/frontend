@@ -39,8 +39,9 @@
           <div class="d-flex mb-5">
             <div class="col-lg-6">
               <div class="border rounded">
-                <img th:src="${book.thumbnail}" class="img-fluid rounded" alt="Image"
-                     style="width: 100%; height: auto; min-height: 600px" id="thumbnail">
+                <img th:src="${book.thumbnail}" class="img-fluid rounded"
+                     onerror="this.onerror=null;this.src='/assets/img/noImage.png';"
+                     style="width: 100%; height: auto; min-height: 600px" alt="책 표지">
               </div>
             </div>
             <div class="col-lg-6" style="padding-left: 70px">
