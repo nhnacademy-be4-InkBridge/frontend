@@ -20,7 +20,8 @@
 <div layout:fragment="content" id="layoutSidenav_content">
   <main>
     <div class="container">
-      <th:block th:if="${order.orderDetailInfoList[0].orderStatus == 'WAITING' && order.payInfo != null}">
+      <th:block
+          th:if="${order.orderDetailInfoList[0].orderStatus == 'WAITING' && order.payInfo != null}">
         <button type="button" class="float-end btn btn-outline-dark" data-bs-toggle="modal"
                 data-bs-target="#createPointPolicyType">
           결제 취소
@@ -35,7 +36,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
               </div>
-              <form method="post" th:action="@{/pays/{paymentKey}(paymentKey=${order.payInfo.paymentKey}, order-code=${order.orderInfo.orderCode}, provider=${order.payInfo.provider})}" id="cancel_form">
+              <form method="post"
+                    th:action="@{/pays/{paymentKey}(paymentKey=${order.payInfo.paymentKey}, order-code=${order.orderInfo.orderCode}, provider=${order.payInfo.provider})}"
+                    id="cancel_form">
                 <input type="hidden" name="_method" value="put"/>
                 <div class="modal-body">
                   <div class="mb-3 col-xs-3">
@@ -45,7 +48,8 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기
+                  </button>
                   <button type="button" class="btn btn-dark" onclick="payCancel()">결제 취소</button>
                 </div>
               </form>
@@ -147,12 +151,16 @@
           <td th:text="${orderDetail.wrappingName eq null ? '-' : orderDetail.wrappingName}"></td>
           <td th:text="${orderDetail.orderStatus}"></td>
           <td>
-            <button type="button" class="btn btn-light" data-bs-toggle="modal"
-                    th:if="${orderDetail.orderStatus.equals('DONE')}"
-                    onclick="updateStarOnCreate(this);"
-                    th:attr="data-book-id=${orderDetail.bookId}, data-order-detail=${orderDetail.orderDetailId}"
-                    th:data-bs-target="'#addModal'+${stat.index}">리뷰 작성하기
-            </button>
+            <div th:if="${orderDetail.orderStatus.equals('DONE')}">
+              <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                      th:if="${orderDetail.orderStatus.equals('DONE') && !order.isReviewed.get(orderDetail.orderDetailId)}"
+                      onclick="updateStarOnCreate(this);"
+                      th:attr="data-book-id=${orderDetail.bookId}, data-order-detail=${orderDetail.orderDetailId}"
+                      th:data-bs-target="'#addModal'+${stat.index}">리뷰 작성하기
+              </button>
+              <p th:unless="${orderDetail.orderStatus.equals('DONE') && !order.isReviewed.get(orderDetail.orderDetailId)}">
+                리뷰 완료</p>
+            </div>
             <!--      리뷰 작성 모달-->
             <div class="modal fade modal-lg" th:id="'addModal' + ${stat.index}" tabindex="-1"
                  aria-labelledby="exampleModalLabel"
@@ -171,7 +179,8 @@
                           <div class="d-flex justify-content-between py-3">
                             <div class="d-flex align-items-center">
                               <div class="d-flex align-items-center fs-4">
-                                <input type="hidden" name="score" th:id="'score'+${orderDetail.bookId}">
+                                <input type="hidden" name="score"
+                                       th:id="'score'+${orderDetail.bookId}">
                                 <ul class="list-inline rating-list">
                                   <li><i class="fa fa-star update-star"></i></li>
                                   <li><i class="fa fa-star update-star"></i></li>
@@ -186,7 +195,8 @@
                         <div class="col-lg-12">
                           <div class="border-bottom rounded">
                             <input type="hidden" name="bookId" th:value="${orderDetail.bookId}">
-                            <input type="hidden" name="orderDetailId" th:value="${orderDetail.orderDetailId}">
+                            <input type="hidden" name="orderDetailId"
+                                   th:value="${orderDetail.orderDetailId}">
                             <input type="text" name="reviewTitle"
                                    class="form-control border-0 me-4" placeholder="리뷰 제목">
                           </div>
