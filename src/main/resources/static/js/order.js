@@ -36,7 +36,11 @@ function paymentInfo() {
   let accumulatePoint = Math.round(
       sumTotalPrice * accumulationRatePolicy.accumulationRate / 100);
 
-  document.getElementById("accumulate_point").innerText = priceToString(accumulatePoint);
+  let elementById = document.getElementById("accumulate_point");
+
+  if (elementById != null) {
+    elementById.innerText = priceToString(accumulatePoint);
+  }
 
   // 결제 금액 = 판매가 + 배송비 + 포장비 - 쿠폰할인 - 사용 포인트
   document.getElementById("pay_amount").innerText = priceToString(sumTotalPrice + deliveryPrice);
