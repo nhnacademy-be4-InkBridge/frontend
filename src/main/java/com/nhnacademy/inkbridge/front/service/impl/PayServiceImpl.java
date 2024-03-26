@@ -1,7 +1,5 @@
 package com.nhnacademy.inkbridge.front.service.impl;
 
-import static com.nhnacademy.inkbridge.front.utils.CommonUtils.getMemberId;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.inkbridge.front.adaptor.PayAdaptor;
@@ -24,6 +22,7 @@ import com.nhnacademy.inkbridge.front.utils.CookieUtils;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -58,15 +57,14 @@ public class PayServiceImpl implements PayService {
         PayConfirmResponseDto responseDto = doConfirm(requestDto, provider);
         registerPay(responseDto);
 
-        String memberId = Objects.isNull(getMemberId()) ? CookieUtils.getCookie("cart").getValue()
-            : getMemberId().toString();
+        Cookie cartId = CookieUtils.getCookie("cart");
 
-        if (Objects.nonNull(memberId)) {
+        if (Objects.nonNull(cartId)) {
             List<OrderBooksIdResponseDto> bookIdResponseDtoList =
                 orderService.getOrderBookIds(requestDto.getOrderId());
 
             bookIdResponseDtoList.forEach(
-                book -> cartService.deleteCartBook(book.getBookId().toString(), memberId));
+                book -> cartService.deleteCartBook(book.getBookId().toString(), cartId.getValue()));
         }
     }
 
