@@ -20,7 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -33,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @modificationReason - index 메서드 수정, bookDetail 메서드 추가
  */
 @Controller
-@RequestMapping("/")
 @Slf4j
 public class IndexController {
 
@@ -122,5 +120,10 @@ public class IndexController {
         model.addAttribute("parentCategories", parentCategories);
 
         return "main/index";
+    }
+
+    @GetMapping("/api")
+    public String getApi() {
+        return "api";
     }
 }
