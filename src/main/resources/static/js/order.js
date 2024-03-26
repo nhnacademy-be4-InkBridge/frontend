@@ -192,7 +192,7 @@ function doOrder() {
     return;
   }
 
-  let receiverNumber = document.getElementById("receiverPhoneNumber").value;
+  let receiverNumber = document.getElementById("receiverNumber").value;
 
   if (receiverNumber == null || receiverNumber == "") {
     alert("수취인 전화번호를 작성해주세요")
