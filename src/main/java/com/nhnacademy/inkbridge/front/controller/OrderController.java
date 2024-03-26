@@ -7,9 +7,11 @@ import com.nhnacademy.inkbridge.front.dto.order.OrderBookInfoReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.order.OrderCreateRequestDto;
 import com.nhnacademy.inkbridge.front.service.AccumulationRatePolicyService;
+import com.nhnacademy.inkbridge.front.service.AddressService;
 import com.nhnacademy.inkbridge.front.service.CartService;
 import com.nhnacademy.inkbridge.front.service.CouponService;
 import com.nhnacademy.inkbridge.front.service.DeliveryPolicyService;
+import com.nhnacademy.inkbridge.front.service.MemberService;
 import com.nhnacademy.inkbridge.front.service.OrderService;
 import com.nhnacademy.inkbridge.front.service.WrappingService;
 import com.nhnacademy.inkbridge.front.utils.CommonUtils;
@@ -48,6 +50,8 @@ public class OrderController {
     private final WrappingService wrappingService;
     private final ObjectMapper objectMapper;
     private final CouponService couponService;
+    private final AddressService addressService;
+    private final MemberService memberService;
     private final CartService cartService;
 
     /**
@@ -80,11 +84,13 @@ public class OrderController {
         model.addAttribute("memberId", memberId);
 
         if (Objects.nonNull(memberId)) {
-             model.addAttribute("couponList", couponService.getOrderCoupons(memberId,
+            model.addAttribute("couponList", couponService.getOrderCoupons(memberId,
                 orderBooks.stream().map(book -> book.getBookId().toString())
                     .collect(Collectors.toList())));
 //            주소록 가져옴
 //            멤버 포인트 가져오기
+            model.addAttribute("addressList", addressService.getAddresses());
+            model.addAttribute("userPoint", memberService.getPoint());
         }
         return "order/orders";
     }

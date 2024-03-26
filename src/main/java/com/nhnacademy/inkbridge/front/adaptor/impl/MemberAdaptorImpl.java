@@ -167,7 +167,7 @@ public class MemberAdaptorImpl implements MemberAdaptor {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         ResponseEntity<MemberPointReadResponseDto> responseEntity = restTemplate.exchange(
-            gatewayProperties.getUrl() + "/api/mygage/points", HttpMethod.GET, entity,
+            gatewayProperties.getUrl() + "/api/mypage/points", HttpMethod.GET, entity,
             new ParameterizedTypeReference<>() {
             });
         return responseEntity.getBody();
@@ -205,7 +205,7 @@ public class MemberAdaptorImpl implements MemberAdaptor {
         Long memberId = getMemberId();
         return restTemplate.exchange(
                 gatewayProperties.getUrl() + "/api/mypage/members/"+memberId+"/password",
-                HttpMethod.POST,
+                HttpMethod.PUT,
                 new HttpEntity<>(memberPasswordRequestDto, createHeader()),
                 Boolean.class
         );
@@ -213,12 +213,23 @@ public class MemberAdaptorImpl implements MemberAdaptor {
 
     @Override
     public String getPassword() {
+        Long memberId = getMemberId();
         return restTemplate.exchange(
-                gatewayProperties.getUrl() + "/api/mypage/members/password",
+                gatewayProperties.getUrl() + "/api/mypage/members/"+memberId+"/password",
                 HttpMethod.GET,
                 new HttpEntity<>(createHeader()),
                 String.class
         ).getBody();
+    }
+
+    @Override
+    public void deleteMember(Long memberId) {
+        restTemplate.exchange(
+                gatewayProperties.getUrl() + "/api/mypage/members/" + memberId + "/delete",
+                HttpMethod.DELETE,
+                new HttpEntity<>(createHeader()),
+                Void.class
+        );
     }
 
 }

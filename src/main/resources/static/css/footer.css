@@ -1,0 +1,81 @@
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.footer-main-left > img {
+    object-fit: cover;
+    width: 15rem;
+}
+
+h1 {
+    color: #363f57;
+    font-size: 1.5rem;
+}
+
+h3 {
+    color: #717890;
+    font-size: 1rem;
+    text-transform: capitalize;
+}
+
+.footer {
+    max-height: 260px;
+}
+
+
+.line {
+    border: 2px solid #d5d5d5;
+    width: 100vw;
+}
+
+.footer-main {
+    display: flex;
+    max-width: 1300px;
+    box-sizing: border-box;
+    margin: auto;
+    padding-top: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.footer-main-left {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    font-size: 5rem;
+    color: #717890;
+    /*margin-left:10rem;*/
+    /*margin-bottom: 3rem;*/
+}
+
+.footer-main-left > span {
+    font-family: "Bigelow Rules", serif;
+    font-size: 8rem;
+    position: absolute;
+}
+
+.footer-main-right {
+    display: flex;
+    justify-content: right;
+    gap: 8rem;
+    width: 60%;
+}
+
+.footer-main-right > div > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+
+.footer-main-right > div > h1 {
+    margin-bottom: 1.5rem;
+}
+
+
+.footer-bottom {
+    text-align: center;
+    color: #717890;
+    margin-bottom: 0.8rem;
+}

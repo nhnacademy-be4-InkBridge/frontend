@@ -204,4 +204,12 @@ public class MemberServiceImpl implements MemberService {
 
         return memberAdaptor.updatePassword(memberPasswordRequestDto).getBody();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteMember(Long memberId) {
+        memberAdaptor.deleteMember(memberId);
+    }
 }

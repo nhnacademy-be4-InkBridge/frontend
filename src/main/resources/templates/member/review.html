@@ -2,139 +2,141 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/main_layout}" lang="ko">
+      layout:decorate="~{layouts/mypage_layout}" lang="ko">
 
 <!-- index.html 고유 CSS 추가 -->
 <th:block layout:fragment="css">
-  <link rel="stylesheet" href="/css/review.css">
+    <link rel="stylesheet" href="/css/review.css">
 </th:block>
 <th:block layout:fragment="script">
 </th:block>
 
 <div layout:fragment="content" class="container">
-  <!--    리뷰 헤더 영역-->
-  <div class="list_result_wrap has_line_black">
-    <!-- 타이틀 영역 -->
-    <div class="title_wrap title_size_def" data-kbbfn-role="title">
-      <p class="title_heading" data-review-label="title"
-         th:text="'작성한 리뷰 ('+ ${reviewCount}+')'"></p>
+    <!--    리뷰 헤더 영역-->
+    <div class="list_result_wrap has_line_black">
+        <!-- 타이틀 영역 -->
+        <div class="title_wrap title_size_def" data-kbbfn-role="title">
+            <p class="title_heading" data-review-label="title"
+               th:text="'작성한 리뷰 ('+ ${reviewCount}+')'"></p>
+        </div>
     </div>
-  </div>
-  <!-- 리뷰 리스트 영역 -->
-  <div class="comment_wrap library">
-    <div th:if="${reviewCount==0}">
-      <p>등록된 리뷰가 존재하지 않습니다.</p>
-    </div>
-    <div class="comment_list" style="" th:each="review, iterStat: ${reviews.content}"
-         th:unless="${reviewCount==0}">
-      <div class="comment_item">
-        <div class="prod_area horizontal">
-          <div class="prod_thumb_box size_xs">
-            <a th:href="@{/book(id=${review.bookId})}" class="prod_link">
+    <!-- 리뷰 리스트 영역 -->
+    <div class="comment_wrap library">
+        <div th:if="${reviewCount==0}">
+            <p>등록된 리뷰가 존재하지 않습니다.</p>
+        </div>
+        <div class="comment_list" style="" th:each="review, iterStat: ${reviews.content}"
+             th:unless="${reviewCount==0}">
+            <div class="comment_item">
+                <div class="prod_area horizontal">
+                    <div class="prod_thumb_box size_xs">
+                        <a th:href="@{/book(id=${review.bookId})}" class="prod_link">
               <span class="img_box">
                 <img data-kbbfn="s3-image" alt="no image" th:src="${review.thumbnail}">
               </span>
-            </a>
-          </div>
-          <div class="prod_info_box">
-            <!--              <div class="prod_badge">-->
-            <!--                <span class="badge_sm badge_pill badge_kyobo"><span class="text">종이책</span></span>-->
-            <!--              </div>-->
-            <a th:href="@{/book(id=${review.bookId})}" class="prod_info">
-              <span class="prod_name" th:text="${review.bookTitle}"></span>
-            </a>
-          </div>
-        </div>
-        <div class="comment_header">
-          <div class="left_area">
-            <div class="review_summary_wrap">
-              <div class="rating-container rating-sm">
-                <div class="rating-stars" th:with="score=${5 - review.score}" style="width: 100%;">
+                        </a>
+                    </div>
+                    <div class="prod_info_box">
+                        <!--              <div class="prod_badge">-->
+                        <!--                <span class="badge_sm badge_pill badge_kyobo"><span class="text">종이책</span></span>-->
+                        <!--              </div>-->
+                        <a th:href="@{/book(id=${review.bookId})}" class="prod_info">
+                            <span class="prod_name" th:text="${review.bookTitle}"></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="comment_header">
+                    <div class="left_area">
+                        <div class="review_summary_wrap">
+                            <div class="rating-container rating-sm">
+                                <div class="rating-stars" th:with="score=${5 - review.score}" style="width: 100%;">
                   <span class="star">
                         <i class="fa-solid fa-star"
                            th:each="i : ${#numbers.sequence(1, review.score)}"></i>
                     </span>
-                  <span class="star">
+                                    <span class="star">
                         <i class="fa-regular fa-star" th:if="${score > 0}"
                            th:each="i : ${#numbers.sequence(1, score)}"></i>
                     </span>
-                  <span class="star ms-3" th:text="${review.reviewTitle}" id="reviewTitle"></span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--      수정 모달-->
-          <div class="modal fade modal-lg" th:id="'addModal' + ${iterStat.index}" tabindex="-1"
-               aria-labelledby="exampleModalLabel"
-               aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">리뷰 작성하기</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"
-                          aria-label="Close"></button>
-                </div>
-                <form method="post" enctype="multipart/form-data" class="update-form"
-                      th:action="@{'/mypage/reviews/'+${review.reviewId}}">
-                  <div class="modal-body">
-                    <div class="row g-4 p-4">
-                      <div class="col-lg-12">
-                        <div class="d-flex justify-content-between py-3">
-                          <div class="d-flex align-items-center">
-                            <div class="d-flex align-items-center fs-4">
-                              <input type="hidden" th:id="'score'+${review.reviewId}" name="score" th:value="${review.score}">
-                              <ul class="list-inline rating-list">
-                                <li><i class="fa fa-star update-star"></i></li>
-                                <li><i class="fa fa-star update-star"></i></li>
-                                <li><i class="fa fa-star update-star"></i></li>
-                                <li><i class="fa fa-star update-star"></i></li>
-                                <li><i class="fa fa-star update-star"></i></li>
-                              </ul>
+                                    <span class="star ms-3" th:text="${review.reviewTitle}" id="reviewTitle"></span>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
-                      <div class="col-lg-12">
-                        <div class="border-bottom rounded">
-                          <input type="text" name="reviewTitle" th:value="${review.reviewTitle}"
-                                 class="form-control border-0 me-4" placeholder="리뷰 제목">
-                        </div>
-                      </div>
-                      <div class="col-lg-12">
-                        <div class="border-bottom rounded my-4">
+                    </div>
+                    <!--      수정 모달-->
+                    <div class="modal fade modal-lg" th:id="'addModal' + ${iterStat.index}" tabindex="-1"
+                         aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">리뷰 작성하기</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <form method="post" enctype="multipart/form-data" class="update-form"
+                                      th:action="@{'/mypage/reviews/'+${review.reviewId}}">
+                                    <div class="modal-body">
+                                        <div class="row g-4 p-4">
+                                            <div class="col-lg-12">
+                                                <div class="d-flex justify-content-between py-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="d-flex align-items-center fs-4">
+                                                            <input type="hidden" th:id="'score'+${review.reviewId}"
+                                                                   name="score" th:value="${review.score}">
+                                                            <ul class="list-inline rating-list">
+                                                                <li><i class="fa fa-star update-star"></i></li>
+                                                                <li><i class="fa fa-star update-star"></i></li>
+                                                                <li><i class="fa fa-star update-star"></i></li>
+                                                                <li><i class="fa fa-star update-star"></i></li>
+                                                                <li><i class="fa fa-star update-star"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="border-bottom rounded">
+                                                    <input type="text" name="reviewTitle"
+                                                           th:value="${review.reviewTitle}"
+                                                           class="form-control border-0 me-4" placeholder="리뷰 제목">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="border-bottom rounded my-4">
                     <textarea class="form-control border-0" cols="30" rows="8" name="reviewContent"
                               placeholder="리뷰 내용" spellcheck="false"
                               th:text="${review.reviewContent}"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <ul th:with="reviewId=${review?.reviewId}" class="d-flex">
+                                                    <li th:each="img: ${reviewFiles?.get(reviewId)}"
+                                                        style="margin: 10px 10px 0 0; height: 10rem; width: 8rem;">
+                                                        <img th:src="${img}" alt="no image" class="h-100 w-100"
+                                                             th:if="!${img.isBlank()}">
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <span>이미지 추가</span>
+                                                <input name="image" type="file" accept=".jpg, .png, .jpeg" multiple>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">
+                                                리뷰 수정하기
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                      </div>
-                      <div class="col-lg-12">
-                        <ul th:with="reviewId=${review?.reviewId}" class="d-flex">
-                          <li th:each="img: ${reviewFiles?.get(reviewId)}"
-                              style="margin: 10px 10px 0 0; height: 10rem; width: 8rem;">
-                            <img th:src="${img}" alt="no image" class="h-100 w-100"
-                                 th:if="!${img.isBlank()}">
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="col-lg-12">
-                        <span>이미지 추가</span>
-                        <input name="image" type="file" accept=".jpg, .png, .jpeg" multiple>
-                      </div>
-                      <button type="submit" class="btn btn-primary">
-                        리뷰 수정하기
-                      </button>
                     </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <!--      모달 끝-->
-          <div class="right_area">
-            <div class="user_info_box">
-              <span class="info_item" th:text="${review.registeredAt}"></span>
-              <span class="gap"> | </span>
-              <span class="info_item">
+                    <!--      모달 끝-->
+                    <div class="right_area">
+                        <div class="user_info_box">
+                            <span class="info_item" th:text="${review.registeredAt}"></span>
+                            <span class="gap"> | </span>
+                            <span class="info_item">
 <!--                수정 버튼-->
                 <button class="btn_comment_util update-btn" type="button" data-bs-toggle="modal"
                         th:data-bs-target="'#addModal'+${iterStat.index}"
@@ -143,67 +145,68 @@
                   <span class="text">수정</span>
                 </button>
               </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment_contents mb-3">
+                    <div class="comment_contents_inner">
+                        <div class="comment_view_wrap">
+                            <div class="comment_text_box">
+                                <div class="comment_text" th:text="${review.reviewContent}"
+                                     id="reviewContent"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment_footer">
+                    <div class="comment_util_box">
+                        <div class="left_area">
+                            <ul th:with="reviewId=${review?.reviewId}" class="d-flex">
+                                <li th:each="img: ${reviewFiles?.get(reviewId)}"
+                                    style="margin: 10px 10px 0 0; height: 10rem; width: 8rem;">
+                                    <img th:src="${img}" alt="no image" class="h-100 w-100" th:if="!${img.isBlank()}">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="comment_contents mb-3">
-          <div class="comment_contents_inner">
-            <div class="comment_view_wrap">
-              <div class="comment_text_box">
-                <div class="comment_text" th:text="${review.reviewContent}"
-                     id="reviewContent"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="comment_footer">
-          <div class="comment_util_box">
-            <div class="left_area">
-              <ul th:with="reviewId=${review?.reviewId}" class="d-flex">
-                <li th:each="img: ${reviewFiles?.get(reviewId)}"
-                    style="margin: 10px 10px 0 0; height: 10rem; width: 8rem;">
-                  <img th:src="${img}" alt="no image" class="h-100 w-100" th:if="!${img.isBlank()}">
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-  <div class="datatable-bottom mt-5">
-    <th:block th:with="pageSize=${reviews!=null ? reviews.size : 0}">
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-          <li th:if="${reviews?.number>= 10}" class="page-item">
-            <a class="page-link"
-               th:href="@{'/mypage/reviews?page=' + ${((reviews?.number/10)*10 - 1)} + '&size=' + ${pageSize}}"
-               aria-label="이전 10 페이지">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <th:block
-              th:with="startPage=${(reviews?.number / 10) * 10}, endPage=${(reviews?.totalPages == 0 ? 0 : (startPage + 9 < reviews?.totalPages ? startPage + 9 : reviews?.totalPages - 1))}">
-            <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
-              <li th:class="${pageNumber == reviews?.number ? 'page-item active' : 'page-item'}">
-                <a class="page-link"
-                   th:href="@{'/mypage/reviews?page=' + ${pageNumber} + '&size=' + ${pageSize}}">[[${pageNumber
-                  + 1}]]</a>
-              </li>
-            </th:block>
-          </th:block>
-          <li th:if="${((reviews?.number/10)*10 + 10) < reviews?.totalPages}"
-              class="page-item">
-            <a class="page-link"
-               th:href="@{'/mypage/reviews?page=' + ${((reviews?.number/10)*10 + 10)} + '&size=' + ${pageSize}}"
-               aria-label="Next 10 Pages">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </th:block>
-    <div style="margin-bottom: 50px;"></div>
-  </div>
-  <script src="/js/review.js"></script>
+    <div class="datatable-bottom mt-5">
+        <th:block th:with="pageSize=${reviews!=null ? reviews.size : 0}">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li th:if="${reviews?.number>= 10}" class="page-item">
+                        <a class="page-link"
+                           th:href="@{'/mypage/reviews?page=' + ${((reviews?.number/10)*10 - 1)} + '&size=' + ${pageSize}}"
+                           aria-label="이전 10 페이지">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <th:block
+                            th:with="startPage=${(reviews?.number / 10) * 10}, endPage=${(reviews?.totalPages == 0 ? 0 : (startPage + 9 < reviews?.totalPages ? startPage + 9 : reviews?.totalPages - 1))}">
+                        <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
+                            <li th:class="${pageNumber == reviews?.number ? 'page-item active' : 'page-item'}">
+                                <a class="page-link"
+                                   th:href="@{'/mypage/reviews?page=' + ${pageNumber} + '&size=' + ${pageSize}}">[[${pageNumber
+                                    + 1}]]</a>
+                            </li>
+                        </th:block>
+                    </th:block>
+                    <li th:if="${((reviews?.number/10)*10 + 10) < reviews?.totalPages}"
+                        class="page-item">
+                        <a class="page-link"
+                           th:href="@{'/mypage/reviews?page=' + ${((reviews?.number/10)*10 + 10)} + '&size=' + ${pageSize}}"
+                           aria-label="Next 10 Pages">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </th:block>
+        <div style="margin-bottom: 50px;"></div>
+    </div>
+    <script src="/js/review.js"></script>
 </div>
+</html>

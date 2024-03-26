@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.PaymentCompanyAdaptor;
 import com.nhnacademy.inkbridge.front.config.KeyConfig;
+import com.nhnacademy.inkbridge.front.dto.pay.PayCancelInfoDto;
 import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmRequestDto;
 import com.nhnacademy.inkbridge.front.property.TossProperties;
 import java.nio.charset.StandardCharsets;
@@ -40,6 +41,37 @@ public class TossAdaptorImpl implements PaymentCompanyAdaptor {
      */
     @Override
     public String doPayConfirm(PayConfirmRequestDto requestDto) {
+        HttpEntity<PayConfirmRequestDto> entity = new HttpEntity<>(requestDto, createTossRequestHeaders());
+
+        ResponseEntity<String> exchange = restTemplate.exchange(
+            "https://api.tosspayments.com/v1/payments/confirm",
+            HttpMethod.POST,
+            entity,
+            String.class);
+
+        return exchange.getBody();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param requestDto 요청 데이터
+     * @return 취소 응답
+     */
+    @Override
+    public String cancelPay(String paymentKey, PayCancelInfoDto requestDto) {
+        HttpEntity<PayCancelInfoDto> entity = new HttpEntity<>(requestDto, createTossRequestHeaders());
+
+        ResponseEntity<String> exchange = restTemplate.exchange(
+            "https://api.tosspayments.com/v1/payments/{paymentKey}/cancel",
+            HttpMethod.POST,
+            entity,
+            String.class, paymentKey);
+
+        return exchange.getBody();
+    }
+
+    private HttpHeaders createTossRequestHeaders() {
         String apiKey = keyConfig.keyStore(tossProperties.getApiKey());
 
         Base64.Encoder encoder = Base64.getEncoder();
@@ -50,14 +82,6 @@ public class TossAdaptorImpl implements PaymentCompanyAdaptor {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setBasicAuth(new String(encodedBytes));
 
-        HttpEntity<PayConfirmRequestDto> entity = new HttpEntity<>(requestDto, httpHeaders);
-
-        ResponseEntity<String> exchange = restTemplate.exchange(
-            "https://api.tosspayments.com/v1/payments/confirm",
-            HttpMethod.POST,
-            entity,
-            String.class);
-
-        return exchange.getBody();
+        return httpHeaders;
     }
 }

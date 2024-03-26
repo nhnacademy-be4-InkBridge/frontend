@@ -30,14 +30,14 @@ public class OrderMemberController {
     private final OrderService orderService;
 
     /**
-     * 관리자 주문 목록 조회 페이지를 호출하는 메소드입니다.
+     * 회원 목록 조회 페이지를 호출하는 메소드입니다.
      *
      * @param pageable 페이지 정보
      * @param model    Model
-     * @return 관리자 주문 목록 조회 페이지
+     * @return 회원 주문 목록 조회 페이지
      */
     @GetMapping
-    public String adminOrderList(@PageableDefault Pageable pageable, Model model) {
+    public String memberOrderList(@PageableDefault Pageable pageable, Model model) {
 
         PageRequestDto<OrderReadResponseDto> orderPages = orderService.getMyOrderPages(pageable,
             getMemberId());
@@ -47,14 +47,14 @@ public class OrderMemberController {
     }
 
     /**
-     * 관리자 주문 상세 조회 페이지를 호출하는 메소드입니다.
+     * 회원 주문 상세 조회 페이지를 호출하는 메소드입니다.
      *
      * @param orderCode 주문 코드
      * @param model     Model
-     * @return 관리자 주문 상세 조회 페이지
+     * @return 회원 주문 상세 조회 페이지
      */
     @GetMapping("/{order-code}")
-    public String adminOrderDetailView(@PathVariable("order-code") String orderCode, Model model) {
+    public String memberOrderDetailView(@PathVariable("order-code") String orderCode, Model model) {
 
         BookOrderViewResponseDto response = orderService.getMyOrderInfo(orderCode, getMemberId());
 

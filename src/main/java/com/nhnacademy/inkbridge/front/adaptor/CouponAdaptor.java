@@ -1,10 +1,16 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
 import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.BirthDayCouponCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.BookCouponCreateRequestDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.CategoryCouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.CouponReadResponseDto;
+import com.nhnacademy.inkbridge.front.dto.coupon.MemberCouponReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.coupon.OrderCouponReadResponseDto;
+import java.io.IOException;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * class: CouponAdaptor.
@@ -25,13 +31,26 @@ public interface CouponAdaptor {
     PageRequestDto<CouponReadResponseDto> getAdminCoupons(Integer couponStatusId,
         Integer page, Integer size);
 
-    void setCoupons(CouponCreateRequestDto couponCreateRequestDto);
+    void setCoupons(CouponCreateRequestDto couponCreateRequestDto,
+        HttpServletResponse httpServletResponse) throws IOException;
 
     PageRequestDto<CouponReadResponseDto> getCoupons(Integer page, Integer size);
 
-    void issueCoupon(String memberId, String couponId);
+    void issueCoupon(String memberId, String couponId, HttpServletResponse httpServletResponse)
+        throws IOException;
 
-    PageRequestDto<CouponReadResponseDto> getIssuedCoupon(String memberId, Integer couponStatusId,
+    PageRequestDto<MemberCouponReadResponseDto> getIssuedCoupon(String memberId,
+        String status,
         Integer page, Integer size);
+
     List<OrderCouponReadResponseDto> getOrderCoupons(Long memberId, List<String> bookIds);
+
+    void setCategoryCoupon(CategoryCouponCreateRequestDto categoryCouponCreateRequestDto,
+        HttpServletResponse httpServletResponse) throws IOException;
+
+    void setBookCoupon(BookCouponCreateRequestDto bookCouponCreateRequestDto,
+        HttpServletResponse httpServletResponse) throws IOException;
+
+    void setBirthdayCoupon(BirthDayCouponCreateRequestDto birthDayCouponCreateRequestDto,
+        HttpServletResponse httpServletResponse) throws IOException;
 }
