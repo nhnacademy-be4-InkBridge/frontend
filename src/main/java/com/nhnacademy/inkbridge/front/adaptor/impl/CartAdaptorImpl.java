@@ -49,11 +49,8 @@ public class CartAdaptorImpl implements CartAdaptor {
             .encode()
             .build().toUri();
 
-        ResponseEntity<HttpStatus> response = restTemplate.postForEntity(uri,
+        restTemplate.postForEntity(uri,
             new HttpEntity<>(cartList, httpHeaders), HttpStatus.class);
-        if (response.getStatusCode() != HttpStatus.CREATED) {
-            throw new RuntimeException();
-        }
     }
 
     /**
@@ -74,9 +71,6 @@ public class CartAdaptorImpl implements CartAdaptor {
             new HttpEntity<>(httpHeaders),
             new ParameterizedTypeReference<>() {
             });
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
         return exchange.getBody();
     }
 }

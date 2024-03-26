@@ -38,7 +38,8 @@ public interface AuthorService {
      * @param authorFile MultipartFile
      * @param authorCreateUpdateRequestDto AuthorCreateUpdateRequestDto
      */
-    void createAuthor(MultipartFile authorFile, AuthorCreateUpdateRequestDto authorCreateUpdateRequestDto);
+    void createAuthor(MultipartFile authorFile,
+        AuthorCreateUpdateRequestDto authorCreateUpdateRequestDto);
 
     /**
      * 관리자 페이지에서 작가를 수정하는 메서드입니다.
@@ -47,5 +48,6 @@ public interface AuthorService {
      * @param authorCreateUpdateRequestDto AuthorCreateUpdateRequestDto
      * @param authorId Long
      */
-    void updateAuthor(MultipartFile authorFile, AuthorCreateUpdateRequestDto authorCreateUpdateRequestDto, Long authorId);
+    void updateAuthor(MultipartFile authorFile,
+        AuthorCreateUpdateRequestDto authorCreateUpdateRequestDto, Long authorId);
 }

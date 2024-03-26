@@ -55,6 +55,11 @@ public class RedisConfig implements BeanClassLoaderAware {
         return new LettuceConnectionFactory(configuration);
     }
 
+    /**
+     * redis 연결 위한 빈 설정
+     *
+     * @return factory 반환
+     */
     @Bean
     public RedisConnectionFactory redisConnectionFactoryForBook() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
@@ -77,9 +82,10 @@ public class RedisConfig implements BeanClassLoaderAware {
      * @return redis 서버에 crud 가능한 객체 반환
      */
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
+    @Qualifier(value = "redisTemplateForBook")
+    public RedisTemplate<String, Object> redisTemplateForBook() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setConnectionFactory(redisConnectionFactoryForBook());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
@@ -88,11 +94,15 @@ public class RedisConfig implements BeanClassLoaderAware {
         return redisTemplate;
     }
 
+    /**
+     * redis 직렬화 설정 메서드.
+     *
+     * @return redis 서버에 crud 가능한 객체 반환
+     */
     @Bean
-    @Qualifier(value = "redisTemplateForBook")
-    public RedisTemplate<String, Object> redisTemplateForBook() {
+    public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactoryForBook());
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());

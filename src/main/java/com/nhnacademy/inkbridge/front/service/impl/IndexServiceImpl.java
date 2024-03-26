@@ -10,6 +10,7 @@ import com.nhnacademy.inkbridge.front.dto.book.BooksByCategoryReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksReadResponseDto;
 import com.nhnacademy.inkbridge.front.service.IndexService;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -21,11 +22,13 @@ import org.springframework.stereotype.Service;
  * @author minm063
  * @version 2024/02/26
  */
+@Slf4j
 @Service
 public class IndexServiceImpl implements IndexService {
 
     private final BookAdaptor bookAdaptor;
     private final RedisTemplate<String, Object> redisTemplate;
+    private static final String VIEW_NAME_PATTERN = "view:";
 
 
     public IndexServiceImpl(BookAdaptor bookAdaptor,
@@ -71,13 +74,17 @@ public class IndexServiceImpl implements IndexService {
                             .thumbnailUrl(bookDetail.getThumbnail()).price(
                                 bookDetail.getPrice()).regularPrice(bookDetail.getRegularPrice())
                             .discountRatio(bookDetail.getDiscountRatio()).build()));
-                redisTemplate.opsForValue()
-                    .set(bookId + "view", bookDetail.getView());
             } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                log.error("error : {}", e.getMessage());
             }
         }
-        valueOperations.increment(bookId + "view", 1);
+
+        if (Objects.isNull(valueOperations.get(VIEW_NAME_PATTERN + bookId))) {
+            redisTemplate.opsForValue()
+                .set(VIEW_NAME_PATTERN + bookId, bookDetail.getView());
+
+        }
+        valueOperations.increment(VIEW_NAME_PATTERN + bookId, 1);
 
         return book;
     }

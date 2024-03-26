@@ -60,13 +60,11 @@ public class AuthorAdaptorImpl implements AuthorAdaptor {
             .expand(authorId)
             .toUri();
 
-        ResponseEntity<AuthorInfoReadResponseDto> exchange = restTemplate.exchange(uri, HttpMethod.GET,
+        ResponseEntity<AuthorInfoReadResponseDto> exchange = restTemplate.exchange(uri,
+            HttpMethod.GET,
             new HttpEntity<>(CommonUtils.createHeader()),
             new ParameterizedTypeReference<>() {
             });
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
 
         return exchange.getBody();
     }
@@ -90,10 +88,6 @@ public class AuthorAdaptorImpl implements AuthorAdaptor {
             new HttpEntity<>(CommonUtils.createHeader()),
             new ParameterizedTypeReference<>() {
             });
-
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
 
         return exchange.getBody();
     }
@@ -131,12 +125,10 @@ public class AuthorAdaptorImpl implements AuthorAdaptor {
         }
         multiValueMap.add("author", httpEntity);
 
-        ResponseEntity<HttpStatus> response = restTemplate.postForEntity(uri,
+        restTemplate.postForEntity(uri,
             new HttpEntity<>(multiValueMap, httpHeaders),
             HttpStatus.class);
-        if (response.getStatusCode() != HttpStatus.CREATED) {
-            throw new RuntimeException();
-        }
+
     }
 
     /**
@@ -174,11 +166,9 @@ public class AuthorAdaptorImpl implements AuthorAdaptor {
         }
         multiValueMap.add("author", httpEntity);
 
-        ResponseEntity<HttpStatus> response = restTemplate.exchange(uri, HttpMethod.PUT,
+        restTemplate.exchange(uri, HttpMethod.PUT,
             new HttpEntity<>(multiValueMap, httpHeaders),
             HttpStatus.class);
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
+
     }
 }
