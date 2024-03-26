@@ -101,7 +101,7 @@
                         th:data-address="${address.address}"
                         th:data-detail-address="${address.addressDetail}"
                         th:data-receiver-name="${address.receiverName}"
-                        th:data-receiver-phone="${address.receiverNumber}"
+                        th:data-receiver-number="${address.receiverNumber}"
                         th:text="${address.alias}">Address</option>
               </select>
             </th:block>
@@ -109,7 +109,7 @@
               <p>배송지 정보를 입력해주세요.</p>
             </th:block>
             <input type="text" class="form-control mb-2" id="receiverName" name="bookOrder.receiverName" placeholder="이름" required>
-            <input type="tel" class="form-control mb-2" id="receiverPhone" name="bookOrder.receiverPhoneNumber" placeholder="전화번호" pattern="[0-9]{11}" required>
+            <input type="tel" class="form-control mb-2" id="receiverNumber" name="bookOrder.receiverPhoneNumber" placeholder="전화번호" pattern="[0-9]{11}" required>
             <div class="input-group mb-3">
               <input type="text" class="form-control" id="zipCode" name="bookOrder.zipCode" placeholder="우편번호" readonly>
               <button class="btn btn-outline-secondary" type="button" onclick="execDaumPostcode()">우편번호 찾기</button>
@@ -117,7 +117,16 @@
             <input type="text" class="form-control mb-2" id="address" name="bookOrder.address" placeholder="도로명주소" readonly required>
             <input type="text" class="form-control" id="detailAddress" name="bookOrder.detailAddress" placeholder="상세주소" required>
           </div>
-
+          <div class="p-3 border rounded-3 mb-4">
+            <h4 class="fw-normal mb-5">발송인 정보</h4>
+            <input type="text" class="form-control mb-2" id="senderName" name="bookOrder.senderName"
+                   placeholder="이름">
+            <input type="tel" pattern="[0-9]{11}" maxlength="11" class="form-control mb-2"
+                   id="senderPhoneNumber"
+                   name="bookOrder.senderPhoneNumber" placeholder="전화번호">
+            <input type="email" class="form-control" id="senderEmail" name="bookOrder.senderEmail"
+                   placeholder="이메일">
+          </div>
           <div class="p-3 border rounded-3 mb-4">
             <h4 class="fw-normal mb-3">배송일 선택</h4>
             <input type="date" class="form-control w-50" id="delivery_date" name="bookOrder.deliveryDate">
