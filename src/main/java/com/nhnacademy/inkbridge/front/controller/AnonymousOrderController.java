@@ -6,6 +6,7 @@ import com.nhnacademy.inkbridge.front.dto.order.BookOrderViewResponseDto;
 import com.nhnacademy.inkbridge.front.service.OrderService;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/anonymous-orders")
 @RequiredArgsConstructor
+@Slf4j
 public class AnonymousOrderController {
 
     private final OrderService orderService;
@@ -38,6 +40,8 @@ public class AnonymousOrderController {
     public String orderDetailView(@PathVariable("orderCode") String orderCode, Model model) {
 
         BookOrderViewResponseDto response = orderService.getOrderInfoByOrderCode(orderCode);
+
+        log.debug("anonymous order view start");
 
         model.addAttribute("order", response);
 

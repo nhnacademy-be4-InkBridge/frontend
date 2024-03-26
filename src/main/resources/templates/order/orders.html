@@ -209,11 +209,11 @@
           <th:block sec:authorize="isAnonymous()">
             <div class="p-3 border rounded-3 mb-4">
               <h4 class="fw-normal">쿠폰</h4>
-              <p class="m-auto">비회원은 쿠폰 적용이 제한됩니다.</p>
+              <p class="text-center">비회원은 쿠폰 적용이 제한됩니다.</p>
             </div>
             <div class="p-3 border rounded-3 mb-4">
               <h4 class="fw-normal">포인트 할인</h4>
-              <p class="m-autor">비회원은 쿠폰 적용이 제한됩니다.</p>
+              <p class="text-center">비회원은 포인트 할인이 제한됩니다.</p>
             </div>
           </th:block>
           <div class="p-3 border rounded-3 mb-4">
@@ -278,7 +278,7 @@
                     <span id="pay_amount" class="fw-bold">0</span>원
                   </td>
                 </tr>
-                <tr>
+                <tr sec:authorize="isAuthenticated()">
                   <th scope="col" style="font-weight: normal">예상 적립 포인트</th>
                   <td><span id="accumulate_point">0</span> P</td>
                 </tr>
