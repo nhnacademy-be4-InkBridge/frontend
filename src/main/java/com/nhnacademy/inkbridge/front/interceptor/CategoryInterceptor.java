@@ -1,6 +1,7 @@
 package com.nhnacademy.inkbridge.front.interceptor;
 
 import com.nhnacademy.inkbridge.front.dto.category.ParentCategoryReadResponseDto;
+import com.nhnacademy.inkbridge.front.service.BookService;
 import com.nhnacademy.inkbridge.front.service.CategoryService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ public class CategoryInterceptor implements HandlerInterceptor {
         if(modelAndView !=null){
             List<ParentCategoryReadResponseDto> parentCategories = categoryService.readCategory();
             modelAndView.addObject("parentCategories", parentCategories);
+
         }
     }
 }
