@@ -135,7 +135,7 @@
                aria-label="이전 10 페이지">
               <span aria-hidden="true">&laquo;</span>
             </a>
-            <a class="page-link" th:unless="${text}" th:href="@{${currentURI}(page=${((books?.number/10)*10 - 1)},size=${pageSize})}"
+            <a class="page-link" th:unless="${text}" th:href="@{${currentURI}(page=${((books?.number/10)*10 - 1)},size=${pageSize}, sort=${sort})}"
                aria-label="이전 10 페이지">
               <span aria-hidden="true">&laquo;</span>
             </a>
@@ -146,7 +146,7 @@
               <li th:class="${pageNumber == books?.number ? 'page-item active' : 'page-item'}">
                 <a class="page-link" th:if="${text}" th:href="@{${currentURI}(text=${text},page=${pageNumber}, size=${pageSize},sort=${sort})}"
                 >[[${pageNumber + 1}]]</a>
-                <a class="page-link" th:unless="${text}" th:href="@{${currentURI}(page=${pageNumber}, size=${pageSize})}"
+                <a class="page-link" th:unless="${text}" th:href="@{${currentURI}(page=${pageNumber}, size=${pageSize},sort=${sort})}"
                 >[[${pageNumber + 1}]]</a>
               </li>
             </th:block>
@@ -157,7 +157,7 @@
                aria-label="Next 10 Pages">
               <span aria-hidden="true">&raquo;</span>
             </a>
-            <a class="page-link" th:unless="${text}" th:href="@{${currentURI}(page=${((books?.number/10)*10 + 10)}, size=${pageSize})}"
+            <a class="page-link" th:unless="${text}" th:href="@{${currentURI}(page=${((books?.number/10)*10 + 10)}, size=${pageSize},sort=${sort})}"
                aria-label="Next 10 Pages">
               <span aria-hidden="true">&raquo;</span>
             </a>
