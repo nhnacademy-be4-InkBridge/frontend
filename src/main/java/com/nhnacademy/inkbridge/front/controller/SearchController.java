@@ -69,14 +69,14 @@ public class SearchController {
         } else {
             throw new IllegalArgumentException();
         }
-        String sort = pageable.getSort().toString();
-        sort = "UNSORTED".equals(sort) ? "" : sort.split(": ")[1];
-
+//        String sort = pageable.getSort().toString();
+//        sort = "UNSORTED".equals(sort) ? "" : sort.split(": ")[1];
         PageRequestDto<BookSearchResponseDto> pageableBooks = searchService.searchByAll(field,
             pageable);
+
         model.addAttribute("currentURI", request.getRequestURI());
         model.addAttribute("books", pageableBooks);
-        model.addAttribute("sort", sort);
+//        model.addAttribute("sort", sort);
         model.addAttribute("isSearch", false);
         return "search/search";
     }
