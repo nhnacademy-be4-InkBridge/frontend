@@ -119,44 +119,16 @@
           </div>
         </div>
         <div class="header-user-actions">
-<!--          <div class="action-btn" sec:authorize="isAuthenticated()">-->
             <div class="action-btn" sec:authorize="hasAnyRole('MEMBER','SOCIAL')" onclick="location.href='/mypage'">
               <i class="fa-solid fa-user"></i>
             </div>
             <div class="action-btn" sec:authorize="hasRole('ADMIN')" onclick="location.href='/admin'">
               <i class="fa-solid fa-user-gear"></i>
             </div>
-
-            <!--            <ul class="action-btn-menu menu-hidden">-->
-            <!--              <li sec:authorize="hasAnyRole('MEMBER','SOCIAL')">-->
-            <!--                <a href="/mypage"></a>-->
-            <!--                마이페이지-->
-            <!--              </li>-->
-            <!--              <li sec:authorize="hasRole('ADMIN')">-->
-            <!--                <a href="/admin">-->
-            <!--                  관리자페이지-->
-            <!--                </a>-->
-            <!--              </li>-->
-            <!--              <li>-->
-            <!--                <a href="/logout">로그아웃</a>-->
-            <!--              </li>-->
-            <!--            </ul>-->
-<!--          </div>-->
           <div class="action-btn" sec:authorize="isAnonymous()" data-bs-toggle="modal"
                data-bs-target="#ModalForm">
             <i class="fa-regular fa-user"></i>
           </div>
-
-          <!--          <div class="action-btn" sec:authorize="hasRole('ADMIN')">-->
-          <!--            <a href="/admin" class="a-tag">-->
-          <!--              <i class="fa-regular fa-user"></i>-->
-          <!--            </a>-->
-          <!--          </div>-->
-          <!--          <div class="action-btn" sec:authorize="hasAnyRole('MEMBER','SOCIAL')">-->
-          <!--            <a href="/mypage" class="a-tag">-->
-          <!--              <i class="fa-regular fa-user"></i>-->
-          <!--            </a>-->
-          <!--          </div>-->
           <div class="action-btn">
             <a href="" class="a-tag">
               <i class="fa-regular fa-heart"></i>
