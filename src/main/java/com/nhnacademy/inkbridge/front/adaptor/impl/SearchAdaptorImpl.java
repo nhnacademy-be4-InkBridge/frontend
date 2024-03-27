@@ -72,13 +72,11 @@ public class SearchAdaptorImpl implements SearchAdaptor {
     @Override
     public PageRequestDto<BookSearchResponseDto> searchByAll(String field, Pageable pageable) {
         HttpHeaders httpHeaders = CommonUtils.createHeader();
-        String sortStr = String.join(",", Sort.by(Order.desc(field)).toString().split(": "));
         URI uri = UriComponentsBuilder
             .fromUriString(gatewayProperties.getUrl())
             .path("api/books/filter")
             .queryParam("page", pageable.getPageNumber())
             .queryParam("size", pageable.getPageSize())
-            .queryParam("sort", sortStr)
             .encode()
             .build()
             .toUri();

@@ -70,6 +70,7 @@ const orderSelect = document.querySelector(".view-select");
 orderSelect.addEventListener("change", (e) => {
   const currentUrl = new URL(location.href);
   currentUrl.searchParams.set("size", e.target.value);
+  currentUrl.searchParams.set("page",0);
   location.href = currentUrl.href;
 })
 
