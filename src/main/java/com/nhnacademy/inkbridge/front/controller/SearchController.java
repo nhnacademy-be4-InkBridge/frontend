@@ -79,6 +79,7 @@ public class SearchController {
 //        model.addAttribute("sort", sort);
         model.addAttribute("isSearch", false);
         return "search/search";
+
     }
 
     /**
