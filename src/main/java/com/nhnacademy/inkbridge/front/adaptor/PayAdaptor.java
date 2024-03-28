@@ -1,21 +1,27 @@
 package com.nhnacademy.inkbridge.front.adaptor;
 
-import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmRequestDto;
-import org.json.simple.JSONObject;
+import com.nhnacademy.inkbridge.front.dto.pay.PayCancelRequestDto;
+import com.nhnacademy.inkbridge.front.dto.pay.PayCreateRequestDto;
 
 /**
  * class: PayAdaptor.
  *
  * @author jangjaehun
- * @version 2024/03/13
+ * @version 2024/03/16
  */
 public interface PayAdaptor {
 
     /**
-     * toss payment에 결제 승인 요청을 보냅니다.
+     * 결제 생성을 Backend 서버로 요청합니다.
      *
-     * @param requestDto 요청 데이터
-     * @return 요청 응답
+     * @param payCreateRequestDto 결제 정보
      */
-    JSONObject doPayConfirm(PayConfirmRequestDto requestDto);
+    void doPay(PayCreateRequestDto payCreateRequestDto);
+
+    /**
+     * 결제를 Backend 서버로 요청합니다.
+     *
+     * @param payCancelRequestDto 취소 정보
+     */
+    void cancelPay(PayCancelRequestDto payCancelRequestDto);
 }

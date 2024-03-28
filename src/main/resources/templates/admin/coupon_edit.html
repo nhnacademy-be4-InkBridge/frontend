@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}">
+<head>
+  <style>
+      #layoutSidenav_content {
+          position: static !important; /* Flex 제거 */
+          display: block !important; /* Flex를 제거하고 블록 레벨로 설정 */
+      }
+      .error-message {
+          color: red;
+      }
+  </style>
+</head>
+<body>
+<th:block layout:fragment="css">
+  <link rel="stylesheet " href="/css/coupon_form.css">
+</th:block>
+<th:block layout:fragment="script">
+  <script>
+    // 쿠폰 타입에 따라 placeholder와 라벨을 변경하는 함수
+    function updatePlaceholderAndLabel(couponType) {
+      var discountPriceInput = document.getElementById('discount-price');
+      var label = document.querySelector('label[for="discount-price"]');
+
+      if (couponType === '1') {
+        discountPriceInput.placeholder = '할인율 입력';
+        label.textContent = '할인율(%)';
+      } else {
+        discountPriceInput.placeholder = '할인금액 입력';
+        label.textContent = '할인금액';
+      }
+    }
+
+    // 라디오 버튼의 변경 이벤트를 처리하는 함수
+    function onRadioChange() {
+      var selectedCouponType = document.querySelector('input[name="couponTypeId"]:checked').value;
+      updatePlaceholderAndLabel(selectedCouponType);
+
+      // 콘솔에 선택된 쿠폰 타입 출력
+      console.log('쿠폰 타입 변경:', selectedCouponType);
+    }
+
+    // 쿠폰 이름 블랭크 예외 처리 및 경고 띄우기
+    function validateCouponName() {
+      var couponNameInput = document.getElementById('name');
+      var couponNameValue = couponNameInput.value.trim();
+      var errorMessage = document.getElementById('coupon-name-error');
+
+      if (couponNameValue === '') {
+        errorMessage.textContent = '쿠폰 이름을 입력해주세요.';
+        return false;
+      } else {
+        errorMessage.textContent = '';
+        return true;
+      }
+    }
+
+    // 할인가격 > 최대할인금액 이면 경고 띄우기
+    function validateDiscountPrice() {
+      var discountPriceInput = document.getElementById('discount-price');
+      var maxDiscountPriceInput = document.getElementById('max-discount-price');
+      var errorMessage = document.getElementById('discount-price-error');
+      var couponType = document.getElementsByClassName('couponTypeId');
+
+      var discountPrice = parseFloat(discountPriceInput.value);
+      var maxDiscountPrice = parseFloat(maxDiscountPriceInput.value);
+
+      if (discountPrice > maxDiscountPrice && couponType === '2') {
+        errorMessage.textContent = '할인 가격은 최대 할인 금액보다 클 수 없습니다.';
+        return false;
+      } else if (couponType === '1' && discountPrice > 100) {
+        errorMessage.textContent = '100%를 넘을 수 없습니다.';
+        return false;
+      } else {
+        errorMessage.textContent = '';
+        return true;
+      }
+    }
+
+    // 발급시작일 < 오늘 경고
+    function validateIssuedDate() {
+      var issuedDateInput = document.getElementById('basic-issued-date');
+      var today = new Date().setHours(0, 0, 0, 0); // 오늘 날짜의 00:00:00으로 설정
+      var issuedDate = new Date(issuedDateInput.value).setHours(0, 0, 0, 0); // 입력된 날짜의 00:00:00으로 설정
+      var errorMessage = document.getElementById('issued-date-error');
+      console.log('발급시작일:', new Date(issuedDate)); // 발급시작일 로그 추가
+
+
+      if (issuedDate < today) {
+        errorMessage.textContent = '발급시작일은 오늘 날짜 이후여야 합니다.';
+        return false;
+      } else {
+        errorMessage.textContent = '';
+        return true;
+      }
+    }
+
+    // 발급만료일 < 오늘 경고
+    function validateExpiredDate() {
+      var expiredDateInput = document.getElementById('basic-expired-date');
+      var today = new Date();
+      var expiredDate = new Date(expiredDateInput.value);
+      var errorMessage = document.getElementById('expired-date-error');
+      console.log('발급만료일:', expiredDate); // 여기에 발급만료일과 관련된 로그 추가
+
+      if (expiredDate < today) {
+        errorMessage.textContent = '발급만료일은 오늘 날짜 이후여야 합니다.';
+        return false;
+      } else {
+        errorMessage.textContent = '';
+        return true;
+      }
+    }
+
+    // 발급시작일 > 발급만료일 경고
+    function validateDateRange() {
+      var issuedDateInput = document.getElementById('basic-issued-date');
+      var expiredDateInput = document.getElementById('basic-expired-date');
+      var issuedDate = new Date(issuedDateInput.value);
+      var expiredDate = new Date(expiredDateInput.value);
+      var errorMessage = document.getElementById('date-range-error');
+
+      if (issuedDate > expiredDate) {
+        errorMessage.textContent = '발급시작일은 발급만료일 이전이어야 합니다.';
+        return false;
+      } else {
+        errorMessage.textContent = '';
+        return true;
+      }
+    }
+
+    // 전체 폼 유효성 검사
+    function validateForm() {
+      return (
+          validateCouponName() &&
+          validateDiscountPrice() &&
+          validateIssuedDate() &&
+          validateExpiredDate() &&
+          validateDateRange()
+      );
+    }
+
+    // 페이지 로드 시 초기화
+    window.onload = function () {
+      onRadioChange(); // 초기 호출
+
+      // 라디오 버튼 변경 이벤트 리스너 등록
+      document.querySelectorAll('input[name="couponTypeId"]').forEach(function(radio) {
+        radio.addEventListener('change', onRadioChange);
+      });
+
+      // 폼 제출 시 유효성 검사
+      document.getElementById('coupon-form').addEventListener('submit', function(event) {
+        if (!validateForm()) {
+          event.preventDefault(); // 폼 제출 중지
+        }
+      });
+
+      // 각 입력란의 변경 이벤트 리스너 등록
+      document.getElementById('name').addEventListener('input', validateCouponName);
+      document.getElementById('discount-price').addEventListener('input', validateDiscountPrice);
+      document.getElementById('max-discount-price').addEventListener('input',validateDiscountPrice)
+      document.getElementById('basic-issued-date').addEventListener('input', validateIssuedDate);
+      document.getElementById('basic-expired-date').addEventListener('input', validateExpiredDate);
+      document.getElementById('basic-issued-date').addEventListener('input', validateDateRange);
+      document.getElementById('basic-expired-date').addEventListener('input', validateDateRange);
+    };
+  </script>
+</th:block>
+<div layout:fragment="content" id="layoutSidenav_content" class="fixed-container">
+  <div class="page-content">
+    <h2 class="title-h2">쿠폰 수정</h2>
+    <form id="coupon-form" class="wrapper-box" role="form" action="/admin/coupons/register" method="post">
+      <div class="form-group form-floating">
+        <input name="couponName" type="text" class="form-control" id="name" placeholder="쿠폰이름"
+               required>
+        <label for="name">쿠폰이름</label>
+        <div id="coupon-name-error" class="error-message"></div>
+      </div>
+      <div class="form-group form-floating">
+        <input name="minPrice" type="number" class="form-control" id="min-price"
+               placeholder="최소주문가격" required min="0">
+        <label for="min-price">최소주문가격</label>
+      </div>
+      <div class="form-group form-floating">
+        <input name="maxDiscountPrice" type="number" class="form-control" id="max-discount-price"
+               placeholder="최대할인금액" min="0">
+        <label for="max-discount-price">최대할인금액</label>
+      </div>
+      <div class="form-group form-floating">
+        <input name="discountPrice" type="number" class="form-control" id="discount-price"
+               placeholder="할인금액" required min="0">
+        <label for="discount-price">할인금액</label>
+        <div id="discount-price-error" class="error-message"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <div class="form-group form-floating">
+            <input name="basicIssuedDate" type="date" class="form-control" id="basic-issued-date"
+                   placeholder="쿠폰발급시작일" required>
+            <label for="basic-issued-date">쿠폰발급시작일</label>
+            <div id="issued-date-error" class="error-message"></div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="form-group form-floating">
+            <input name="basicExpiredDate" type="date" class="form-control" id="basic-expired-date"
+                   placeholder="쿠폰발급만료일" required>
+            <label for="basic-expired-date">쿠폰발급만료일</label>
+            <div id="expired-date-error" class="error-message"></div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group form-floating">
+            <input name="validity" type="number" class="form-control" id="validity"
+                   placeholder="쿠폰유효기간" required min="1">
+            <label for="validity">쿠폰유효기간</label>
+          </div>
+        </div>
+        <div id="date-range-error" class="error-message"></div>
+      </div>
+      <div class="form-group">
+        <label>쿠폰타입(1. %, 2. 가격)</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="couponTypeId" id="coupon-type-id-0"
+                 value="1" checked>
+          <label class="form-check-label" for="coupon-type-id-0">% 쿠폰</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="couponTypeId" id="coupon-type-id-1"
+                 value="2">
+          <label class="form-check-label" for="coupon-type-id-1">가격 쿠폰</label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-submit">변경</button>
+    </form>
+  </div>
+</div>
+</div>
+</body>
+</html>

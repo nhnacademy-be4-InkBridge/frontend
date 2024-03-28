@@ -27,7 +27,7 @@ const editor = new toastui.Editor({
         formData.append('image', blob);
 
         // 2. FileApiController - uploadEditorImage 메서드 호출
-        const response = await fetch('https://inkbridge.store/image-upload', {
+        const response = await fetch('/image-upload', {
           method: 'POST',
           body: formData,
         });
@@ -172,9 +172,11 @@ mobiscroll.select('#publisher-multiple-select', {
     if (input.getAttribute('name') === 'isbn') {
       return input.value.match(/^\d{13}$/g);
     }
-    if (input.getAttribute('name') === 'discountRatio' || input.getAttribute(
-        'name') === 'stock') {
-      return input.value >= 0;
+    if (input.getAttribute('name') === 'discountRatio') {
+      return input.value >= 0 && input.value <= 100;
+    }
+    if (input.getAttribute('name') === 'stock' || input.getAttribute('name') === 'regularPrice' || input.getAttribute('name') === 'price') {
+      return input.value >= 0 && input.value < 200000000;
     }
     return input.value.trim() !== '';
   }

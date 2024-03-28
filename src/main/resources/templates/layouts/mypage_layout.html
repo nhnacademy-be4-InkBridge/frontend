@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0"/>
+    <link rel="icon" href="/assets/img/logo.png">
+    <link rel="stylesheet" href="/css/main-header.css">
+    <link href="/css/index.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Eczar:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gugi&display=swap" rel="stylesheet">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+            crossorigin="anonymous"></script>
+    <script src="/js/scripts.js"></script>
+
+    <th:block layout:fragment="css"></th:block>
+    <th:block layout:fragment="script"></th:block>
+    <title>mypage</title>
+
+</head>
+<body>
+<div>
+    <th:block th:replace="fragments/header :: headerFragment"></th:block>
+    <div id="layoutSidenav">
+        <th:block th:replace="fragments/mypage_sidebar :: sidebarFragment"></th:block>
+        <th:block layout:fragment="content"></th:block>
+    </div>
+    <th:block th:replace="fragments/footer :: footerFragment"></th:block>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+        crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/01bf78d09c.js" crossorigin="anonymous"></script>
+</html>

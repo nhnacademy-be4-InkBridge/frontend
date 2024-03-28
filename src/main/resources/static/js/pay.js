@@ -1,32 +1,21 @@
-function doPay() {
-  console.log(payInfo);
-  console.log(memberId);
-  console.log(clientKey);
+function payCancel() {
+  const cancelReason = document.getElementById("cancelReason");
+  
+  if (cancelReason == null || cancelReason == "") {
+    alert("결제 취소 사유를 작성해 주세요.")
+    return;
+  }
+  
+  const cancelForm = document.getElementById("cancel_form");
 
-  // ------  결제위젯 초기화 ------
-  let paymentWidget = memberId == null ? PaymentWidget(clientKey,
-      PaymentWidget.ANONYMOUS) : PaymentWidget(clientKey, memberId.toString().padStart(2, '0'));
+  const cancelAmount = document.createElement('input');
 
-// ------  결제 UI 렌더링 ------
-  paymentMethodWidget = paymentWidget.renderPaymentMethods(
-      "#payment-method",
-      {value: payInfo.amount},
-      {variantKey: "DEFAULT"}
-  );
+  cancelAmount.setAttribute("type", "hidden");
+  cancelAmount.setAttribute("name", "cancelAmount");
+  cancelAmount.setAttribute("value", order.payInfo.totalAmount);
 
-// ------  이용약관 UI 렌더링 ------
-  paymentWidget.renderAgreement("#agreement", {variantKey: "AGREEMENT"});
+  cancelForm.appendChild(cancelAmount);
 
-// ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
-  document.getElementById("payment-button").addEventListener("click",
-      function () {
-        paymentWidget.requestPayment({
-          orderId: payInfo.orderCode,
-          orderName: payInfo.orderName,
-          successUrl: window.location.origin + "/pays/success",
-          failUrl: window.location.origin + "/pays/fail",
-        });
-      });
+  alert("결제 취소를 진행합니다.");
+  cancelForm.submit();
 }
-
-document.addEventListener("DOMContentLoaded", doPay);

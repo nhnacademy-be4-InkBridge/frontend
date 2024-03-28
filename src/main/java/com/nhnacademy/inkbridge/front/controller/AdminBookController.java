@@ -1,11 +1,11 @@
 package com.nhnacademy.inkbridge.front.controller;
 
-import com.nhnacademy.inkbridge.front.dto.PageRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminCreateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminDetailReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.book.BookAdminUpdateRequestDto;
 import com.nhnacademy.inkbridge.front.dto.book.BooksAdminReadResponseDto;
+import com.nhnacademy.inkbridge.front.exception.ValidationException;
 import com.nhnacademy.inkbridge.front.service.BookService;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -35,6 +35,7 @@ public class AdminBookController {
 
     private static final String BOOK_FORM_PAGE = "admin/book_form";
     private final BookService bookService;
+    private static final String AUTHORS = "authors";
 
     public AdminBookController(BookService bookService) {
         this.bookService = bookService;
@@ -54,7 +55,7 @@ public class AdminBookController {
         @RequestParam(name = "size", defaultValue = "10") Integer size) {
         BooksAdminReadResponseDto books = bookService.getBooksAdmin(page, size);
         model.addAttribute("books", books.getBooksAdminPaginationReadResponseDtos());
-        model.addAttribute("authors", books.getAuthorPaginationReadResponseDtos());
+        model.addAttribute(AUTHORS, books.getAuthorPaginationReadResponseDtos());
         return "admin/books";
     }
 
@@ -77,7 +78,7 @@ public class AdminBookController {
             bookAdminDetailReadResponseDto.getParentCategoryReadResponseDtoList());
         model.addAttribute("publishers",
             bookAdminDetailReadResponseDto.getPublisherReadResponseDtoList());
-        model.addAttribute("authors",
+        model.addAttribute(AUTHORS,
             bookAdminDetailReadResponseDto.getAuthorReadResponseDtoList());
         model.addAttribute("statuses",
             bookAdminDetailReadResponseDto.getBookStatusReadResponseDtoList());
@@ -100,7 +101,7 @@ public class AdminBookController {
             bookAdminReadResponseDto.getParentCategoryReadResponseDtoList());
         model.addAttribute("publishers",
             bookAdminReadResponseDto.getPublisherReadResponseDtoList());
-        model.addAttribute("authors", bookAdminReadResponseDto.getAuthorReadResponseDtoList());
+        model.addAttribute(AUTHORS, bookAdminReadResponseDto.getAuthorReadResponseDtoList());
         model.addAttribute("statuses", bookAdminReadResponseDto.getBookStatusReadResponseDtoList());
         model.addAttribute("tags", bookAdminReadResponseDto.getTagReadResponseDtoList());
         model.addAttribute("now", LocalDate.now());
@@ -122,7 +123,8 @@ public class AdminBookController {
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.debug("error!!!: {}", bindingResult.getFieldErrors().get(0).getDefaultMessage());
-            return BOOK_FORM_PAGE;
+            throw new ValidationException(
+                bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
         try {
             bookService.createBook(thumbnail, bookAdminCreateRequestDto);
@@ -146,7 +148,8 @@ public class AdminBookController {
         @Valid @ModelAttribute BookAdminUpdateRequestDto bookAdminUpdateRequestDto,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return BOOK_FORM_PAGE;
+            throw new ValidationException(
+                bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
 
         try {

@@ -2,6 +2,7 @@ package com.nhnacademy.inkbridge.front.adaptor.impl;
 
 import com.nhnacademy.inkbridge.front.adaptor.FileAdaptor;
 import com.nhnacademy.inkbridge.front.dto.book.BookFileReadResponseDto;
+import com.nhnacademy.inkbridge.front.exception.ValidationException;
 import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import java.io.IOException;
 import java.net.URI;
@@ -31,7 +32,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class FileAdaptorImpl implements FileAdaptor {
 
-    private final Path noImageFile = Paths.get("image/noImage.png");
+    private final Path noImageFile = Paths.get("image/noImage.png").toAbsolutePath();
 
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
@@ -100,7 +101,7 @@ public class FileAdaptorImpl implements FileAdaptor {
             try {
                 byteFile = Files.readAllBytes(noImageFile);
             } catch (IOException e1) {
-                throw new RuntimeException("파일을 찾을수 없습니다");
+                throw new ValidationException("파일을 찾을수 없습니다");
             }
             return byteFile;
         }

@@ -1,18 +1,14 @@
 package com.nhnacademy.inkbridge.front.adaptor.impl;
 
+import static com.nhnacademy.inkbridge.front.utils.CommonUtils.createHeader;
+
 import com.nhnacademy.inkbridge.front.adaptor.PayAdaptor;
-import com.nhnacademy.inkbridge.front.config.KeyConfig;
-import com.nhnacademy.inkbridge.front.dto.pay.PayConfirmRequestDto;
-import com.nhnacademy.inkbridge.front.property.TossProperties;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.List;
+import com.nhnacademy.inkbridge.front.dto.pay.PayCancelRequestDto;
+import com.nhnacademy.inkbridge.front.dto.pay.PayCreateRequestDto;
+import com.nhnacademy.inkbridge.front.property.GatewayProperties;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,40 +16,38 @@ import org.springframework.web.client.RestTemplate;
  * class: PayAdaptorImpl.
  *
  * @author jangjaehun
- * @version 2024/03/13
+ * @version 2024/03/16
  */
 @Component
 @RequiredArgsConstructor
 public class PayAdaptorImpl implements PayAdaptor {
 
     private final RestTemplate restTemplate;
-    private final TossProperties tossProperties;
-    private final KeyConfig keyConfig;
+    private final GatewayProperties gatewayProperties;
 
     /**
      * {@inheritDoc}
      *
-     * @param requestDto 요청 데이터
-     * @return 요청 응답
+     * @param payCreateRequestDto 결제 정보
      */
     @Override
-    public JSONObject doPayConfirm(PayConfirmRequestDto requestDto) {
-        String apiKey = keyConfig.keyStore(tossProperties.getApiKey());
+    public void doPay(PayCreateRequestDto payCreateRequestDto) {
 
-        Base64.Encoder encoder = Base64.getEncoder();
-        byte[] encodedBytes = encoder.encode((apiKey + ":").getBytes(StandardCharsets.UTF_8));
+        HttpEntity<PayCreateRequestDto> entity = new HttpEntity<>(payCreateRequestDto, createHeader());
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setBasicAuth(new String(encodedBytes));
-
-        HttpEntity<PayConfirmRequestDto> entity = new HttpEntity<>(requestDto, httpHeaders);
-
-        return restTemplate.exchange(
-            "https://api.tosspayments.com/v1/payments/confirm",
+        restTemplate.exchange(gatewayProperties.getUrl() + "/api/pays",
             HttpMethod.POST,
             entity,
-            JSONObject.class).getBody();
+            Void.class);
+    }
+
+    @Override
+    public void cancelPay(PayCancelRequestDto payCancelRequestDto) {
+        HttpEntity<PayCancelRequestDto> entity = new HttpEntity<>(payCancelRequestDto, createHeader());
+
+        restTemplate.exchange(gatewayProperties.getUrl() + "/api/pays",
+            HttpMethod.PUT,
+            entity,
+            Void.class);
     }
 }

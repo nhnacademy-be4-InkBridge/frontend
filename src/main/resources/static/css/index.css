@@ -1,10 +1,29 @@
-/* GLOBAL STYLES
--------------------------------------------------- */
-/* Padding below the footer and lighter body text */
+/*custom - start*/
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body >div{
+    min-height: 100vh;
+    height: 100%;
+    width:100vw;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;;
+}
+
+body > div > *:nth-child(2){
+    height:100%;
+}
 
 
-/* CUSTOMIZE THE CAROUSEL
--------------------------------------------------- */
+/*custom - end*/
+
+
+
 
 /* Carousel base class */
 .carousel {
@@ -27,16 +46,16 @@
 -------------------------------------------------- */
 
 /* Center align the text within the three columns below the carousel */
-.marketing .col-lg-4 {
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
+/*.marketing .col-lg-4 {*/
+/*    margin-bottom: 1.5rem;*/
+/*    text-align: center;*/
+/*}*/
 
-/* rtl:begin:ignore */
-.marketing .col-lg-4 p {
-    margin-right: .75rem;
-    margin-left: .75rem;
-}
+/*!* rtl:begin:ignore *!*/
+/*.marketing .col-lg-4 p {*/
+/*    margin-right: .75rem;*/
+/*    margin-left: .75rem;*/
+/*}*/
 
 /* rtl:end:ignore */
 
@@ -44,15 +63,15 @@
 /* Featurettes
 ------------------------- */
 
-.featurette-divider {
-    margin: 5rem 0; /* Space out the Bootstrap <hr> more */
-}
+/*.featurette-divider {*/
+/*    margin: 5rem 0; !* Space out the Bootstrap <hr> more *!*/
+/*}*/
 
 /* Thin out the marketing headings */
 /* rtl:begin:remove */
-.featurette-heading {
-    letter-spacing: -.05rem;
-}
+/*.featurette-heading {*/
+/*    letter-spacing: -.05rem;*/
+/*}*/
 
 /* rtl:end:remove */
 
@@ -67,16 +86,14 @@
         line-height: 1.4;
     }
 
-    .featurette-heading {
-        font-size: 50px;
-    }
-}
+    /*.featurette-heading {*/
+    /*    font-size: 50px;*/    /*}*/}
 
-@media (min-width: 62em) {
-    .featurette-heading {
-        margin-top: 7rem;
-    }
-}
+/*@media (min-width: 62em) {*/
+/*    .featurette-heading {*/
+/*        margin-top: 7rem;*/
+/*    }*/
+/*}*/
 
 .pb-60px {
     padding-bottom: 60px
@@ -101,13 +118,10 @@
 }
 
 .hide-href {
-    text-decoration: none; /* 링크의 밑줄 제거 */
-    color: #000000; /* 링크의 기본 색상 */
-}
+    text-decoration: none; /* 링크의 밑줄 제거 */    color: #000000; /* 링크의 기본 색상 */}
 
 .hide-href:hover {
-    color: blue; /* 링크에 마우스를 올렸을 때 색상 변경 */
-}
+    color: blue; /* 링크에 마우스를 올렸을 때 색상 변경 */}
 
 .set-inline {
     display: inline-block;

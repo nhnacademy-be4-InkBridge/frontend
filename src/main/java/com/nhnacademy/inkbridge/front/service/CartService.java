@@ -1,7 +1,9 @@
 package com.nhnacademy.inkbridge.front.service;
 
+import com.nhnacademy.inkbridge.front.dto.book.BookRedisReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartBookReadResponseDto;
 import com.nhnacademy.inkbridge.front.dto.cart.CartRedisCreateRequestDto;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +22,15 @@ public interface CartService {
      * @param memberId String
      * @return Map
      */
-    Map<String, String> getCartRedis(String memberId);
+    Map<String, Long> getCartRedis(String memberId);
+
+    /**
+     * 장바구니용 도서 정보를 조회하는 메서드입니다.
+     *
+     * @param books 도서 번호
+     * @return 도서 번호 - BookRedisReadResponseDto
+     */
+    Map<String, BookRedisReadResponseDto> getBookInfo(ArrayList<String> books);
 
     /**
      * 도서 아이디에 따른 도서 상세 정보를 조회하는 메서드입니다.
@@ -57,8 +67,9 @@ public interface CartService {
     /**
      * 레디스의 장바구니에서 bookId와 일치하는 도서의 수량을 수정하는 메서드입니다.
      *
+     * @param memberId String
      * @param bookId String
      * @param amount String
      */
-    void updateCartBook(String bookId, String amount);
+    void updateCartBook(String memberId, String bookId, String amount);
 }

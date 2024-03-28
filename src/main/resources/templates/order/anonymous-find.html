@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}">
+
+<!-- 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+</th:block>
+<th:block layout:fragment="script">
+  <script src="/js/anonymous-order.js"></script>
+</th:block>
+
+<!-- 주문서 영역 -->
+<div layout:fragment="content">
+  <div class="container">
+    <h3 class="fw-normal mb-4 ms-2">비회원 주문 조회</h3>
+
+    <div class="text-center">
+      <p style="font-size: 15pt; margin-bottom: 5%">주문을 조회하려면 아래의 박스에 주문 번호를 입력해주세요.</p>
+
+        <div class="mb-3 w-50 text-start m-auto mb-5">
+          <label for="orderCode" class="form-label">주문 번호</label>
+          <input type="text" class="form-control" id="orderCode" name="orderCode"
+                 aria-describedby="orderCodeHelp">
+          <div id="orderCodeHelp" class="form-text">결제 시 제공된 주문 번호로 조회가 가능합니다.</div>
+        </div>
+
+      <button type="button" class="btn btn-outline-success" onclick="findOrder()">조회하기</button>
+    </div>
+  </div>
+</div>
+</html>

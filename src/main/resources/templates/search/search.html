@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}" lang="ko">
+
+<th:block layout:fragment="css">
+  <link href="/css/search.css" rel="stylesheet">
+</th:block>
+
+<th:block layout:fragment="script">
+
+</th:block>
+
+
+<div layout:fragment="content" class="container">
+  <nav class="search-title-container" th:if="${isSearch}">
+    <span class="search-title-keyword" th:text="'\''+${text}+'\''"></span>
+    <span class="search-title-sub-content" th:text="'에 대한 '+ ${#numbers.formatInteger(count, 1, 'COMMA')} +'개의 검색 결과'"></span>
+  </nav>
+  <section class="search-book-container">
+    <!--  정렬이랑 상품 개수    -->
+    <div class="search-book-main">
+      <div class="search-book-count" th:if="${isSearch}">전체 <span th:text="${#numbers.formatInteger(count, 1, 'COMMA')}"></span> 건</div>
+      <div th:classappend="${isSearch}?'search-book-option-container':'classify-book-option-container'">
+        <ul class="search-book-order-list" th:if="${isSearch}">
+          <li class="search-book-order-item">정확도순</li>
+          <li class="search-book-order-item" data-name="view,desc">인기도순</li>
+          <li class="search-book-order-item" data-name="publicatedAt,desc">신상품순</li>
+          <li class="search-book-order-item" data-name="price,desc">최고가순</li>
+          <li class="search-book-order-item" data-name="price,asc">최저가순</li>
+          <li class="search-book-order-item" data-name="score,desc">평점순</li>
+          <li class="search-book-order-item" data-name="reviewQuantity,desc">리뷰순</li>
+        </ul>
+        <div class="search-book-selects-container">
+<!--          <div class="search-book-selects-container" th:if="${isSearch}">-->
+<!--            <select class="search-book-select" name="" id="book-state">-->
+<!--              <option value="include">품절포함</option>-->
+<!--              <option value="exclude">품절제외</option>-->
+<!--            </select>-->
+<!--          </div>-->
+          <div class="search-book-select-container">
+            <select class="search-book-select view-select" id="quantity-select" >
+              <option value="10">10개씩 보기</option>
+              <option value="20">20개씩 보기</option>
+              <option value="50">50개씩 보기</option>
+            </select>
+          </div>
+<!--          <div class="search-book-type-container">-->
+<!--            <div class="search-book-type">-->
+<!--              <i class="fa-solid fa-bars"></i>-->
+<!--            </div>-->
+<!--            <div class="search-book-type">-->
+<!--              <i class="bi bi-grid-fill"></i>-->
+<!--            </div>-->
+<!--          </div>-->
+        </div>
+      </div>
+    </div>
+    <!-- 상품 -->
+    <div class="search-book-container">
+      <div class="search-book-info-list">
+        <div class="search-book-item" th:each="book : ${books.getContent()}">
+          <div class="search-book-image-container">
+            <a th:href="@{/book(id=${book.getId()})}">
+              <img class="search-book-image" th:src="${book.getFileUrl()}" alt="no image">
+            </a>
+          </div>
+          <div class="search-book-info-container">
+            <div class="search-book-info-title" th:attr="data-bookId=${book.getId()}">
+              <a th:href="@{/book(id=${book.getId()})}" th:text="${book.getBookTitle()}">
+              </a>
+            </div>
+            <div class="search-book-info-author-container">
+              <div class="search-book-info-author">
+                <a th:href="@{/search(text=${author.getAuthorName()})}" th:each="author :${book.getAuthors()}" th:text="${author.getAuthorName()}"></a>
+              </div>
+              <div>저자</div>
+            </div>
+            <div class="search-book-info-publish-container">
+              <div class="search-book-info-publisher">
+                <a th:href="@{/search(text=${book.getPublisherName()})}" th:text="${book.getPublisherName()}">
+                </a>
+              </div>
+              <div class="search-book-info-publish-date" th:text="${#temporals.format(book.getPublicatedAt(), 'yyyy년 MM월 dd일')}">
+              </div>
+            </div>
+            <div class="search-book-info-price-container">
+              <span class="search-book-info-discount-rate" th:if="${book.discountRatio>0}"
+                    th:text="${#numbers.formatInteger(book.discountRatio,1)} + '%'"></span>
+              <span class="search-book-info-discount-price" th:text="${#numbers.formatInteger(book.getPrice(), 1, 'COMMA')} + '원'"></span>
+              <span class="search-book-info-original-price" th:if="${book.discountRatio>0}"
+                    th:text="${#numbers.formatInteger(book.regularPrice, 1, 'COMMA')} + '원'"></span>
+            </div>
+            <div class="search-book-info-review-container">
+              <div class="search-book-info-review">평점</div>
+              <div class="search-book-info-review-star">
+                <span th:each="star: ${#numbers.sequence(1,5)}">
+                 <i th:class="${book.getScore() != null && book.getScore() >= star ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i>
+                  </span>
+              </div>
+              <div class="search-book-info-review-rate" th:text="${book.getScore()==null?0:#numbers.formatDecimal(book.getScore(), 1, 1)}"></div>
+              <div th:text="'('+${book.getReviewQuantity()==null?0:book.getReviewQuantity()}+'개의 리뷰)'"></div>
+            </div>
+            <ul class="search-book-info-tag-container">
+              <li th:if="${tag.getTagName()!= null}" class="search-book-info-tag" th:each="tag:${book.getTags()}">
+                <a th:href="@{/search(text=${tag.getTagName()})}" th:text="'#'+${tag.getTagName()}"></a>
+              </li>
+            </ul>
+          </div>
+          <div class="search-book-button-container">
+            <div class="search-book-quantity-container">
+              <div class="search-book-quantity-btn">-</div>
+              <div class="search-book-quantity">1</div>
+              <div class="search-book-quantity-btn">+</div>
+            </div>
+            <div class="search-book-cart" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+              장바구니
+            </div>
+            <div class="search-book-buy" onclick="window.location.href='/orders'">
+              바로 구매
+            </div>
+            <div class="search-book-wish">
+              찜하기
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <th:block th:with="pageSize=${books!=null ? books.size : 0}">
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li th:if="${books?.number>= 10}" class="page-item">
+            <a class="page-link" th:if="${text}" th:href="@{${currentURI}(text=${text}, page=${((books?.number/10)*10 - 1)},size=${pageSize},sort=${sort})}"
+               aria-label="이전 10 페이지">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+            <a class="page-link" th:unless="${text}" th:href="@{${currentURI}(page=${((books?.number/10)*10 - 1)},size=${pageSize})}"
+               aria-label="이전 10 페이지">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <th:block
+              th:with="startPage=${(books?.number / 10) * 10}, endPage=${(books?.totalPages == 0 ? 0 : (startPage + 9 < books?.totalPages ? startPage + 9 : books?.totalPages - 1))}">
+            <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
+              <li th:class="${pageNumber == books?.number ? 'page-item active' : 'page-item'}">
+                <a class="page-link" th:if="${text}" th:href="@{${currentURI}(text=${text},page=${pageNumber}, size=${pageSize},sort=${sort})}"
+                >[[${pageNumber + 1}]]</a>
+                <a class="page-link" th:unless="${text}" th:href="@{${currentURI}(page=${pageNumber}, size=${pageSize})}"
+                >[[${pageNumber + 1}]]</a>
+              </li>
+            </th:block>
+          </th:block>
+          <li th:if="${((books?.number/10)*10 + 10) < books?.totalPages}"
+              class="page-item">
+            <a class="page-link" th:if="${text}" th:href="@{${currentURI}(text=${text},page=${((books?.number/10)*10 + 10)}, size=${pageSize},sort=${sort})}"
+               aria-label="Next 10 Pages">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+            <a class="page-link" th:unless="${text}" th:href="@{${currentURI}(page=${((books?.number/10)*10 + 10)}, size=${pageSize})}"
+               aria-label="Next 10 Pages">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </th:block>
+  </section>
+
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">장바구니</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body cart-body">
+          <p>상품이 장바구니에 담겼습니다.</p>
+          <p>장바구니로 이동하시겠습니까?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+          <button type="button" class="btn btn-primary" onclick="window.location.href='/cart'">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/search.js"></script>
+</div>
+
+</html>

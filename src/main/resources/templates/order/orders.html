@@ -29,6 +29,7 @@
     let accumulationRatePolicy = [[${accumulationRatePolicy}]];
     let wrappingList = [[${wrappingList}]];
     let couponList = [[${couponList}]];
+    let userPoint = [[${userPoint}]];
   </script>
   <script src="/js/order.js"></script>
 </th:block>
@@ -90,34 +91,31 @@
           </div>
           <div class="p-3 border rounded-3 mb-4">
             <h4 class="fw-normal">수취인 정보</h4>
-            <div class="mb-2 float-end">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                       id="addressRadio1" value="option1" checked>
-                <label class="form-check-label" for="addressRadio1">새로 입력</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                       id="addressRadio2" value="option2">
-                <label class="form-check-label" for="addressRadio2">주소록 선택</label>
-              </div>
+            <th:block sec:authorize="isAuthenticated()">
+              <label for="addressSelection">주소 선택:</label>
+              <select class="form-select mb-3" id="addressSelection" onchange="fillAddressFields(this)">
+                <option value="">새로운 배송지</option>
+                <option th:each="address : ${addressList}"
+                        th:value="${address.addressId}"
+                        th:data-zip-code="${address.zipCode}"
+                        th:data-address="${address.address}"
+                        th:data-detail-address="${address.addressDetail}"
+                        th:data-receiver-name="${address.receiverName}"
+                        th:data-receiver-number="${address.receiverNumber}"
+                        th:text="${address.alias}">Address</option>
+              </select>
+            </th:block>
+            <th:block sec:authorize="isAnonymous()">
+              <p>배송지 정보를 입력해주세요.</p>
+            </th:block>
+            <input type="text" class="form-control mb-2" id="receiverName" name="bookOrder.receiverName" placeholder="이름" required>
+            <input type="tel" class="form-control mb-2" id="receiverNumber" name="bookOrder.receiverPhoneNumber" placeholder="전화번호" pattern="[0-9]{11}" required>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" id="zipCode" name="bookOrder.zipCode" placeholder="우편번호" readonly>
+              <button class="btn btn-outline-secondary" type="button" onclick="execDaumPostcode()">우편번호 찾기</button>
             </div>
-            <input type="text" class="form-control mb-2" id="receiverName" name="bookOrder.receiverName"
-                   placeholder="이름">
-            <input type="tel" pattern="[0-9]{11}" maxlength="11" class="form-control mb-2"
-                   id="receiverPhoneNumber"
-                   name="bookOrder.receiverPhoneNumber" placeholder="전화번호">
-            <div class="input-group mb-2">
-              <input type="text" class="form-control" id="zipCode" name="bookOrder.zipCode" placeholder="우편번호"
-                     readonly>
-              <button class="btn btn-outline-success" type="button" onclick="execDaumPostcode()">
-                우편번호 찾기
-              </button>
-            </div>
-            <input type="text" class="form-control mb-2" id="address" name="bookOrder.address"
-                   placeholder="도로명주소" readonly>
-            <input type="text" class="form-control" id="detailAddress" name="bookOrder.detailAddress"
-                   placeholder="상세주소">
+            <input type="text" class="form-control mb-2" id="address" name="bookOrder.address" placeholder="도로명주소" readonly required>
+            <input type="text" class="form-control" id="detailAddress" name="bookOrder.detailAddress" placeholder="상세주소" required>
           </div>
           <div class="p-3 border rounded-3 mb-4">
             <h4 class="fw-normal mb-5">발송인 정보</h4>
@@ -201,20 +199,21 @@
                 <div class="col-auto">
                   <input id="using_point" name="usingPoint" type="text" class="form-control"
                          pattern="[0-9]+"
-                         style="text-align: right"
-                         onchange="calcPayAmount()">
+                         style="text-align: right">
+                  <button type="button" onclick="calcPayAmount()" class="btn btn-outline-success">적용</button>
                 </div>
+                <p th:text="'보유 포인트 : ' + ${#numbers.formatInteger(userPoint.point, 1, 'COMMA')} + ' P'"></p>
               </div>
             </div>
           </th:block>
           <th:block sec:authorize="isAnonymous()">
             <div class="p-3 border rounded-3 mb-4">
               <h4 class="fw-normal">쿠폰</h4>
-              <p>비회원은 쿠폰 적용이 제한됩니다.</p>
+              <p class="text-center">비회원은 쿠폰 적용이 제한됩니다.</p>
             </div>
             <div class="p-3 border rounded-3 mb-4">
               <h4 class="fw-normal">포인트 할인</h4>
-              <p>비회원은 쿠폰 적용이 제한됩니다.</p>
+              <p class="text-center">비회원은 포인트 할인이 제한됩니다.</p>
             </div>
           </th:block>
           <div class="p-3 border rounded-3 mb-4">
@@ -279,7 +278,7 @@
                     <span id="pay_amount" class="fw-bold">0</span>원
                   </td>
                 </tr>
-                <tr>
+                <tr sec:authorize="isAuthenticated()">
                   <th scope="col" style="font-weight: normal">예상 적립 포인트</th>
                   <td><span id="accumulate_point">0</span> P</td>
                 </tr>

@@ -36,7 +36,11 @@ function paymentInfo() {
   let accumulatePoint = Math.round(
       sumTotalPrice * accumulationRatePolicy.accumulationRate / 100);
 
-  document.getElementById("accumulate_point").innerText = priceToString(accumulatePoint);
+  let elementById = document.getElementById("accumulate_point");
+
+  if (elementById != null) {
+    elementById.innerText = priceToString(accumulatePoint);
+  }
 
   // 결제 금액 = 판매가 + 배송비 + 포장비 - 쿠폰할인 - 사용 포인트
   document.getElementById("pay_amount").innerText = priceToString(sumTotalPrice + deliveryPrice);
@@ -83,7 +87,7 @@ function calcPoint() {
   let chkStyle = /^[0-9]+$/;
   // 상품 금액을 넘어서는지 확인
   let sumTotalPrice = calcBookPrice();
-  if (sumTotalPrice < parseInt(point.value) || !chkStyle.test(point.value)) {
+  if (sumTotalPrice < parseInt(point.value) || !chkStyle.test(point.value) || parseInt(userPoint.point) < parseInt(point.value)) {
     alert("포인트를 다시 입력해 주세요.");
     point.value = "0";
   }
@@ -192,7 +196,7 @@ function doOrder() {
     return;
   }
 
-  let receiverNumber = document.getElementById("receiverPhoneNumber").value;
+  let receiverNumber = document.getElementById("receiverNumber").value;
 
   if (receiverNumber == null || receiverNumber == "") {
     alert("수취인 전화번호를 작성해주세요")
